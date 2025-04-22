@@ -11,6 +11,8 @@ Session state, if required, can be stored in LocalStorage.
 
 ## Technology Stack
 
+I have node v23.11.0 and npm v10.9.2 installed globally on my development Mac.
+
 The primary stack will be:
 
 * `Typescript`, with strict type-checking
@@ -18,9 +20,8 @@ The primary stack will be:
 * Function React written in TSX for the view, where the view component props are mostly
   mobx model objects or attributes of those objects.
 * `node` and `npm`
-* `webpack` for compilation and development
-
-I have node v23.11.0 and npm v10.9.2 installed globally on my development Mac.
+* `webpack` for compilation and development. This should support serving the HTML page on 
+`local.<hostname>` server address to support testing on an ipad on the same local wifi network.
 
 ## High-level UI description
 
@@ -80,23 +81,23 @@ I have node v23.11.0 and npm v10.9.2 installed globally on my development Mac.
 
 I would expect the application to contain functional React components for each of the following items:
 
-* The current word, which displays:
+* `CurrentWordView` - The current word, which displays:
     * Has it previously been visited?
     * The alternating sequence of positions and letters
-* Each letter, which displays:
+* `Letterview` each letter, which displays:
     * Delete icon if it can be deleted
     * Replacement icon if it can be replaced
     * Letter-choice menu is the replacement icon has been clicked
     * Upper or lower casing icon if it can be upper or lower-cased.
-* Each position, which displays:
+* `PositionView` each position, which displays:
     * Insert icon if a letter can be inserted
     * Letter-choice menu if the insert icon has been clicked
 * Icons for delete, replace, insert, upper/lower casing.
    * Delete and casing icons should display a secondary characteristic to show if that change would visit
      a previously visited word.
-* Letter-choice menu - will display all possible letters that can be applied to the current insertion or
+* `LetterChoiceMenu` - Letter-choice menu - will display all possible letters that can be applied to the current insertion or
   replacement operation.
-* Individual letter choice option
+* `LetterChoiceOptionView` - Individual letter choice option
    * Each letter choice should display a secondary characteristic to show if that change would visit
      a previously visited word.
     
@@ -104,3 +105,78 @@ Additional global buttons or menu items would include:
 
 * `See history` - which will visit a separate page to display the session history
 * `Undo`, or `Re-do` if the last operation was an undo.
+
+All model state should be contained in mobx class instances, so there should be no use of React `useEffect`.
+
+## Model Components
+
+Mostly the mobx model classes will correspond to the view components.
+
+So:
+
+* CurrentWord, with state:
+  * The value of the word
+  * Has it previously been visited?
+  * The array of letters
+  * Array of before, between & after positions
+* Letter, with state:
+  * The letter
+  * Can it be deleted?
+  * Can it be replaced, and if so by what letters?
+  * Can it be upper/lower cased?
+  * Is there a current replace menu open (ie with a choice of letters)?
+* Position, with state:
+  * Can any letter be inserted, and if so, what letters?
+  * Is there a current insert menu open (ie with a choice of letters)?
+  
+* LetterChoiceMenu with state:
+  * What are the possible letters, and which of them refer to a previous word?
+
+There will also be a model for the WordGraph, which will not have it's own
+view, but the CurrentWord model will refer to that graph to determine
+it's own individual state when the word is updated.
+
+There will be a separate HistoryModel, which is also used to populate
+those elements of state depending on which words have previously been 
+visited (in the session).
+
+The HistoryModel will have a separate HistoryView which is different from the
+main CurrentWordView, and some type of router will be used to navigate from
+one to the other. This router should use a mobx state object to know which
+page is currently being displayed.
+
+## Source Code structure
+
+It is preferred not to have too many small files, so smaller classes can be grouped together.
+
+For example all the components of the `CurrentWordView` could be in a single source file,
+and similarly for the `CurrentWord` model class and it's components.
+
+Large components like `HistoryModel` and `WordGraph` should be in their own separate files.
+
+## History Model and View
+
+The history model will contain enough information to reconstruct the actions the user has
+taken to get from one word to another. It also tracks undo/redo state.
+
+To keep things simple with the undo/redo state -
+
+* The history is a simple linear sequence of word states. If there is no undo state, the
+  the last state if the current state. Performing an undo state moves a pointer to the current
+  word back in the history. Performing a redo moves forward again. If an operation that is not
+  undo or redo is performed, then all existing undo state after the current word is deleted,
+  and the latest change just goes after the current state.
+  
+* In most cases the operation to go from one word to another can be reconstructed from the
+two words. However it would be more straightforward for the change to recorded explicitly,
+eg `["delete_letter", 2]`, `["insert_letter", 3, "a"]`, `["upper_case_letter", 0]`, 
+`["replace_letter", 2, "c"]`, which would avoid ambiguity in all cases, and avoid the need
+to the compute the reconstruction.
+
+The History View will show:
+
+* A sequence of word states interleaved with the change operation from one word to the next.
+* A pointer to the current word in the history.
+
+The user can click on a given word in the history and click on a button to make that the current word,
+and, optionally, navigate back to the current word view.
