@@ -74,7 +74,7 @@ The primary stack will be:
 By default words are be lowercased. However the application will allow capitalised words such as common
 names to be included.
 
-When an operation changes a letter, even if the starting word is capitalised, the operation will always
+When any non-case-change operation changes a letter, even if the starting word is capitalised, that operation will
 generate a lower-cased word, but when there is no lower-cased word in the list, then it will choose
 a non-lower-cased version of that word (of which almost always there will only be one).
 
