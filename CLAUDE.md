@@ -21,7 +21,7 @@ The primary stack will be:
   mobx model objects or attributes of those objects.
 * `node` and `npm`
 * `webpack` for compilation and development. This should support serving the HTML page on 
-`local.<hostname>` server address to support testing on an ipad on the same local wifi network.
+`<hostname>.local` server address to support testing on an ipad on the same local wifi network.
 
 ## High-level UI description
 

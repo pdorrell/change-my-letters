@@ -4,10 +4,10 @@ const os = require('os');
 
 module.exports = (env, argv) => {
   const isDevelopment = argv.mode === 'development';
-  
+
   // Get hostname for local development
   const hostname = os.hostname().toLowerCase();
-  
+
   return {
     entry: './src/index.tsx',
     output: {
@@ -56,7 +56,7 @@ module.exports = (env, argv) => {
       hot: true,
       compress: true,
       port: 3000,
-      host: isDevelopment ? `local.${hostname}` : 'localhost',
+      host: isDevelopment ? `${hostname}.local` : 'localhost',
       historyApiFallback: true,
       open: true
     },
