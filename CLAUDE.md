@@ -68,6 +68,19 @@ The primary stack will be:
     * Ability to view and review the full session, and maybe jump back to a previous state
 * The application may provide a menu of pre-loaded word lists, and additionally might provide an option to 
   upload a word list by cutting-and-pasting text in form, or by uploading a file.
+  
+### Capitalisation
+
+By default words are be lowercased. However the application will allow capitalised words such as common
+names to be included.
+
+When an operation changes a letter, even if the starting word is capitalised, the operation will always
+generate a lower-cased word, but when there is no lower-cased word in the list, then it will choose
+a non-lower-cased version of that word (of which almost always there will only be one).
+
+When the option is available because lower-cased and capitalised versions of the same word appear
+in the word list, a user can execute an upper-casing or lower-casing operation directly.
+
     
 # Implementation details
   
