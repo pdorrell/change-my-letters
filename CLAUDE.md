@@ -74,3 +74,33 @@ I have node v23.11.0 and npm v10.9.2 installed globally on my development Mac.
   a graph of words linked by possible one-letter changes. Depending on how the word list is provided, 
   this precomputed graph may be saved as a JSON file and loaded directly, or it might be
   precomputed when the session is started (for example if the word list is being loaded by the user).
+  At least one example of such a pre-computed file is included in the `examples` sub-directory of this project.
+
+## View Components
+
+I would expect the application to contain functional React components for each of the following items:
+
+* The current word, which displays:
+    * Has it previously been visited?
+    * The alternating sequence of positions and letters
+* Each letter, which displays:
+    * Delete icon if it can be deleted
+    * Replacement icon if it can be replaced
+    * Letter-choice menu is the replacement icon has been clicked
+    * Upper or lower casing icon if it can be upper or lower-cased.
+* Each position, which displays:
+    * Insert icon if a letter can be inserted
+    * Letter-choice menu if the insert icon has been clicked
+* Icons for delete, replace, insert, upper/lower casing.
+   * Delete and casing icons should display a secondary characteristic to show if that change would visit
+     a previously visited word.
+* Letter-choice menu - will display all possible letters that can be applied to the current insertion or
+  replacement operation.
+* Individual letter choice option
+   * Each letter choice should display a secondary characteristic to show if that change would visit
+     a previously visited word.
+    
+Additional global buttons or menu items would include:
+
+* `See history` - which will visit a separate page to display the session history
+* `Undo`, or `Re-do` if the last operation was an undo.
