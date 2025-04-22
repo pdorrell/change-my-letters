@@ -147,7 +147,7 @@ page is currently being displayed.
 
 ## Source Code structure
 
-It is preferred not to have too many small files, so smaller classes can be grouped together.
+It is preferred not to have too many small files, so smaller classes and functions can be grouped together.
 
 For example all the components of the `CurrentWordView` could be in a single source file,
 and similarly for the `CurrentWord` model class and it's components.
@@ -162,10 +162,14 @@ taken to get from one word to another. It also tracks undo/redo state.
 To keep things simple with the undo/redo state -
 
 * The history is a simple linear sequence of word states. If there is no undo state, the
-  the last state if the current state. Performing an undo state moves a pointer to the current
+  the last state is the current state. Performing an undo state moves a pointer to the current
   word back in the history. Performing a redo moves forward again. If an operation that is not
   undo or redo is performed, then all existing undo state after the current word is deleted,
   and the latest change just goes after the current state.
+  
+The undo button is shown as disabled if no further undos are possible (ie the current word
+is the first word in the history) and the redo button is shown as disabled if no more 
+redos are possible (ie if the current word is the last word in the history).
   
 * In most cases the operation to go from one word to another can be reconstructed from the
 two words. However it would be more straightforward for the change to recorded explicitly,
@@ -180,3 +184,22 @@ The History View will show:
 
 The user can click on a given word in the history and click on a button to make that the current word,
 and, optionally, navigate back to the current word view.
+
+# Styling
+
+CSS should be programmed using sccs.
+
+Here is a suggested initial styling:
+
+* Individual letters are drawn as boxes with black border and light yellow background and the letter
+  text in black.
+* Letter boxes display a delete icon and replace icon if those operations are possible.
+* There is a gap between each letter box.
+* Positions display an insert icon if an insert can be made.
+* The letter choice menu (for insert or replace) shows letter choices as boxes, slightly smaller
+  than the main letter boxes and with a light green background.
+* A single common dull pink colour is used to indicate operations that revisit words already visited
+  in the session: 
+   * For letter menu choices this pink colour is the background colour.
+   * For delete icon the pink colour replaces the icon's default background colour (the default background
+     could just be transparent).
