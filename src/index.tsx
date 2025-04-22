@@ -4,16 +4,19 @@ import { configure } from 'mobx';
 import App from './App';
 import './styles/main.scss';
 
-// Configure MobX
+// Configure MobX with less strict settings for development
 configure({
-  enforceActions: 'always',
-  computedRequiresReaction: true,
-  reactionRequiresObservable: true,
-  observableRequiresReaction: true
+  enforceActions: 'observed',
+  computedRequiresReaction: false,
+  reactionRequiresObservable: false,
+  observableRequiresReaction: false
 });
 
 const container = document.getElementById('root');
-const root = createRoot(container!);
+if (!container) {
+  throw new Error("Root element not found");
+}
+const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <App />
