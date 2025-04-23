@@ -88,6 +88,10 @@ export class WordGraph {
     let differences = 0;
     for (let i = 0; i < word1.length; i++) {
       if (word1[i] !== word2[i]) {
+        // Check for case difference (which is considered a one-letter difference)
+        if (word1[i].toLowerCase() === word2[i].toLowerCase()) {
+          return true; // Case difference counts as one letter difference
+        }
         differences++;
       }
       if (differences > 1) {
