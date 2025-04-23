@@ -6,19 +6,19 @@ import { makeAutoObservable } from 'mobx';
  */
 export class WordGraphNode {
   // Boolean arrays indicating whether each letter can be deleted
-  deletes: boolean[] | null = null;
+  deletes: boolean[] = [];
   
   // Arrays of possible letters that can be inserted at each position
-  inserts: string[] | null = null;
+  inserts: string[] = [];
   
   // Arrays of possible letters that can replace each current letter
-  replaces: string[] | null = null;
+  replaces: string[] = [];
   
   // Boolean arrays indicating whether each letter can be uppercased
-  uppercase: boolean[] | null = null;
+  uppercase: boolean[] = [];
   
   // Boolean arrays indicating whether each letter can be lowercased
-  lowercase: boolean[] | null = null;
+  lowercase: boolean[] = [];
   
   constructor() {
     makeAutoObservable(this);
@@ -28,9 +28,6 @@ export class WordGraphNode {
    * Get possible replacements for a letter at the given position
    */
   getReplacements(position: number): string {
-    if (!this.replaces || position < 0 || position >= this.replaces.length) {
-      return '';
-    }
     return this.replaces[position] || '';
   }
   
@@ -38,9 +35,6 @@ export class WordGraphNode {
    * Get possible insertions at the given position
    */
   getInsertions(position: number): string {
-    if (!this.inserts || position < 0 || position >= this.inserts.length) {
-      return '';
-    }
     return this.inserts[position] || '';
   }
   
@@ -48,30 +42,21 @@ export class WordGraphNode {
    * Check if a letter at the given position can be deleted
    */
   canDelete(position: number): boolean {
-    if (!this.deletes || position < 0 || position >= this.deletes.length) {
-      return false;
-    }
-    return this.deletes[position];
+    return this.deletes[position] || false;
   }
   
   /**
    * Check if a letter at the given position can be uppercased
    */
   canUppercase(position: number): boolean {
-    if (!this.uppercase || position < 0 || position >= this.uppercase.length) {
-      return false;
-    }
-    return this.uppercase[position];
+    return this.uppercase[position] || false;
   }
   
   /**
    * Check if a letter at the given position can be lowercased
    */
   canLowercase(position: number): boolean {
-    if (!this.lowercase || position < 0 || position >= this.lowercase.length) {
-      return false;
-    }
-    return this.lowercase[position];
+    return this.lowercase[position] || false;
   }
   
   /**
@@ -91,7 +76,7 @@ export class WordGraphNode {
         if (canDelete) hasDelete = true;
       }
       
-      node.deletes = hasDelete ? deletes : null;
+      node.deletes = hasDelete ? deletes : [];
     }
     
     // Process inserts (convert from slash-separated string to string[])
@@ -105,7 +90,7 @@ export class WordGraphNode {
         if (parts[i]) hasInsert = true;
       }
       
-      node.inserts = hasInsert ? inserts : null;
+      node.inserts = hasInsert ? inserts : [];
     }
     
     // Process replaces (convert from slash-separated string to string[])
@@ -119,7 +104,7 @@ export class WordGraphNode {
         if (parts[i]) hasReplace = true;
       }
       
-      node.replaces = hasReplace ? replaces : null;
+      node.replaces = hasReplace ? replaces : [];
     }
     
     // Process uppercase
@@ -133,7 +118,7 @@ export class WordGraphNode {
         if (canUppercase) hasUppercase = true;
       }
       
-      node.uppercase = hasUppercase ? uppercase : null;
+      node.uppercase = hasUppercase ? uppercase : [];
     }
     
     // Process lowercase
@@ -147,7 +132,7 @@ export class WordGraphNode {
         if (canLowercase) hasLowercase = true;
       }
       
-      node.lowercase = hasLowercase ? lowercase : null;
+      node.lowercase = hasLowercase ? lowercase : [];
     }
     
     return node;
