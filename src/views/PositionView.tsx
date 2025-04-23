@@ -15,12 +15,12 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ position })
   const appState = getAppState();
   
   const handleInsertClick = () => {
-    position.toggleInsertMenu();
+    appState.openMenu('insert', position.index);
   };
 
   const handleLetterChoice = (letter: string) => {
     appState.insertLetter(position.index, letter);
-    position.toggleInsertMenu();
+    appState.closeAllMenus();
   };
 
   return (

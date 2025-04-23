@@ -26,6 +26,10 @@ export class AppState {
   // Loading state
   isLoading: boolean = true;
   
+  // Menu state management
+  activeMenuType: 'none' | 'replace' | 'insert' = 'none';
+  activeMenuPosition: number = -1;
+  
   constructor() {
     // Initial word - will be replaced with proper initialization
     const initialWord = 'bet';
@@ -111,12 +115,6 @@ export class AppState {
     }
   }
   
-  /**
-   * Navigate to a different page
-   */
-  navigateTo(page: AppPage): void {
-    this.currentPage = page;
-  }
   
   /**
    * Set a new current word
@@ -124,6 +122,9 @@ export class AppState {
   setNewWord(word: string): void {
     this.currentWord.updateWord(word);
     this.updateCurrentWordState();
+    
+    // Close any open menus when the word changes
+    this.closeAllMenus();
   }
   
   /**
@@ -253,5 +254,56 @@ export class AppState {
       this.history.reset(randomWord);
       this.setNewWord(randomWord);
     }
+  }
+  
+  /**
+   * Navigate to a page
+   */
+  navigateTo(page: AppPage): void {
+    this.currentPage = page;
+  }
+  
+  /**
+   * Open a menu
+   */
+  openMenu(menuType: 'replace' | 'insert', position: number): void {
+    // If same menu, close it (toggle behavior)
+    if (this.activeMenuType === menuType && this.activeMenuPosition === position) {
+      this.closeAllMenus();
+      return;
+    }
+    
+    // Close any open menu first
+    this.closeAllMenus();
+    
+    // Open the new menu
+    this.activeMenuType = menuType;
+    this.activeMenuPosition = position;
+    
+    // Set the corresponding menu state in the model
+    if (menuType === 'replace' && position >= 0 && position < this.currentWord.letters.length) {
+      this.currentWord.letters[position].isReplaceMenuOpen = true;
+    } else if (menuType === 'insert' && position >= 0 && position <= this.currentWord.letters.length) {
+      this.currentWord.positions[position].isInsertMenuOpen = true;
+    }
+  }
+  
+  /**
+   * Close all menus
+   */
+  closeAllMenus(): void {
+    // Close existing open menu
+    if (this.activeMenuType === 'replace' && this.activeMenuPosition >= 0) {
+      if (this.activeMenuPosition < this.currentWord.letters.length) {
+        this.currentWord.letters[this.activeMenuPosition].isReplaceMenuOpen = false;
+      }
+    } else if (this.activeMenuType === 'insert' && this.activeMenuPosition >= 0) {
+      if (this.activeMenuPosition < this.currentWord.positions.length) {
+        this.currentWord.positions[this.activeMenuPosition].isInsertMenuOpen = false;
+      }
+    }
+    
+    this.activeMenuType = 'none';
+    this.activeMenuPosition = -1;
   }
 }

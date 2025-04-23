@@ -15,7 +15,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
   const appState = getAppState();
   
   const handleReplaceClick = () => {
-    letter.toggleReplaceMenu();
+    appState.openMenu('replace', letter.position);
   };
 
   const handleDeleteClick = () => {
@@ -32,7 +32,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
 
   const handleLetterChoice = (newLetter: string) => {
     appState.replaceLetter(letter.position, newLetter);
-    letter.toggleReplaceMenu();
+    appState.closeAllMenus();
   };
 
   return (
