@@ -1,54 +1,559 @@
 {
-  "back": {
-    "replace": "jJ///"
+  "a": {
+    "insert": "/mnst"
   },
-  "ban": {
-    "insert": "/e//"
+  "ace": {
+    "insert": "//h/",
+    "replace": "/grtx/t"
+  },
+  "act": {
+    "delete": ".c.",
+    "insert": "///s",
+    "replace": "/nr/e"
+  },
+  "add": {
+    "replace": "/n/"
+  },
+  "age": {
+    "replace": "/crtx/o"
+  },
+  "ago": {
+    "replace": "//e"
+  },
+  "aim": {
+    "delete": ".i.",
+    "replace": "/r/r"
+  },
+  "air": {
+    "replace": "//m"
+  },
+  "all": {
+    "insert": "bc///"
+  },
+  "am": {
+    "delete": ".m",
+    "insert": "/ir/",
+    "replace": "/nst"
+  },
+  "an": {
+    "delete": ".n",
+    "insert": "c//dty",
+    "replace": "/mst"
+  },
+  "and": {
+    "insert": "b///",
+    "replace": "/d/ty"
+  },
+  "ant": {
+    "delete": ".nt",
+    "replace": "/cr/dy"
+  },
+  "any": {
+    "replace": "//dt"
+  },
+  "are": {
+    "insert": "c///a",
+    "replace": "/cgtx/mt"
+  },
+  "area": {
+    "delete": "...a"
+  },
+  "arm": {
+    "delete": ".r.",
+    "insert": "///y",
+    "replace": "/i/et"
+  },
+  "art": {
+    "delete": ".r.",
+    "insert": "c///",
+    "replace": "/cn/em"
+  },
+  "as": {
+    "delete": ".s",
+    "insert": "//hk",
+    "replace": "/mnt"
+  },
+  "ash": {
+    "insert": "bc///",
+    "replace": "//k"
+  },
+  "ask": {
+    "replace": "//h"
+  },
+  "at": {
+    "delete": ".t",
+    "insert": "c/cnr/e",
+    "replace": "/mns"
+  },
+  "ate": {
+    "replace": "/cgrx/"
+  },
+  "axe": {
+    "insert": "//l/",
+    "replace": "/cgrt/"
+  },
+  "bad": {
+    "insert": "/e/n/",
+    "replace": "/e/g"
+  },
+  "bag": {
+    "insert": "//n/",
+    "replace": "/eiou/d"
+  },
+  "ball": {
+    "delete": "b...",
+    "replace": "c/eiu//"
+  },
+  "band": {
+    "delete": "b.n.",
+    "replace": "/eo//gk"
+  },
+  "bang": {
+    "replace": "///dk"
+  },
+  "bank": {
+    "insert": "/l///",
+    "replace": "/u//dg"
+  },
+  "bash": {
+    "delete": "b...",
+    "replace": "c///"
+  },
+  "bead": {
+    "delete": ".ea.",
+    "replace": "//n/kmnrt"
+  },
+  "beak": {
+    "replace": "///dmnrt"
+  },
+  "beam": {
+    "replace": "///dknrt"
   },
   "bean": {
-    "delete": ".e..",
-    "replace": "//e/"
+    "replace": "//e/dkmrt"
+  },
+  "bear": {
+    "replace": "/o/e/dkmnt"
+  },
+  "beat": {
+    "replace": "/o/elns/dkmnr"
+  },
+  "bed": {
+    "insert": "/l/an/",
+    "replace": "/a/eg"
   },
   "bee": {
-    "insert": "///nt",
-    "replace": "//gt"
+    "insert": "///fnprst",
+    "replace": "/y/dg"
+  },
+  "beef": {
+    "replace": "///nprst"
   },
   "been": {
-    "replace": "//a/t"
+    "replace": "//a/fprst"
+  },
+  "beep": {
+    "replace": "///fnrst"
+  },
+  "beer": {
+    "replace": "//a/fnpst"
+  },
+  "bees": {
+    "replace": "///fnprt"
   },
   "beet": {
-    "delete": ".eet",
-    "replace": "//s/n"
+    "replace": "//alns/fnprs"
   },
   "beg": {
-    "replace": "//et"
+    "replace": "/aiou/de"
+  },
+  "bell": {
+    "replace": "c/aiu//t"
+  },
+  "belt": {
+    "replace": "//aens/l"
+  },
+  "bend": {
+    "replace": "/ao/a/t"
+  },
+  "bent": {
+    "replace": "c//aels/d"
   },
   "best": {
-    "replace": "t//e/"
+    "replace": "/u/aeln/"
   },
-  "bet": {
-    "insert": "/ee/ees/",
-    "replace": "/u/eg"
+  "bib": {
+    "replace": "/o/gnt"
+  },
+  "big": {
+    "replace": "/aeou/bnt"
+  },
+  "bill": {
+    "replace": "/aeu//"
+  },
+  "bin": {
+    "replace": "/u/bgt"
+  },
+  "bike": {
+    "replace": "//t/"
+  },
+  "bit": {
+    "insert": "///e",
+    "replace": "/u/bgn"
+  },
+  "bite": {
+    "replace": "//k/"
+  },
+  "black": {
+    "replace": "//o/n/"
+  },
+  "blank": {
+    "delete": ".l...",
+    "replace": "//i/c/"
+  },
+  "bled": {
+    "delete": ".l..",
+    "insert": "//ee/ee/"
+  },
+  "blind": {
+    "replace": "////k"
+  },
+  "blink": {
+    "replace": "//a//d"
+  },
+  "blob": {
+    "delete": ".l..",
+    "replace": "///w"
+  },
+  "block": {
+    "replace": "c//a//"
+  },
+  "blow": {
+    "delete": ".l..",
+    "replace": "///b"
+  },
+  "boat": {
+    "replace": "/e/o/r"
+  },
+  "boar": {
+    "replace": "/e//t"
+  },
+  "bob": {
+    "insert": "/l/m/",
+    "replace": "c/i/gwxy"
+  },
+  "body": {
+    "replace": "//n/"
+  },
+  "bog": {
+    "replace": "/aeiu/bwxy"
+  },
+  "bold": {
+    "replace": "c//n/"
+  },
+  "bond": {
+    "replace": "/ae/l/ey"
+  },
+  "bone": {
+    "replace": "c//r/dy"
+  },
+  "bony": {
+    "replace": "//d/de"
+  },
+  "book": {
+    "replace": "c///mt"
+  },
+  "boom": {
+    "replace": "///kt"
+  },
+  "boot": {
+    "replace": "//a/km"
+  },
+  "bore": {
+    "replace": "c//n/n"
+  },
+  "born": {
+    "replace": "c/u//e"
+  },
+  "bow": {
+    "insert": "/l//",
+    "replace": "c//bgxy"
+  },
+  "box": {
+    "replace": "//bgwy"
+  },
+  "boy": {
+    "delete": ".o.",
+    "insert": "//dn/",
+    "replace": "/u/bgwx"
+  },
+  "bug": {
+    "replace": "/aeio/mnsty"
+  },
+  "bulb": {
+    "replace": "///l"
+  },
+  "bull": {
+    "insert": "////y",
+    "replace": "/aei//b"
+  },
+  "bum": {
+    "insert": "///p",
+    "replace": "//gnsty"
+  },
+  "bun": {
+    "insert": "//r/k",
+    "replace": "/i/gmsty"
+  },
+  "bunk": {
+    "replace": "/a//"
+  },
+  "burn": {
+    "replace": "/o//"
+  },
+  "bus": {
+    "insert": "///t",
+    "replace": "//gmnty"
+  },
+  "bust": {
+    "replace": "/e//"
   },
   "but": {
-    "replace": "h/e/"
+    "insert": "//s/",
+    "replace": "c/i/gmnsy"
   },
-  "hut": {
-    "insert": "s///",
-    "replace": "b//"
+  "buy": {
+    "delete": ".u.",
+    "replace": "/o/gmnst"
   },
-  "jack": {
-    "replace": "b///",
-    "uppercase": "j..."
+  "by": {
+    "insert": "/ou/e"
   },
-  "Jack": {
-    "replace": "b///",
-    "lowercase": "J..."
+  "bye": {
+    "replace": "/e/"
   },
-  "shut": {
-    "delete": "s..."
+  "cab": {
+    "replace": "/o/nprt"
   },
-  "test": {
+  "cafe": {
+    "replace": "//kmnprsv/"
+  },
+  "cake": {
+    "replace": "//fmnprsv/"
+  },
+  "call": {
+    "delete": "c...",
+    "replace": "b/e//m"
+  },
+  "calm": {
+    "replace": "///l"
+  },
+  "came": {
+    "replace": "/o/fknprsv/p"
+  },
+  "camp": {
+    "replace": "///e"
+  },
+  "can": {
+    "delete": "c..",
+    "insert": "///e",
+    "replace": "//bprt"
+  },
+  "cane": {
+    "replace": "/o/fkmprsv/"
+  },
+  "cap": {
+    "insert": "/hl/m/e",
+    "replace": "/ou/bnrt"
+  },
+  "cape": {
+    "replace": "/o/fkmnrsv/"
+  },
+  "car": {
+    "insert": "/h//det",
+    "replace": "//bnpt"
+  },
+  "card": {
+    "replace": "/o//et"
+  },
+  "care": {
+    "delete": "c..e",
+    "replace": "/o/fkmnpsv/dt"
+  },
+  "cart": {
+    "delete": "c.rt",
+    "insert": "/h///",
+    "replace": "//s/de"
+  },
+  "case": {
+    "replace": "//fkmnprv/ht"
+  },
+  "cash": {
+    "delete": "c...",
+    "replace": "b///et"
+  },
+  "cast": {
+    "replace": "/o/r/eh"
+  },
+  "cat": {
+    "delete": "c..",
+    "insert": "/h/rs/",
+    "replace": "/ou/bnpr"
+  },
+  "cave": {
+    "replace": "//fkmnprs/"
+  },
+  "cell": {
+    "replace": "b/a//"
+  },
+  "cent": {
     "replace": "b///"
+  },
+  "chant": {
+    "replace": "///r/"
+  },
+  "chap": {
+    "delete": ".h..",
+    "replace": "/l/o/rt"
+  },
+  "char": {
+    "delete": ".h..",
+    "insert": "///i/t",
+    "replace": "///pt"
+  },
+  "chart": {
+    "delete": ".h.rt",
+    "replace": "///n/"
+  },
+  "chat": {
+    "delete": ".h..",
+    "insert": "///nr/",
+    "replace": "///pr"
+  },
+  "chess": {
+    "replace": "////t"
+  },
+  "chest": {
+    "replace": "/r///s"
+  },
+  "chew": {
+    "replace": "/r//"
+  },
+  "chin": {
+    "replace": "/o//"
+  },
+  "chop": {
+    "delete": ".h..",
+    "replace": "/r/a/"
+  },
+  "clam": {
+    "replace": "/r//pw"
+  },
+  "clap": {
+    "delete": ".l..",
+    "replace": "/h//mw"
+  },
+  "claw": {
+    "replace": "///mp"
+  },
+  "clock": {
+    "replace": "b////"
+  },
+  "cob": {
+    "replace": "b/a/dptw"
+  },
+  "cod": {
+    "insert": "//lr/e",
+    "replace": "//bptw"
+  },
+  "code": {
+    "replace": "//mnpr/"
+  },
+  "coil": {
+    "replace": "//o/n"
+  },
+  "coin": {
+    "replace": "/h/r/l"
+  },
+  "cold": {
+    "insert": "//u//",
+    "replace": "b//r/t"
+  },
+  "colt": {
+    "replace": "//s/d"
+  },
+  "come": {
+    "replace": "/a/dnpr/"
+  },
+  "cone": {
+    "replace": "b/a/dmpr/"
+  },
+  "cook": {
+    "replace": "b//r/l"
+  },
+  "cool": {
+    "replace": "//i/k"
+  },
+  "cop": {
+    "insert": "/hr//e",
+    "replace": "/au/bdtw"
+  },
+  "cope": {
+    "replace": "/a/dmnr/"
+  },
+  "cord": {
+    "replace": "/a/l/ekn"
+  },
+  "core": {
+    "replace": "b/a/dmnp/dkn"
+  },
+  "cork": {
+    "replace": "//o/den"
+  },
+  "corn": {
+    "replace": "b//i/dek"
+  },
+  "cost": {
+    "replace": "/a/l/y"
+  },
+  "cosy": {
+    "replace": "//z/t"
+  },
+  "cot": {
+    "insert": "//ls/",
+    "replace": "/au/bdpw"
+  },
+  "cow": {
+    "insert": "/r//",
+    "replace": "b//bdpt"
+  },
+  "cozy": {
+    "replace": "//s/"
+  },
+  "cram": {
+    "replace": "/l//"
+  },
+  "crest": {
+    "replace": "/h/u//"
+  },
+  "crew": {
+    "replace": "/h/o/"
+  },
+  "crop": {
+    "delete": ".r..",
+    "replace": "/h//w"
+  },
+  "crow": {
+    "delete": ".r..",
+    "replace": "//e/p"
+  },
+  "crust": {
+    "replace": "//e//"
+  },
+  "cup": {
+    "replace": "/ao/t"
+  },
+  "cut": {
+    "replace": "b/ao/p"
   }
 }
