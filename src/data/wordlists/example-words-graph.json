@@ -1,13 +1,4 @@
 {
-  "Jack": {
-    "lowercase": "J",
-    "replace": [
-      "bj",
-      "",
-      "",
-      ""
-    ]
-  },
   "back": {
     "replace": [
       "jJ",
@@ -25,44 +16,44 @@
     ]
   },
   "bean": {
-    "delete": ".e..",
     "replace": [
       "",
       "",
       "e",
       ""
-    ]
+    ],
+    "delete": ".e.."
   },
   "bee": {
+    "replace": [
+      "",
+      "",
+      "gt"
+    ],
     "insert": [
       "",
       "",
       "",
       "nt"
-    ],
-    "replace": [
-      "",
-      "",
-      "gt"
     ]
   },
   "been": {
-    "delete": "...n",
     "replace": [
       "",
       "",
       "a",
       "t"
-    ]
+    ],
+    "delete": "...n"
   },
   "beet": {
-    "delete": ".eet",
     "replace": [
       "",
       "",
       "s",
       "n"
-    ]
+    ],
+    "delete": ".eet"
   },
   "beg": {
     "replace": [
@@ -72,25 +63,25 @@
     ]
   },
   "best": {
-    "delete": "..s.",
     "replace": [
       "t",
       "",
       "e",
       ""
-    ]
+    ],
+    "delete": "..s."
   },
   "bet": {
+    "replace": [
+      "",
+      "u",
+      "eg"
+    ],
     "insert": [
       "",
       "e",
       "es",
       ""
-    ],
-    "replace": [
-      "",
-      "u",
-      "eg"
     ]
   },
   "but": {
@@ -101,14 +92,14 @@
     ]
   },
   "hut": {
-    "insert": [
-      "s",
-      "",
+    "replace": [
+      "b",
       "",
       ""
     ],
-    "replace": [
-      "b",
+    "insert": [
+      "s",
+      "",
       "",
       ""
     ]
@@ -121,6 +112,15 @@
       ""
     ],
     "uppercase": "j..."
+  },
+  "Jack": {
+    "replace": [
+      "bj",
+      "",
+      "",
+      ""
+    ],
+    "lowercase": "J..."
   },
   "shut": {
     "delete": "s..."
