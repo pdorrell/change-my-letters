@@ -18,10 +18,12 @@ The graph format is defined as follows:
   value is a dict with the following keys and values:
     * `delete` - a string the same length as the word, where all the deletable
       letters are shown, and other letters are replaced with "."
-    * `replace` - an array the same length as the word, where each string
+    * `replace` - a slash-separated string of sub-strings, which represents
+       an array of strings the same length as the word, where each string
       is the set of letter values that can replace the letter in that position
       in the word
-    * `insert` - an array one longer then the word, corresponding to the positions
+    * `insert` - a slash-separated string of sub-strings, which represents
+      an array of strings than the word, corresponding to the positions
       before, between and after the letters, where each string is the set of letter
       values that can be inserted in that position.
     * `uppercase` - a string the same length as the word, where all the upper-caseable

@@ -1,134 +1,54 @@
 {
   "back": {
-    "replace": [
-      "jJ",
-      "",
-      "",
-      ""
-    ]
+    "replace": "jJ///"
   },
   "ban": {
-    "insert": [
-      "",
-      "e",
-      "",
-      ""
-    ]
+    "insert": "/e//"
   },
   "bean": {
     "delete": ".e..",
-    "replace": [
-      "",
-      "",
-      "e",
-      ""
-    ]
+    "replace": "//e/"
   },
   "bee": {
-    "insert": [
-      "",
-      "",
-      "",
-      "nt"
-    ],
-    "replace": [
-      "",
-      "",
-      "gt"
-    ]
+    "insert": "///nt",
+    "replace": "//gt"
   },
   "been": {
-    "replace": [
-      "",
-      "",
-      "a",
-      "t"
-    ]
+    "replace": "//a/t"
   },
   "beet": {
     "delete": ".eet",
-    "replace": [
-      "",
-      "",
-      "s",
-      "n"
-    ]
+    "replace": "//s/n"
   },
   "beg": {
-    "replace": [
-      "",
-      "",
-      "et"
-    ]
+    "replace": "//et"
   },
   "best": {
-    "replace": [
-      "t",
-      "",
-      "e",
-      ""
-    ]
+    "replace": "t//e/"
   },
   "bet": {
-    "insert": [
-      "",
-      "ee",
-      "ees",
-      ""
-    ],
-    "replace": [
-      "",
-      "u",
-      "eg"
-    ]
+    "insert": "/ee/ees/",
+    "replace": "/u/eg"
   },
   "but": {
-    "replace": [
-      "h",
-      "e",
-      ""
-    ]
+    "replace": "h/e/"
   },
   "hut": {
-    "insert": [
-      "s",
-      "",
-      "",
-      ""
-    ],
-    "replace": [
-      "b",
-      "",
-      ""
-    ]
+    "insert": "s///",
+    "replace": "b//"
   },
   "jack": {
-    "replace": [
-      "b",
-      "",
-      "",
-      ""
-    ],
+    "replace": "b///",
     "uppercase": "j..."
   },
   "Jack": {
-    "replace": [
-      "b",
-      "",
-      "",
-      ""
-    ],
+    "replace": "b///",
     "lowercase": "J..."
   },
   "shut": {
     "delete": "s..."
   },
   "test": {
-    "replace": [
-      "b",
-      "",
-      "",
-      ""
-    ]
+    "replace": "b///"
   }
 }

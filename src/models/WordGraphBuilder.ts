@@ -252,7 +252,8 @@ export class WordGraphBuilder {
         }
         
         if (insertArrays.some(s => s.length > 0)) {
-          wordData.insert = insertArrays;
+          // Convert to slash-separated string
+          wordData.insert = insertArrays.join('/');
           hasData = true;
         }
       }
@@ -269,7 +270,8 @@ export class WordGraphBuilder {
         }
         
         if (replaceArrays.some(s => s.length > 0)) {
-          wordData.replace = replaceArrays;
+          // Convert to slash-separated string
+          wordData.replace = replaceArrays.join('/');
           hasData = true;
         }
       }

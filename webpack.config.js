@@ -1,9 +1,14 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const os = require('os');
+import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
+import os from 'os';
+import { fileURLToPath } from 'url';
+import sass from 'sass-embedded';
 
-module.exports = (env, argv) => {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export default (env, argv) => {
   const isDevelopment = argv.mode === 'development';
 
   // Get hostname for local development
@@ -38,7 +43,7 @@ module.exports = (env, argv) => {
             {
               loader: 'sass-loader',
               options: {
-                implementation: require('sass-embedded'),
+                implementation: sass,
                 sassOptions: {
                   outputStyle: 'compressed',
                 },
