@@ -75,32 +75,196 @@ function differAtPosition(word1, word2, position) {
 }
 
 /**
- * Generate a word graph from a list of words
+ * Generate a word graph from a list of words using efficient algorithm
  */
 function generateWordGraph(wordList) {
   // Create adjacency list
   const adjacencyList = new Map();
   const words = new Set(wordList);
   
+  // Maps for storing intermediate results
+  const connections = new Map();
+  const dottedWordsMap = new Map();
+  const lowerCaseMap = new Map();
+  
   // Initialize adjacency list
   for (const word of wordList) {
     adjacencyList.set(word, []);
-  }
-  
-  // Find connections between words
-  for (const word of wordList) {
-    const connections = [];
     
-    for (const otherWord of wordList) {
-      if (word !== otherWord && isOneLetterDifference(word, otherWord)) {
-        connections.push(otherWord);
-      }
+    // Initialize connections for this word
+    if (!connections.has(word)) {
+      connections.set(word, []);
     }
     
-    adjacencyList.set(word, connections);
+    // Process deletions and insertions
+    processDeleteInsertOperations(word, words, connections);
+    
+    // Process replacements
+    processReplaceOperations(word, dottedWordsMap);
+    
+    // Process case changes
+    processCaseOperations(word, lowerCaseMap);
+  }
+  
+  // Connect words based on replacements
+  connectWordsByReplacements(dottedWordsMap, connections);
+  
+  // Connect words based on case changes
+  connectWordsByCaseChanges(lowerCaseMap, words, connections);
+  
+  // Set the final adjacency list
+  for (const [word, wordConnections] of connections.entries()) {
+    // Filter to ensure only words in our word list are included
+    const validConnections = wordConnections.filter(connection => words.has(connection));
+    adjacencyList.set(word, validConnections);
   }
   
   return { adjacencyList, words };
+}
+
+/**
+ * Process delete and insert operations for a word
+ */
+function processDeleteInsertOperations(word, words, connections) {
+  // Check all possible deletions
+  for (let i = 0; i < word.length; i++) {
+    const deletion = word.substring(0, i) + word.substring(i + 1);
+    
+    // If the deletion is a valid word, add connections
+    if (words.has(deletion)) {
+      // Add deletion connection
+      addConnection(connections, word, deletion);
+      
+      // Add insert connection (reverse of deletion)
+      addConnection(connections, deletion, word);
+    }
+  }
+}
+
+/**
+ * Process replacement operations for a word
+ */
+function processReplaceOperations(word, dottedWordsMap) {
+  // Check all possible replacements
+  for (let i = 0; i < word.length; i++) {
+    // Create a "dotted word" with a dot at position i
+    const dottedWord = word.substring(0, i) + '.' + word.substring(i + 1);
+    
+    // Add this word to the dotted word map
+    if (!dottedWordsMap.has(dottedWord)) {
+      dottedWordsMap.set(dottedWord, []);
+    }
+    dottedWordsMap.get(dottedWord).push(word);
+  }
+}
+
+/**
+ * Process case change operations for a word
+ */
+function processCaseOperations(word, lowerCaseMap) {
+  // Check if this word has any uppercase or lowercase letters
+  const lowerCased = word.toLowerCase();
+  
+  // Skip if the word is already all lowercase
+  if (lowerCased === word) {
+    return;
+  }
+  
+  // Add this word to the lowercase map
+  if (!lowerCaseMap.has(lowerCased)) {
+    lowerCaseMap.set(lowerCased, []);
+  }
+  lowerCaseMap.get(lowerCased).push(word);
+}
+
+/**
+ * Connect words by replacements based on dotted words map
+ */
+function connectWordsByReplacements(dottedWordsMap, connections) {
+  // For each dotted word pattern
+  for (const [, words] of dottedWordsMap.entries()) {
+    // If there are multiple words with this pattern, they are connected
+    if (words.length > 1) {
+      // Connect all pairs of words with this pattern
+      for (let i = 0; i < words.length; i++) {
+        for (let j = i + 1; j < words.length; j++) {
+          // Add bidirectional connections
+          addConnection(connections, words[i], words[j]);
+          addConnection(connections, words[j], words[i]);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Connect words by case changes based on lowercase map
+ */
+function connectWordsByCaseChanges(lowerCaseMap, words, connections) {
+  // For each lowercase word
+  for (const [lowerCased, upperCaseVariants] of lowerCaseMap.entries()) {
+    // If the lowercase version is also in our word list
+    if (words.has(lowerCased)) {
+      // Connect the lowercase word to all its uppercase variants
+      for (const upperVariant of upperCaseVariants) {
+        addConnection(connections, lowerCased, upperVariant);
+        addConnection(connections, upperVariant, lowerCased);
+      }
+    }
+    
+    // Also connect uppercase variants that differ by one letter case
+    if (upperCaseVariants.length > 1) {
+      for (let i = 0; i < upperCaseVariants.length; i++) {
+        for (let j = i + 1; j < upperCaseVariants.length; j++) {
+          // Only connect if they differ by exactly one case
+          if (differsOnlyByOneCase(upperCaseVariants[i], upperCaseVariants[j])) {
+            addConnection(connections, upperCaseVariants[i], upperCaseVariants[j]);
+            addConnection(connections, upperCaseVariants[j], upperCaseVariants[i]);
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Check if two words differ only by one letter's case
+ */
+function differsOnlyByOneCase(word1, word2) {
+  if (word1.length !== word2.length) {
+    return false;
+  }
+  
+  let differences = 0;
+  for (let i = 0; i < word1.length; i++) {
+    if (word1[i] !== word2[i]) {
+      // If they differ by more than just case, return false
+      if (word1[i].toLowerCase() !== word2[i].toLowerCase()) {
+        return false;
+      }
+      differences++;
+    }
+    
+    if (differences > 1) {
+      return false;
+    }
+  }
+  
+  return differences === 1;
+}
+
+/**
+ * Add a connection between two words
+ */
+function addConnection(connections, from, to) {
+  if (!connections.has(from)) {
+    connections.set(from, []);
+  }
+  
+  const existingConnections = connections.get(from);
+  if (!existingConnections.includes(to)) {
+    existingConnections.push(to);
+  }
 }
 
 /**
