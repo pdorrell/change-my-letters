@@ -60,13 +60,19 @@ export class AppState {
           const words = Array.from(graph.words);
           const randomWord = words[Math.floor(Math.random() * words.length)];
           this.setNewWord(randomWord);
+        } else {
+          // If we couldn't load any words, display an error status message
+          // This would be visible in the main UI where we show "Loading..." normally
+          this.isLoading = false;
+          // We could set some error state here if needed
         }
         
         this.updateCurrentWordState();
         this.isLoading = false;
       });
     } catch (error) {
-      console.error('Error loading word graph:', error);
+      // Error is already reported to ErrorHandler in WordLoader class
+      // Just update the UI state to show we're done loading
       runInAction(() => {
         this.isLoading = false;
       });

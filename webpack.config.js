@@ -4,6 +4,7 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import os from 'os';
 import { fileURLToPath } from 'url';
 import sass from 'sass-embedded';
+import setupErrorLogger from './webpack-error-logger.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -86,6 +87,16 @@ export default (env, argv) => {
           errors: true,
           warnings: false
         }
+      },
+      setupMiddlewares: (middlewares, devServer) => {
+        if (!devServer) {
+          throw new Error('webpack-dev-server is not defined');
+        }
+        
+        // Add error logging middleware
+        middlewares.unshift(setupErrorLogger());
+        
+        return middlewares;
       }
     },
     optimization: {
