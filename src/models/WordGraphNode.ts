@@ -1,6 +1,16 @@
 import { makeAutoObservable } from 'mobx';
 
 /**
+ * Exception thrown when there's an error parsing the JSON for a word graph
+ */
+export class ParseWordGraphJsonException extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'ParseWordGraphJsonException';
+  }
+}
+
+/**
  * Represents a node in the word graph, containing all possible operations
  * that can be performed on a word
  */
@@ -64,76 +74,63 @@ export class WordGraphNode {
    */
   static fromJson(data: Record<string, any>): WordGraphNode {
     const node = new WordGraphNode();
+    const wordLength = data.word_length || 0;
     
-    // Process deletes (convert from string to boolean[])
-    if (data.delete) {
-      const deletes: boolean[] = [];
-      let hasDelete = false;
-      
-      for (let i = 0; i < data.delete.length; i++) {
-        const canDelete = data.delete[i] !== '.';
-        deletes[i] = canDelete;
-        if (canDelete) hasDelete = true;
-      }
-      
-      node.deletes = hasDelete ? deletes : [];
+    if (wordLength === 0) {
+      throw new ParseWordGraphJsonException('Word length is required');
     }
     
-    // Process inserts (convert from slash-separated string to string[])
-    if (data.insert) {
-      const parts = data.insert.split('/');
-      const inserts: string[] = [];
-      let hasInsert = false;
-      
-      for (let i = 0; i < parts.length; i++) {
-        inserts[i] = parts[i] || '';
-        if (parts[i]) hasInsert = true;
+    /**
+     * Parses a slash-separated string into an array of strings
+     * @param str The string to parse
+     * @param expectedLength The expected length of the resulting array
+     * @returns An array of strings
+     */
+    function parseSlashSeparatedString(str: string | undefined, expectedLength: number): string[] {
+      if (!str) {
+        // Return array of empty strings with the correct length
+        return Array(expectedLength).fill('');
       }
       
-      node.inserts = hasInsert ? inserts : [];
+      const parts = str.split('/');
+      if (parts.length !== expectedLength) {
+        throw new ParseWordGraphJsonException(
+          `Expected ${expectedLength} elements in '${str}', got ${parts.length}`
+        );
+      }
+      
+      return parts.map(part => part || '');
     }
     
-    // Process replaces (convert from slash-separated string to string[])
-    if (data.replace) {
-      const parts = data.replace.split('/');
-      const replaces: string[] = [];
-      let hasReplace = false;
-      
-      for (let i = 0; i < parts.length; i++) {
-        replaces[i] = parts[i] || '';
-        if (parts[i]) hasReplace = true;
+    /**
+     * Parses a string representing boolean values (non-'.' = true)
+     * @param str The string to parse
+     * @param expectedLength The expected length of the resulting array
+     * @returns An array of booleans
+     */
+    function parseBooleanString(str: string | undefined, expectedLength: number): boolean[] {
+      if (!str) {
+        // Return array of false values with the correct length
+        return Array(expectedLength).fill(false);
       }
       
-      node.replaces = hasReplace ? replaces : [];
+      if (str.length !== expectedLength) {
+        throw new ParseWordGraphJsonException(
+          `Expected string of length ${expectedLength}, got ${str.length}`
+        );
+      }
+      
+      return Array.from(str).map(char => char !== '.');
     }
     
-    // Process uppercase
-    if (data.uppercase) {
-      const uppercase: boolean[] = [];
-      let hasUppercase = false;
-      
-      for (let i = 0; i < data.uppercase.length; i++) {
-        const canUppercase = data.uppercase[i] !== '.';
-        uppercase[i] = canUppercase;
-        if (canUppercase) hasUppercase = true;
-      }
-      
-      node.uppercase = hasUppercase ? uppercase : [];
-    }
+    // Process string arrays (inserts, replaces)
+    node.inserts = parseSlashSeparatedString(data.insert, wordLength + 1);
+    node.replaces = parseSlashSeparatedString(data.replace, wordLength);
     
-    // Process lowercase
-    if (data.lowercase) {
-      const lowercase: boolean[] = [];
-      let hasLowercase = false;
-      
-      for (let i = 0; i < data.lowercase.length; i++) {
-        const canLowercase = data.lowercase[i] !== '.';
-        lowercase[i] = canLowercase;
-        if (canLowercase) hasLowercase = true;
-      }
-      
-      node.lowercase = hasLowercase ? lowercase : [];
-    }
+    // Process boolean arrays (deletes, uppercase, lowercase)
+    node.deletes = parseBooleanString(data.delete, wordLength);
+    node.uppercase = parseBooleanString(data.uppercase, wordLength);
+    node.lowercase = parseBooleanString(data.lowercase, wordLength);
     
     return node;
   }
