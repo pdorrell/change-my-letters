@@ -1,4 +1,5 @@
 import { WordGraph } from './WordGraph';
+import { WordGraphBuilder } from './WordGraphBuilder';
 
 /**
  * Utility for loading word lists and example graphs
@@ -42,7 +43,9 @@ export class WordLoader {
       'dig', 'fig', 'pig', 'rig', 'big'
     ];
     
-    wordGraph.computeFromWordList(wordList);
+    const builder = new WordGraphBuilder(wordList);
+    const jsonGraph = builder.build();
+    wordGraph.loadFromJson(jsonGraph);
     return wordGraph;
   }
   
@@ -78,7 +81,9 @@ export class WordLoader {
         const wordListText = await WordLoader.loadDataFile('example-words.txt');
         if (wordListText) {
           const wordList = WordLoader.loadWordListFromText(wordListText);
-          wordGraph.computeFromWordList(wordList);
+          const builder = new WordGraphBuilder(wordList);
+          const jsonGraph = builder.build();
+          wordGraph.loadFromJson(jsonGraph);
           console.log('Computed default word graph from word list');
         } else {
           // Ultimate fallback to sample graph

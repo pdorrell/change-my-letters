@@ -16,25 +16,25 @@
     ]
   },
   "bean": {
+    "delete": ".e..",
     "replace": [
       "",
       "",
       "e",
       ""
-    ],
-    "delete": ".e.."
+    ]
   },
   "bee": {
-    "replace": [
-      "",
-      "",
-      "gt"
-    ],
     "insert": [
       "",
       "",
       "",
       "nt"
+    ],
+    "replace": [
+      "",
+      "",
+      "gt"
     ]
   },
   "been": {
@@ -43,17 +43,16 @@
       "",
       "a",
       "t"
-    ],
-    "delete": "...n"
+    ]
   },
   "beet": {
+    "delete": ".eet",
     "replace": [
       "",
       "",
       "s",
       "n"
-    ],
-    "delete": ".eet"
+    ]
   },
   "beg": {
     "replace": [
@@ -68,20 +67,19 @@
       "",
       "e",
       ""
-    ],
-    "delete": "..s."
+    ]
   },
   "bet": {
+    "insert": [
+      "",
+      "ee",
+      "ees",
+      ""
+    ],
     "replace": [
       "",
       "u",
       "eg"
-    ],
-    "insert": [
-      "",
-      "e",
-      "es",
-      ""
     ]
   },
   "but": {
@@ -92,21 +90,21 @@
     ]
   },
   "hut": {
-    "replace": [
-      "b",
-      "",
-      ""
-    ],
     "insert": [
       "s",
       "",
+      "",
+      ""
+    ],
+    "replace": [
+      "b",
       "",
       ""
     ]
   },
   "jack": {
     "replace": [
-      "bJ",
+      "b",
       "",
       "",
       ""
@@ -115,7 +113,7 @@
   },
   "Jack": {
     "replace": [
-      "bj",
+      "b",
       "",
       "",
       ""
