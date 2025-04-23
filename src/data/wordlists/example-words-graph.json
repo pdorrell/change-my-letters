@@ -1,55 +1,136 @@
 {
+  "Jack": {
+    "lowercase": "J",
+    "replace": [
+      "bj",
+      "",
+      "",
+      ""
+    ]
+  },
   "back": {
-    "replace": ["j", "", "", ""]
+    "replace": [
+      "jJ",
+      "",
+      "",
+      ""
+    ]
   },
   "ban": {
-    "insert": ["", "e", "", ""]
+    "insert": [
+      "",
+      "e",
+      "",
+      ""
+    ]
   },
   "bean": {
-    "delete": ".e.."
+    "delete": ".e..",
+    "replace": [
+      "",
+      "",
+      "e",
+      ""
+    ]
   },
   "bee": {
-    "insert": ["", "", "", "nt"],
-    "replace": ["", "", "gnt"]
+    "insert": [
+      "",
+      "",
+      "",
+      "nt"
+    ],
+    "replace": [
+      "",
+      "",
+      "gt"
+    ]
   },
   "been": {
-    "delete": "...n"
+    "delete": "...n",
+    "replace": [
+      "",
+      "",
+      "a",
+      "t"
+    ]
   },
   "beet": {
     "delete": ".eet",
-    "replace": ["", "", "", "n"]
+    "replace": [
+      "",
+      "",
+      "s",
+      "n"
+    ]
   },
   "beg": {
-    "replace": ["", "", "ent"]
-  },
-  "Ben": {
-    "replace": ["", "", "gnt"]
+    "replace": [
+      "",
+      "",
+      "et"
+    ]
   },
   "best": {
-    "delete": "..s."
+    "delete": "..s.",
+    "replace": [
+      "t",
+      "",
+      "e",
+      ""
+    ]
   },
   "bet": {
-    "insert": ["", "", "es", ""],
-    "replace": ["", "", "egn"]
+    "insert": [
+      "",
+      "e",
+      "es",
+      ""
+    ],
+    "replace": [
+      "",
+      "u",
+      "eg"
+    ]
   },
   "but": {
-    "replace": ["", "e", ""]
+    "replace": [
+      "h",
+      "e",
+      ""
+    ]
   },
   "hut": {
-    "replace": ["b", "", ""]
+    "insert": [
+      "s",
+      "",
+      "",
+      ""
+    ],
+    "replace": [
+      "b",
+      "",
+      ""
+    ]
   },
   "jack": {
-    "uppercase": "J...",
-    "replace": ["b", "", ""]
-  },
-  "Jack": {
-    "lowercase": "j...",
-    "replace": ["b", "", "", ""]
+    "replace": [
+      "bJ",
+      "",
+      "",
+      ""
+    ],
+    "uppercase": "j..."
   },
   "shut": {
     "delete": "s..."
   },
   "test": {
-    "replace": ["b", "", "", ""]
+    "replace": [
+      "b",
+      "",
+      "",
+      ""
+    ]
   }
 }

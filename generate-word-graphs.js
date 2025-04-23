@@ -360,93 +360,101 @@ function generateGraphJson(wordList) {
   const { adjacencyList, words } = generateWordGraph(wordList);
   const jsonGraph = {};
   
+  // For each word in the word list
   for (const word of wordList) {
     const wordData = {};
+    const connections = adjacencyList.get(word) || [];
     
-    // Check for possible replacements
-    const replacements = [];
+    // Process each word
+    
+    // Group connected words by operation type
+    const replacements = Array(word.length).fill('');
+    const insertions = Array(word.length + 1).fill('');
+    let deletionString = '.'.repeat(word.length);
+    let upperCaseString = '.'.repeat(word.length);
+    let lowerCaseString = '.'.repeat(word.length);
+    
     let hasReplacement = false;
+    let hasInsertion = false;
+    let hasDeletion = false;
+    let hasUpperCase = false;
+    let hasLowerCase = false;
     
-    for (let i = 0; i < word.length; i++) {
-      const possibleReplacements = getPossibleReplacements(word, i, adjacencyList);
-      
-      if (possibleReplacements.length > 0) {
-        hasReplacement = true;
-        replacements[i] = possibleReplacements.join('');
-      } else {
-        replacements[i] = '';
+    // Process each connected word
+    for (const connectedWord of connections) {
+      if (connectedWord.length === word.length) {
+        // Same length - either replacement or case change
+        let diffCount = 0;
+        let diffPos = -1;
+        let isCaseChange = false;
+        
+        for (let i = 0; i < word.length; i++) {
+          if (word[i] !== connectedWord[i]) {
+            diffCount++;
+            diffPos = i;
+            
+            // Check if this is a case change
+            if (word[i].toLowerCase() === connectedWord[i].toLowerCase()) {
+              isCaseChange = true;
+            }
+          }
+        }
+        
+        if (diffCount === 1) {
+          if (isCaseChange) {
+            // This is a case change
+            const letter = word[diffPos];
+            if (letter === letter.toLowerCase() && letter !== letter.toUpperCase()) {
+              // Can be uppercased
+              upperCaseString = upperCaseString.substring(0, diffPos) + letter + upperCaseString.substring(diffPos + 1);
+              hasUpperCase = true;
+            } else if (letter === letter.toUpperCase() && letter !== letter.toLowerCase()) {
+              // Can be lowercased
+              lowerCaseString = lowerCaseString.substring(0, diffPos) + letter + lowerCaseString.substring(diffPos + 1);
+              hasLowerCase = true;
+            }
+          } else {
+            // This is a letter replacement
+            hasReplacement = true;
+            replacements[diffPos] += connectedWord[diffPos];
+          }
+        }
+      } else if (connectedWord.length === word.length - 1) {
+        // Connected word is one letter shorter - deletion
+        for (let i = 0; i < word.length; i++) {
+          const deleted = word.substring(0, i) + word.substring(i + 1);
+          if (deleted === connectedWord) {
+            hasDeletion = true;
+            deletionString = deletionString.substring(0, i) + word[i] + deletionString.substring(i + 1);
+            break;
+          }
+        }
+      } else if (connectedWord.length === word.length + 1) {
+        // Connected word is one letter longer - insertion
+        for (let i = 0; i <= word.length; i++) {
+          const prefix = connectedWord.substring(0, i);
+          const suffix = connectedWord.substring(i + 1);
+          
+          if (prefix + suffix === word) {
+            hasInsertion = true;
+            insertions[i] += connectedWord[i];
+            break;
+          }
+        }
       }
     }
     
+    // Add operations to word data
     if (hasReplacement) {
       wordData.replace = replacements;
-    }
-    
-    // Check for possible insertions
-    const insertions = [];
-    let hasInsertion = false;
-    
-    for (let i = 0; i <= word.length; i++) {
-      const possibleInsertions = getPossibleInsertions(word, i, adjacencyList);
-      
-      if (possibleInsertions.length > 0) {
-        hasInsertion = true;
-        insertions[i] = possibleInsertions.join('');
-      } else {
-        insertions[i] = '';
-      }
     }
     
     if (hasInsertion) {
       wordData.insert = insertions;
     }
     
-    // Check for possible deletions
-    let deletionString = '';
-    let hasDeletion = false;
-    
-    for (let i = 0; i < word.length; i++) {
-      if (canDeleteLetterAt(word, i, words)) {
-        deletionString += word[i];
-        hasDeletion = true;
-      } else {
-        deletionString += '.';
-      }
-    }
-    
     if (hasDeletion) {
       wordData.delete = deletionString;
-    }
-    
-    // Check for possible case changes
-    let upperCaseString = '';
-    let lowerCaseString = '';
-    let hasUpperCase = false;
-    let hasLowerCase = false;
-    
-    for (let i = 0; i < word.length; i++) {
-      const letter = word[i];
-      
-      if (letter === letter.toLowerCase() && letter !== letter.toUpperCase()) {
-        if (canChangeCaseAt(word, i, words)) {
-          upperCaseString += letter;
-          hasUpperCase = true;
-        } else {
-          upperCaseString += '.';
-        }
-        lowerCaseString += '.';
-      } else if (letter === letter.toUpperCase() && letter !== letter.toLowerCase()) {
-        if (canChangeCaseAt(word, i, words)) {
-          lowerCaseString += letter;
-          hasLowerCase = true;
-        } else {
-          lowerCaseString += '.';
-        }
-        upperCaseString += '.';
-      } else {
-        upperCaseString += '.';
-        lowerCaseString += '.';
-      }
     }
     
     if (hasUpperCase) {
@@ -457,7 +465,7 @@ function generateGraphJson(wordList) {
       wordData.lowercase = lowerCaseString;
     }
     
-    // Only add words that have at least one operation
+    // Only add words with at least one operation
     if (Object.keys(wordData).length > 0) {
       jsonGraph[word] = wordData;
     }
