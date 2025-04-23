@@ -213,11 +213,9 @@ dead
 deaf
 deal
 dear
-debt
 deck
 deep
 deer
-dell
 den
 dent
 desk
@@ -227,7 +225,6 @@ dice
 did
 die
 dig
-dime
 dine
 ding
 dip
@@ -242,7 +239,6 @@ doll
 dome
 done
 door
-dorm
 dot
 down
 doze
@@ -335,7 +331,6 @@ form
 fort
 foul
 four
-fowl
 fox
 free
 fresh
@@ -351,7 +346,6 @@ full
 fun
 fund
 fur
-fuse
 fuss
 gain
 game
@@ -365,7 +359,6 @@ gem
 get
 giant
 gift
-gill
 girl
 give
 glad
@@ -373,8 +366,6 @@ glass
 glide
 glow
 glue
-gnat
-gnaw
 go
 goal
 goat
@@ -449,7 +440,6 @@ hen
 her
 herd
 here
-hew
 hide
 high
 hike
@@ -481,7 +471,6 @@ hour
 house
 how
 howl
-hub
 hug
 huge
 hum
@@ -512,9 +501,7 @@ jaw
 jazz
 jeans
 jeep
-jell
 jelly
-jest
 jet
 jewel
 job
@@ -577,7 +564,6 @@ leg
 lend
 lens
 less
-lest
 let
 lick
 lid
@@ -621,11 +607,9 @@ main
 make
 male
 mall
-malt
 man
 many
 map
-mar
 mark
 mask
 mass
@@ -648,7 +632,6 @@ mesh
 mess
 met
 mice
-mid
 might
 mile
 milk
@@ -678,7 +661,6 @@ moth
 move
 movie
 mud
-muff
 mug
 mule
 mum
@@ -704,18 +686,14 @@ night
 nine
 no
 nod
-node
 noise
 none
 noon
 nor
-norm
 nose
 not
 note
-noun
 now
-nude
 null
 numb
 nurse
@@ -739,7 +717,6 @@ open
 or
 oral
 orb
-ore
 other
 our
 out
@@ -762,7 +739,6 @@ pan
 pane
 pant
 paper
-par
 park
 part
 pass
@@ -786,9 +762,7 @@ pet
 phone
 pick
 pie
-pier
 pig
-pike
 pile
 pill
 pin
@@ -816,7 +790,6 @@ poet
 point
 poke
 pole
-poll
 pond
 pony
 pool
@@ -901,7 +874,6 @@ rest
 rib
 rice
 rich
-rick
 rid
 ride
 ridge
@@ -1075,7 +1047,6 @@ smear
 smell
 smile
 smirk
-smith
 smog
 smoke
 snack
@@ -1117,7 +1088,6 @@ space
 spade
 span
 spark
-spasm
 spat
 spawn
 speak
@@ -1358,7 +1328,6 @@ trot
 trout
 truck
 true
-trump
 trunk
 trust
 truth
@@ -1382,7 +1351,6 @@ twist
 two
 type
 ugly
-ulcer
 under
 undo
 unit
@@ -1398,13 +1366,11 @@ used
 user
 vague
 vain
-vale
 valve
 van
 vane
 vat
 vault
-veal
 veer
 veil
 vein
@@ -1425,17 +1391,14 @@ wade
 wag
 wage
 wagon
-waif
 wail
 wait
 wake
 walk
 wall
-waltz
 wand
 want
 war
-ward
 warm
 warn
 warp
@@ -1457,8 +1420,6 @@ wed
 weed
 week
 weep
-weigh
-weird
 well
 went
 wept
@@ -1518,15 +1479,11 @@ would
 wound
 wove
 wrap
-wrath
 wreck
-wring
 wrist
 write
 wrong
 wrote
-wrung
-wry
 yacht
 yak
 yam
@@ -1547,8 +1504,6 @@ your
 youth
 yum
 zap
-zeal
-zebra
 zero
 zest
 zip
