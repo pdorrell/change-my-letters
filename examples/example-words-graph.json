@@ -1,46 +1,53 @@
 {
   "back": {
-    "replace": ["j", "", "", ""]
+    "replace": ["jJ", "", "", ""]
   },
   "ban": {
-    "insert": ["", "e", "", ""]
+    "insert": ["", "e", "", ""],
+    "replace": ["", "e", "n"]
   },
   "bean": {
-    "delete": ".e.."
+    "delete": ".e..",
+    "replace": ["", "", "e", ""]
   },
   "bee": {
     "insert": ["", "", "", "nt"],
     "replace": ["", "", "gnt"]
   },
   "been": {
-    "delete": "...n"
+    "delete": "...n",
+    "replace": ["", "", "a", "t"]
   },
   "beet": {
     "delete": ".eet",
-    "replace": ["", "", "", "n"]
+    "replace": ["", "", "s", "n"]
   },
   "beg": {
     "replace": ["", "", "ent"]
   },
   "Ben": {
-    "replace": ["", "", "gnt"]
+    "replace": ["", "a", "gt"],
+    "lowercase": "..."
   },
   "best": {
-    "delete": "..s."
+    "delete": "..s.",
+    "replace": ["", "", "", "t"],
+    "insert": ["", "", "", ""]
   },
   "bet": {
     "insert": ["", "", "es", ""],
-    "replace": ["", "", "egn"]
+    "replace": ["", "u", "egn"]
   },
   "but": {
-    "replace": ["", "e", ""]
+    "replace": ["h", "e", ""]
   },
   "hut": {
-    "replace": ["b", "", ""]
+    "replace": ["b", "", ""],
+    "insert": ["s", "", "", ""]
   },
   "jack": {
     "uppercase": "J...",
-    "replace": ["b", "", ""]
+    "replace": ["b", "", "", ""]
   },
   "Jack": {
     "lowercase": "j...",
