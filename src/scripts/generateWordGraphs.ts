@@ -3,9 +3,13 @@
  */
 import fs from 'fs';
 import path from 'path';
-import { WordGraph } from '../models/WordGraph';
+import { fileURLToPath } from 'url';
+import { WordGraph } from './WordGraph';
 
-const WORDLISTS_DIR = path.resolve(__dirname, '../data/wordlists');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const DATA_DIR = path.resolve(__dirname, '../data/wordlists');
+const OUTPUT_DIR = path.resolve(__dirname, '../../test/output');
 
 /**
  * Converts a word graph to a simplified JSON format for storage
@@ -128,7 +132,7 @@ function convertWordGraphToJson(wordGraph: WordGraph): Record<string, any> {
 function processWordListFile(filePath: string): void {
   try {
     const fileName = path.basename(filePath, '.txt');
-    const jsonOutputPath = path.join(WORDLISTS_DIR, `${fileName}.json`);
+    const jsonOutputPath = path.join(OUTPUT_DIR, `${fileName}.json`);
     
     console.log(`Processing ${filePath}...`);
     
@@ -157,16 +161,22 @@ function processWordListFile(filePath: string): void {
  * Main function to process all word list files
  */
 function main(): void {
-  // Ensure the directory exists
-  if (!fs.existsSync(WORDLISTS_DIR)) {
-    console.error(`Wordlists directory not found: ${WORDLISTS_DIR}`);
+  // Ensure the output directory exists
+  if (!fs.existsSync(OUTPUT_DIR)) {
+    fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+    console.log(`Created output directory: ${OUTPUT_DIR}`);
+  }
+  
+  // Ensure the data directory exists
+  if (!fs.existsSync(DATA_DIR)) {
+    console.error(`Wordlists directory not found: ${DATA_DIR}`);
     process.exit(1);
   }
   
   // Find all .txt files in the directory
-  const files = fs.readdirSync(WORDLISTS_DIR)
+  const files = fs.readdirSync(DATA_DIR)
     .filter(file => file.endsWith('.txt'))
-    .map(file => path.join(WORDLISTS_DIR, file));
+    .map(file => path.join(DATA_DIR, file));
   
   if (files.length === 0) {
     console.log('No .txt word list files found.');
