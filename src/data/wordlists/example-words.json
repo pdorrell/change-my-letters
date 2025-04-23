@@ -1,0 +1,136 @@
+{
+  "back": {
+    "replace": [
+      "jJ",
+      "",
+      "",
+      ""
+    ]
+  },
+  "ban": {
+    "insert": [
+      "",
+      "e",
+      "",
+      ""
+    ]
+  },
+  "bean": {
+    "replace": [
+      "",
+      "",
+      "e",
+      ""
+    ],
+    "delete": ".e.."
+  },
+  "bee": {
+    "replace": [
+      "",
+      "",
+      "gt"
+    ],
+    "insert": [
+      "",
+      "",
+      "",
+      "nt"
+    ]
+  },
+  "been": {
+    "replace": [
+      "",
+      "",
+      "a",
+      "t"
+    ],
+    "delete": "...n"
+  },
+  "beet": {
+    "replace": [
+      "",
+      "",
+      "s",
+      "n"
+    ],
+    "delete": ".eet"
+  },
+  "beg": {
+    "replace": [
+      "",
+      "",
+      "et"
+    ]
+  },
+  "best": {
+    "replace": [
+      "t",
+      "",
+      "e",
+      ""
+    ],
+    "delete": "..s."
+  },
+  "bet": {
+    "replace": [
+      "",
+      "u",
+      "eg"
+    ],
+    "insert": [
+      "",
+      "e",
+      "es",
+      ""
+    ]
+  },
+  "but": {
+    "replace": [
+      "h",
+      "e",
+      ""
+    ]
+  },
+  "hut": {
+    "replace": [
+      "b",
+      "",
+      ""
+    ],
+    "insert": [
+      "s",
+      "",
+      "",
+      ""
+    ]
+  },
+  "jack": {
+    "replace": [
+      "bJ",
+      "",
+      "",
+      ""
+    ],
+    "uppercase": "j..."
+  },
+  "Jack": {
+    "replace": [
+      "bj",
+      "",
+      "",
+      ""
+    ],
+    "lowercase": "J..."
+  },
+  "shut": {
+    "delete": "s..."
+  },
+  "test": {
+    "replace": [
+      "b",
+      "",
+      "",
+      ""
+    ]
+  }
+}

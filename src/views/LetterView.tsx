@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Letter } from '../models/Letter';
 import { LetterChoiceMenu } from './CurrentWordView';
+import { getAppState } from '../App';
 
 interface LetterViewProps {
   letter: Letter;
@@ -11,23 +12,26 @@ interface LetterViewProps {
  * View component for displaying a single letter
  */
 export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
+  const appState = getAppState();
+  
   const handleReplaceClick = () => {
     letter.toggleReplaceMenu();
   };
 
   const handleDeleteClick = () => {
-    // In a real implementation, this would modify the word
-    console.log(`Delete letter ${letter.value} at position ${letter.position}`);
+    appState.deleteLetter(letter.position);
   };
 
   const handleCaseChange = () => {
-    // In a real implementation, this would modify the word's case
-    console.log(`Change case of letter ${letter.value} at position ${letter.position}`);
+    if (letter.canUpperCase) {
+      appState.changeLetterCase(letter.position, true);
+    } else if (letter.canLowerCase) {
+      appState.changeLetterCase(letter.position, false);
+    }
   };
 
   const handleLetterChoice = (newLetter: string) => {
-    // In a real implementation, this would replace the letter
-    console.log(`Replace letter ${letter.value} with ${newLetter}`);
+    appState.replaceLetter(letter.position, newLetter);
     letter.toggleReplaceMenu();
   };
 
@@ -83,6 +87,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
         <LetterChoiceMenu 
           options={letter.replacements.length ? letter.replacements : ['a', 'b', 'c']} 
           onSelect={handleLetterChoice}
+          previouslyVisited={[]} // We'll add this functionality later
         />
       )}
     </div>

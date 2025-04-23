@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const os = require('os');
 
 module.exports = (env, argv) => {
@@ -34,7 +35,15 @@ module.exports = (env, argv) => {
           use: [
             'style-loader',
             'css-loader',
-            'sass-loader'
+            {
+              loader: 'sass-loader',
+              options: {
+                implementation: require('sass-embedded'),
+                sassOptions: {
+                  outputStyle: 'compressed',
+                },
+              },
+            }
           ]
         },
         {
@@ -47,6 +56,14 @@ module.exports = (env, argv) => {
       new HtmlWebpackPlugin({
         template: './src/index.html',
         inject: true
+      }),
+      new CopyWebpackPlugin({
+        patterns: [
+          { 
+            from: 'src/data', 
+            to: 'data' 
+          }
+        ]
       })
     ],
     devServer: {
@@ -58,12 +75,22 @@ module.exports = (env, argv) => {
       port: 3000,
       host: isDevelopment ? `${hostname}.local` : 'localhost',
       historyApiFallback: true,
-      open: true
+      open: true,
+      client: {
+        overlay: {
+          errors: true,
+          warnings: false
+        }
+      }
     },
     optimization: {
       splitChunks: {
         chunks: 'all'
       }
+    },
+    // Hide warnings in the browser
+    stats: {
+      warnings: false
     }
   };
 };

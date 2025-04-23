@@ -47,15 +47,49 @@ export class WordLoader {
   }
   
   /**
-   * Load an example file from the examples directory
+   * Load a file from the data directory
    */
-  static async loadExampleFile(filename: string): Promise<string> {
+  static async loadDataFile(filename: string): Promise<string> {
     try {
-      const response = await fetch(`./examples/${filename}`);
+      // In webpack dev server, the files will be in the /data directory
+      const response = await fetch(`/data/wordlists/${filename}`);
       return await response.text();
     } catch (error) {
-      console.error(`Error loading example file ${filename}:`, error);
+      console.error(`Error loading data file ${filename}:`, error);
       return '';
+    }
+  }
+  
+  /**
+   * Load the default word list and graph
+   */
+  static async loadDefaultWordGraph(): Promise<WordGraph> {
+    const wordGraph = new WordGraph();
+    
+    try {
+      // Load the pre-computed graph
+      const graphJson = await WordLoader.loadDataFile('example-words-graph.json');
+      
+      if (graphJson) {
+        WordLoader.loadWordGraphFromJson(graphJson, wordGraph);
+        console.log('Loaded default word graph from JSON');
+      } else {
+        // Fallback to computing from word list
+        const wordListText = await WordLoader.loadDataFile('example-words.txt');
+        if (wordListText) {
+          const wordList = WordLoader.loadWordListFromText(wordListText);
+          wordGraph.computeFromWordList(wordList);
+          console.log('Computed default word graph from word list');
+        } else {
+          // Ultimate fallback to sample graph
+          return WordLoader.createSampleWordGraph();
+        }
+      }
+      
+      return wordGraph;
+    } catch (error) {
+      console.error('Error loading default word graph:', error);
+      return WordLoader.createSampleWordGraph();
     }
   }
 }

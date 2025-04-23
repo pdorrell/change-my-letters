@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { CurrentWord } from '../models/CurrentWord';
 import { LetterView } from './LetterView';
 import { PositionView } from './PositionView';
+import { getAppState } from '../App';
 
 interface CurrentWordViewProps {
   currentWord: CurrentWord;
@@ -40,19 +41,27 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
  */
 export const LetterChoiceMenu: React.FC<{ 
   options: string[],
-  onSelect: (letter: string) => void
-}> = ({ options, onSelect }) => {
+  onSelect: (letter: string) => void,
+  previouslyVisited: string[]
+}> = ({ options, onSelect, previouslyVisited }) => {
+  const appState = getAppState();
+  
   return (
     <div className="letter-choice-menu">
-      {options.map((letter, index) => (
-        <div 
-          key={`option-${index}`}
-          className="letter-choice-option"
-          onClick={() => onSelect(letter)}
-        >
-          {letter}
-        </div>
-      ))}
+      {options.map((letter, index) => {
+        // Check if this letter would lead to a previously visited word
+        const isPreviouslyVisited = previouslyVisited.includes(letter);
+        
+        return (
+          <div 
+            key={`option-${index}`}
+            className={`letter-choice-option ${isPreviouslyVisited ? 'previously-visited' : ''}`}
+            onClick={() => onSelect(letter)}
+          >
+            {letter}
+          </div>
+        );
+      })}
     </div>
   );
 };
