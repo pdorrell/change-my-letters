@@ -96,58 +96,30 @@ export class WordGraphNode {
     
     // Process inserts (convert from slash-separated string to string[])
     if (data.insert) {
-      // Handle both array format (old) and string format (new)
-      if (typeof data.insert === 'string') {
-        const parts = data.insert.split('/');
-        const inserts: string[] = [];
-        let hasInsert = false;
-        
-        for (let i = 0; i < parts.length; i++) {
-          inserts[i] = parts[i] || '';
-          if (parts[i]) hasInsert = true;
-        }
-        
-        node.inserts = hasInsert ? inserts : null;
-      } else if (Array.isArray(data.insert)) {
-        // Handle legacy array format
-        const inserts: string[] = [];
-        let hasInsert = false;
-        
-        for (let i = 0; i < data.insert.length; i++) {
-          inserts[i] = data.insert[i] || '';
-          if (data.insert[i]) hasInsert = true;
-        }
-        
-        node.inserts = hasInsert ? inserts : null;
+      const parts = data.insert.split('/');
+      const inserts: string[] = [];
+      let hasInsert = false;
+      
+      for (let i = 0; i < parts.length; i++) {
+        inserts[i] = parts[i] || '';
+        if (parts[i]) hasInsert = true;
       }
+      
+      node.inserts = hasInsert ? inserts : null;
     }
     
     // Process replaces (convert from slash-separated string to string[])
     if (data.replace) {
-      // Handle both array format (old) and string format (new)
-      if (typeof data.replace === 'string') {
-        const parts = data.replace.split('/');
-        const replaces: string[] = [];
-        let hasReplace = false;
-        
-        for (let i = 0; i < parts.length; i++) {
-          replaces[i] = parts[i] || '';
-          if (parts[i]) hasReplace = true;
-        }
-        
-        node.replaces = hasReplace ? replaces : null;
-      } else if (Array.isArray(data.replace)) {
-        // Handle legacy array format
-        const replaces: string[] = [];
-        let hasReplace = false;
-        
-        for (let i = 0; i < data.replace.length; i++) {
-          replaces[i] = data.replace[i] || '';
-          if (data.replace[i]) hasReplace = true;
-        }
-        
-        node.replaces = hasReplace ? replaces : null;
+      const parts = data.replace.split('/');
+      const replaces: string[] = [];
+      let hasReplace = false;
+      
+      for (let i = 0; i < parts.length; i++) {
+        replaces[i] = parts[i] || '';
+        if (parts[i]) hasReplace = true;
       }
+      
+      node.replaces = hasReplace ? replaces : null;
     }
     
     // Process uppercase
