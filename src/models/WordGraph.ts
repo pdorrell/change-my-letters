@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import { WordGraphNode } from './WordGraphNode';
+import { WordGraphBuilder } from './WordGraphBuilder';
 
 /**
  * Represents a graph of words where each word is mapped to a WordGraphNode
@@ -14,6 +15,26 @@ export class WordGraph {
 
   constructor() {
     makeAutoObservable(this);
+  }
+  
+  /**
+   * Compute the word graph from a list of words
+   */
+  computeFromWordList(wordList: string[]): void {
+    this.wordNodes.clear();
+    this.words.clear();
+    
+    // Add all words to the set
+    for (const word of wordList) {
+      this.words.add(word);
+    }
+    
+    // Generate the graph using the builder
+    const builder = new WordGraphBuilder(wordList);
+    const jsonGraph = builder.build();
+    
+    // Load the generated graph
+    this.loadFromJson(jsonGraph);
   }
 
   /**

@@ -15,22 +15,22 @@ export class ParseWordGraphJsonException extends Error {
  * that can be performed on a word
  */
 export class WordGraphNode {
-  // Boolean arrays indicating whether each letter can be deleted
-  deletes: boolean[] = [];
-
-  // Arrays of possible letters that can be inserted at each position
-  inserts: string[] = [];
-
-  // Arrays of possible letters that can replace each current letter
-  replaces: string[] = [];
-
-  // Boolean arrays indicating whether each letter can be uppercased
-  uppercase: boolean[] = [];
-
-  // Boolean arrays indicating whether each letter can be lowercased
-  lowercase: boolean[] = [];
-
-  constructor() {
+  constructor(
+    // Boolean arrays indicating whether each letter can be deleted
+    public readonly deletes: boolean[],
+    
+    // Arrays of possible letters that can be inserted at each position
+    public readonly inserts: string[],
+    
+    // Arrays of possible letters that can replace each current letter
+    public readonly replaces: string[],
+    
+    // Boolean arrays indicating whether each letter can be uppercased
+    public readonly uppercase: boolean[],
+    
+    // Boolean arrays indicating whether each letter can be lowercased
+    public readonly lowercase: boolean[]
+  ) {
     makeAutoObservable(this);
   }
 
@@ -73,25 +73,35 @@ export class WordGraphNode {
    * Create a WordGraphNode from the JSON representation
    */
   static fromJson(word: string, data: Record<string, any>): WordGraphNode {
-    const node = new WordGraphNode();
     const wordLength = word.length;
 
     /**
-     * Parses a slash-separated string into an array of strings
-     * @param str The string to parse
+     * Parses input data that could be either a slash-separated string or an array
+     * @param input The input to parse (string or array)
      * @param expectedLength The expected length of the resulting array
      * @returns An array of strings
      */
-    function parseSlashSeparatedString(str: string | undefined, expectedLength: number): string[] {
-      if (!str) {
+    function parseStringArrayInput(input: string | string[] | undefined, expectedLength: number): string[] {
+      if (!input) {
         // Return array of empty strings with the correct length
         return Array(expectedLength).fill('');
       }
-
-      const parts = str.split('/');
+      
+      // Handle array input format
+      if (Array.isArray(input)) {
+        if (input.length !== expectedLength) {
+          throw new ParseWordGraphJsonException(
+            `Expected array of length ${expectedLength}, got ${input.length}`
+          );
+        }
+        return input.map(item => item || '');
+      }
+      
+      // Handle slash-separated string format
+      const parts = input.split('/');
       if (parts.length !== expectedLength) {
         throw new ParseWordGraphJsonException(
-          `Expected ${expectedLength} elements in '${str}', got ${parts.length}`
+          `Expected ${expectedLength} elements in '${input}', got ${parts.length}`
         );
       }
 
@@ -120,14 +130,20 @@ export class WordGraphNode {
     }
 
     // Process string arrays (inserts, replaces)
-    node.inserts = parseSlashSeparatedString(data.insert, wordLength + 1);
-    node.replaces = parseSlashSeparatedString(data.replace, wordLength);
+    const inserts = parseStringArrayInput(data.insert, wordLength + 1);
+    const replaces = parseStringArrayInput(data.replace, wordLength);
 
     // Process boolean arrays (deletes, uppercase, lowercase)
-    node.deletes = parseBooleanString(data.delete, wordLength);
-    node.uppercase = parseBooleanString(data.uppercase, wordLength);
-    node.lowercase = parseBooleanString(data.lowercase, wordLength);
+    const deletes = parseBooleanString(data.delete, wordLength);
+    const uppercase = parseBooleanString(data.uppercase, wordLength);
+    const lowercase = parseBooleanString(data.lowercase, wordLength);
 
-    return node;
+    return new WordGraphNode(
+      deletes,
+      inserts,
+      replaces,
+      uppercase,
+      lowercase
+    );
   }
 }
