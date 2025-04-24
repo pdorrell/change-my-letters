@@ -114,15 +114,17 @@ body {
   
   .letter {
     display: flex;
-    align-items: center;
+    align-items: flex-start; // Align to the top instead of center
     justify-content: center;
     width: 120px; // Twice as large
-    height: 120px; // Twice as large
+    height: 132px; // 120px base + 10% more below baseline (12px)
     border: 2px solid #000;
     border-radius: 6px;
     background-color: #ffffe0; // Light yellow
     font-size: 7.2em; // 4 times larger
     font-weight: bold;
+    padding-top: 10px; // Reduced padding at top (about 10% of standard box height)
+    padding-bottom: 22px; // Increased padding at bottom for descenders
   }
   
   .letter-actions {
