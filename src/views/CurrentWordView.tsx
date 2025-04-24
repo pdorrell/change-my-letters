@@ -71,6 +71,30 @@ export const LetterChoiceMenu: React.FC<{
   previouslyVisited: string[]
 }> = ({ options, onSelect, previouslyVisited }) => {
   const appState = getAppState();
+  const menuRef = React.useRef<HTMLDivElement>(null);
+  const [position, setPosition] = React.useState({ top: 0, left: 0 });
+  
+  // Calculate the position of the menu when it mounts
+  React.useEffect(() => {
+    // Get the button that triggered the menu
+    const activeButton = document.querySelector(
+      appState.activeMenuType === 'replace' ? '.replace-icon:not(.hidden)' : '.insert-icon:not(.hidden)'
+    ) as HTMLElement | null;
+    
+    if (activeButton && menuRef.current) {
+      const buttonRect = activeButton.getBoundingClientRect();
+      const menuWidth = menuRef.current.offsetWidth || 250;
+      
+      // Position the menu centered below the button
+      setPosition({
+        top: buttonRect.bottom + window.scrollY + 5, // 5px below the button
+        left: Math.max(10, Math.min(
+          window.innerWidth - menuWidth - 10,
+          buttonRect.left + window.scrollX - (menuWidth / 2) + (buttonRect.width / 2)
+        ))
+      });
+    }
+  }, [appState.activeMenuType]);
   
   // Stop propagation of clicks within the menu to prevent the global handler from closing it
   const handleMenuClick = (e: React.MouseEvent) => {
@@ -78,7 +102,12 @@ export const LetterChoiceMenu: React.FC<{
   };
   
   return (
-    <div className="letter-choice-menu" onClick={handleMenuClick}>
+    <div 
+      ref={menuRef}
+      className="letter-choice-menu" 
+      onClick={handleMenuClick}
+      style={{ top: `${position.top}px`, left: `${position.left}px` }}
+    >
       {options.map((letter, index) => {
         // Check if this letter would lead to a previously visited word
         const isPreviouslyVisited = previouslyVisited.includes(letter);
