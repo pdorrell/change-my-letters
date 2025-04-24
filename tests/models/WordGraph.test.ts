@@ -53,5 +53,23 @@ describe('WordGraph', () => {
       const newReplacements = newBetNode.getReplacements(2);
       expect(newReplacements).toContain('g');
     }
+    
+    // Test the subgraph identification and reporting
+    const subgraphs = wordGraph.identifyConnectedSubgraphs();
+    expect(subgraphs.length).toBeGreaterThan(0);
+    
+    // The total size of all subgraphs should equal the number of words
+    const totalSize = subgraphs.reduce((sum, graph) => sum + graph.size, 0);
+    expect(totalSize).toBe(wordGraph.words.size);
+    
+    // Test the report generation
+    const report = wordGraph.generateSubgraphReport();
+    expect(report).toContain('Word Graph Connectivity Report');
+    expect(report).toContain(`Total words: ${wordGraph.words.size}`);
+    expect(report).toContain(`Connected subgraphs: ${subgraphs.length}`);
+    
+    // The first subgraph should be the largest
+    const largestSubgraph = subgraphs[0];
+    expect(report).toContain(`Subgraph 1: ${largestSubgraph.size} words`);
   });
 });

@@ -139,54 +139,49 @@ export class WordGraphNode {
   
   /**
    * Convert this node to its JSON representation
+   * @param word The word this node represents, used for delete and case change characters
    */
-  toJson(): Record<string, any> {
+  toJson(word: string): Record<string, any> {
     const result: Record<string, any> = {};
-    let hasData = false;
     
-    // Convert boolean arrays to strings
+    // Convert boolean arrays to strings, using the actual letters from the word
     if (this.deletes.some(val => val)) {
       let deleteString = '';
       for (let i = 0; i < this.deletes.length; i++) {
-        // The character to use when the boolean is true doesn't matter as long as it's not '.'
-        // By convention we use the letter at that position
-        deleteString += this.deletes[i] ? 'D' : '.';
+        // Use the actual letter from the word when the boolean is true
+        deleteString += this.deletes[i] ? word[i] : '.';
       }
       result.delete = deleteString;
-      hasData = true;
     }
     
     if (this.uppercase.some(val => val)) {
       let uppercaseString = '';
       for (let i = 0; i < this.uppercase.length; i++) {
-        // By convention we use the letter at that position
-        uppercaseString += this.uppercase[i] ? 'U' : '.';
+        // Use the actual letter from the word when the boolean is true
+        uppercaseString += this.uppercase[i] ? word[i] : '.';
       }
       result.uppercase = uppercaseString;
-      hasData = true;
     }
     
     if (this.lowercase.some(val => val)) {
       let lowercaseString = '';
       for (let i = 0; i < this.lowercase.length; i++) {
-        // By convention we use the letter at that position
-        lowercaseString += this.lowercase[i] ? 'L' : '.';
+        // Use the actual letter from the word when the boolean is true
+        lowercaseString += this.lowercase[i] ? word[i] : '.';
       }
       result.lowercase = lowercaseString;
-      hasData = true;
     }
     
     // Convert string arrays to slash-separated strings
     if (this.inserts.some(str => str.length > 0)) {
       result.insert = this.inserts.join('/');
-      hasData = true;
     }
     
     if (this.replaces.some(str => str.length > 0)) {
       result.replace = this.replaces.join('/');
-      hasData = true;
     }
     
-    return hasData ? result : {};
+    // Always return the result, even if empty
+    return result;
   }
 }

@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "test": "jest",
-    "generate-word-graphs": "tsx src/scripts/generateWordGraphs.ts"
+    "generate-word-graphs": "tsx src/scripts/generateWordGraphs.ts",
+    "analyze-word-graphs": "tsx src/scripts/analyzeWordGraph.ts"
   },
   "dependencies": {
     "mobx": "^6.12.0",
