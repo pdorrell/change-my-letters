@@ -7,7 +7,7 @@
   },
   "bean": {
     "delete": ".e..",
-    "replace": "//e/"
+    "replace": "m//e/"
   },
   "bee": {
     "insert": "///nt",
@@ -45,6 +45,15 @@
   "Jack": {
     "lowercase": "J...",
     "replace": "b///"
+  },
+  "mean": {
+    "insert": "////t",
+    "replace": "b///t"
+  },
+  "meant": {},
+  "meat": {
+    "insert": "///n/",
+    "replace": "///n"
   },
   "shut": {
     "delete": "s..."

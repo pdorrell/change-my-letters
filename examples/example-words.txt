@@ -12,6 +12,9 @@ but
 hut
 jack
 Jack
+mean
+meant
+meat
 shut
 test
 zebra
