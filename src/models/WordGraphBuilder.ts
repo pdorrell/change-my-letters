@@ -237,9 +237,7 @@ export class WordGraphBuilder {
           deleteString += canDelete ? word[i] : '.';
         }
         
-        if (deleteString.includes(word[0]) || deleteString.substring(1).includes(word[1])) {
-          wordData.delete = deleteString;
-        }
+        wordData.delete = deleteString;
       }
       
       // Process insertions
@@ -257,10 +255,8 @@ export class WordGraphBuilder {
           insertArrays[pos] += insertedLetter;
         }
         
-        if (insertArrays.some(s => s.length > 0)) {
-          // Convert to slash-separated string
-          wordData.insert = insertArrays.join('/');
-        }
+        // Convert to slash-separated string
+        wordData.insert = insertArrays.join('/');
       }
       
       // Process replacements
@@ -274,10 +270,8 @@ export class WordGraphBuilder {
           replaceArrays[pos] += letter;
         }
         
-        if (replaceArrays.some(s => s.length > 0)) {
-          // Convert to slash-separated string
-          wordData.replace = replaceArrays.join('/');
-        }
+        // Convert to slash-separated string
+        wordData.replace = replaceArrays.join('/');
       }
       
       // Process case changes
