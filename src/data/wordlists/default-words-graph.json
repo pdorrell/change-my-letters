@@ -7,7 +7,6 @@
     "replace": "i/grtx/t"
   },
   "ache": {},
-  "acid": {},
   "act": {
     "delete": ".c.",
     "insert": "f///s",
@@ -36,7 +35,6 @@
     "insert": "fhp///",
     "replace": "s//m"
   },
-  "alarm": {},
   "all": {
     "insert": "bcfhmtw///",
     "replace": "i//"
@@ -55,8 +53,6 @@
     "insert": "bhlsw///",
     "replace": "e/d/ty"
   },
-  "ankle": {},
-  "another": {},
   "ant": {
     "delete": ".nt",
     "insert": "pw///",
@@ -69,7 +65,6 @@
   "apart": {
     "delete": "a...."
   },
-  "arch": {},
   "are": {
     "insert": "cd///a",
     "replace": "/cgtx/mt"
@@ -77,7 +72,6 @@
   "area": {
     "delete": "...a"
   },
-  "argue": {},
   "arm": {
     "delete": ".r.",
     "insert": "fhw///y",
@@ -139,7 +133,6 @@
     "insert": "/l///",
     "replace": "rst/u//dg"
   },
-  "banner": {},
   "bash": {
     "delete": "b...",
     "replace": "cdrw///"
@@ -211,7 +204,6 @@
   "bent": {
     "replace": "cdrstw//aels/d"
   },
-  "berry": {},
   "best": {
     "replace": "nprtvwz/u/aeln/"
   },
@@ -232,7 +224,6 @@
     "delete": "b..",
     "replace": "pstw/u/bgt"
   },
-  "bird": {},
   "bit": {
     "insert": "///e",
     "replace": "fhkpsw/u/bgn"
@@ -345,7 +336,6 @@
   "bug": {
     "replace": "hjmrt/aeio/mnsty"
   },
-  "build": {},
   "bulb": {
     "replace": "///l"
   },
@@ -389,7 +379,6 @@
     "delete": ".u.",
     "replace": "g/o/gmnst"
   },
-  "buzz": {},
   "by": {
     "insert": "/ou/e",
     "replace": "m/"
@@ -424,7 +413,6 @@
     "insert": "s///e",
     "replace": "fmprtv//bprt"
   },
-  "candle": {},
   "cane": {
     "replace": "lpv/o/fkmprsv/"
   },
@@ -482,7 +470,6 @@
   "chair": {
     "delete": "c..i."
   },
-  "chalk": {},
   "chant": {
     "replace": "///r/"
   },
@@ -504,7 +491,6 @@
     "insert": "///nr/",
     "replace": "tw///pr"
   },
-  "check": {},
   "chess": {
     "replace": "////t"
   },
@@ -536,7 +522,6 @@
     "delete": "c....",
     "replace": "bf////"
   },
-  "cloth": {},
   "cob": {
     "replace": "bjmrs/a/dptw"
   },
@@ -626,7 +611,6 @@
     "delete": "c...",
     "replace": "t/l//"
   },
-  "crawl": {},
   "crest": {
     "delete": "c....",
     "replace": "/h/u//"
@@ -641,7 +625,6 @@
     "delete": ".r..",
     "replace": "dp/h//w"
   },
-  "cross": {},
   "crow": {
     "delete": "cr..",
     "replace": "g//e/p"
@@ -664,7 +647,6 @@
   "damp": {
     "replace": "cl/u//"
   },
-  "dance": {},
   "dare": {
     "delete": "d...",
     "replace": "c//t/k"
@@ -754,7 +736,6 @@
     "insert": "/r//",
     "replace": "hlrstz//deg"
   },
-  "dirt": {},
   "dish": {
     "replace": "fw/a//k"
   },
@@ -767,7 +748,6 @@
   "dock": {
     "replace": "lmrs/eu//"
   },
-  "does": {},
   "dog": {
     "replace": "bfjl/i/t"
   },
@@ -840,7 +820,6 @@
   "dust": {
     "replace": "bgjmr///"
   },
-  "duty": {},
   "ear": {
     "insert": "bdfhnprtwy///n",
     "replace": "cjotw//t"
@@ -849,7 +828,6 @@
     "insert": "l////",
     "replace": "wy///"
   },
-  "earth": {},
   "east": {
     "replace": "cflmp///y"
   },
@@ -861,12 +839,9 @@
     "insert": "bhmns//s/",
     "replace": "cfhmorsv//r"
   },
-  "edge": {},
-  "egg": {},
   "eight": {
     "replace": "lmnrst////"
   },
-  "elbow": {},
   "end": {
     "insert": "blst///",
     "replace": "a//"
@@ -946,8 +921,6 @@
   "felt": {
     "replace": "bm//e/l"
   },
-  "fence": {},
-  "fern": {},
   "few": {
     "insert": "/l//",
     "replace": "dns//"
@@ -1091,7 +1064,6 @@
   "free": {
     "replace": "t///t"
   },
-  "fresh": {},
   "fret": {
     "replace": "/e//e"
   },
@@ -1105,7 +1077,6 @@
   "frown": {
     "replace": "g////"
   },
-  "fruit": {},
   "fry": {
     "replace": "dpt/l/"
   },
@@ -1123,7 +1094,6 @@
     "insert": "/o//",
     "replace": "o/o/n"
   },
-  "fuss": {},
   "gain": {
     "insert": "a/r///",
     "replace": "mprv/r//"
@@ -1157,11 +1127,9 @@
   "get": {
     "replace": "jlmnpswy/ou/m"
   },
-  "giant": {},
   "gift": {
     "replace": "lrs///"
   },
-  "girl": {},
   "give": {
     "replace": "dfhl/a//"
   },
@@ -1214,7 +1182,6 @@
     "delete": "gra..",
     "replace": "t////"
   },
-  "graph": {},
   "gray": {
     "delete": "g...",
     "replace": "pt///b"
@@ -1269,8 +1236,6 @@
     "delete": "g...",
     "replace": "//a/"
   },
-  "grunt": {},
-  "guard": {},
   "guess": {
     "replace": "////t"
   },
@@ -1517,7 +1482,6 @@
     "insert": "s//s/",
     "replace": "cdglnpr/aiu/pw"
   },
-  "hotel": {},
   "hour": {
     "delete": "h...",
     "replace": "fpsty///"
@@ -1563,7 +1527,6 @@
   "icy": {
     "replace": "//e"
   },
-  "idea": {},
   "if": {
     "replace": "o/ns"
   },
@@ -1583,7 +1546,6 @@
     "delete": ".nn",
     "replace": "//k"
   },
-  "iron": {},
   "is": {
     "insert": "h/t/",
     "replace": "au/fn"
@@ -1607,8 +1569,6 @@
   "jaw": {
     "replace": "lprs//mr"
   },
-  "jazz": {},
-  "jeans": {},
   "jeep": {
     "replace": "bdkpsw///"
   },
@@ -1618,7 +1578,6 @@
   "jet": {
     "replace": "glmnpswy//"
   },
-  "jewel": {},
   "job": {
     "replace": "bcmrs//gy"
   },
@@ -1652,7 +1611,6 @@
   "kept": {
     "replace": "w///"
   },
-  "key": {},
   "kick": {
     "replace": "lnpst///"
   },
@@ -1754,7 +1712,6 @@
     "insert": "cfs/e/m/",
     "replace": "cgmnrstz/i/bdgwy"
   },
-  "large": {},
   "last": {
     "insert": "b////",
     "replace": "cefmp/io//"
@@ -1764,7 +1721,6 @@
     "insert": "ps////",
     "replace": "dfghmr//ckmn/"
   },
-  "laugh": {},
   "law": {
     "insert": "cf///n",
     "replace": "jprs/o/bdgpy"
@@ -1862,7 +1818,6 @@
     "insert": "b////",
     "replace": "psw//c/e"
   },
-  "lion": {},
   "lip": {
     "insert": "fs///",
     "replace": "dhrstz/a/de"
@@ -2251,7 +2206,6 @@
   "numb": {
     "replace": "d///"
   },
-  "nurse": {},
   "nut": {
     "replace": "bcghopr/eo/"
   },
@@ -2274,7 +2228,6 @@
     "insert": "bgm///",
     "replace": "cefhmrsv/u/fkr"
   },
-  "obey": {},
   "odd": {
     "replace": "a/l/"
   },
@@ -2302,7 +2255,6 @@
   "one": {
     "insert": "bcdgntz//c/"
   },
-  "only": {},
   "open": {
     "delete": "o...",
     "replace": "/v//"
@@ -2312,7 +2264,6 @@
     "replace": "/fn"
   },
   "orb": {},
-  "other": {},
   "our": {
     "delete": ".u.",
     "insert": "fhpsty///",
@@ -2392,7 +2343,6 @@
     "insert": "/l///",
     "replace": "w//rs/e"
   },
-  "paper": {},
   "park": {
     "insert": "s////",
     "replace": "dm/o/c/t"
@@ -2631,7 +2581,6 @@
     "delete": ".r..",
     "replace": "/e/o/y"
   },
-  "press": {},
   "prey": {
     "replace": "//a/p"
   },
@@ -2699,7 +2648,6 @@
     "insert": "/o//",
     "replace": "bcghnor/eio/np"
   },
-  "quail": {},
   "quid": {
     "replace": "///tz"
   },
@@ -2765,7 +2713,6 @@
     "insert": "//i/gk",
     "replace": "cfmptv/u/gmptwy"
   },
-  "ranch": {},
   "rang": {
     "replace": "bgh/iu//k"
   },
@@ -3057,7 +3004,6 @@
     "delete": "sc...",
     "replace": "/p///e"
   },
-  "school": {},
   "scoop": {
     "replace": "/tw///"
   },
@@ -3065,7 +3011,6 @@
     "delete": "sc...",
     "replace": "/hntw///"
   },
-  "scowl": {},
   "scrap": {
     "replace": "/t///"
   },
@@ -3401,7 +3346,6 @@
     "delete": ".l..",
     "replace": "b//a/tw"
   },
-  "slope": {},
   "slot": {
     "delete": "s...",
     "replace": "p/hop/i/bw"
@@ -3422,7 +3366,6 @@
     "delete": "s...p",
     "replace": "/t///"
   },
-  "slush": {},
   "smack": {
     "delete": ".m...",
     "replace": "/lnt///"
@@ -3444,8 +3387,6 @@
   "smile": {
     "delete": "s...."
   },
-  "smirk": {},
-  "smog": {},
   "smoke": {
     "replace": "/p///"
   },
@@ -3513,7 +3454,6 @@
     "insert": "/ht///",
     "replace": "dlmr/aiu/a/"
   },
-  "soda": {},
   "soft": {
     "replace": "/i/or/"
   },
@@ -3665,7 +3605,6 @@
     "delete": "s....",
     "replace": "/t///"
   },
-  "spree": {},
   "spun": {
     "delete": "sp..",
     "replace": "/t/ai/r"
@@ -3676,8 +3615,6 @@
   "spy": {
     "replace": "/ahkt/"
   },
-  "squat": {},
-  "squib": {},
   "stab": {
     "delete": "s...",
     "replace": "/lw/u/gry"
@@ -3771,7 +3708,6 @@
     "insert": "//e/e/",
     "replace": "/e/o/mw"
   },
-  "stern": {},
   "stew": {
     "delete": ".t..",
     "replace": "//o/mp"
@@ -3890,7 +3826,6 @@
     "insert": "/t///",
     "replace": "dlt/aio/n/h"
   },
-  "suds": {},
   "suit": {
     "delete": ".u..",
     "replace": "q/klp//"
@@ -3983,7 +3918,6 @@
     "delete": "s....",
     "replace": "///n/"
   },
-  "swirl": {},
   "swish": {
     "delete": "s...."
   },
@@ -4070,7 +4004,6 @@
     "delete": "t...",
     "replace": "m/u/cln/"
   },
-  "taught": {},
   "tax": {
     "replace": "w//bgnpr"
   },
@@ -4145,7 +4078,6 @@
     "delete": ".h...",
     "replace": "/r//n/"
   },
-  "thief": {},
   "thin": {
     "delete": ".h..",
     "insert": "////gk",
@@ -4157,7 +4089,6 @@
   "think": {
     "replace": "///c/g"
   },
-  "third": {},
   "this": {
     "delete": "t...",
     "replace": "//u/n"
@@ -4176,7 +4107,6 @@
   "threw": {
     "replace": "///o/e"
   },
-  "thrill": {},
   "throb": {
     "replace": "////w"
   },
@@ -4186,7 +4116,6 @@
   "thud": {
     "replace": "///s"
   },
-  "thumb": {},
   "thus": {
     "replace": "//i/d"
   },
@@ -4204,7 +4133,6 @@
     "insert": "//dlmr/",
     "replace": "dlp/ho/np"
   },
-  "tiger": {},
   "tight": {
     "replace": "elmnrs////"
   },
@@ -4248,8 +4176,6 @@
   "toad": {
     "replace": "lr//l/"
   },
-  "toast": {},
-  "today": {},
   "toe": {
     "insert": "//nr/",
     "replace": "w/hi/mnpwy"
@@ -4409,7 +4335,6 @@
     "delete": "t....",
     "replace": "c////"
   },
-  "truth": {},
   "try": {
     "insert": "//a/",
     "replace": "dfp/o/"
@@ -4443,14 +4368,12 @@
   "tusk": {
     "replace": "/a/c/"
   },
-  "tutor": {},
   "tweak": {
     "delete": "t...."
   },
   "tweet": {
     "replace": "s////"
   },
-  "twice": {},
   "twig": {
     "replace": "///n"
   },
@@ -4458,27 +4381,19 @@
     "delete": "tw..",
     "replace": "/h//g"
   },
-  "twist": {},
   "two": {
     "delete": ".w."
   },
   "type": {
     "replace": "/a//"
   },
-  "ugly": {},
-  "under": {},
-  "undo": {},
   "unit": {
     "replace": "k///"
   },
-  "until": {},
   "up": {
     "insert": "cp//",
     "replace": "/s"
   },
-  "upon": {},
-  "upper": {},
-  "upset": {},
   "urge": {
     "insert": "s////"
   },
@@ -4495,11 +4410,9 @@
   "user": {
     "replace": "///d"
   },
-  "vague": {},
   "vain": {
     "replace": "gmpr/e//"
   },
-  "valve": {},
   "van": {
     "delete": "v..",
     "insert": "//i/e",
@@ -4512,7 +4425,6 @@
     "delete": "v..",
     "replace": "cefhmors//n"
   },
-  "vault": {},
   "veer": {
     "replace": "bdp///"
   },
@@ -4525,24 +4437,19 @@
   "vest": {
     "replace": "bnprtwz///"
   },
-  "vex": {},
   "vice": {
     "delete": "v...",
     "replace": "dmnr//n/"
   },
-  "view": {},
   "vine": {
     "replace": "dflmnpw/a/c/"
   },
-  "visa": {},
-  "void": {},
   "volt": {
     "replace": "c///"
   },
   "vote": {
     "replace": "n///"
   },
-  "vowel": {},
   "wade": {
     "replace": "fm/i/gkv/"
   },
@@ -4554,7 +4461,6 @@
     "delete": "w..e",
     "replace": "pr//dkv/"
   },
-  "wagon": {},
   "wail": {
     "replace": "fhjmnprst//l/t"
   },
@@ -4610,7 +4516,6 @@
   "watch": {
     "replace": "cm////"
   },
-  "water": {},
   "wave": {
     "replace": "cghs/o/dgk/"
   },
@@ -4696,7 +4601,6 @@
     "delete": "wh...",
     "replace": "t////"
   },
-  "which": {},
   "while": {
     "replace": "//o/nt/"
   },
@@ -4708,8 +4612,6 @@
     "delete": "w...",
     "replace": "s///"
   },
-  "whirl": {},
-  "whisk": {},
   "white": {
     "replace": "/r//ln/"
   },
@@ -4794,7 +4696,6 @@
   "wolf": {
     "replace": "g///"
   },
-  "woman": {},
   "won": {
     "delete": "w..",
     "insert": "//r/",
@@ -4828,14 +4729,12 @@
     "insert": "s////",
     "replace": "bcht/a//dekm"
   },
-  "worry": {},
   "worse": {
     "replace": "h////t"
   },
   "worst": {
     "replace": "////e"
   },
-  "worth": {},
   "would": {
     "replace": "c///n/"
   },
@@ -4849,16 +4748,12 @@
     "delete": "w...",
     "replace": "t///"
   },
-  "wreck": {},
-  "wrist": {},
   "write": {
     "replace": "/h/o//"
   },
-  "wrong": {},
   "wrote": {
     "replace": "//i//"
   },
-  "yacht": {},
   "yak": {
     "replace": "o//m"
   },
@@ -4894,14 +4789,12 @@
   "yet": {
     "replace": "gjlmnpsw//s"
   },
-  "yield": {},
   "yolk": {
     "replace": "f///"
   },
   "you": {
     "insert": "///r"
   },
-  "young": {},
   "your": {
     "delete": "y..r",
     "replace": "fhpst///"
@@ -4912,8 +4805,6 @@
   "zap": {
     "replace": "cglmnrst/i/"
   },
-  "zebra": {},
-  "zero": {},
   "zest": {
     "replace": "bnprtvw///"
   },
