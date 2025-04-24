@@ -38,35 +38,35 @@ export class WordGraphNode {
    * Get possible replacements for a letter at the given position
    */
   getReplacements(position: number): string {
-    return this.replaces[position] || '';
+    return this.replaces[position];
   }
 
   /**
    * Get possible insertions at the given position
    */
   getInsertions(position: number): string {
-    return this.inserts[position] || '';
+    return this.inserts[position];
   }
 
   /**
    * Check if a letter at the given position can be deleted
    */
   canDelete(position: number): boolean {
-    return this.deletes[position] || false;
+    return this.deletes[position];
   }
 
   /**
    * Check if a letter at the given position can be uppercased
    */
   canUppercase(position: number): boolean {
-    return this.uppercase[position] || false;
+    return this.uppercase[position];
   }
 
   /**
    * Check if a letter at the given position can be lowercased
    */
   canLowercase(position: number): boolean {
-    return this.lowercase[position] || false;
+    return this.lowercase[position];
   }
 
   /**
