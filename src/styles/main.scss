@@ -86,11 +86,11 @@ body {
   max-width: 100%;
   min-width: 500px; // Wider to fit 5 letters easily
   margin: 0 auto;
+  border-radius: 8px;
+  padding: 10px;
   
   &.previously-visited {
     background-color: #ffe4e1; // Light pink
-    border-radius: 8px;
-    padding: 10px;
   }
   
   .word-display {
