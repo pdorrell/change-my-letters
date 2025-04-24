@@ -19,7 +19,7 @@ function processWordListFile(filePath: string): void {
     const fileName = path.basename(filePath, '.txt');
     const jsonOutputPath = path.join(pathDir, `${fileName}-graph.json`);
 
-    console.log(`Processing ${filePath}...`);
+    console.log(`Processing ${filePath} ...`);
 
     // Read and parse the word list
     const wordList = fs.readFileSync(filePath, 'utf-8')
@@ -31,7 +31,7 @@ function processWordListFile(filePath: string): void {
     // Generate the word graph directly using the new builder pattern
     const wordGraph = new WordGraph();
     const jsonGraph = wordGraph.generateWordGraph(wordList);
-    
+
     fs.writeFileSync(jsonOutputPath, JSON.stringify(jsonGraph, null, 2), 'utf-8');
 
     console.log(`Generated graph saved to ${jsonOutputPath}`);

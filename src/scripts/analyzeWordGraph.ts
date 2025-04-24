@@ -15,11 +15,11 @@ const DATA_DIR = path.resolve(__dirname, '../data/wordlists');
  */
 function analyzeWordGraph(filePath: string): void {
   try {
-    console.log(`Analyzing ${filePath}...`);
-    
+    console.log(`Analyzing ${filePath} ...`);
+
     // Create a new WordGraph instance
     const wordGraph = new WordGraph();
-    
+
     // Check if this is a JSON file or a text file
     if (filePath.endsWith('.json')) {
       // Load pre-generated graph from JSON
@@ -31,18 +31,18 @@ function analyzeWordGraph(filePath: string): void {
       const wordList = fs.readFileSync(filePath, 'utf-8')
         .split('\n')
         .filter(word => word.trim().length > 0);
-      
+
       console.log(`Loaded ${wordList.length} words, computing graph...`);
       wordGraph.computeFromWordList(wordList);
     } else {
       console.error(`Unsupported file type: ${filePath}`);
       return;
     }
-    
+
     // Generate and print the report
     const report = wordGraph.generateSubgraphReport();
     console.log(report);
-    
+
     // Write report to file
     const outputPath = `${filePath.slice(0, -path.extname(filePath).length)}-report.txt`;
     fs.writeFileSync(outputPath, report, 'utf-8');
@@ -63,30 +63,30 @@ function main(): void {
     analyzeWordGraph(filePath);
     return;
   }
-  
+
   // If no specific file, analyze all files in the data directory
   if (!fs.existsSync(DATA_DIR)) {
     console.error(`Wordlists directory not found: ${DATA_DIR}`);
     process.exit(1);
   }
-  
+
   // Find all JSON and TXT files in the directory
   const files = fs.readdirSync(DATA_DIR)
     .filter(file => file.endsWith('.json') || file.endsWith('.txt'))
     .map(file => path.join(DATA_DIR, file));
-  
+
   if (files.length === 0) {
     console.log('No word list or graph files found.');
     process.exit(0);
   }
-  
+
   console.log(`Found ${files.length} files to analyze.`);
-  
+
   // Process each file
   for (const file of files) {
     analyzeWordGraph(file);
   }
-  
+
   console.log('Analysis complete.');
 }
 
