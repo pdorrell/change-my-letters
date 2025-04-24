@@ -66,10 +66,6 @@ body {
   }
   
   main {
-    background-color: white;
-    border-radius: 8px;
-    padding: 20px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     overflow: visible; // Allow menus to extend beyond container
   }
   
@@ -84,10 +80,11 @@ body {
 // Current word styles
 .word-outer-container {
   max-width: 100%;
-  min-width: 520px; // Wider to fit 5 letters easily + padding
+  min-width: 600px; // Wider to fit 5 letters & 6 positions easily + padding
   margin: 0 auto;
-  padding: 10px;
+  padding: 20px;
   border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   
   &.previously-visited {
     background-color: #ffe4e1; // Light pink
