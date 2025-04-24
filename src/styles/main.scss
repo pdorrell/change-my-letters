@@ -88,6 +88,8 @@ body {
   margin: 0 auto;
   border-radius: 8px;
   padding: 10px;
+  border: 2px solid #cccccc; // Light grey border
+  background-color: white; // Explicit white background
   
   &.previously-visited {
     background-color: #ffe4e1; // Light pink
