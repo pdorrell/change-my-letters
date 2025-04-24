@@ -58,6 +58,7 @@ bees
 beet
 beg
 bell
+belly
 belt
 bend
 bent
@@ -318,6 +319,7 @@ foam
 fog
 foil
 fold
+folk
 food
 fool
 foot
@@ -372,6 +374,7 @@ grain
 graph
 gray
 great
+greed
 green
 grew
 grid
@@ -705,6 +708,7 @@ oven
 over
 owl
 own
+pace
 pack
 pad
 page
@@ -1252,6 +1256,7 @@ ton
 tone
 took
 tool
+toot
 tooth
 top
 tore
