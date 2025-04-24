@@ -8,7 +8,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { WordGraph } from './WordGraph';
+import { WordGraph } from '../models/WordGraph';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -37,9 +37,10 @@ function processWordListFile(filePath: string): void {
 
     console.log(`Loaded ${wordList.length} words.`);
 
-    // Generate the word graph directly using the new builder pattern
+    // Generate the word graph using the model's computeFromWordList method
     const wordGraph = new WordGraph();
-    const jsonGraph = wordGraph.generateWordGraph(wordList);
+    wordGraph.computeFromWordList(wordList);
+    const jsonGraph = wordGraph.toJson();
 
     fs.writeFileSync(jsonOutputPath, JSON.stringify(jsonGraph, null, 2), 'utf-8');
 

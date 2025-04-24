@@ -1,8 +1,4 @@
 {
-  "Jack": {
-    "lowercase": "J...",
-    "replace": "bj///"
-  },
   "back": {
     "replace": "jJ///"
   },
@@ -18,7 +14,6 @@
     "replace": "//gt"
   },
   "been": {
-    "delete": "...n",
     "replace": "//a/t"
   },
   "beet": {
@@ -28,8 +23,8 @@
   "beg": {
     "replace": "//et"
   },
+  "Ben": {},
   "best": {
-    "delete": "..s.",
     "replace": "t//e/"
   },
   "bet": {
@@ -44,13 +39,18 @@
     "replace": "b//"
   },
   "jack": {
-    "replace": "bJ///",
-    "uppercase": "j..."
+    "uppercase": "j...",
+    "replace": "b///"
+  },
+  "Jack": {
+    "lowercase": "J...",
+    "replace": "b///"
   },
   "shut": {
     "delete": "s..."
   },
   "test": {
     "replace": "b///"
-  }
+  },
+  "zebra": {}
 }

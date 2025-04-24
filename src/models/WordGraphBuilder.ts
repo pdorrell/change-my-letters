@@ -33,6 +33,11 @@ export class WordGraphBuilder {
    * Process all deletion and insertion operations
    */
   private processDeleteInsertOperations(): void {
+    // Clear the maps first to avoid duplicates
+    this.deleteMap.clear();
+    this.insertMap.clear();
+    
+    // First, process deletions and record associated insertions
     for (const word of this.words) {
       for (let i = 0; i < word.length; i++) {
         const deletion = word.substring(0, i) + word.substring(i + 1);
@@ -45,11 +50,12 @@ export class WordGraphBuilder {
           }
           this.deleteMap.get(word)!.push(deletion);
           
-          // Record insertion (reverse of deletion)
+          // Record insertion (reverse of deletion) with metadata to track position
           if (!this.insertMap.has(deletion)) {
             this.insertMap.set(deletion, []);
           }
-          this.insertMap.get(deletion)!.push(word);
+          // Record both the word and the position where the letter was inserted
+          this.insertMap.get(deletion)!.push(`${i}:${word}`);
         }
       }
     }
@@ -244,11 +250,13 @@ export class WordGraphBuilder {
         const insertArrays: string[] = Array(word.length + 1).fill('');
         
         for (const insertion of insertions) {
-          for (let i = 0; i <= word.length; i++) {
-            if (insertion === word.substring(0, i) + insertion[i] + word.substring(i)) {
-              insertArrays[i] += insertion[i];
-            }
-          }
+          // Parse the insertion metadata (position:word)
+          const [posStr, insertedWord] = insertion.split(':');
+          const pos = parseInt(posStr, 10);
+          
+          // The letter that was inserted is at position pos in the inserted word
+          const insertedLetter = insertedWord[pos];
+          insertArrays[pos] += insertedLetter;
         }
         
         if (insertArrays.some(s => s.length > 0)) {
@@ -307,9 +315,8 @@ export class WordGraphBuilder {
         }
       }
       
-      if (hasData) {
-        jsonGraph[word] = wordData;
-      }
+      // Include all words in the graph, even those with no connections
+      jsonGraph[word] = hasData ? wordData : {};
     }
     
     return jsonGraph;
