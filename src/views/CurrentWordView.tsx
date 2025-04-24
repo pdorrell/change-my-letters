@@ -45,8 +45,40 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
     };
   }, [appState]);
   
+  // Calculate container width based on maximum word length
+  const calculateContainerWidth = (): { width: string } => {
+    // Get maximum word length from the word graph
+    const maxWordLength = Math.max(...Array.from(appState.wordGraph.words).map(word => word.length));
+    
+    // Constants for width calculation
+    const letterWidth = 120; // Width of letter box in px
+    const letterMargin = 5 * 2; // Margin on each side of letter (from CSS)
+    const letterBorder = 2 * 2; // Border width on each side of letter (from CSS)
+    const positionWidth = 20; // Width of position container with margins
+    const containerPadding = 10 * 2; // Padding of the word-display container
+    const outerContainerPadding = 20 * 2; // Padding of the outer container
+    
+    // Calculate total width needed:
+    // (letterWidth + letterMargin + letterBorder) * maxWordLength + 
+    // positionWidth * (maxWordLength + 1) + 
+    // containerPadding + outerContainerPadding
+    const totalWidth = (letterWidth + letterMargin + letterBorder) * maxWordLength + 
+                        positionWidth * (maxWordLength + 1) + 
+                        containerPadding + outerContainerPadding;
+    
+    // Add a little extra buffer to ensure everything fits
+    const finalWidth = totalWidth + 20;
+    
+    return { width: `${finalWidth}px` };
+  };
+  
+  const containerStyle = calculateContainerWidth();
+  
   return (
-    <div className={`word-outer-container ${currentWord.previouslyVisited ? 'previously-visited' : ''}`}>      
+    <div 
+      className={`word-outer-container ${currentWord.previouslyVisited ? 'previously-visited' : ''}`}
+      style={containerStyle}
+    >      
       <div className="current-word-container">
         <div className="word-display">
           {/* Render alternating sequence of positions and letters */}
