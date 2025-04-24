@@ -16,6 +16,9 @@
 # test output
 /test/output
 
+# analysis reports
+**/reports/
+
 # logs
 npm-debug.log*
 yarn-debug.log*
