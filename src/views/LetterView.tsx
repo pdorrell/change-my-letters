@@ -14,8 +14,8 @@ interface LetterViewProps {
 export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
   const appState = getAppState();
   
-  const handleReplaceClick = () => {
-    appState.openMenu('replace', letter.position);
+  const handleReplaceClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    appState.openMenu('replace', letter.position, event.currentTarget);
   };
 
   const handleDeleteClick = () => {
@@ -52,7 +52,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
         </button>
         
         <button 
-          onClick={handleReplaceClick}
+          onClick={(e) => handleReplaceClick(e)}
           disabled={!letter.canReplace}
           className={`replace-icon ${!letter.canReplace ? 'hidden' : ''}`}
           title="Replace this letter"

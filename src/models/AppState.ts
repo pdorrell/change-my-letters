@@ -269,10 +269,13 @@ export class AppState {
     this.currentPage = page;
   }
   
+  // Store the button element that triggered the menu
+  activeButtonElement: HTMLElement | null = null;
+  
   /**
    * Open a menu
    */
-  openMenu(menuType: 'replace' | 'insert', position: number): void {
+  openMenu(menuType: 'replace' | 'insert', position: number, buttonElement: HTMLElement): void {
     // If same menu, close it (toggle behavior)
     if (this.activeMenuType === menuType && this.activeMenuPosition === position) {
       this.closeAllMenus();
@@ -285,6 +288,7 @@ export class AppState {
     // Open the new menu
     this.activeMenuType = menuType;
     this.activeMenuPosition = position;
+    this.activeButtonElement = buttonElement;
     
     // Set the corresponding menu state in the model
     if (menuType === 'replace' && position >= 0 && position < this.currentWord.letters.length) {
@@ -311,5 +315,6 @@ export class AppState {
     
     this.activeMenuType = 'none';
     this.activeMenuPosition = -1;
+    this.activeButtonElement = null;
   }
 }

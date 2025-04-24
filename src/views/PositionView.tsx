@@ -14,8 +14,8 @@ interface PositionViewProps {
 export const PositionView: React.FC<PositionViewProps> = observer(({ position }) => {
   const appState = getAppState();
   
-  const handleInsertClick = () => {
-    appState.openMenu('insert', position.index);
+  const handleInsertClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    appState.openMenu('insert', position.index, event.currentTarget);
   };
 
   const handleLetterChoice = (letter: string) => {
@@ -26,7 +26,7 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ position })
   return (
     <div className="position-container">
       <button 
-        onClick={handleInsertClick}
+        onClick={(e) => handleInsertClick(e)}
         disabled={!position.canInsert}
         className={`insert-icon ${!position.canInsert ? 'hidden' : ''}`}
         title="Insert a letter here"

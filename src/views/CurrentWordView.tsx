@@ -76,10 +76,8 @@ export const LetterChoiceMenu: React.FC<{
   
   // Calculate the position of the menu when it mounts
   React.useEffect(() => {
-    // Get the button that triggered the menu
-    const activeButton = document.querySelector(
-      appState.activeMenuType === 'replace' ? '.replace-icon:not(.hidden)' : '.insert-icon:not(.hidden)'
-    ) as HTMLElement | null;
+    // Get the button element directly from appState
+    const activeButton = appState.activeButtonElement;
     
     if (activeButton && menuRef.current) {
       const buttonRect = activeButton.getBoundingClientRect();
@@ -93,8 +91,14 @@ export const LetterChoiceMenu: React.FC<{
           buttonRect.left + window.scrollX - (menuWidth / 2) + (buttonRect.width / 2)
         ))
       });
+    } else {
+      // Fallback position if no button element is found
+      setPosition({
+        top: 100,
+        left: 100
+      });
     }
-  }, [appState.activeMenuType]);
+  }, [appState.activeButtonElement]);
   
   // Stop propagation of clicks within the menu to prevent the global handler from closing it
   const handleMenuClick = (e: React.MouseEvent) => {
