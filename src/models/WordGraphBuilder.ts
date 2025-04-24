@@ -220,7 +220,6 @@ export class WordGraphBuilder {
     
     for (const word of this.words) {
       const wordData: Record<string, any> = {};
-      let hasData = false;
       
       // Process deletions
       if (this.deleteMap.has(word)) {
@@ -240,7 +239,6 @@ export class WordGraphBuilder {
         
         if (deleteString.includes(word[0]) || deleteString.substring(1).includes(word[1])) {
           wordData.delete = deleteString;
-          hasData = true;
         }
       }
       
@@ -262,7 +260,6 @@ export class WordGraphBuilder {
         if (insertArrays.some(s => s.length > 0)) {
           // Convert to slash-separated string
           wordData.insert = insertArrays.join('/');
-          hasData = true;
         }
       }
       
@@ -280,7 +277,6 @@ export class WordGraphBuilder {
         if (replaceArrays.some(s => s.length > 0)) {
           // Convert to slash-separated string
           wordData.replace = replaceArrays.join('/');
-          hasData = true;
         }
       }
       
@@ -306,17 +302,15 @@ export class WordGraphBuilder {
         
         if (uppercaseString !== '.'.repeat(word.length)) {
           wordData.uppercase = uppercaseString;
-          hasData = true;
         }
         
         if (lowercaseString !== '.'.repeat(word.length)) {
           wordData.lowercase = lowercaseString;
-          hasData = true;
         }
       }
       
       // Include all words in the graph, even those with no connections
-      jsonGraph[word] = hasData ? wordData : {};
+      jsonGraph[word] = wordData;
     }
     
     return jsonGraph;
