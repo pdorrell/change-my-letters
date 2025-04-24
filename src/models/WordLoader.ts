@@ -94,39 +94,11 @@ export class WordLoader {
       const graphJson = await WordLoader.loadDataFile('default-words-graph.json');
 
       if (graphJson) {
-        try {
-          WordLoader.loadWordGraphFromJson(graphJson, wordGraph);
-          console.log('Loaded default word graph from JSON');
-        } catch (error) {
-          // If there's an error parsing the JSON graph, try the word list
-          ErrorHandler.reportError(
-            `Failed to load pre-computed graph, falling back to word list: ${error}`,
-            'Word Loader'
-          );
-          
-          // Fallback to computing from word list
-          const wordListText = await WordLoader.loadDataFile('default-words.txt');
-          if (wordListText) {
-            try {
-              const wordList = WordLoader.loadWordListFromText(wordListText);
-              const builder = new WordGraphBuilder(wordList);
-              const jsonGraph = builder.build();
-              wordGraph.loadFromJson(jsonGraph);
-              console.log('Computed default word graph from word list');
-            } catch (builderError) {
-              ErrorHandler.reportError(
-                `Failed to build graph from word list: ${builderError}`,
-                'Word Builder'
-              );
-              return WordLoader.createSampleWordGraph();
-            }
-          } else {
-            // Ultimate fallback to sample graph
-            return WordLoader.createSampleWordGraph();
-          }
-        }
+        // Load the JSON graph - no fallback, if this fails we let the exception propagate
+        WordLoader.loadWordGraphFromJson(graphJson, wordGraph);
+        console.log('Loaded default word graph from JSON');
       } else {
-        // Fallback to computing from word list
+        // Only if the JSON file wasn't found, try building from word list
         const wordListText = await WordLoader.loadDataFile('default-words.txt');
         if (wordListText) {
           const wordList = WordLoader.loadWordListFromText(wordListText);
@@ -135,7 +107,7 @@ export class WordLoader {
           wordGraph.loadFromJson(jsonGraph);
           console.log('Computed default word graph from word list');
         } else {
-          // Ultimate fallback to sample graph
+          // If neither file exists, use sample graph
           return WordLoader.createSampleWordGraph();
         }
       }
@@ -145,8 +117,8 @@ export class WordLoader {
       // Display error to the user
       ErrorHandler.reportError(`Error loading default word graph: ${error}`, 'Word Loader');
       
-      // Return a sample graph as fallback
-      return WordLoader.createSampleWordGraph();
+      // Re-throw the error to prevent fallback - as requested
+      throw error;
     }
   }
 }
