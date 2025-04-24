@@ -13,6 +13,26 @@ import fs from 'fs';
 import path from 'path';
 import { WordGraph } from '../models/WordGraph';
 
+/**
+ * Check if a file is under git source control by looking for a .git directory
+ * in the file's directory or any parent directory
+ * @param filePath The path to the file to check
+ * @returns True if the file is under git control, false otherwise
+ */
+function checkIfUnderGitControl(filePath: string): boolean {
+  let currentDir = path.dirname(filePath);
+  
+  // Traverse up the directory tree looking for a .git directory
+  while (currentDir !== path.parse(currentDir).root) {
+    if (fs.existsSync(path.join(currentDir, '.git'))) {
+      return true;
+    }
+    currentDir = path.dirname(currentDir);
+  }
+  
+  return false;
+}
+
 function trimSmallSubgraphs(filePath: string, maxSize: number): void {
   console.log(`Processing ${filePath}...`);
   
@@ -70,10 +90,18 @@ function trimSmallSubgraphs(filePath: string, maxSize: number): void {
     // Filter out the words that should be removed
     const filteredWordList = wordList.filter(word => !wordsToRemove.has(word));
     
-    // Create a backup of the original file
-    const backupPath = `${filePath}.bak`;
-    fs.copyFileSync(filePath, backupPath);
-    console.log(`Backup created at ${backupPath}`);
+    // Check if the file is under git source control
+    const isUnderGit = checkIfUnderGitControl(filePath);
+    
+    // Only create a backup if the file is not under git control
+    if (!isUnderGit) {
+      const backupPath = `${filePath}.bak`;
+      fs.copyFileSync(filePath, backupPath);
+      console.log(`Backup created at ${backupPath}`);
+    } else {
+      console.log('File is under git control, skipping backup creation');
+      console.log('Use "git restore" if you need to revert changes');
+    }
     
     // Write the filtered word list back to the original file
     fs.writeFileSync(filePath, filteredWordList.join('\n') + '\n', 'utf-8');
