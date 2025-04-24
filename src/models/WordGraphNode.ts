@@ -76,32 +76,22 @@ export class WordGraphNode {
     const wordLength = word.length;
 
     /**
-     * Parses input data that could be either a slash-separated string or an array
-     * @param input The input to parse (string or array)
+     * Parses a slash-separated string into an array of strings
+     * @param str The string to parse
      * @param expectedLength The expected length of the resulting array
      * @returns An array of strings
      */
-    function parseStringArrayInput(input: string | string[] | undefined, expectedLength: number): string[] {
-      if (!input) {
+    function parseSlashSeparatedString(str: string | undefined, expectedLength: number): string[] {
+      if (!str) {
         // Return array of empty strings with the correct length
         return Array(expectedLength).fill('');
       }
       
-      // Handle array input format
-      if (Array.isArray(input)) {
-        if (input.length !== expectedLength) {
-          throw new ParseWordGraphJsonException(
-            `Expected array of length ${expectedLength}, got ${input.length}`
-          );
-        }
-        return input.map(item => item || '');
-      }
-      
       // Handle slash-separated string format
-      const parts = input.split('/');
+      const parts = str.split('/');
       if (parts.length !== expectedLength) {
         throw new ParseWordGraphJsonException(
-          `Expected ${expectedLength} elements in '${input}', got ${parts.length}`
+          `Expected ${expectedLength} elements in '${str}', got ${parts.length}`
         );
       }
 
@@ -130,8 +120,8 @@ export class WordGraphNode {
     }
 
     // Process string arrays (inserts, replaces)
-    const inserts = parseStringArrayInput(data.insert, wordLength + 1);
-    const replaces = parseStringArrayInput(data.replace, wordLength);
+    const inserts = parseSlashSeparatedString(data.insert, wordLength + 1);
+    const replaces = parseSlashSeparatedString(data.replace, wordLength);
 
     // Process boolean arrays (deletes, uppercase, lowercase)
     const deletes = parseBooleanString(data.delete, wordLength);
@@ -145,5 +135,58 @@ export class WordGraphNode {
       uppercase,
       lowercase
     );
+  }
+  
+  /**
+   * Convert this node to its JSON representation
+   */
+  toJson(): Record<string, any> {
+    const result: Record<string, any> = {};
+    let hasData = false;
+    
+    // Convert boolean arrays to strings
+    if (this.deletes.some(val => val)) {
+      let deleteString = '';
+      for (let i = 0; i < this.deletes.length; i++) {
+        // The character to use when the boolean is true doesn't matter as long as it's not '.'
+        // By convention we use the letter at that position
+        deleteString += this.deletes[i] ? 'D' : '.';
+      }
+      result.delete = deleteString;
+      hasData = true;
+    }
+    
+    if (this.uppercase.some(val => val)) {
+      let uppercaseString = '';
+      for (let i = 0; i < this.uppercase.length; i++) {
+        // By convention we use the letter at that position
+        uppercaseString += this.uppercase[i] ? 'U' : '.';
+      }
+      result.uppercase = uppercaseString;
+      hasData = true;
+    }
+    
+    if (this.lowercase.some(val => val)) {
+      let lowercaseString = '';
+      for (let i = 0; i < this.lowercase.length; i++) {
+        // By convention we use the letter at that position
+        lowercaseString += this.lowercase[i] ? 'L' : '.';
+      }
+      result.lowercase = lowercaseString;
+      hasData = true;
+    }
+    
+    // Convert string arrays to slash-separated strings
+    if (this.inserts.some(str => str.length > 0)) {
+      result.insert = this.inserts.join('/');
+      hasData = true;
+    }
+    
+    if (this.replaces.some(str => str.length > 0)) {
+      result.replace = this.replaces.join('/');
+      hasData = true;
+    }
+    
+    return hasData ? result : {};
   }
 }

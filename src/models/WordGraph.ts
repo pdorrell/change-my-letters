@@ -36,6 +36,23 @@ export class WordGraph {
     // Load the generated graph
     this.loadFromJson(jsonGraph);
   }
+  
+  /**
+   * Convert the graph to its JSON representation
+   */
+  toJson(): Record<string, any> {
+    const jsonGraph: Record<string, any> = {};
+    
+    // Convert each WordGraphNode to its JSON representation
+    for (const [word, node] of this.wordNodes.entries()) {
+      const nodeJson = node.toJson();
+      if (Object.keys(nodeJson).length > 0) {
+        jsonGraph[word] = nodeJson;
+      }
+    }
+    
+    return jsonGraph;
+  }
 
   /**
    * Load a pre-computed word graph from JSON

@@ -2,152 +2,8 @@ import { WordGraph } from '../../src/models/WordGraph';
 import fs from 'fs';
 import path from 'path';
 
-/**
- * Convert a word graph to the standard JSON format used in example files
- */
-function convertWordGraphToJsonFormat(wordGraph: WordGraph, wordList: string[]): Record<string, any> {
-  const jsonGraph: Record<string, any> = {};
-  
-  for (const word of wordList) {
-    const wordData: Record<string, any> = {};
-    
-    // Check for possible replacements
-    const replacements: string[] = [];
-    let hasReplacement = false;
-    
-    for (let i = 0; i < word.length; i++) {
-      const possibleReplacements = wordGraph.getPossibleReplacements(word, i);
-      
-      if (possibleReplacements.length > 0) {
-        hasReplacement = true;
-        replacements[i] = possibleReplacements.join('');
-      } else {
-        replacements[i] = '';
-      }
-    }
-    
-    if (hasReplacement) {
-      wordData.replace = replacements;
-    }
-    
-    // Check for possible insertions
-    const insertions: string[] = [];
-    let hasInsertion = false;
-    
-    for (let i = 0; i <= word.length; i++) {
-      const possibleInsertions = wordGraph.getPossibleInsertions(word, i);
-      
-      if (possibleInsertions.length > 0) {
-        hasInsertion = true;
-        insertions[i] = possibleInsertions.join('');
-      } else {
-        insertions[i] = '';
-      }
-    }
-    
-    if (hasInsertion) {
-      wordData.insert = insertions;
-    }
-    
-    // Check for possible deletions
-    let deletionString = '';
-    let hasDeletion = false;
-    
-    for (let i = 0; i < word.length; i++) {
-      if (wordGraph.canDeleteLetterAt(word, i)) {
-        deletionString += word[i];
-        hasDeletion = true;
-      } else {
-        deletionString += '.';
-      }
-    }
-    
-    if (hasDeletion) {
-      wordData.delete = deletionString;
-    }
-    
-    // Check for possible case changes
-    let upperCaseString = '';
-    let lowerCaseString = '';
-    let hasUpperCase = false;
-    let hasLowerCase = false;
-    
-    for (let i = 0; i < word.length; i++) {
-      const letter = word[i];
-      
-      if (letter === letter.toLowerCase() && letter !== letter.toUpperCase()) {
-        if (wordGraph.canChangeCaseAt(word, i)) {
-          upperCaseString += letter;
-          hasUpperCase = true;
-        } else {
-          upperCaseString += '.';
-        }
-      } else if (letter === letter.toUpperCase() && letter !== letter.toLowerCase()) {
-        if (wordGraph.canChangeCaseAt(word, i)) {
-          lowerCaseString += letter;
-          hasLowerCase = true;
-        } else {
-          lowerCaseString += '.';
-        }
-      } else {
-        // For non-case-changeable characters (e.g., numbers)
-        if (upperCaseString.length < word.length) upperCaseString += '.';
-        if (lowerCaseString.length < word.length) lowerCaseString += '.';
-      }
-    }
-    
-    // Only add case changes if they exist
-    if (hasUpperCase) {
-      wordData.uppercase = upperCaseString;
-    }
-    
-    if (hasLowerCase) {
-      wordData.lowercase = lowerCaseString;
-    }
-    
-    // Only add words with at least one operation
-    if (Object.keys(wordData).length > 0) {
-      jsonGraph[word] = wordData;
-    }
-  }
-  
-  return jsonGraph;
-}
-
-/**
- * Normalize the JSON format to ensure consistent comparisons
- * Converts all array representations to slash-separated strings
- */
-function normalizeJsonGraph(graph: Record<string, any>): Record<string, any> {
-  const normalized: Record<string, any> = {};
-  
-  // Sort the words alphabetically
-  const sortedWords = Object.keys(graph).sort();
-  
-  for (const word of sortedWords) {
-    normalized[word] = {};
-    
-    // Copy and sort each operation type
-    const operations = Object.keys(graph[word]).sort();
-    
-    for (const op of operations) {
-      const value = graph[word][op];
-      
-      if (Array.isArray(value)) {
-        // For arrays (like replace, insert), convert to slash-separated string
-        normalized[word][op] = value.join('/'); 
-      } else {
-        // For strings (like delete, uppercase, lowercase), keep as is
-        normalized[word][op] = value;
-      }
-    }
-  }
-  
-  return normalized;
-}
-
 describe('WordGraph', () => {
-  it('generates a valid word graph', () => {
+  it('generates a valid word graph with toJson/fromJson support', () => {
     // Load the word list
     const wordListPath = path.resolve(__dirname, '../../examples/example-words.txt');
     const wordList = fs.readFileSync(wordListPath, 'utf-8')
@@ -174,6 +30,28 @@ describe('WordGraph', () => {
       // We should be able to replace 't' in 'bet' with 'g' to get 'beg'
       const replacements = betNode.getReplacements(2);
       expect(replacements).toContain('g');
+    }
+    
+    // Test toJson method by converting to JSON and back
+    const jsonGraph = wordGraph.toJson();
+    expect(jsonGraph).toBeDefined();
+    expect(Object.keys(jsonGraph).length).toBeGreaterThan(0);
+    
+    // Create a new graph from the JSON
+    const newGraph = new WordGraph();
+    newGraph.loadFromJson(jsonGraph);
+    
+    // Check that the graph was restored properly
+    expect(newGraph.words.size).toBe(wordGraph.words.size);
+    expect(newGraph.hasWord('bet')).toBe(true);
+    
+    // Check that the node data was preserved
+    const newBetNode = newGraph.getWordNode('bet');
+    expect(newBetNode).toBeDefined();
+    
+    if (newBetNode) {
+      const newReplacements = newBetNode.getReplacements(2);
+      expect(newReplacements).toContain('g');
     }
   });
 });
