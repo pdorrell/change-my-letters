@@ -11,7 +11,8 @@
     "lint": "eslint 'src/**/*.{ts,tsx}'",
     "test": "jest",
     "generate-word-graphs": "tsx src/scripts/generateWordGraphs.ts",
-    "analyze-word-graphs": "tsx src/scripts/analyzeWordGraph.ts"
+    "analyze-word-graphs": "tsx src/scripts/analyzeWordGraph.ts",
+    "trim-small-subgraphs": "tsx src/scripts/trimSmallSubgraphs.ts"
   },
   "dependencies": {
     "mobx": "^6.12.0",
