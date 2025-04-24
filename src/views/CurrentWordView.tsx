@@ -46,13 +46,7 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
   }, [appState]);
   
   return (
-    <div className="current-word-container">
-      {currentWord.previouslyVisited && (
-        <div className="word-visited-indicator">
-          Previously visited
-        </div>
-      )}
-      
+    <div className={`current-word-container ${currentWord.previouslyVisited ? 'previously-visited' : ''}`}>      
       <div className="word-display">
         {/* Render alternating sequence of positions and letters */}
         {currentWord.positions.map((position, index) => (

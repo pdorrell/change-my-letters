@@ -24,6 +24,7 @@ const App: React.FC = observer(() => {
           <button 
             onClick={() => appState.undo()}
             disabled={!appState.history.canUndo}
+            className={!appState.history.canUndo ? 'hidden' : ''}
             title="Undo last change"
           >
             Undo
@@ -31,6 +32,7 @@ const App: React.FC = observer(() => {
           <button 
             onClick={() => appState.redo()}
             disabled={!appState.history.canRedo}
+            className={!appState.history.canRedo ? 'hidden' : ''}
             title="Redo last undone change"
           >
             Redo

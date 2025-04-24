@@ -44,6 +44,10 @@ body {
           background-color: #ccc;
           cursor: not-allowed;
         }
+        
+        &.hidden {
+          visibility: hidden;
+        }
       }
     }
   }
@@ -65,19 +69,16 @@ body {
 
 // Current word styles
 .current-word-container {
-  .word-visited-indicator {
-    display: inline-block;
+  &.previously-visited {
     background-color: #ffe4e1; // Light pink
-    padding: 5px 10px;
-    border-radius: 4px;
-    margin-bottom: 10px;
-    font-size: 0.9em;
+    border-radius: 8px;
+    padding: 10px;
   }
   
   .word-display {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
   }
 }

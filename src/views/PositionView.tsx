@@ -25,15 +25,14 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ position })
 
   return (
     <div className="position-container">
-      {position.canInsert && (
-        <button 
-          className="insert-icon"
-          onClick={handleInsertClick}
-          title="Insert a letter here"
-        >
-          ➕
-        </button>
-      )}
+      <button 
+        onClick={handleInsertClick}
+        disabled={!position.canInsert}
+        className={`insert-icon ${!position.canInsert ? 'hidden' : ''}`}
+        title="Insert a letter here"
+      >
+        ➕
+      </button>
       
       {position.isInsertMenuOpen && (
         <LetterChoiceMenu 
