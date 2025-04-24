@@ -42,45 +42,41 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
       </div>
       
       <div className="letter-actions">
-        {letter.canDelete && (
-          <button 
-            onClick={handleDeleteClick}
-            className="delete-icon"
-            title="Delete this letter"
-          >
-            🗑️
-          </button>
-        )}
+        <button 
+          onClick={handleDeleteClick}
+          disabled={!letter.canDelete}
+          className={`delete-icon ${!letter.canDelete ? 'hidden' : ''}`}
+          title="Delete this letter"
+        >
+          🗑️
+        </button>
         
-        {letter.canReplace && (
-          <button 
-            onClick={handleReplaceClick}
-            className="replace-icon"
-            title="Replace this letter"
-          >
-            🔄
-          </button>
-        )}
+        <button 
+          onClick={handleReplaceClick}
+          disabled={!letter.canReplace}
+          className={`replace-icon ${!letter.canReplace ? 'hidden' : ''}`}
+          title="Replace this letter"
+        >
+          🔄
+        </button>
         
-        {letter.canUpperCase && (
-          <button 
-            onClick={handleCaseChange}
-            className="case-icon"
-            title="Make uppercase"
-          >
-            ⬆️
-          </button>
-        )}
+        <button 
+          onClick={handleCaseChange}
+          disabled={!letter.canUpperCase}
+          className={`case-icon ${!letter.canUpperCase ? 'hidden' : ''}`}
+          title="Make uppercase"
+        >
+          ⬆️
+        </button>
         
-        {letter.canLowerCase && (
-          <button 
-            onClick={handleCaseChange}
-            className="case-icon"
-            title="Make lowercase"
-          >
-            ⬇️
-          </button>
-        )}
+        <button 
+          onClick={handleCaseChange}
+          disabled={!letter.canLowerCase}
+          className={`case-icon ${!letter.canLowerCase ? 'hidden' : ''}`}
+          title="Make lowercase"
+        >
+          ⬇️
+        </button>
       </div>
       
       {letter.isReplaceMenuOpen && (
