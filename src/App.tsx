@@ -24,7 +24,6 @@ const App: React.FC = observer(() => {
           <button 
             onClick={() => appState.undo()}
             disabled={!appState.history.canUndo}
-            className={!appState.history.canUndo ? 'hidden' : ''}
             title="Undo last change"
           >
             Undo
@@ -32,7 +31,6 @@ const App: React.FC = observer(() => {
           <button 
             onClick={() => appState.redo()}
             disabled={!appState.history.canRedo}
-            className={!appState.history.canRedo ? 'hidden' : ''}
             title="Redo last undone change"
           >
             Redo
@@ -41,7 +39,7 @@ const App: React.FC = observer(() => {
             onClick={() => appState.navigateTo(appState.currentPage === 'wordView' ? 'historyView' : 'wordView')}
             title={appState.currentPage === 'wordView' ? 'View history' : 'Back to word'}
           >
-            {appState.currentPage === 'wordView' ? 'See History' : 'Back to Word'}
+            {appState.currentPage === 'wordView' ? '→ History' : '→ Current Word'}
           </button>
         </div>
       </header>

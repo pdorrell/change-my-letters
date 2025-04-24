@@ -7,6 +7,12 @@ body {
   background-color: #f5f5f5;
 }
 
+// Utility classes
+.hidden {
+  visibility: hidden;
+  display: none;
+}
+
 .app-container {
   max-width: 800px;
   margin: 0 auto;
@@ -69,6 +75,10 @@ body {
 
 // Current word styles
 .current-word-container {
+  max-width: 100%;
+  min-width: 500px; // Wider to fit 5 letters easily
+  margin: 0 auto;
+  
   &.previously-visited {
     background-color: #ffe4e1; // Light pink
     border-radius: 8px;
@@ -79,7 +89,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; // Prevent wrapping
+    overflow-x: auto; // Add scrolling if needed
   }
 }
 
@@ -92,12 +103,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 60px;
-    height: 60px;
+    width: 120px; // Twice as large
+    height: 120px; // Twice as large
     border: 2px solid #000;
     border-radius: 6px;
     background-color: #ffffe0; // Light yellow
-    font-size: 1.8em;
+    font-size: 7.2em; // 4 times larger
     font-weight: bold;
   }
   
