@@ -82,7 +82,6 @@ blob
 block
 blood
 blow
-blue
 boat
 boar
 bob
@@ -158,7 +157,6 @@ chin
 chop
 clam
 clap
-class
 claw
 clock
 cloth
@@ -196,7 +194,6 @@ crop
 cross
 crow
 crust
-cuff
 cup
 cut
 dad
@@ -257,7 +254,6 @@ dump
 dune
 dust
 duty
-each
 ear
 earn
 earth
@@ -337,8 +333,6 @@ fresh
 fret
 frog
 from
-front
-frost
 frown
 fruit
 fry
@@ -362,10 +356,8 @@ gift
 girl
 give
 glad
-glass
 glide
 glow
-glue
 go
 goal
 goat
@@ -378,8 +370,6 @@ grab
 grade
 grain
 graph
-grasp
-grass
 gray
 great
 green
@@ -455,7 +445,6 @@ hive
 hold
 hole
 home
-honey
 hood
 hook
 hoop
@@ -485,13 +474,10 @@ idea
 if
 ill
 in
-inch
 ink
 inn
-into
 iron
 is
-itch
 its
 jack
 jail
@@ -598,7 +584,6 @@ love
 low
 luck
 lump
-lunch
 lung
 mad
 made
@@ -649,7 +634,6 @@ mock
 mode
 mole
 mom
-money
 monk
 mood
 moon
@@ -664,7 +648,6 @@ mud
 mug
 mule
 mum
-munch
 must
 mute
 my
@@ -712,15 +695,12 @@ on
 once
 one
 only
-onto
 open
 or
-oral
 orb
 other
 our
 out
-oval
 oven
 over
 owl
@@ -756,7 +736,6 @@ peep
 peer
 pen
 pep
-perch
 pest
 pet
 phone
@@ -787,7 +766,6 @@ plus
 pod
 poem
 poet
-point
 poke
 pole
 pond
@@ -795,7 +773,6 @@ pony
 pool
 poor
 pop
-porch
 pore
 pork
 port
@@ -813,26 +790,21 @@ price
 prick
 pride
 prim
-print
 prize
 prod
 prop
 proud
 prowl
 pry
-puff
 pull
 pulp
 pump
 pun
-punch
 pup
 pure
 push
 put
-quack
 quail
-quick
 quid
 quiet
 quill
@@ -860,7 +832,6 @@ rat
 rate
 raw
 ray
-reach
 read
 real
 rear
@@ -901,7 +872,6 @@ root
 rope
 rose
 rot
-rough
 round
 row
 rub
@@ -985,8 +955,6 @@ shot
 shout
 show
 shred
-shrub
-shrug
 shut
 shy
 sick
@@ -1042,7 +1010,6 @@ slush
 smack
 small
 smart
-smash
 smear
 smell
 smile
@@ -1057,7 +1024,6 @@ snap
 snare
 snarl
 sneak
-sniff
 snip
 snore
 snow
@@ -1082,7 +1048,6 @@ soul
 sound
 soup
 sour
-south
 sow
 space
 spade
@@ -1117,7 +1082,6 @@ squat
 squib
 stab
 stack
-staff
 stag
 stage
 stain
@@ -1132,7 +1096,6 @@ star
 stare
 stark
 start
-stash
 state
 stay
 steal
@@ -1145,7 +1108,6 @@ step
 stern
 stew
 stick
-stiff
 still
 sting
 stink
@@ -1171,7 +1133,6 @@ strut
 stub
 stuck
 stud
-stuff
 stump
 stun
 sty
@@ -1227,14 +1188,11 @@ tap
 tape
 tar
 task
-taste
 taught
 tax
 tea
-teach
 team
 tear
-tech
 tell
 ten
 tend
@@ -1299,8 +1257,6 @@ top
 tore
 torn
 toss
-touch
-tough
 tour
 tow
 town
@@ -1374,11 +1330,8 @@ vault
 veer
 veil
 vein
-verb
-very
 vest
 vex
-via
 vice
 view
 vine
@@ -1405,7 +1358,6 @@ warp
 was
 wash
 wasp
-waste
 watch
 water
 wave
@@ -1501,7 +1453,6 @@ yolk
 you
 young
 your
-youth
 yum
 zap
 zero
