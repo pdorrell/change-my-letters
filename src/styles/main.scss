@@ -82,20 +82,26 @@ body {
 }
 
 // Current word styles
-.current-word-container {
+.word-outer-container {
   max-width: 100%;
-  min-width: 500px; // Wider to fit 5 letters easily
+  min-width: 520px; // Wider to fit 5 letters easily + padding
   margin: 0 auto;
-  border-radius: 8px;
   padding: 10px;
-  border: 2px solid #cccccc; // Light grey border
-  background-color: white; // Explicit white background
+  border-radius: 12px;
   
   &.previously-visited {
     background-color: #ffe4e1; // Light pink
   }
+}
+
+.current-word-container {
+  border: 2px solid #cccccc; // Light grey border
+  border-radius: 8px;
+  background-color: white;
+  overflow: visible;
   
   .word-display {
+    padding: 10px;
     display: flex;
     align-items: center;
     justify-content: flex-start;

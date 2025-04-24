@@ -46,17 +46,19 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
   }, [appState]);
   
   return (
-    <div className={`current-word-container ${currentWord.previouslyVisited ? 'previously-visited' : ''}`}>      
-      <div className="word-display">
-        {/* Render alternating sequence of positions and letters */}
-        {currentWord.positions.map((position, index) => (
-          <React.Fragment key={`position-${index}`}>
-            <PositionView position={position} />
-            {index < currentWord.letters.length && (
-              <LetterView letter={currentWord.letters[index]} />
-            )}
-          </React.Fragment>
-        ))}
+    <div className={`word-outer-container ${currentWord.previouslyVisited ? 'previously-visited' : ''}`}>      
+      <div className="current-word-container">
+        <div className="word-display">
+          {/* Render alternating sequence of positions and letters */}
+          {currentWord.positions.map((position, index) => (
+            <React.Fragment key={`position-${index}`}>
+              <PositionView position={position} />
+              {index < currentWord.letters.length && (
+                <LetterView letter={currentWord.letters[index]} />
+              )}
+            </React.Fragment>
+          ))}
+        </div>
       </div>
     </div>
   );
