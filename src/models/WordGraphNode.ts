@@ -72,13 +72,9 @@ export class WordGraphNode {
   /**
    * Create a WordGraphNode from the JSON representation
    */
-  static fromJson(data: Record<string, any>): WordGraphNode {
+  static fromJson(word: string, data: Record<string, any>): WordGraphNode {
     const node = new WordGraphNode();
-    const wordLength = data.word_length || 0;
-
-    if (wordLength === 0) {
-      throw new ParseWordGraphJsonException('Word length is required');
-    }
+    const wordLength = word.length;
 
     /**
      * Parses a slash-separated string into an array of strings
