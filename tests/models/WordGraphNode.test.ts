@@ -2,14 +2,16 @@ import { WordGraphNode } from '../../src/models/WordGraphNode';
 
 describe('WordGraphNode', () => {
   it('should initialize correctly', () => {
-    const deletes = [false, true, false];
-    const inserts = ['a', 'b', 'c', 'd'];
-    const replaces = ['xy', 'z', 'abc'];
-    const uppercase = [true, false, false];
-    const lowercase = [false, true, false];
+    const word = 'test';
+    const deletes = [false, true, false, false];
+    const inserts = ['a', 'b', 'c', 'd', 'e'];
+    const replaces = ['xy', 'z', 'abc', ''];
+    const uppercase = [true, false, false, false];
+    const lowercase = [false, true, false, false];
     
-    const node = new WordGraphNode(deletes, inserts, replaces, uppercase, lowercase);
+    const node = new WordGraphNode(word, deletes, inserts, replaces, uppercase, lowercase);
     
+    expect(node.word).toBe(word);
     expect(node.deletes).toEqual(deletes);
     expect(node.inserts).toEqual(inserts);
     expect(node.replaces).toEqual(replaces);
@@ -19,7 +21,7 @@ describe('WordGraphNode', () => {
 
   it('should get replacement letters at a specific position', () => {
     const replaces = ['xy', 'z', 'abc'];
-    const node = new WordGraphNode([], [], replaces, [], []);
+    const node = new WordGraphNode('cat', [], [], replaces, [], []);
     
     expect(node.getReplacements(0)).toBe('xy');
     expect(node.getReplacements(1)).toBe('z');
@@ -28,7 +30,7 @@ describe('WordGraphNode', () => {
 
   it('should get insertion letters at a specific position', () => {
     const inserts = ['a', 'bc', 'def', 'g'];
-    const node = new WordGraphNode([], inserts, [], [], []);
+    const node = new WordGraphNode('cat', [], inserts, [], [], []);
     
     expect(node.getInsertions(0)).toBe('a');
     expect(node.getInsertions(1)).toBe('bc');
@@ -38,7 +40,7 @@ describe('WordGraphNode', () => {
 
   it('should check if a letter can be deleted', () => {
     const deletes = [true, false, true];
-    const node = new WordGraphNode(deletes, [], [], [], []);
+    const node = new WordGraphNode('cat', deletes, [], [], [], []);
     
     expect(node.canDelete(0)).toBe(true);
     expect(node.canDelete(1)).toBe(false);
@@ -47,7 +49,7 @@ describe('WordGraphNode', () => {
 
   it('should check if a letter can be upper-cased', () => {
     const uppercase = [true, false, true];
-    const node = new WordGraphNode([], [], [], uppercase, []);
+    const node = new WordGraphNode('cat', [], [], [], uppercase, []);
     
     expect(node.canUppercase(0)).toBe(true);
     expect(node.canUppercase(1)).toBe(false);
@@ -56,7 +58,7 @@ describe('WordGraphNode', () => {
 
   it('should check if a letter can be lower-cased', () => {
     const lowercase = [true, false, true];
-    const node = new WordGraphNode([], [], [], [], lowercase);
+    const node = new WordGraphNode('CAT', [], [], [], [], lowercase);
     
     expect(node.canLowercase(0)).toBe(true);
     expect(node.canLowercase(1)).toBe(false);
@@ -65,17 +67,17 @@ describe('WordGraphNode', () => {
 
   it('should serialize to JSON and deserialize from JSON', () => {
     // Create a node with some operations
+    const word = 'cat';
     const deletes = [true, false, true];
     const inserts = ['a', 'bc', '', 'd'];
     const replaces = ['xy', '', 'z'];
     const uppercase = [true, false, false];
     const lowercase = [false, false, true];
     
-    const node = new WordGraphNode(deletes, inserts, replaces, uppercase, lowercase);
+    const node = new WordGraphNode(word, deletes, inserts, replaces, uppercase, lowercase);
     
     // Serialize to JSON
-    const word = 'cat';
-    const json = node.toJson(word);
+    const json = node.toJson();
     
     // Check JSON format
     expect(json.delete).toBe('c.t');
@@ -88,6 +90,7 @@ describe('WordGraphNode', () => {
     const newNode = WordGraphNode.fromJson(word, json);
     
     // Check that the properties were restored correctly
+    expect(newNode.word).toBe(word);
     expect(newNode.deletes).toEqual(deletes);
     expect(newNode.inserts).toEqual(inserts);
     expect(newNode.replaces).toEqual(replaces);

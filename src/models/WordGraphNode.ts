@@ -16,6 +16,9 @@ export class ParseWordGraphJsonException extends Error {
  */
 export class WordGraphNode {
   constructor(
+    // The word this node represents
+    public readonly word: string,
+    
     // Boolean arrays indicating whether each letter can be deleted
     public readonly deletes: boolean[],
     
@@ -129,6 +132,7 @@ export class WordGraphNode {
     const lowercase = parseBooleanString(data.lowercase, wordLength);
 
     return new WordGraphNode(
+      word,
       deletes,
       inserts,
       replaces,
@@ -139,9 +143,8 @@ export class WordGraphNode {
   
   /**
    * Convert this node to its JSON representation
-   * @param word The word this node represents, used for delete and case change characters
    */
-  toJson(word: string): Record<string, any> {
+  toJson(): Record<string, any> {
     const result: Record<string, any> = {};
     
     // Convert boolean arrays to strings, using the actual letters from the word
@@ -149,7 +152,7 @@ export class WordGraphNode {
       let deleteString = '';
       for (let i = 0; i < this.deletes.length; i++) {
         // Use the actual letter from the word when the boolean is true
-        deleteString += this.deletes[i] ? word[i] : '.';
+        deleteString += this.deletes[i] ? this.word[i] : '.';
       }
       result.delete = deleteString;
     }
@@ -158,7 +161,7 @@ export class WordGraphNode {
       let uppercaseString = '';
       for (let i = 0; i < this.uppercase.length; i++) {
         // Use the actual letter from the word when the boolean is true
-        uppercaseString += this.uppercase[i] ? word[i] : '.';
+        uppercaseString += this.uppercase[i] ? this.word[i] : '.';
       }
       result.uppercase = uppercaseString;
     }
@@ -167,7 +170,7 @@ export class WordGraphNode {
       let lowercaseString = '';
       for (let i = 0; i < this.lowercase.length; i++) {
         // Use the actual letter from the word when the boolean is true
-        lowercaseString += this.lowercase[i] ? word[i] : '.';
+        lowercaseString += this.lowercase[i] ? this.word[i] : '.';
       }
       result.lowercase = lowercaseString;
     }

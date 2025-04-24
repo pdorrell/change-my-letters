@@ -203,7 +203,7 @@ export class WordGraph {
     
     // Convert each WordGraphNode to its JSON representation
     for (const [word, node] of this.wordNodes.entries()) {
-      jsonGraph[word] = node.toJson(word);
+      jsonGraph[word] = node.toJson();
     }
     
     // Ensure all words are included in the graph, even if they have no connections
