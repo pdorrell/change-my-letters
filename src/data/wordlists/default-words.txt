@@ -65,9 +65,9 @@ berry
 best
 bib
 big
+bike
 bill
 bin
-bike
 bird
 bit
 bite
@@ -82,8 +82,8 @@ blob
 block
 blood
 blow
-boat
 boar
+boat
 bob
 body
 bog
@@ -1455,6 +1455,7 @@ young
 your
 yum
 zap
+zebra
 zero
 zest
 zip
