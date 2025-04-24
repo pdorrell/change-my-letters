@@ -27,7 +27,7 @@ export class ErrorHandler {
       errorEl.style.maxHeight = '50vh';
       errorEl.style.overflowY = 'auto';
       errorEl.style.display = 'none';
-      
+
       document.body.appendChild(errorEl);
       ErrorHandler.errorDisplayEl = errorEl;
     }
@@ -60,7 +60,7 @@ export class ErrorHandler {
    */
   static captureError(message: string, error?: Error | any): void {
     const errorMsg = error ? `${message}\n${error.stack || error}` : message;
-    
+
     // Add to our list of errors
     ErrorHandler.errors.push(errorMsg);
 
@@ -82,23 +82,24 @@ export class ErrorHandler {
    * Update the error display with all captured errors
    */
   private static updateErrorDisplay(): void {
-    if (ErrorHandler.errorDisplayEl) {
+    const errorDisplayEl = ErrorHandler.errorDisplayEl;
+    if (errorDisplayEl) {
       // Only show the most recent errors (last 5)
       const recentErrors = ErrorHandler.errors.slice(-5);
-      
+
       if (recentErrors.length > 0) {
-        ErrorHandler.errorDisplayEl.innerHTML = '';
-        
+        errorDisplayEl.innerHTML = '';
+
         // Add a header
         const header = document.createElement('div');
         header.style.display = 'flex';
         header.style.justifyContent = 'space-between';
         header.style.marginBottom = '10px';
-        
+
         const title = document.createElement('strong');
         title.textContent = 'Application Errors';
         header.appendChild(title);
-        
+
         const closeBtn = document.createElement('button');
         closeBtn.textContent = 'Clear All';
         closeBtn.style.backgroundColor = 'transparent';
@@ -111,9 +112,9 @@ export class ErrorHandler {
           ErrorHandler.updateErrorDisplay();
         };
         header.appendChild(closeBtn);
-        
-        ErrorHandler.errorDisplayEl.appendChild(header);
-        
+
+        errorDisplayEl.appendChild(header);
+
         // Add each error with its own clear button
         recentErrors.forEach((err, index) => {
           const errorItem = document.createElement('div');
@@ -121,7 +122,7 @@ export class ErrorHandler {
           errorItem.style.padding = '10px';
           errorItem.style.backgroundColor = 'rgba(0,0,0,0.2)';
           errorItem.style.position = 'relative';
-          
+
           const errorClose = document.createElement('button');
           errorClose.textContent = '×';
           errorClose.style.position = 'absolute';
@@ -136,23 +137,23 @@ export class ErrorHandler {
             ErrorHandler.errors.splice(ErrorHandler.errors.length - 5 + index, 1);
             ErrorHandler.updateErrorDisplay();
           };
-          
+
           const errorText = document.createElement('pre');
           errorText.style.margin = '0';
           errorText.style.whiteSpace = 'pre-wrap';
           errorText.style.wordBreak = 'break-word';
           errorText.textContent = err;
-          
+
           errorItem.appendChild(errorClose);
           errorItem.appendChild(errorText);
-          ErrorHandler.errorDisplayEl.appendChild(errorItem);
+          errorDisplayEl.appendChild(errorItem);
         });
-        
+
         // Show the container
-        ErrorHandler.errorDisplayEl.style.display = 'block';
+        errorDisplayEl.style.display = 'block';
       } else {
         // Hide the container when there are no errors
-        ErrorHandler.errorDisplayEl.style.display = 'none';
+        errorDisplayEl.style.display = 'none';
       }
     }
   }
@@ -194,14 +195,14 @@ export class ErrorHandler {
    * Manually report an error
    */
   static reportError(error: Error | string, context?: string): void {
-    const message = typeof error === 'string' 
-      ? error 
+    const message = typeof error === 'string'
+      ? error
       : error.message;
-    
-    const fullMessage = context 
-      ? `[${context}] ${message}` 
+
+    const fullMessage = context
+      ? `[${context}] ${message}`
       : message;
-    
+
     ErrorHandler.captureError(fullMessage, typeof error === 'string' ? undefined : error);
   }
 }
