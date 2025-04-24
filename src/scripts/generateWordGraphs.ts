@@ -1,5 +1,9 @@
 /**
- * Script to generate pre-computed word graph JSON files for all .txt files in the wordlists directory
+ * Script to generate pre-computed word graph JSON files for .txt files
+ * Can be run with:
+ * - No args: processes all .txt files in the default wordlists directory
+ * - A directory path: processes all .txt files in that directory
+ * - A file path: processes just that file
  */
 import fs from 'fs';
 import path from 'path';
@@ -8,13 +12,18 @@ import { WordGraph } from './WordGraph';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const DATA_DIR = path.resolve(__dirname, '../data/wordlists');
+const DEFAULT_DATA_DIR = path.resolve(__dirname, '../data/wordlists');
 
 /**
  * Process a single word list file
  */
 function processWordListFile(filePath: string): void {
   try {
+    if (!filePath.endsWith('.txt')) {
+      console.log(`Skipping ${filePath} (not a .txt file)`);
+      return;
+    }
+    
     const pathDir = path.dirname(filePath);
     const fileName = path.basename(filePath, '.txt');
     const jsonOutputPath = path.join(pathDir, `${fileName}-graph.json`);
@@ -41,26 +50,33 @@ function processWordListFile(filePath: string): void {
 }
 
 /**
- * Main function to process all word list files
+ * Process all word list files in a directory
  */
-function main(): void {
-  // Ensure the data directory exists
-  if (!fs.existsSync(DATA_DIR)) {
-    console.error(`Wordlists directory not found: ${DATA_DIR}`);
+function processDirectory(directoryPath: string): void {
+  // Ensure the directory exists
+  if (!fs.existsSync(directoryPath)) {
+    console.error(`Directory not found: ${directoryPath}`);
+    process.exit(1);
+  }
+  
+  // Check if it's actually a directory
+  const stats = fs.statSync(directoryPath);
+  if (!stats.isDirectory()) {
+    console.error(`Path is not a directory: ${directoryPath}`);
     process.exit(1);
   }
 
   // Find all .txt files in the directory
-  const files = fs.readdirSync(DATA_DIR)
+  const files = fs.readdirSync(directoryPath)
     .filter(file => file.endsWith('.txt'))
-    .map(file => path.join(DATA_DIR, file));
+    .map(file => path.join(directoryPath, file));
 
   if (files.length === 0) {
-    console.log('No .txt word list files found.');
-    process.exit(0);
+    console.log(`No .txt word list files found in ${directoryPath}.`);
+    return;
   }
 
-  console.log(`Found ${files.length} word list files.`);
+  console.log(`Found ${files.length} word list file(s) in ${directoryPath}.`);
 
   // Process each file
   for (const file of files) {
@@ -68,6 +84,34 @@ function main(): void {
   }
 
   console.log('All word lists processed successfully.');
+}
+
+/**
+ * Main function to process files based on command-line argument
+ */
+function main(): void {
+  // Get command-line argument if provided
+  const inputPath = process.argv[2] ? path.resolve(process.argv[2]) : DEFAULT_DATA_DIR;
+  
+  // Check if the path exists
+  if (!fs.existsSync(inputPath)) {
+    console.error(`Path not found: ${inputPath}`);
+    process.exit(1);
+  }
+  
+  // Check if it's a directory or a file
+  const stats = fs.statSync(inputPath);
+  
+  if (stats.isDirectory()) {
+    console.log(`Processing directory: ${inputPath}`);
+    processDirectory(inputPath);
+  } else if (stats.isFile()) {
+    console.log(`Processing single file: ${inputPath}`);
+    processWordListFile(inputPath);
+  } else {
+    console.error(`Path is neither a file nor a directory: ${inputPath}`);
+    process.exit(1);
+  }
 }
 
 // Run the script
