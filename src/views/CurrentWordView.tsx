@@ -54,16 +54,17 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
     const letterWidth = 120; // Width of letter box in px
     const letterMargin = 5 * 2; // Margin on each side of letter (from CSS)
     const letterBorder = 2 * 2; // Border width on each side of letter (from CSS)
-    const positionWidth = 20; // Width of position container with margins
+    const positionWidth = 15; // Base width of insert icon and its container
+    const positionPadding = 8 * 2; // Horizontal padding of position container (16px total)
     const containerPadding = 10 * 2; // Padding of the word-display container
     const outerContainerPadding = 20 * 2; // Padding of the outer container
     
     // Calculate total width needed:
     // (letterWidth + letterMargin + letterBorder) * maxWordLength + 
-    // positionWidth * (maxWordLength + 1) + 
+    // (positionWidth + positionPadding) * (maxWordLength + 1) + 
     // containerPadding + outerContainerPadding
     const totalWidth = (letterWidth + letterMargin + letterBorder) * maxWordLength + 
-                        positionWidth * (maxWordLength + 1) + 
+                        (positionWidth + positionPadding) * (maxWordLength + 1) + 
                         containerPadding + outerContainerPadding;
     
     // Add a little extra buffer to ensure everything fits

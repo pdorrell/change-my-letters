@@ -107,6 +107,7 @@ body {
     flex-wrap: nowrap; // Prevent wrapping
     overflow: visible; // Allow content to overflow without scrollbars
     width: 100%; // Use full width of the parent container
+    gap: 0; // Remove any gap between flex items
   }
 }
 
@@ -114,6 +115,7 @@ body {
 .letter-container {
   position: relative;
   margin: 5px;
+  padding: 0;
   
   .letter {
     display: flex;
@@ -159,7 +161,8 @@ body {
 // Position styles
 .position-container {
   position: relative;
-  margin: 0 2px;
+  margin: 0;
+  padding: 0 8px; // Add horizontal padding
   
   .insert-icon {
     background: none;
