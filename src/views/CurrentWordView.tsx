@@ -96,13 +96,10 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
           {/* Add placeholders to fill up to max word length */}
           {placeholdersNeeded > 0 && Array(placeholdersNeeded).fill(0).map((_, index) => (
             <React.Fragment key={`placeholder-${index}`}>
-              <PositionPlaceholder />
               <LetterPlaceholder />
+              <PositionPlaceholder />
             </React.Fragment>
           ))}
-          
-          {/* Add a final position placeholder if needed */}
-          {placeholdersNeeded > 0 && <PositionPlaceholder />}
         </div>
       </div>
     </div>
