@@ -57,6 +57,7 @@ The `examples` directory contains sample word lists that can be used with the ap
 - `npm run lint` - Run ESLint
 - `npm run lint:fix` - Run ESLint and automatically fix issues when possible
 - `npm run test` - Run tests
+- `npm run serve` - Serve the production build on http://localhost:3001/
 
 ## Deployment
 
@@ -73,8 +74,9 @@ After running one of the deployment commands, upload the contents of the `dist` 
 
 For quick local testing of the production build:
 ```
-npx serve -s dist
+npm run serve
 ```
+This will serve the application at http://localhost:3001/
 
 For deployment to services like Netlify, Vercel, or GitHub Pages, configure the service to:
 1. Run `npm run deploy` as the build command
