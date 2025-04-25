@@ -20,7 +20,13 @@ export default (env, argv) => {
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: '[name].[contenthash].js',
-      clean: true
+      clean: {
+        dry: false,
+        keep: (asset) => {
+          // Keep .git directory and any dot files/directories
+          return asset.includes('/.git') || /\/\.[^/]+$/.test(asset);
+        }
+      }
     },
     resolve: {
       extensions: ['.tsx', '.ts', '.js', '.jsx'],

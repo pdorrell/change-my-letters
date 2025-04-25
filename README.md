@@ -52,7 +52,8 @@ The `examples` directory contains sample word lists that can be used with the ap
 ## Development
 
 - `npm start` - Start the development server
-- `npm run build` - Build for production
+- `npm run build` - Build for production (preserves `.git` directory in dist folder)
+- `npm run build:webpack` - Direct webpack build without git preservation
 - `npm run typecheck` - Run TypeScript type checking
 - `npm run lint` - Run ESLint
 - `npm run lint:fix` - Run ESLint and automatically fix issues when possible
@@ -82,3 +83,11 @@ For deployment to services like Netlify, Vercel, or GitHub Pages, configure the 
 1. Run `npm run deploy` as the build command
 2. Use `dist` as the publish directory
 3. Configure for client-side routing by serving `index.html` for all routes (for 404 fallbacks)
+
+### Git-based Deployment
+
+If you're using a git-based deployment workflow where you need to maintain a `.git` directory in your `dist` folder:
+
+1. The build process automatically preserves the `.git` directory in the `dist` folder
+2. You can safely run `npm run deploy` or `npm run build` without losing git history
+3. After building, you can `cd` into the `dist` directory and use git commands directly for deployment
