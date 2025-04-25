@@ -52,7 +52,29 @@ The `examples` directory contains sample word lists that can be used with the ap
 ## Development
 
 - `npm start` - Start the development server
-- `npm build` - Build for production
-- `npm typecheck` - Run TypeScript type checking
-- `npm lint` - Run ESLint
-- `npm test` - Run tests
+- `npm run build` - Build for production
+- `npm run typecheck` - Run TypeScript type checking
+- `npm run lint` - Run ESLint
+- `npm run test` - Run tests
+
+## Deployment
+
+The application can be deployed to any static web hosting service:
+
+- `npm run deploy` - Run typechecking, linting, tests, and build the project for production
+- `npm run deploy:skip-tests` - Run typechecking, linting, and build (skipping tests)
+- `npm run deploy:quick` - Quick build for production (skips all checks)
+
+After running one of the deployment commands, upload the contents of the `dist` directory to your web hosting service.
+
+### Deployment Options
+
+For quick local testing of the production build:
+```
+npx serve -s dist
+```
+
+For deployment to services like Netlify, Vercel, or GitHub Pages, configure the service to:
+1. Run `npm run deploy` as the build command
+2. Use `dist` as the publish directory
+3. Configure for client-side routing by serving `index.html` for all routes (for 404 fallbacks)

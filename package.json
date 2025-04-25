@@ -12,7 +12,10 @@
     "test": "jest",
     "generate-word-graphs": "tsx src/scripts/generateWordGraphs.ts",
     "analyze-word-graphs": "tsx src/scripts/analyzeWordGraph.ts",
-    "trim-small-subgraphs": "tsx src/scripts/trimSmallSubgraphs.ts"
+    "trim-small-subgraphs": "tsx src/scripts/trimSmallSubgraphs.ts",
+    "deploy": "npm run typecheck && npm run lint && npm run test && npm run build",
+    "deploy:skip-tests": "npm run typecheck && npm run lint && npm run build",
+    "deploy:quick": "npm run build"
   },
   "dependencies": {
     "mobx": "^6.12.0",
