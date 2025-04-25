@@ -55,6 +55,7 @@ The `examples` directory contains sample word lists that can be used with the ap
 - `npm run build` - Build for production
 - `npm run typecheck` - Run TypeScript type checking
 - `npm run lint` - Run ESLint
+- `npm run lint:fix` - Run ESLint and automatically fix issues when possible
 - `npm run test` - Run tests
 
 ## Deployment
@@ -64,6 +65,7 @@ The application can be deployed to any static web hosting service:
 - `npm run deploy` - Run typechecking, linting, tests, and build the project for production
 - `npm run deploy:skip-tests` - Run typechecking, linting, and build (skipping tests)
 - `npm run deploy:quick` - Quick build for production (skips all checks)
+- `npm run deploy:fix` - Run typechecking, auto-fix linting issues, run tests, and build for production
 
 After running one of the deployment commands, upload the contents of the `dist` directory to your web hosting service.
 
