@@ -16,10 +16,11 @@ body {
 // Utility classes
 .hidden {
   visibility: hidden;
+  pointer-events: none; // Prevent interactions with hidden elements
 }
 
 .app-container {
-  max-width: 1200px; // Increased to accommodate longer words
+  max-width: 98vw; // Almost full width of the viewport
   margin: 0 auto;
   padding: 20px;
   overflow: visible; // Allow menus to extend beyond container
@@ -80,7 +81,6 @@ body {
 // Current word styles
 .word-outer-container {
   max-width: 100%;
-  // Width is now dynamically calculated in the component
   margin: 0 auto;
   padding: 20px;
   border-radius: 12px;
@@ -90,6 +90,36 @@ body {
   &.previously-visited {
     background-color: #ffe4e1; // Light pink
   }
+  
+  @media (max-width: 768px) {
+    padding: 10px;
+    
+    // Scale elements down on smaller screens
+    .letter {
+      transform: scale(0.85);
+      transform-origin: center center;
+    }
+    
+    .position-container {
+      transform: scale(0.85);
+      transform-origin: center center;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    padding: 5px;
+    
+    // Scale elements down even more on very small screens
+    .letter {
+      transform: scale(0.7);
+      transform-origin: center center;
+    }
+    
+    .position-container {
+      transform: scale(0.7);
+      transform-origin: center center;
+    }
+  }
 }
 
 .current-word-container {
@@ -97,16 +127,16 @@ body {
   border-radius: 8px;
   background-color: white;
   overflow: visible;
-  width: 100%; // Use full width of the parent container
+  width: fit-content; // Size to content instead of explicit width
+  margin: 0 auto; // Center horizontally
   
   .word-display {
     padding: 10px;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center; // Center contents
     flex-wrap: nowrap; // Prevent wrapping
     overflow: visible; // Allow content to overflow without scrollbars
-    width: 100%; // Use full width of the parent container
     gap: 0; // Remove any gap between flex items
   }
 }

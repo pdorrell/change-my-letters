@@ -14,13 +14,21 @@ jest.mock('mobx-react-lite', () => ({
 // Mock child components
 jest.mock('../../src/views/LetterView', () => ({
   LetterView: ({ letter }: { letter: Letter }) => (
-    <div data-testid="letter-view" data-letter={letter.value}>{letter.value}</div>
+    <div data-testid="letter-view" data-letter={letter.value} className="letter-container">{letter.value}</div>
+  ),
+  LetterPlaceholder: () => (
+    <div data-testid="letter-view" className="letter-container letter-placeholder">
+      <div className="letter hidden">x</div>
+    </div>
   )
 }));
 
 jest.mock('../../src/views/PositionView', () => ({
   PositionView: ({ position }: { position: Position }) => (
     <div data-testid="position-view" data-position={position.index}></div>
+  ),
+  PositionPlaceholder: () => (
+    <div data-testid="position-view" className="position-placeholder"></div>
   )
 }));
 
@@ -54,13 +62,13 @@ jest.mock('../../src/models/WordGraph', () => {
   return {
     WordGraph: jest.fn().mockImplementation(() => {
       return {
-        words: new Set(['cat', 'bat', 'rat']),
-        hasWord: jest.fn((word) => ['cat', 'bat', 'rat'].includes(word)),
+        words: new Set(['cat', 'bat', 'rat', 'slate']), // Added a longer word to test placeholders
+        hasWord: jest.fn((word) => ['cat', 'bat', 'rat', 'slate'].includes(word)),
         getWordNode: jest.fn(),
         loadFromJson: jest.fn(),
         toJson: jest.fn(),
         computeFromWordList: jest.fn(),
-        identifyConnectedSubgraphs: jest.fn(() => [new Set(['cat', 'bat', 'rat'])]),
+        identifyConnectedSubgraphs: jest.fn(() => [new Set(['cat', 'bat', 'rat', 'slate'])]),
         generateSubgraphReport: jest.fn(),
         canDeleteLetterAt: jest.fn(),
         getPossibleReplacements: jest.fn(),
@@ -169,5 +177,20 @@ describe('CurrentWordView', () => {
     expect(displayContainers[4].getAttribute('data-testid')).toBe('position-view');
     expect(displayContainers[5].getAttribute('data-testid')).toBe('letter-view');
     expect(displayContainers[6].getAttribute('data-testid')).toBe('position-view');
+  });
+  
+  it('renders the current word properly', () => {
+    const { getAllByTestId } = render(<CurrentWordView currentWord={currentWord} />);
+    
+    // Get all letter views
+    const letterViews = getAllByTestId('letter-view');
+    
+    // Should have 3 letters for 'cat'
+    expect(letterViews.length).toBe(3);
+    
+    // Check the letter values
+    expect(letterViews[0].getAttribute('data-letter')).toBe('c');
+    expect(letterViews[1].getAttribute('data-letter')).toBe('a');
+    expect(letterViews[2].getAttribute('data-letter')).toBe('t');
   });
 });

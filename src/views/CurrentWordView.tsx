@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { CurrentWord } from '../models/CurrentWord';
-import { LetterView } from './LetterView';
-import { PositionView } from './PositionView';
+import { LetterView, LetterPlaceholder } from './LetterView';
+import { PositionView, PositionPlaceholder } from './PositionView';
 import { getAppState } from '../App';
 
 interface CurrentWordViewProps {
@@ -45,57 +45,45 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
     };
   }, [appState]);
   
-  // Calculate container width based on maximum word length
-  const calculateContainerWidth = (): { width: string } => {
-    // Get maximum word length from the word graph or use current word length as fallback
-    let maxWordLength = currentWord.value.length;
+  // Get maximum word length from the word graph
+  const getMaxWordLength = (): number => {
+    let maxWordLength = 0;
     
     // Only try to get max word length from wordGraph if it exists
-    if (appState.wordGraph?.words) {
+    if (appState.wordGraph?.words && appState.wordGraph.words.size > 0) {
       try {
         maxWordLength = Math.max(
-          maxWordLength,
           ...Array.from(appState.wordGraph.words).map(word => word.length)
         );
       } catch (error) {
-        // In test environment, fallback to current word length
-        console.debug('Could not calculate max word length from word graph, using current word length');
+        // In case of an error, use a reasonable default
+        console.debug('Could not calculate max word length from word graph, using default of 5');
+        maxWordLength = 5;
       }
+    } else {
+      // Default to 5 if no words are loaded yet
+      maxWordLength = 5;
     }
     
-    // Constants for width calculation
-    const letterWidth = 120; // Width of letter box in px
-    const letterMargin = 5 * 2; // Margin on each side of letter (from CSS)
-    const letterBorder = 2 * 2; // Border width on each side of letter (from CSS)
-    const positionWidth = 15; // Base width of insert icon and its container
-    const positionPadding = 8 * 2; // Horizontal padding of position container (16px total)
-    const containerPadding = 10 * 2; // Padding of the word-display container
-    const outerContainerPadding = 20 * 2; // Padding of the outer container
-    
-    // Calculate total width needed:
-    // (letterWidth + letterMargin + letterBorder) * maxWordLength + 
-    // (positionWidth + positionPadding) * (maxWordLength + 1) + 
-    // containerPadding + outerContainerPadding
-    const totalWidth = (letterWidth + letterMargin + letterBorder) * maxWordLength + 
-                        (positionWidth + positionPadding) * (maxWordLength + 1) + 
-                        containerPadding + outerContainerPadding;
-    
-    // Add a little extra buffer to ensure everything fits
-    const finalWidth = totalWidth + 20;
-    
-    return { width: `${finalWidth}px` };
+    return maxWordLength;
   };
   
-  const containerStyle = calculateContainerWidth();
+  // Get the current word length
+  const currentWordLength = currentWord.value.length;
+  
+  // Get the maximum word length from the word graph
+  const maxWordLength = getMaxWordLength();
+  
+  // Calculate placeholders needed
+  const placeholdersNeeded = Math.max(0, maxWordLength - currentWordLength);
   
   return (
     <div 
       className={`word-outer-container ${currentWord.previouslyVisited ? 'previously-visited' : ''}`}
-      style={containerStyle}
     >      
       <div className="current-word-container">
         <div className="word-display">
-          {/* Render alternating sequence of positions and letters */}
+          {/* Render alternating sequence of positions and letters for the current word */}
           {currentWord.positions.map((position, index) => (
             <React.Fragment key={`position-${index}`}>
               <PositionView position={position} />
@@ -104,6 +92,17 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
               )}
             </React.Fragment>
           ))}
+          
+          {/* Add placeholders to fill up to max word length */}
+          {placeholdersNeeded > 0 && Array(placeholdersNeeded).fill(0).map((_, index) => (
+            <React.Fragment key={`placeholder-${index}`}>
+              <PositionPlaceholder />
+              <LetterPlaceholder />
+            </React.Fragment>
+          ))}
+          
+          {/* Add a final position placeholder if needed */}
+          {placeholdersNeeded > 0 && <PositionPlaceholder />}
         </div>
       </div>
     </div>

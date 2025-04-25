@@ -9,6 +9,18 @@ interface PositionViewProps {
 }
 
 /**
+ * Placeholder component that maintains the same dimensions as a position
+ * but is invisible to the user
+ */
+export const PositionPlaceholder: React.FC = () => {
+  return (
+    <div className="position-container">
+      <button className="insert-icon hidden" data-testid="position-view">➕</button>
+    </div>
+  );
+};
+
+/**
  * View component for displaying a position where letters can be inserted
  */
 export const PositionView: React.FC<PositionViewProps> = observer(({ position }) => {

@@ -9,6 +9,24 @@ interface LetterViewProps {
 }
 
 /**
+ * Placeholder component that maintains the same dimensions as a letter
+ * but is invisible to the user
+ */
+export const LetterPlaceholder: React.FC = () => {
+  return (
+    <div className="letter-container">
+      <div className="letter hidden" data-testid="letter-view">
+        x
+      </div>
+      <div className="letter-actions hidden">
+        <button className="delete-icon hidden">🗑️</button>
+        <button className="replace-icon hidden">🔄</button>
+      </div>
+    </div>
+  );
+};
+
+/**
  * View component for displaying a single letter
  */
 export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
