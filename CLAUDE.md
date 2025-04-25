@@ -216,3 +216,20 @@ Here is a suggested initial styling:
    * For letter menu choices this pink colour is the background colour.
    * For delete icon the pink colour replaces the icon's default background colour (the default background
      could just be transparent).
+
+# Deployment
+
+The application will be deployed to a static web server via a local git repository (where I will separately
+connect this to a remote repository and configure deployment from the remote repository to the actual web hosting service).
+
+There will be a `deploy` npm script which will make a copy of the files required for deployment in the 
+`deploy` sub-directory. The `deploy` sub-directory will be git-ignored in this project, and it will have it's
+own local git repository setup.
+
+Some files will be generated each time the `deploy` script is run. For data files that are copied as is, the deploy
+script will check if the source file is newer than the existing destination file (this is to allow for efficient
+updating of large numbers of data files that may exist in the future).
+
+The `deploy` script should not delete any destination files, unless run with the `--purge` option.
+
+The result should be a website that can be accessed locally by the `file:///<project-base-dir>/deploy/index.html` in the browser.
