@@ -58,8 +58,8 @@ export class ErrorHandler {
   /**
    * Capture and display an error
    */
-  static captureError(message: string, error?: Error | any): void {
-    const errorMsg = error ? `${message}\n${error.stack || error}` : message;
+  static captureError(message: string, error?: Error | unknown): void {
+    const errorMsg = error ? `${message}\n${error instanceof Error ? error.stack : String(error)}` : message;
 
     // Add to our list of errors
     ErrorHandler.errors.push(errorMsg);
@@ -161,11 +161,11 @@ export class ErrorHandler {
   /**
    * Send error to the webpack server
    */
-  static sendErrorToServer(message: string, error?: any): void {
+  static sendErrorToServer(message: string, error?: Error | unknown): void {
     try {
       const errorData = {
         message,
-        stack: error?.stack,
+        stack: error instanceof Error ? error.stack : undefined,
         timestamp: new Date().toISOString()
       };
 

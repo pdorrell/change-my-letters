@@ -25,7 +25,8 @@ export class WordGraph {
   /**
    * Get all words connected to the given word
    */
-  getConnectedWords(word: string): string[] {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getConnectedWords(_word: string): string[] {
     // This method is not used in the new implementation
     // but kept for compatibility with scripts
     return [];
@@ -34,7 +35,8 @@ export class WordGraph {
   /**
    * Get possible letter replacements for a position in a word
    */
-  getPossibleReplacements(word: string, position: number): string[] {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getPossibleReplacements(_word: string, _position: number): string[] {
     // This is used in generateWordGraphs.ts for compatibility
     return [];
   }
@@ -42,7 +44,8 @@ export class WordGraph {
   /**
    * Get possible letters that can be inserted at a position in a word
    */
-  getPossibleInsertions(word: string, position: number): string[] {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getPossibleInsertions(_word: string, _position: number): string[] {
     // This is used in generateWordGraphs.ts for compatibility
     return [];
   }
@@ -50,7 +53,8 @@ export class WordGraph {
   /**
    * Check if deleting a letter at the specified position results in a valid word
    */
-  canDeleteLetterAt(word: string, position: number): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  canDeleteLetterAt(_word: string, _position: number): boolean {
     // This is used in generateWordGraphs.ts for compatibility
     return false;
   }
@@ -58,7 +62,8 @@ export class WordGraph {
   /**
    * Check if changing case of a letter results in a valid word
    */
-  canChangeCaseAt(word: string, position: number): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  canChangeCaseAt(_word: string, _position: number): boolean {
     // This is used in generateWordGraphs.ts for compatibility
     return false;
   }
@@ -67,7 +72,7 @@ export class WordGraph {
    * Generate the word graph from a list of words
    * This is a new method that replaces the old processing logic
    */
-  generateWordGraph(wordList: string[]): Record<string, any> {
+  generateWordGraph(wordList: string[]): Record<string, Record<string, unknown>> {
     const builder = new WordGraphBuilder(wordList);
     return builder.build();
   }

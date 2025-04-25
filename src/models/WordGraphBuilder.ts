@@ -21,7 +21,7 @@ export class WordGraphBuilder {
   /**
    * Build the word graph
    */
-  build(): Record<string, any> {
+  build(): Record<string, Record<string, unknown>> {
     this.processDeleteInsertOperations();
     this.processReplaceOperations();
     this.processCaseOperations();
@@ -215,11 +215,11 @@ export class WordGraphBuilder {
   /**
    * Create the final JSON representation of the graph
    */
-  private createGraphJson(): Record<string, any> {
-    const jsonGraph: Record<string, any> = {};
+  private createGraphJson(): Record<string, Record<string, unknown>> {
+    const jsonGraph: Record<string, Record<string, unknown>> = {};
     
     for (const word of this.words) {
-      const wordData: Record<string, any> = {};
+      const wordData: Record<string, unknown> = {};
       
       // Process deletions
       if (this.deleteMap.has(word)) {

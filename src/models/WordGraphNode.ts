@@ -75,7 +75,7 @@ export class WordGraphNode {
   /**
    * Create a WordGraphNode from the JSON representation
    */
-  static fromJson(word: string, data: Record<string, any>): WordGraphNode {
+  static fromJson(word: string, data: Record<string, unknown>): WordGraphNode {
     const wordLength = word.length;
 
     /**
@@ -123,13 +123,13 @@ export class WordGraphNode {
     }
 
     // Process string arrays (inserts, replaces)
-    const inserts = parseSlashSeparatedString(data.insert, wordLength + 1);
-    const replaces = parseSlashSeparatedString(data.replace, wordLength);
+    const inserts = parseSlashSeparatedString(data.insert as string | undefined, wordLength + 1);
+    const replaces = parseSlashSeparatedString(data.replace as string | undefined, wordLength);
 
     // Process boolean arrays (deletes, uppercase, lowercase)
-    const deletes = parseBooleanString(data.delete, wordLength);
-    const uppercase = parseBooleanString(data.uppercase, wordLength);
-    const lowercase = parseBooleanString(data.lowercase, wordLength);
+    const deletes = parseBooleanString(data.delete as string | undefined, wordLength);
+    const uppercase = parseBooleanString(data.uppercase as string | undefined, wordLength);
+    const lowercase = parseBooleanString(data.lowercase as string | undefined, wordLength);
 
     return new WordGraphNode(
       word,
@@ -144,8 +144,8 @@ export class WordGraphNode {
   /**
    * Convert this node to its JSON representation
    */
-  toJson(): Record<string, any> {
-    const result: Record<string, any> = {};
+  toJson(): Record<string, unknown> {
+    const result: Record<string, unknown> = {};
     
     // Convert boolean arrays to strings, using the actual letters from the word
     if (this.deletes.some(val => val)) {

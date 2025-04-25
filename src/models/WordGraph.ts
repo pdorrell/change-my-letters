@@ -198,8 +198,8 @@ export class WordGraph {
   /**
    * Convert the graph to its JSON representation
    */
-  toJson(): Record<string, any> {
-    const jsonGraph: Record<string, any> = {};
+  toJson(): Record<string, Record<string, unknown>> {
+    const jsonGraph: Record<string, Record<string, unknown>> = {};
     
     // Convert each WordGraphNode to its JSON representation
     for (const [word, node] of this.wordNodes.entries()) {
@@ -219,7 +219,7 @@ export class WordGraph {
   /**
    * Load a pre-computed word graph from JSON
    */
-  loadFromJson(jsonData: Record<string, any>): void {
+  loadFromJson(jsonData: Record<string, Record<string, unknown>>): void {
     this.wordNodes.clear();
     this.words.clear();
 

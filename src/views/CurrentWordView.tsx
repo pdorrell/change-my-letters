@@ -47,8 +47,21 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
   
   // Calculate container width based on maximum word length
   const calculateContainerWidth = (): { width: string } => {
-    // Get maximum word length from the word graph
-    const maxWordLength = Math.max(...Array.from(appState.wordGraph.words).map(word => word.length));
+    // Get maximum word length from the word graph or use current word length as fallback
+    let maxWordLength = currentWord.value.length;
+    
+    // Only try to get max word length from wordGraph if it exists
+    if (appState.wordGraph?.words) {
+      try {
+        maxWordLength = Math.max(
+          maxWordLength,
+          ...Array.from(appState.wordGraph.words).map(word => word.length)
+        );
+      } catch (error) {
+        // In test environment, fallback to current word length
+        console.debug('Could not calculate max word length from word graph, using current word length');
+      }
+    }
     
     // Constants for width calculation
     const letterWidth = 120; // Width of letter box in px

@@ -54,7 +54,7 @@ function trimSmallSubgraphs(filePath: string, maxSize: number): void {
   
   try {
     // Read and parse the word list
-    let wordList = fs.readFileSync(filePath, 'utf-8')
+    const wordList = fs.readFileSync(filePath, 'utf-8')
       .split('\n')
       .filter(word => word.trim().length > 0);
     

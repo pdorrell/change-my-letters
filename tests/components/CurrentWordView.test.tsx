@@ -76,7 +76,11 @@ jest.mock('../../src/models/WordGraph', () => {
 const mockAppState = {
   closeAllMenus: jest.fn(),
   activeMenuType: 'none',
-  activeButtonElement: null
+  activeButtonElement: null,
+  wordGraph: { 
+    // Include minimal wordGraph to avoid test errors
+    words: new Set(['cat', 'bat', 'rat'])
+  }
 };
 
 jest.mock('../../src/App', () => ({
@@ -95,7 +99,7 @@ describe('CurrentWordView', () => {
     
     // Manually set up the word state for testing
     currentWord.value = 'cat';
-    currentWord.wasPreviouslyVisited = false;
+    currentWord.previouslyVisited = false;
     
     // Create letters
     currentWord.letters = [
@@ -133,8 +137,8 @@ describe('CurrentWordView', () => {
   });
   
   it('sets previouslyVisited property', () => {
-    currentWord.wasPreviouslyVisited = true;
-    expect(currentWord.wasPreviouslyVisited).toBe(true);
+    currentWord.previouslyVisited = true;
+    expect(currentWord.previouslyVisited).toBe(true);
     
     const { container } = render(<CurrentWordView currentWord={currentWord} />);
     
@@ -143,8 +147,8 @@ describe('CurrentWordView', () => {
   });
   
   it('handles non-previously-visited words', () => {
-    currentWord.wasPreviouslyVisited = false;
-    expect(currentWord.wasPreviouslyVisited).toBe(false);
+    currentWord.previouslyVisited = false;
+    expect(currentWord.previouslyVisited).toBe(false);
     
     render(<CurrentWordView currentWord={currentWord} />);
     
