@@ -71,17 +71,24 @@ export default (env, argv) => {
       }),
       new CopyWebpackPlugin({
         patterns: [
-          { 
-            from: 'src/data', 
-            to: 'data' 
+          {
+            from: 'src/data/wordlists/*.{json,txt}',
+            to: 'data/wordlists/[name][ext]',
+            noErrorOnMissing: true
           }
         ]
       })
     ],
     devServer: {
-      static: {
-        directory: path.join(__dirname, 'public')
-      },
+      static: [
+        {
+          directory: path.join(__dirname, 'public')
+        },
+        {
+          directory: path.join(__dirname, 'deploy/assets'),
+          publicPath: '/assets'
+        }
+      ],
       hot: true,
       compress: true,
       port: 3000,
@@ -98,10 +105,10 @@ export default (env, argv) => {
         if (!devServer) {
           throw new Error('webpack-dev-server is not defined');
         }
-        
+
         // Add error logging middleware
         middlewares.unshift(setupErrorLogger());
-        
+
         return middlewares;
       }
     },

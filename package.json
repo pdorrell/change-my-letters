@@ -15,10 +15,14 @@
     "generate-word-graphs": "tsx src/scripts/generateWordGraphs.ts",
     "analyze-word-graphs": "tsx src/scripts/analyzeWordGraph.ts",
     "trim-small-subgraphs": "tsx src/scripts/trimSmallSubgraphs.ts",
-    "deploy": "npm run typecheck && npm run lint && npm run test && npm run build",
-    "deploy:skip-tests": "npm run typecheck && npm run lint && npm run build",
-    "deploy:quick": "npm run build",
-    "deploy:fix": "npm run typecheck && npm run lint:fix && npm run test && npm run build",
+    "build-dist": "npm run typecheck && npm run lint && npm run test && npm run build",
+    "build-dist:skip-tests": "npm run typecheck && npm run lint && npm run build",
+    "build-dist:quick": "npm run build",
+    "build-dist:fix": "npm run typecheck && npm run lint:fix && npm run test && npm run build",
+    "deploy": "npm run build-dist && node scripts/deploy-to-target.js",
+    "deploy:skip-tests": "npm run build-dist:skip-tests && node scripts/deploy-to-target.js",
+    "deploy:quick": "npm run build-dist:quick && node scripts/deploy-to-target.js",
+    "deploy:fix": "npm run build-dist:fix && node scripts/deploy-to-target.js",
     "serve": "npx serve -s dist -l 3001"
   },
   "dependencies": {
