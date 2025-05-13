@@ -33,12 +33,12 @@ export class AppState {
   constructor() {
     // Initial word - will be replaced with proper initialization
     const initialWord = 'bet';
-    this.currentWord = new CurrentWord(initialWord);
+    this.currentWord = new CurrentWord(initialWord, this);
     this.history = new HistoryModel(initialWord);
     this.wordGraph = new WordGraph();
-    
+
     makeAutoObservable(this);
-    
+
     // Load the word graph
     this.loadWordGraph();
   }
@@ -126,9 +126,14 @@ export class AppState {
    * Set a new current word
    */
   setNewWord(word: string): void {
-    this.currentWord.updateWord(word);
+    // If the current word object doesn't exist yet, create it
+    if (!this.currentWord) {
+      this.currentWord = new CurrentWord(word, this);
+    } else {
+      this.currentWord.updateWord(word);
+    }
     this.updateCurrentWordState();
-    
+
     // Close any open menus when the word changes
     this.closeAllMenus();
   }

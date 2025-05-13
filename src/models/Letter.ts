@@ -1,4 +1,5 @@
 import { makeAutoObservable } from 'mobx';
+import { CurrentWord } from './CurrentWord';
 
 /**
  * Model representing a single letter in the current word
@@ -6,36 +7,40 @@ import { makeAutoObservable } from 'mobx';
 export class Letter {
   // The letter value
   value: string;
-  
+
   // Position in the word
   position: number;
-  
+
+  // Reference to the parent word
+  word: CurrentWord;
+
   // Whether the letter can be deleted
   canDelete: boolean = false;
-  
+
   // Whether the letter can be replaced and the potential replacements
   canReplace: boolean = false;
   replacements: string[] = [];
-  
+
   // Whether this letter can be upper or lower cased
   canUpperCase: boolean = false;
   canLowerCase: boolean = false;
-  
+
   // Is the replacement menu currently open
   isReplaceMenuOpen: boolean = false;
-  
-  constructor(letter: string, position: number) {
+
+  constructor(letter: string, position: number, word: CurrentWord) {
     this.value = letter;
     this.position = position;
-    
+    this.word = word;
+
     // In a real implementation, these would be determined by the word graph
     this.canDelete = true;
     this.canReplace = true;
-    
+
     // Add some sample replacements
     const alphabet = 'abcdefghijklmnopqrstuvwxyz';
     const vowels = 'aeiou';
-    
+
     // For sample purposes, we'll add some replacement letters
     if (vowels.includes(letter.toLowerCase())) {
       // For vowels, use other vowels as replacements
@@ -50,13 +55,13 @@ export class Letter {
           .filter(char => !vowels.includes(char) && char !== letter.toLowerCase());
       }
     }
-    
+
     this.canUpperCase = letter === letter.toLowerCase() && letter !== '';
     this.canLowerCase = letter === letter.toUpperCase() && letter !== '';
-    
+
     makeAutoObservable(this);
   }
-  
+
   toggleReplaceMenu(): void {
     this.isReplaceMenuOpen = !this.isReplaceMenuOpen;
   }

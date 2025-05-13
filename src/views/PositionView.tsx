@@ -2,7 +2,6 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Position } from '../models/Position';
 import { LetterChoiceMenu } from './CurrentWordView';
-import { getAppState } from '../App';
 
 interface PositionViewProps {
   position: Position;
@@ -24,9 +23,11 @@ export const PositionPlaceholder: React.FC = () => {
  * View component for displaying a position where letters can be inserted
  */
 export const PositionView: React.FC<PositionViewProps> = observer(({ position }) => {
-  const appState = getAppState();
-  
+  const appState = position.word.appState;
+
   const handleInsertClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    // Store appState reference on the button element for menu positioning
+    (event.currentTarget as any).__appState = appState;
     appState.openMenu('insert', position.index, event.currentTarget);
   };
 
@@ -37,7 +38,7 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ position })
 
   return (
     <div className="position-container">
-      <button 
+      <button
         onClick={(e) => handleInsertClick(e)}
         disabled={!position.canInsert}
         className={`insert-icon ${!position.canInsert ? 'hidden' : ''}`}
@@ -45,10 +46,10 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ position })
       >
         ➕
       </button>
-      
+
       {position.isInsertMenuOpen && (
-        <LetterChoiceMenu 
-          options={position.insertOptions} 
+        <LetterChoiceMenu
+          options={position.insertOptions}
           onSelect={handleLetterChoice}
           previouslyVisited={[]} // We'll add this functionality later
         />

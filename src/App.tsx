@@ -3,39 +3,37 @@ import { observer } from 'mobx-react-lite';
 import { CurrentWordView } from './views/CurrentWordView';
 import { AppState } from './models/AppState';
 
-// Main application state
-const appState = new AppState();
+interface AppProps {
+  appState: AppState;
+}
 
-// Export for use in child components
-export const getAppState = () => appState;
-
-const App: React.FC = observer(() => {
+const App: React.FC<AppProps> = observer(({ appState }) => {
   return (
     <div className="app-container">
       <header>
         <h1>Change My Letters</h1>
         <div className="app-controls">
-          <button 
+          <button
             onClick={() => appState.resetGame()}
             title="Start a new game"
           >
             Start Over
           </button>
-          <button 
+          <button
             onClick={() => appState.undo()}
             disabled={!appState.history.canUndo}
             title="Undo last change"
           >
             Undo
           </button>
-          <button 
+          <button
             onClick={() => appState.redo()}
             disabled={!appState.history.canRedo}
             title="Redo last undone change"
           >
             Redo
           </button>
-          <button 
+          <button
             onClick={() => appState.navigateTo(appState.currentPage === 'wordView' ? 'historyView' : 'wordView')}
             title={appState.currentPage === 'wordView' ? 'View history' : 'Back to word'}
           >
@@ -53,7 +51,7 @@ const App: React.FC = observer(() => {
             <h2>Word History</h2>
             <div className="history-list">
               {appState.history.entries.map((entry, index) => (
-                <div 
+                <div
                   key={`history-${index}`}
                   className={`history-item ${index === appState.history.currentIndex ? 'current' : ''}`}
                   onClick={() => {

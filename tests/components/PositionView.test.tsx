@@ -2,6 +2,7 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { PositionView } from '../../src/views/PositionView';
 import { Position } from '../../src/models/Position';
+import { CurrentWord } from '../../src/models/CurrentWord';
 
 // Mock MobX's observer
 jest.mock('mobx-react-lite', () => ({
@@ -21,15 +22,27 @@ jest.mock('../../src/views/CurrentWordView', () => ({
   ),
 }));
 
-// Mock the App context
+// Create mock appState
 const mockAppState = {
   openMenu: jest.fn(),
   closeAllMenus: jest.fn(),
   insertLetter: jest.fn(),
 };
 
-jest.mock('../../src/App', () => ({
-  getAppState: () => mockAppState,
+// Mock CurrentWord model
+const mockWord = {
+  appState: mockAppState
+};
+
+// Mock the Position class
+jest.mock('../../src/models/Position', () => ({
+  Position: jest.fn().mockImplementation((index) => ({
+    index,
+    word: mockWord,
+    canInsert: true,
+    insertOptions: ['a', 'e', 'i', 'o', 'u'],
+    isInsertMenuOpen: false
+  }))
 }));
 
 describe('PositionView', () => {

@@ -2,6 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { configure } from 'mobx';
 import App from './App';
+import { AppState } from './models/AppState';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ErrorHandler } from './utils/ErrorHandler';
 import './styles/main.scss';
@@ -16,6 +17,9 @@ configure({
 
 // Initialize global error handling
 ErrorHandler.initialize();
+
+// Create the application state
+const appState = new AppState();
 
 // Add some CSS for error display
 const style = document.createElement('style');
@@ -89,7 +93,7 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <ErrorBoundary>
-      <App />
+      <App appState={appState} />
     </ErrorBoundary>
   </React.StrictMode>
 );

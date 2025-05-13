@@ -2,7 +2,6 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Letter } from '../models/Letter';
 import { LetterChoiceMenu } from './CurrentWordView';
-import { getAppState } from '../App';
 
 interface LetterViewProps {
   letter: Letter;
@@ -30,9 +29,11 @@ export const LetterPlaceholder: React.FC = () => {
  * View component for displaying a single letter
  */
 export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
-  const appState = getAppState();
-  
+  const appState = letter.word.appState;
+
   const handleReplaceClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    // Store appState reference on the button element for menu positioning
+    (event.currentTarget as any).__appState = appState;
     appState.openMenu('replace', letter.position, event.currentTarget);
   };
 
@@ -58,9 +59,9 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
       <div className="letter">
         {letter.value}
       </div>
-      
+
       <div className="letter-actions">
-        <button 
+        <button
           onClick={handleDeleteClick}
           disabled={!letter.canDelete}
           className={`delete-icon ${!letter.canDelete ? 'hidden' : ''}`}
@@ -68,8 +69,8 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
         >
           🗑️
         </button>
-        
-        <button 
+
+        <button
           onClick={(e) => handleReplaceClick(e)}
           disabled={!letter.canReplace}
           className={`replace-icon ${!letter.canReplace ? 'hidden' : ''}`}
@@ -77,8 +78,8 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
         >
           🔄
         </button>
-        
-        <button 
+
+        <button
           onClick={handleCaseChange}
           disabled={!letter.canUpperCase}
           className={`case-icon ${!letter.canUpperCase ? 'hidden' : ''}`}
@@ -86,8 +87,8 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
         >
           ⬆️
         </button>
-        
-        <button 
+
+        <button
           onClick={handleCaseChange}
           disabled={!letter.canLowerCase}
           className={`case-icon ${!letter.canLowerCase ? 'hidden' : ''}`}
@@ -96,10 +97,10 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
           ⬇️
         </button>
       </div>
-      
+
       {letter.isReplaceMenuOpen && (
-        <LetterChoiceMenu 
-          options={letter.replacements.length ? letter.replacements : ['a', 'b', 'c']} 
+        <LetterChoiceMenu
+          options={letter.replacements.length ? letter.replacements : ['a', 'b', 'c']}
           onSelect={handleLetterChoice}
           previouslyVisited={[]} // We'll add this functionality later
         />

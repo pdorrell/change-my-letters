@@ -2,6 +2,7 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { LetterView } from '../../src/views/LetterView';
 import { Letter } from '../../src/models/Letter';
+import { CurrentWord } from '../../src/models/CurrentWord';
 
 // Mock MobX's observer
 jest.mock('mobx-react-lite', () => ({
@@ -21,7 +22,7 @@ jest.mock('../../src/views/CurrentWordView', () => ({
   ),
 }));
 
-// Mock the App context
+// Create mock appState
 const mockAppState = {
   openMenu: jest.fn(),
   closeAllMenus: jest.fn(),
@@ -30,9 +31,35 @@ const mockAppState = {
   replaceLetter: jest.fn(),
 };
 
-jest.mock('../../src/App', () => ({
-  getAppState: () => mockAppState,
-}));
+// Mock CurrentWord model
+jest.mock('../../src/models/CurrentWord', () => {
+  return {
+    CurrentWord: jest.fn().mockImplementation(() => ({
+      appState: mockAppState
+    }))
+  };
+});
+
+// Mock the Letter class
+jest.mock('../../src/models/Letter', () => {
+  const mockWord = {
+    appState: mockAppState
+  };
+
+  return {
+    Letter: jest.fn().mockImplementation((value, position) => ({
+      value,
+      position,
+      word: mockWord,
+      canDelete: true,
+      canReplace: true,
+      canUpperCase: false,
+      canLowerCase: false,
+      isReplaceMenuOpen: false,
+      replacements: []
+    }))
+  };
+});
 
 describe('LetterView', () => {
   beforeEach(() => {
@@ -42,7 +69,7 @@ describe('LetterView', () => {
   it('renders a letter with its value', () => {
     const letter = new Letter('a', 0);
     const { getByText } = render(<LetterView letter={letter} />);
-    
+
     expect(getByText('a')).toBeInTheDocument();
   });
   
