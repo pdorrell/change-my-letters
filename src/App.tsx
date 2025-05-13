@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { CurrentWordView } from './views/CurrentWordView';
+import { HistoryView } from './views/HistoryView';
 import { AppState } from './models/AppState';
 
 interface AppProps {
@@ -47,35 +48,7 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
         ) : appState.currentPage === 'wordView' ? (
           <CurrentWordView currentWord={appState.currentWord} />
         ) : (
-          <div className="history-view">
-            <h2>Word History</h2>
-            <div className="history-list">
-              {appState.history.entries.map((entry, index) => (
-                <div
-                  key={`history-${index}`}
-                  className={`history-item ${index === appState.history.currentIndex ? 'current' : ''}`}
-                  onClick={() => {
-                    const word = appState.history.jumpToIndex(index);
-                    if (word) {
-                      appState.setNewWord(word);
-                      appState.navigateTo('wordView');
-                    }
-                  }}
-                >
-                  <div className="history-word">{entry.word}</div>
-                  {entry.change && (
-                    <div className="history-change">
-                      {entry.change.type === 'delete_letter' && `Deleted letter at position ${entry.change.position}`}
-                      {entry.change.type === 'insert_letter' && `Inserted ${entry.change.letter} at position ${entry.change.position}`}
-                      {entry.change.type === 'replace_letter' && `Replaced letter at position ${entry.change.position} with ${entry.change.letter}`}
-                      {entry.change.type === 'upper_case_letter' && `Uppercased letter at position ${entry.change.position}`}
-                      {entry.change.type === 'lower_case_letter' && `Lowercased letter at position ${entry.change.position}`}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
+          <HistoryView history={appState.history} appState={appState} />
         )}
       </main>
     </div>
