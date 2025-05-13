@@ -1,0 +1,7 @@
+{
+  "included_extensions":  [".sh"],
+  "excluded_extensions":  [],
+  "included_files":  [],
+  "excluded_files":  [],
+  "excluded_dirs": ["deploy"]
+}
