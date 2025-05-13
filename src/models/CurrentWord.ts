@@ -40,12 +40,12 @@ export class CurrentWord {
     this.positions = [];
 
     // Create position before first letter
-    this.positions.push(new Position(0, this));
+    this.positions.push(new Position(this, 0));
 
     // Create letters and positions between letters
     for (let i = 0; i < word.length; i++) {
-      this.letters.push(new Letter(word[i], i, this));
-      this.positions.push(new Position(i + 1, this));
+      this.letters.push(new Letter(this, word[i], i));
+      this.positions.push(new Position(this, i + 1));
     }
   }
 

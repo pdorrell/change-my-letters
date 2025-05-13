@@ -28,7 +28,7 @@ export class Letter {
   // Is the replacement menu currently open
   isReplaceMenuOpen: boolean = false;
 
-  constructor(letter: string, position: number, word: CurrentWord) {
+  constructor(word: CurrentWord, letter: string, position: number) {
     this.value = letter;
     this.position = position;
     this.word = word;

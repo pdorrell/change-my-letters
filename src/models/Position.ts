@@ -20,7 +20,7 @@ export class Position {
   // Whether the insert menu is currently open
   isInsertMenuOpen: boolean = false;
 
-  constructor(index: number, word: CurrentWord) {
+  constructor(word: CurrentWord, index: number) {
     this.index = index;
     this.word = word;
 
