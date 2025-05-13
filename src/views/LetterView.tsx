@@ -32,8 +32,6 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
   const appState = letter.word.appState;
 
   const handleReplaceClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    // Store appState reference on the button element for menu positioning
-    (event.currentTarget as any).__appState = appState;
     appState.openMenu('replace', letter.position, event.currentTarget);
   };
 
@@ -100,9 +98,10 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
 
       {letter.isReplaceMenuOpen && (
         <LetterChoiceMenu
-          options={letter.replacements.length ? letter.replacements : ['a', 'b', 'c']}
+          options={letter.replacements}
           onSelect={handleLetterChoice}
           previouslyVisited={[]} // We'll add this functionality later
+          word={letter.word}
         />
       )}
     </div>

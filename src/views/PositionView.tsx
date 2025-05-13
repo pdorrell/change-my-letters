@@ -26,8 +26,6 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ position })
   const appState = position.word.appState;
 
   const handleInsertClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    // Store appState reference on the button element for menu positioning
-    (event.currentTarget as any).__appState = appState;
     appState.openMenu('insert', position.index, event.currentTarget);
   };
 
@@ -52,6 +50,7 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ position })
           options={position.insertOptions}
           onSelect={handleLetterChoice}
           previouslyVisited={[]} // We'll add this functionality later
+          word={position.word}
         />
       )}
     </div>

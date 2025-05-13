@@ -111,26 +111,19 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
 export const LetterChoiceMenu: React.FC<{
   options: string[],
   onSelect: (letter: string) => void,
-  previouslyVisited: string[]
-}> = ({ options, onSelect, previouslyVisited }) => {
-  // This dummy appState will be set when the menu is opened from a letter or position
-  let appState: any = null;
-
-  if (options.length > 0 && options[0] && typeof window !== 'undefined') {
-    // Try to get appState from a global property we'll set when opening the menu
-    const activeElem = document.activeElement;
-    if (activeElem && (activeElem as any).__appState) {
-      appState = (activeElem as any).__appState;
-    }
-  }
+  previouslyVisited: string[],
+  word: CurrentWord
+}> = ({ options, onSelect, previouslyVisited, word }) => {
+  // Get appState directly from the word prop
+  const appState = word.appState;
 
   const menuRef = React.useRef<HTMLDivElement>(null);
   const [position, setPosition] = React.useState({ top: 0, left: 0 });
 
   // Calculate the position of the menu when it mounts
   React.useEffect(() => {
-    // Get the button element directly from appState
-    const activeButton = appState?.activeButtonElement;
+    // Get the button element from appState
+    const activeButton = appState.activeButtonElement;
 
     if (activeButton && menuRef.current) {
       const buttonRect = activeButton.getBoundingClientRect();
@@ -151,7 +144,7 @@ export const LetterChoiceMenu: React.FC<{
         left: 100
       });
     }
-  }, [appState?.activeButtonElement]);
+  }, [appState.activeButtonElement]);
 
   // Stop propagation of clicks within the menu to prevent the global handler from closing it
   const handleMenuClick = (e: React.MouseEvent) => {
