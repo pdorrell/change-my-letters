@@ -1,17 +1,17 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { HistoryModel } from '../models/HistoryModel';
-import { AppState } from '../models/AppState';
 
 interface HistoryViewProps {
   history: HistoryModel;
-  appState: AppState; // We need appState for navigation and setting the new word
 }
 
 /**
  * View component for displaying the word history
  */
-export const HistoryView: React.FC<HistoryViewProps> = observer(({ history, appState }) => {
+export const HistoryView: React.FC<HistoryViewProps> = observer(({ history }) => {
+  // Now we can access appState through history
+  const appState = history.appState;
   return (
     <div className="history-view">
       <h2>Word History</h2>

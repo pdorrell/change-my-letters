@@ -48,7 +48,7 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
         ) : appState.currentPage === 'wordView' ? (
           <CurrentWordView currentWord={appState.currentWord} />
         ) : (
-          <HistoryView history={appState.history} appState={appState} />
+          <HistoryView history={appState.history} />
         )}
       </main>
     </div>

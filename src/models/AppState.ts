@@ -34,7 +34,7 @@ export class AppState {
     // Initial word - will be replaced with proper initialization
     const initialWord = 'bet';
     this.currentWord = new CurrentWord(initialWord, this);
-    this.history = new HistoryModel(initialWord);
+    this.history = new HistoryModel(this, initialWord);
     this.wordGraph = new WordGraph();
 
     makeAutoObservable(this);

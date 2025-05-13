@@ -1,4 +1,5 @@
 import { makeAutoObservable } from 'mobx';
+import { AppState } from './AppState';
 
 /**
  * Represents a change from one word to another
@@ -23,21 +24,26 @@ export type HistoryEntry = {
 export class HistoryModel {
   // List of all words in order
   entries: HistoryEntry[] = [];
-  
+
   // Current pointer in the history (for undo/redo)
   currentIndex: number = 0;
-  
+
   // Set of previously visited words
   previouslyVisitedWords: Set<string> = new Set();
-  
+
   // Current word being visited
   visitingWord: string;
-  
-  constructor(initialWord: string) {
+
+  // Reference to app state
+  appState: AppState;
+
+  constructor(appState: AppState, initialWord: string) {
+    this.appState = appState;
+
     // Initialize with the starting word
     this.entries = [{ word: initialWord }];
     this.visitingWord = initialWord;
-    
+
     makeAutoObservable(this);
   }
   
