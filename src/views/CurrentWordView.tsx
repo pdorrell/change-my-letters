@@ -3,6 +3,17 @@ import { observer } from 'mobx-react-lite';
 import { CurrentWord } from '../models/CurrentWord';
 import { LetterView, LetterPlaceholder } from './LetterView';
 import { PositionView, PositionPlaceholder } from './PositionView';
+import {
+  useFloating,
+  autoUpdate,
+  offset,
+  flip,
+  shift,
+  useDismiss,
+  useInteractions,
+  useRole,
+  FloatingPortal
+} from '@floating-ui/react';
 
 interface CurrentWordViewProps {
   currentWord: CurrentWord;
@@ -116,65 +127,82 @@ export const LetterChoiceMenu: React.FC<{
 }> = ({ options, onSelect, previouslyVisited, word }) => {
   // Get appState directly from the word prop
   const appState = word.appState;
-
-  const menuRef = React.useRef<HTMLDivElement>(null);
-  const [position, setPosition] = React.useState({ top: 0, left: 0 });
-
-  // Calculate the position of the menu when it mounts
-  React.useEffect(() => {
-    // Get the button element from appState
-    const activeButton = appState.activeButtonElement;
-
-    if (activeButton && menuRef.current) {
-      const buttonRect = activeButton.getBoundingClientRect();
-      const menuWidth = menuRef.current.offsetWidth || 250;
-
-      // Position the menu centered below the button
-      setPosition({
-        top: buttonRect.bottom + window.scrollY + 5, // 5px below the button
-        left: Math.max(10, Math.min(
-          window.innerWidth - menuWidth - 10,
-          buttonRect.left + window.scrollX - (menuWidth / 2) + (buttonRect.width / 2)
-        ))
-      });
-    } else {
-      // Fallback position if no button element is found
-      setPosition({
-        top: 100,
-        left: 100
-      });
-    }
-  }, [appState.activeButtonElement]);
-
+  
+  // Using floating-ui for positioning
+  const {refs, floatingStyles, context} = useFloating({
+    // Set the reference to the active button element
+    elements: {
+      reference: appState.activeButtonElement ?? undefined
+    },
+    // Keep the position updated when elements resize/scroll/etc
+    whileElementsMounted: autoUpdate,
+    // Position the menu below the reference element by default
+    placement: 'bottom',
+    // Configure positioning behavior with middleware
+    middleware: [
+      offset(10), // 10px gap between reference and floating element
+      flip({
+        fallbackPlacements: ['top', 'left', 'right'],
+        fallbackAxisSideDirection: 'end',
+        padding: 20, // Add padding to avoid positioning too close to edges
+      }), // Flip to opposite side if not enough space
+      shift({
+        padding: 20, // Add padding to avoid positioning too close to edges
+        limiter: {
+          // Allow the element to overflow the viewport if needed (e.g. for very large menus)
+          options: {
+            offset: () => ({ mainAxis: 20, crossAxis: 20, alignmentAxis: 0 }),
+          },
+          fn: (state) => state,
+        },
+      }) // Shift to keep within viewport
+    ],
+  });
+  
+  // Handle interactions for dismissal, accessibility, etc.
+  const dismiss = useDismiss(context);
+  const role = useRole(context, { role: 'menu' });
+  
+  const {getFloatingProps} = useInteractions([
+    dismiss,
+    role
+  ]);
+  
   // Stop propagation of clicks within the menu to prevent the global handler from closing it
   const handleMenuClick = (e: React.MouseEvent) => {
     e.stopPropagation();
   };
 
   return (
-    <div
-      ref={menuRef}
-      className="letter-choice-menu"
-      onClick={handleMenuClick}
-      style={{ top: `${position.top}px`, left: `${position.left}px` }}
-    >
-      {options.map((letter, index) => {
-        // Check if this letter would lead to a previously visited word
-        const isPreviouslyVisited = previouslyVisited.includes(letter);
+    <FloatingPortal>
+      <div
+        ref={refs.setFloating}
+        className="letter-choice-menu"
+        onClick={handleMenuClick}
+        style={{
+          ...floatingStyles,
+          zIndex: 9999, // Ensure it's on top of everything
+        }}
+        {...getFloatingProps()}
+      >
+        {options.map((letter, index) => {
+          // Check if this letter would lead to a previously visited word
+          const isPreviouslyVisited = previouslyVisited.includes(letter);
 
-        return (
-          <div
-            key={`option-${index}`}
-            className={`letter-choice-option ${isPreviouslyVisited ? 'previously-visited' : ''}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              onSelect(letter);
-            }}
-          >
-            {letter}
-          </div>
-        );
-      })}
-    </div>
+          return (
+            <div
+              key={`option-${index}`}
+              className={`letter-choice-option ${isPreviouslyVisited ? 'previously-visited' : ''}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                onSelect(letter);
+              }}
+            >
+              {letter}
+            </div>
+          );
+        })}
+      </div>
+    </FloatingPortal>
   );
 };

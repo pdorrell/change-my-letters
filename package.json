@@ -26,6 +26,7 @@
     "serve": "npx serve -s dist -l 3001"
   },
   "dependencies": {
+    "@floating-ui/react": "^0.27.8",
     "mobx": "^6.12.0",
     "mobx-react-lite": "^4.0.5",
     "react": "^18.2.0",

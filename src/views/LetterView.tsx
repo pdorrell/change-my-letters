@@ -30,6 +30,7 @@ export const LetterPlaceholder: React.FC = () => {
  */
 export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
   const appState = letter.word.appState;
+  const replaceButtonRef = React.useRef<HTMLButtonElement>(null);
 
   const handleReplaceClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     appState.openMenu('replace', letter.position, event.currentTarget);
@@ -69,6 +70,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
         </button>
 
         <button
+          ref={replaceButtonRef}
           onClick={(e) => handleReplaceClick(e)}
           disabled={!letter.canReplace}
           className={`replace-icon ${!letter.canReplace ? 'hidden' : ''}`}

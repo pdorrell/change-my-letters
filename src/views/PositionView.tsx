@@ -24,6 +24,7 @@ export const PositionPlaceholder: React.FC = () => {
  */
 export const PositionView: React.FC<PositionViewProps> = observer(({ position }) => {
   const appState = position.word.appState;
+  const insertButtonRef = React.useRef<HTMLButtonElement>(null);
 
   const handleInsertClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     appState.openMenu('insert', position.index, event.currentTarget);
@@ -37,6 +38,7 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ position })
   return (
     <div className="position-container">
       <button
+        ref={insertButtonRef}
         onClick={(e) => handleInsertClick(e)}
         disabled={!position.canInsert}
         className={`insert-icon ${!position.canInsert ? 'hidden' : ''}`}
