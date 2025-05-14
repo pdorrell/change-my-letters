@@ -3,7 +3,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import os from 'os';
 import { fileURLToPath } from 'url';
-import sass from 'sass-embedded';
+import * as sass from 'sass-embedded';
 import setupErrorLogger from './webpack-error-logger.js';
 
 const __filename = fileURLToPath(import.meta.url);
