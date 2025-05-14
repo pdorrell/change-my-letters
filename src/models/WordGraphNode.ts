@@ -39,20 +39,41 @@ export class WordGraphNode {
 
   /**
    * Get possible replacements for a letter at the given position
+   * @returns The string of possible replacement letters, or empty string if none
    */
   getReplacements(position: number): string {
     return this.replaces[position];
   }
 
   /**
+   * Get possible replacements for a letter at the given position as an array
+   * @returns Array of possible replacement letters
+   */
+  getPossibleReplacements(position: number): string[] {
+    const replacements = this.getReplacements(position);
+    return replacements ? replacements.split('') : [];
+  }
+
+  /**
    * Get possible insertions at the given position
+   * @returns The string of possible insertion letters, or empty string if none
    */
   getInsertions(position: number): string {
     return this.inserts[position];
   }
 
   /**
+   * Get possible insertions at the given position as an array
+   * @returns Array of possible insertion letters
+   */
+  getPossibleInsertions(position: number): string[] {
+    const insertions = this.getInsertions(position);
+    return insertions ? insertions.split('') : [];
+  }
+
+  /**
    * Check if a letter at the given position can be deleted
+   * @returns True if the letter can be deleted
    */
   canDelete(position: number): boolean {
     return this.deletes[position];
@@ -60,6 +81,7 @@ export class WordGraphNode {
 
   /**
    * Check if a letter at the given position can be uppercased
+   * @returns True if the letter can be uppercased
    */
   canUppercase(position: number): boolean {
     return this.uppercase[position];
@@ -67,9 +89,22 @@ export class WordGraphNode {
 
   /**
    * Check if a letter at the given position can be lowercased
+   * @returns True if the letter can be lowercased
    */
   canLowercase(position: number): boolean {
     return this.lowercase[position];
+  }
+  
+  /**
+   * Check if changing the case of a letter at the given position results in a valid word
+   * @param position The position of the letter to check
+   * @returns True if case change is possible at this position
+   */
+  canChangeCaseAt(position: number): boolean {
+    const letter = this.word[position];
+    return letter === letter.toLowerCase()
+      ? this.canUppercase(position)
+      : this.canLowercase(position);
   }
 
   /**

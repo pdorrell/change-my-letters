@@ -70,24 +70,47 @@ export class CurrentWord {
     // Update whether the word has been previously visited
     this.previouslyVisited = history.hasVisited(word);
     
+    // Get the word graph node for this word
+    const node = wordGraph.getNode(word);
+    
+    // If the word isn't in the graph, we can't perform any operations
+    if (!node) {
+      // Reset all letter and position states to disallow any operations
+      this.letters.forEach(letter => {
+        letter.canDelete = false;
+        letter.canReplace = false;
+        letter.replacements = [];
+        letter.canUpperCase = false;
+        letter.canLowerCase = false;
+      });
+      
+      this.positions.forEach(position => {
+        position.canInsert = false;
+        position.insertOptions = [];
+      });
+      
+      return;
+    }
+    
     // Update letter states
     for (let i = 0; i < this.letters.length; i++) {
       const letter = this.letters[i];
       
       // Check if this letter can be deleted
-      letter.canDelete = wordGraph.canDeleteLetterAt(word, i);
+      letter.canDelete = node.canDelete(i);
       
       // Check if this letter can be replaced and get possible replacements
-      const replacements = wordGraph.getPossibleReplacements(word, i);
+      const replacements = node.getPossibleReplacements(i);
       letter.canReplace = replacements.length > 0;
       letter.replacements = replacements;
       
       // Check if this letter can change case
-      letter.canUpperCase = wordGraph.canChangeCaseAt(word, i) && 
+      const canChangeCaseAtPosition = node.canChangeCaseAt(i);
+      letter.canUpperCase = canChangeCaseAtPosition && 
                           letter.value === letter.value.toLowerCase() && 
                           letter.value !== letter.value.toUpperCase();
       
-      letter.canLowerCase = wordGraph.canChangeCaseAt(word, i) && 
+      letter.canLowerCase = canChangeCaseAtPosition && 
                          letter.value === letter.value.toUpperCase() && 
                          letter.value !== letter.value.toLowerCase();
     }
@@ -97,7 +120,7 @@ export class CurrentWord {
       const position = this.positions[i];
       
       // Check if a letter can be inserted at this position
-      const insertions = wordGraph.getPossibleInsertions(word, i);
+      const insertions = node.getPossibleInsertions(i);
       position.canInsert = insertions.length > 0;
       position.insertOptions = insertions;
     }
