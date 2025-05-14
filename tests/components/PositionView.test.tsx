@@ -3,13 +3,14 @@ import { render, fireEvent } from '@testing-library/react';
 import { PositionView } from '../../src/views/PositionView';
 import { Position } from '../../src/models/Position';
 import { CurrentWord } from '../../src/models/CurrentWord';
+import { AppState } from '../../src/models/AppState';
 
 // Mock MobX's observer
 jest.mock('mobx-react-lite', () => ({
   observer: (component: React.FC) => component,
 }));
 
-// Mock the LetterChoiceMenu component
+// Mock the LetterChoiceMenu component only (not the model classes)
 jest.mock('../../src/views/CurrentWordView', () => ({
   LetterChoiceMenu: ({ options, onSelect }: { options: string[], onSelect: (letter: string) => void }) => (
     <div data-testid="letter-choice-menu">
@@ -22,36 +23,30 @@ jest.mock('../../src/views/CurrentWordView', () => ({
   ),
 }));
 
-// Create mock appState
-const mockAppState = {
-  openMenu: jest.fn(),
-  closeAllMenus: jest.fn(),
-  insertLetter: jest.fn(),
-};
-
-// Mock CurrentWord model
-const mockWord = {
-  appState: mockAppState
-};
-
-// Mock the Position class
-jest.mock('../../src/models/Position', () => ({
-  Position: jest.fn().mockImplementation((index) => ({
-    index,
-    word: mockWord,
-    canInsert: true,
-    insertOptions: ['a', 'e', 'i', 'o', 'u'],
-    isInsertMenuOpen: false
-  }))
-}));
-
 describe('PositionView', () => {
+  let appState: AppState;
+  let currentWord: CurrentWord;
+  let position: Position;
+  
   beforeEach(() => {
-    jest.clearAllMocks();
+    // Create real instances but spy on the methods we want to test
+    appState = new AppState();
+    
+    // Spy on AppState methods
+    appState.openMenu = jest.fn();
+    appState.closeAllMenus = jest.fn();
+    appState.insertLetter = jest.fn();
+    
+    // Create a CurrentWord with our AppState
+    currentWord = new CurrentWord('test', appState);
+    
+    // Create a Position with default settings for tests
+    position = new Position(currentWord, 0);
+    position.canInsert = true;
+    position.insertOptions = ['a', 'e', 'i', 'o', 'u'];
   });
 
   it('renders without insert icon when insertion is not possible', () => {
-    const position = new Position(0);
     position.canInsert = false;
     
     const { container } = render(<PositionView position={position} />);
@@ -61,7 +56,6 @@ describe('PositionView', () => {
   });
   
   it('shows insert icon when insertion is possible', () => {
-    const position = new Position(0);
     position.canInsert = true;
     
     const { container } = render(<PositionView position={position} />);
@@ -71,9 +65,7 @@ describe('PositionView', () => {
   });
   
   it('shows letter choice menu when insert menu is open', () => {
-    const position = new Position(0);
     position.isInsertMenuOpen = true;
-    position.insertOptions = ['a', 'b'];
     
     const { getByTestId } = render(<PositionView position={position} />);
     
@@ -81,7 +73,6 @@ describe('PositionView', () => {
   });
   
   it('calls openMenu when insert icon is clicked', () => {
-    const position = new Position(0);
     position.canInsert = true;
     
     const { container } = render(<PositionView position={position} />);
@@ -89,20 +80,18 @@ describe('PositionView', () => {
     const insertButton = container.querySelector('.insert-icon:not(.hidden)');
     if (insertButton) fireEvent.click(insertButton);
     
-    expect(mockAppState.openMenu).toHaveBeenCalledWith('insert', 0, expect.anything());
+    expect(appState.openMenu).toHaveBeenCalledWith('insert', 0, expect.anything());
   });
   
   it('calls insertLetter when a letter choice is selected', () => {
-    const position = new Position(0);
     position.isInsertMenuOpen = true;
-    position.insertOptions = ['a', 'b'];
     
     const { getAllByTestId } = render(<PositionView position={position} />);
     
     const letterOptions = getAllByTestId('letter-choice-option');
     fireEvent.click(letterOptions[0]);
     
-    expect(mockAppState.insertLetter).toHaveBeenCalledWith(0, 'a');
-    expect(mockAppState.closeAllMenus).toHaveBeenCalled();
+    expect(appState.insertLetter).toHaveBeenCalledWith(0, 'a');
+    expect(appState.closeAllMenus).toHaveBeenCalled();
   });
 });

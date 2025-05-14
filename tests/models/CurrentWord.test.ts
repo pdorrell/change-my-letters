@@ -1,35 +1,20 @@
 import { CurrentWord } from '../../src/models/CurrentWord';
-import { Letter } from '../../src/models/Letter';
-import { Position } from '../../src/models/Position';
 import { AppState } from '../../src/models/AppState';
 
-// Mock the AppState
-const mockAppState = {};
-
-// Mock Letter and Position classes
-jest.mock('../../src/models/Letter', () => ({
-  Letter: jest.fn().mockImplementation((value, position, word) => ({
-    value,
-    position,
-    word
-  }))
-}));
-
-jest.mock('../../src/models/Position', () => ({
-  Position: jest.fn().mockImplementation((index, word) => ({
-    index,
-    word
-  }))
-}));
-
 describe('CurrentWord', () => {
+  let appState: AppState;
+  
+  beforeEach(() => {
+    appState = new AppState();
+  });
+  
   it('should initialize correctly with a word', () => {
     const word = 'cat';
-    const currentWord = new CurrentWord(word, mockAppState);
+    const currentWord = new CurrentWord(word, appState);
 
     expect(currentWord.value).toBe('cat');
     expect(currentWord.previouslyVisited).toBe(false);
-    expect(currentWord.appState).toBe(mockAppState);
+    expect(currentWord.appState).toBe(appState);
 
     // Should have 3 letters for 'cat'
     expect(currentWord.letters.length).toBe(3);
@@ -46,7 +31,7 @@ describe('CurrentWord', () => {
   });
 
   it('should update word value and related properties', () => {
-    const currentWord = new CurrentWord('cat', mockAppState);
+    const currentWord = new CurrentWord('cat', appState);
     currentWord.updateWord('bat');
 
     expect(currentWord.value).toBe('bat');
@@ -62,28 +47,43 @@ describe('CurrentWord', () => {
   });
 
   it('should create Letter objects for each character', () => {
-    const currentWord = new CurrentWord('cat', mockAppState);
+    const currentWord = new CurrentWord('cat', appState);
 
-    // Check if the Letter constructor was called with correct arguments
-    // The first calls will be with the word parameter as an instance of CurrentWord
-    expect(Letter).toHaveBeenCalledWith('c', 0, expect.anything());
-    expect(Letter).toHaveBeenCalledWith('a', 1, expect.anything());
-    expect(Letter).toHaveBeenCalledWith('t', 2, expect.anything());
+    // Verify that the letters have been created correctly
+    expect(currentWord.letters.length).toBe(3);
+    expect(currentWord.letters[0].value).toBe('c');
+    expect(currentWord.letters[0].position).toBe(0);
+    expect(currentWord.letters[0].word).toBe(currentWord);
+    
+    expect(currentWord.letters[1].value).toBe('a');
+    expect(currentWord.letters[1].position).toBe(1);
+    expect(currentWord.letters[1].word).toBe(currentWord);
+    
+    expect(currentWord.letters[2].value).toBe('t');
+    expect(currentWord.letters[2].position).toBe(2);
+    expect(currentWord.letters[2].word).toBe(currentWord);
   });
 
   it('should create Position objects for before, between, and after characters', () => {
-    const currentWord = new CurrentWord('cat', mockAppState);
+    const currentWord = new CurrentWord('cat', appState);
 
-    // Check if the Position constructor was called with correct arguments
-    // The first calls will be with the word parameter as an instance of CurrentWord
-    expect(Position).toHaveBeenCalledWith(0, expect.anything()); // Before 'c'
-    expect(Position).toHaveBeenCalledWith(1, expect.anything()); // Between 'c' and 'a'
-    expect(Position).toHaveBeenCalledWith(2, expect.anything()); // Between 'a' and 't'
-    expect(Position).toHaveBeenCalledWith(3, expect.anything()); // After 't'
+    // Verify that the positions have been created correctly
+    expect(currentWord.positions.length).toBe(4);
+    expect(currentWord.positions[0].index).toBe(0);
+    expect(currentWord.positions[0].word).toBe(currentWord);
+    
+    expect(currentWord.positions[1].index).toBe(1);
+    expect(currentWord.positions[1].word).toBe(currentWord);
+    
+    expect(currentWord.positions[2].index).toBe(2);
+    expect(currentWord.positions[2].word).toBe(currentWord);
+    
+    expect(currentWord.positions[3].index).toBe(3);
+    expect(currentWord.positions[3].word).toBe(currentWord);
   });
 
   it('should handle different word lengths when updating', () => {
-    const currentWord = new CurrentWord('cat', mockAppState);
+    const currentWord = new CurrentWord('cat', appState);
 
     // Update to longer word
     currentWord.updateWord('cats');
