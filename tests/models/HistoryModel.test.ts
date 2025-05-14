@@ -1,10 +1,16 @@
 import { HistoryModel, WordChange } from '../../src/models/HistoryModel';
+import { AppState } from '../../src/models/AppState';
 
 describe('HistoryModel', () => {
   let historyModel: HistoryModel;
+  let appState: AppState;
 
   beforeEach(() => {
-    historyModel = new HistoryModel('cat');
+    // Create an AppState instance
+    appState = new AppState();
+    
+    // Initialize the history model with AppState and the initial word
+    historyModel = new HistoryModel(appState, 'cat');
   });
 
   it('should initialize with initial word', () => {
