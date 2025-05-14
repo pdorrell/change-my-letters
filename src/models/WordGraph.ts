@@ -245,50 +245,6 @@ export class WordGraph {
   }
 
   /**
-   * Get possible letter replacements for a position in a word
-   * @deprecated Use getNode(word).getPossibleReplacements(position) instead
-   */
-  getPossibleReplacements(word: string, position: number): string[] {
-    const node = this.getWordNode(word);
-    if (!node) return [];
-
-    return node.getPossibleReplacements(position);
-  }
-
-  /**
-   * Get possible letters that can be inserted at a position in a word
-   * @deprecated Use getNode(word).getPossibleInsertions(position) instead
-   */
-  getPossibleInsertions(word: string, position: number): string[] {
-    const node = this.getWordNode(word);
-    if (!node) return [];
-
-    return node.getPossibleInsertions(position);
-  }
-
-  /**
-   * Check if deleting a letter at the specified position results in a valid word
-   * @deprecated Use getNode(word).canDelete(position) instead
-   */
-  canDeleteLetterAt(word: string, position: number): boolean {
-    const node = this.getWordNode(word);
-    if (!node) return false;
-
-    return node.canDelete(position);
-  }
-
-  /**
-   * Check if changing case of a letter results in a valid word
-   * @deprecated Use getNode(word).canChangeCaseAt(position) instead
-   */
-  canChangeCaseAt(word: string, position: number): boolean {
-    const node = this.getWordNode(word);
-    if (!node) return false;
-
-    return node.canChangeCaseAt(position);
-  }
-  
-  /**
    * Get the WordGraphNode for a word, or null if the word doesn't exist in the graph
    * This method ensures a node is returned or null, even if the word exists in the words set
    * but doesn't have a corresponding node
