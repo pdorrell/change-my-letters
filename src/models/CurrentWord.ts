@@ -2,6 +2,8 @@ import { makeAutoObservable } from 'mobx';
 import { Letter } from './Letter';
 import { Position } from './Position';
 import { AppState } from './AppState';
+import { WordGraph } from './WordGraph';
+import { HistoryModel } from './HistoryModel';
 
 /**
  * Model representing the current word being manipulated
@@ -55,5 +57,49 @@ export class CurrentWord {
   updateWord(newWord: string): void {
     this.value = newWord;
     this.initializeWord(newWord);
+  }
+
+  /**
+   * Update the state of this word's letters and positions based on the word graph and history
+   * @param wordGraph The word graph containing possible operations
+   * @param history The history model to check for previously visited words
+   */
+  updateState(wordGraph: WordGraph, history: HistoryModel): void {
+    const word = this.value;
+    
+    // Update whether the word has been previously visited
+    this.previouslyVisited = history.hasVisited(word);
+    
+    // Update letter states
+    for (let i = 0; i < this.letters.length; i++) {
+      const letter = this.letters[i];
+      
+      // Check if this letter can be deleted
+      letter.canDelete = wordGraph.canDeleteLetterAt(word, i);
+      
+      // Check if this letter can be replaced and get possible replacements
+      const replacements = wordGraph.getPossibleReplacements(word, i);
+      letter.canReplace = replacements.length > 0;
+      letter.replacements = replacements;
+      
+      // Check if this letter can change case
+      letter.canUpperCase = wordGraph.canChangeCaseAt(word, i) && 
+                          letter.value === letter.value.toLowerCase() && 
+                          letter.value !== letter.value.toUpperCase();
+      
+      letter.canLowerCase = wordGraph.canChangeCaseAt(word, i) && 
+                         letter.value === letter.value.toUpperCase() && 
+                         letter.value !== letter.value.toLowerCase();
+    }
+    
+    // Update position states
+    for (let i = 0; i < this.positions.length; i++) {
+      const position = this.positions[i];
+      
+      // Check if a letter can be inserted at this position
+      const insertions = wordGraph.getPossibleInsertions(word, i);
+      position.canInsert = insertions.length > 0;
+      position.insertOptions = insertions;
+    }
   }
 }

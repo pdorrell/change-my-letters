@@ -83,42 +83,7 @@ export class AppState {
    * Update the current word's state based on the word graph
    */
   updateCurrentWordState(): void {
-    const word = this.currentWord.value;
-    
-    // Update whether the word has been previously visited
-    this.currentWord.previouslyVisited = this.history.hasVisited(word);
-    
-    // Update letter states
-    for (let i = 0; i < this.currentWord.letters.length; i++) {
-      const letter = this.currentWord.letters[i];
-      
-      // Check if this letter can be deleted
-      letter.canDelete = this.wordGraph.canDeleteLetterAt(word, i);
-      
-      // Check if this letter can be replaced and get possible replacements
-      const replacements = this.wordGraph.getPossibleReplacements(word, i);
-      letter.canReplace = replacements.length > 0;
-      letter.replacements = replacements;
-      
-      // Check if this letter can change case
-      letter.canUpperCase = this.wordGraph.canChangeCaseAt(word, i) && 
-                            letter.value === letter.value.toLowerCase() && 
-                            letter.value !== letter.value.toUpperCase();
-      
-      letter.canLowerCase = this.wordGraph.canChangeCaseAt(word, i) && 
-                           letter.value === letter.value.toUpperCase() && 
-                           letter.value !== letter.value.toLowerCase();
-    }
-    
-    // Update position states
-    for (let i = 0; i < this.currentWord.positions.length; i++) {
-      const position = this.currentWord.positions[i];
-      
-      // Check if a letter can be inserted at this position
-      const insertions = this.wordGraph.getPossibleInsertions(word, i);
-      position.canInsert = insertions.length > 0;
-      position.insertOptions = insertions;
-    }
+    this.currentWord.updateState(this.wordGraph, this.history);
   }
   
   
