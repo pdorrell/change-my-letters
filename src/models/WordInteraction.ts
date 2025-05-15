@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, makeObservable, observable, computed, action } from 'mobx';
 import { AppState } from './AppState';
 import { LetterInteraction } from './LetterInteraction';
 import { PositionInteraction } from './PositionInteraction';
@@ -31,7 +31,17 @@ export class WordInteraction {
     // Initialize letter and position interactions
     this.initializeInteractions();
 
-    makeAutoObservable(this);
+    // Use makeObservable instead of makeAutoObservable for classes with inheritance
+    makeObservable(this, {
+      node: observable,
+      previouslyVisited: observable,
+      letterInteractions: observable,
+      positionInteractions: observable,
+      value: computed,
+      updateWord: action,
+      closeAllMenus: action,
+      initializeInteractions: action
+    });
   }
 
   /**

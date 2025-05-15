@@ -1,117 +1,36 @@
-import { makeAutoObservable } from 'mobx';
-import { Letter } from './Letter';
-import { Position } from './Position';
+// This is a shim to help with the transition from CurrentWord to WordInteraction
+// Eventually all imports of CurrentWord should be replaced with WordInteraction directly
+import { WordInteraction } from './WordInteraction';
 import { AppState } from './AppState';
 import { WordGraphNode } from './WordGraphNode';
-import { HistoryModel } from './HistoryModel';
+import { makeAutoObservable } from 'mobx';
 
 /**
- * Model representing the current word being manipulated
+ * Shim class that wraps WordInteraction to maintain backward compatibility
  */
-export class CurrentWord {
-  // The current word value
-  value: string;
-
-  // Whether this word has been previously visited
-  previouslyVisited: boolean;
-
-  // Array of letter models representing each character
-  letters: Letter[] = [];
-
-  // Array of position models representing spaces before, between, and after letters
-  positions: Position[] = [];
-
-  // Reference to the app state
-  appState: AppState;
-
-  // Reference to the word graph node
-  node: WordGraphNode;
-
-  /**
-   * Create a new CurrentWord model
-   * @param node The WordGraphNode for this word
-   * @param appState The AppState reference
-   * @param hasBeenVisited Whether this word has been visited before
-   */
-  constructor(node: WordGraphNode, appState: AppState, hasBeenVisited: boolean) {
-    this.value = node.word;
-    this.node = node;
-    this.appState = appState;
-    this.previouslyVisited = hasBeenVisited;
-
-    // Initialize letters and positions
-    this.initializeWord();
-
-    makeAutoObservable(this);
+export class CurrentWord extends WordInteraction {
+  // Add the old properties as getters
+  get letters() {
+    return this.letterInteractions.map(interaction => interaction.letter);
   }
 
-  /**
-   * Initialize the letters and positions for the current word
-   */
-  private initializeWord(): void {
-    this.letters = [];
-    this.positions = [];
-
-    // Create position before first letter
-    this.positions.push(new Position(this, 0));
-
-    // Create letters and positions between letters
-    for (let i = 0; i < this.value.length; i++) {
-      this.letters.push(new Letter(this, this.value[i], i));
-      this.positions.push(new Position(this, i + 1));
-    }
-
-    // Update the state of the word's letters and positions
-    this.updateState();
+  get positions() {
+    return this.positionInteractions.map(interaction => interaction.position);
   }
 
-  /**
-   * Update the current word to a new WordGraphNode
-   * @param newNode The new WordGraphNode
-   * @param hasBeenVisited Whether the new word has been visited before
-   */
-  updateWord(newNode: WordGraphNode, hasBeenVisited: boolean): void {
-    this.value = newNode.word;
-    this.node = newNode;
-    this.previouslyVisited = hasBeenVisited;
-    this.initializeWord();
-  }
+  constructor(nodeOrWord: WordGraphNode | string, appState: AppState, hasBeenVisited: boolean = false) {
+    if (typeof nodeOrWord === 'string') {
+      // If a string was passed, get the node from the wordGraph
+      const node = appState.wordGraph.getNode(nodeOrWord);
+      if (!node) {
+        throw new Error(`Word "${nodeOrWord}" doesn't exist in the word graph`);
+      }
+      super(node, appState, hasBeenVisited);
+    } else {
+      // If a node was passed, use it directly
+      super(nodeOrWord, appState, hasBeenVisited);
+    }
 
-  /**
-   * Update the state of this word's letters and positions based on the node
-   */
-  updateState(): void {
-    // Update letter states
-    for (let i = 0; i < this.letters.length; i++) {
-      const letter = this.letters[i];
-      
-      // Check if this letter can be deleted
-      letter.canDelete = this.node.canDelete(i);
-      
-      // Check if this letter can be replaced and get possible replacements
-      const replacements = this.node.getPossibleReplacements(i);
-      letter.canReplace = replacements.length > 0;
-      letter.replacements = replacements;
-      
-      // Check if this letter can change case
-      const canChangeCaseAtPosition = this.node.canChangeCaseAt(i);
-      letter.canUpperCase = canChangeCaseAtPosition && 
-                          letter.value === letter.value.toLowerCase() && 
-                          letter.value !== letter.value.toUpperCase();
-      
-      letter.canLowerCase = canChangeCaseAtPosition && 
-                         letter.value === letter.value.toUpperCase() && 
-                         letter.value !== letter.value.toLowerCase();
-    }
-    
-    // Update position states
-    for (let i = 0; i < this.positions.length; i++) {
-      const position = this.positions[i];
-      
-      // Check if a letter can be inserted at this position
-      const insertions = this.node.getPossibleInsertions(i);
-      position.canInsert = insertions.length > 0;
-      position.insertOptions = insertions;
-    }
+    // No need to call makeObservable here since it's called in the parent class
   }
 }

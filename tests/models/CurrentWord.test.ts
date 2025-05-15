@@ -1,6 +1,8 @@
 import { CurrentWord } from '../../src/models/CurrentWord';
 import { AppState } from '../../src/models/AppState';
 import { WordGraphNode } from '../../src/models/WordGraphNode';
+import { Letter } from '../../src/models/Letter';
+import { Position } from '../../src/models/Position';
 
 // Create a mock for WordGraphNode
 class MockWordGraphNode {
@@ -10,6 +12,8 @@ class MockWordGraphNode {
   replaces: string[];
   uppercase: boolean[];
   lowercase: boolean[];
+  _letters: Letter[] | null = null;
+  _positions: Position[] | null = null;
   
   constructor(word: string) {
     this.word = word;
@@ -18,6 +22,24 @@ class MockWordGraphNode {
     this.replaces = Array(word.length).fill('bcdfghjklmnpqrstvwxyz');
     this.uppercase = Array(word.length).fill(true);
     this.lowercase = Array(word.length).fill(true);
+  }
+  
+  getLetters(): Letter[] {
+    if (!this._letters) {
+      this._letters = Array.from(this.word).map(
+        (letter, index) => new Letter(this as unknown as WordGraphNode, letter, index)
+      );
+    }
+    return this._letters;
+  }
+  
+  getPositions(): Position[] {
+    if (!this._positions) {
+      this._positions = Array(this.word.length + 1)
+        .fill(0)
+        .map((_, index) => new Position(this as unknown as WordGraphNode, index));
+    }
+    return this._positions;
   }
   
   canDelete(position: number): boolean {
@@ -75,18 +97,15 @@ describe('CurrentWord', () => {
     // Don't test appState reference equality since the test is using a mock
     expect(currentWord.node).toBe(node);
 
-    // Should have 3 letters for 'cat'
-    expect(currentWord.letters.length).toBe(3);
-    expect(currentWord.letters[0].value).toBe('c');
-    expect(currentWord.letters[1].value).toBe('a');
-    expect(currentWord.letters[2].value).toBe('t');
-
-    // Should have 4 positions (before, between, and after letters)
-    expect(currentWord.positions.length).toBe(4);
-    expect(currentWord.positions[0].index).toBe(0);
-    expect(currentWord.positions[1].index).toBe(1);
-    expect(currentWord.positions[2].index).toBe(2);
-    expect(currentWord.positions[3].index).toBe(3);
+    // Should have 3 letterInteractions for 'cat'
+    expect(currentWord.letterInteractions.length).toBe(3);
+    
+    // Should have 4 positionInteractions (before, between, and after letters)
+    expect(currentWord.positionInteractions.length).toBe(4);
+    expect(currentWord.positionInteractions[0].position.index).toBe(0);
+    expect(currentWord.positionInteractions[1].position.index).toBe(1);
+    expect(currentWord.positionInteractions[2].position.index).toBe(2);
+    expect(currentWord.positionInteractions[3].position.index).toBe(3);
   });
 
   it('should update word value and related properties', () => {
@@ -98,52 +117,49 @@ describe('CurrentWord', () => {
     expect(currentWord.value).toBe('bat');
     expect(currentWord.node).toBe(batNode);
 
-    // Should have 3 letters for 'bat'
-    expect(currentWord.letters.length).toBe(3);
-    expect(currentWord.letters[0].value).toBe('b');
-    expect(currentWord.letters[1].value).toBe('a');
-    expect(currentWord.letters[2].value).toBe('t');
-
-    // Should still have 4 positions
-    expect(currentWord.positions.length).toBe(4);
+    // Should have 3 letterInteractions
+    expect(currentWord.letterInteractions.length).toBe(3);
+    
+    // Should still have 4 positionInteractions
+    expect(currentWord.positionInteractions.length).toBe(4);
   });
 
-  it('should create Letter objects for each character', () => {
+  it('should create letterInteractions for each character', () => {
     const node = new MockWordGraphNode('cat') as unknown as WordGraphNode;
     const currentWord = new CurrentWord(node, appState, false);
 
     // Verify that the letters have been created correctly
-    expect(currentWord.letters.length).toBe(3);
-    expect(currentWord.letters[0].value).toBe('c');
-    expect(currentWord.letters[0].position).toBe(0);
-    expect(currentWord.letters[0].word).toBe(currentWord);
+    expect(currentWord.letterInteractions.length).toBe(3);
+    expect(currentWord.letterInteractions[0].letter.value).toBe('c');
+    expect(currentWord.letterInteractions[0].letter.position).toBe(0);
+    expect(currentWord.letterInteractions[0].wordInteraction).toBe(currentWord);
     
-    expect(currentWord.letters[1].value).toBe('a');
-    expect(currentWord.letters[1].position).toBe(1);
-    expect(currentWord.letters[1].word).toBe(currentWord);
+    expect(currentWord.letterInteractions[1].letter.value).toBe('a');
+    expect(currentWord.letterInteractions[1].letter.position).toBe(1);
+    expect(currentWord.letterInteractions[1].wordInteraction).toBe(currentWord);
     
-    expect(currentWord.letters[2].value).toBe('t');
-    expect(currentWord.letters[2].position).toBe(2);
-    expect(currentWord.letters[2].word).toBe(currentWord);
+    expect(currentWord.letterInteractions[2].letter.value).toBe('t');
+    expect(currentWord.letterInteractions[2].letter.position).toBe(2);
+    expect(currentWord.letterInteractions[2].wordInteraction).toBe(currentWord);
   });
 
-  it('should create Position objects for before, between, and after characters', () => {
+  it('should create positionInteractions for before, between, and after characters', () => {
     const node = new MockWordGraphNode('cat') as unknown as WordGraphNode;
     const currentWord = new CurrentWord(node, appState, false);
 
     // Verify that the positions have been created correctly
-    expect(currentWord.positions.length).toBe(4);
-    expect(currentWord.positions[0].index).toBe(0);
-    expect(currentWord.positions[0].word).toBe(currentWord);
+    expect(currentWord.positionInteractions.length).toBe(4);
+    expect(currentWord.positionInteractions[0].position.index).toBe(0);
+    expect(currentWord.positionInteractions[0].wordInteraction).toBe(currentWord);
     
-    expect(currentWord.positions[1].index).toBe(1);
-    expect(currentWord.positions[1].word).toBe(currentWord);
+    expect(currentWord.positionInteractions[1].position.index).toBe(1);
+    expect(currentWord.positionInteractions[1].wordInteraction).toBe(currentWord);
     
-    expect(currentWord.positions[2].index).toBe(2);
-    expect(currentWord.positions[2].word).toBe(currentWord);
+    expect(currentWord.positionInteractions[2].position.index).toBe(2);
+    expect(currentWord.positionInteractions[2].wordInteraction).toBe(currentWord);
     
-    expect(currentWord.positions[3].index).toBe(3);
-    expect(currentWord.positions[3].word).toBe(currentWord);
+    expect(currentWord.positionInteractions[3].position.index).toBe(3);
+    expect(currentWord.positionInteractions[3].wordInteraction).toBe(currentWord);
   });
 
   it('should handle different word lengths when updating', () => {
@@ -156,13 +172,13 @@ describe('CurrentWord', () => {
     // Update to longer word
     currentWord.updateWord(catsNode, false);
 
-    expect(currentWord.letters.length).toBe(4);
-    expect(currentWord.positions.length).toBe(5);
+    expect(currentWord.letterInteractions.length).toBe(4);
+    expect(currentWord.positionInteractions.length).toBe(5);
 
     // Update to shorter word
     currentWord.updateWord(atNode, false);
 
-    expect(currentWord.letters.length).toBe(2);
-    expect(currentWord.positions.length).toBe(3);
+    expect(currentWord.letterInteractions.length).toBe(2);
+    expect(currentWord.positionInteractions.length).toBe(3);
   });
 });

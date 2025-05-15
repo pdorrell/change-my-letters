@@ -5,6 +5,7 @@ import { Position } from '../../src/models/Position';
 import { CurrentWord } from '../../src/models/CurrentWord';
 import { AppState } from '../../src/models/AppState';
 import { WordGraphNode } from '../../src/models/WordGraphNode';
+import { Letter } from '../../src/models/Letter';
 
 // Mock MobX's observer
 jest.mock('mobx-react-lite', () => ({
@@ -27,9 +28,39 @@ jest.mock('../../src/views/CurrentWordView', () => ({
 // Mock WordGraphNode for testing
 class MockWordGraphNode implements Partial<WordGraphNode> {
   word: string;
+  _letters: Letter[] | null = null;
+  _positions: Position[] | null = null;
+  deletes: boolean[];
+  inserts: string[];
+  replaces: string[];
+  uppercase: boolean[];
+  lowercase: boolean[];
   
   constructor(word: string) {
     this.word = word;
+    this.deletes = Array(word.length).fill(true);
+    this.inserts = Array(word.length + 1).fill('aeiou');
+    this.replaces = Array(word.length).fill('bcdfg');
+    this.uppercase = Array(word.length).fill(false);
+    this.lowercase = Array(word.length).fill(false);
+  }
+  
+  getLetters(): Letter[] {
+    if (!this._letters) {
+      this._letters = Array.from(this.word).map(
+        (letter, index) => new Letter(this as unknown as WordGraphNode, letter, index)
+      );
+    }
+    return this._letters;
+  }
+  
+  getPositions(): Position[] {
+    if (!this._positions) {
+      this._positions = Array(this.word.length + 1)
+        .fill(0)
+        .map((_, index) => new Position(this as unknown as WordGraphNode, index));
+    }
+    return this._positions;
   }
   
   getPossibleInsertions(position: number): string[] {

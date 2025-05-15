@@ -5,6 +5,7 @@ import { Letter } from '../../src/models/Letter';
 import { CurrentWord } from '../../src/models/CurrentWord';
 import { AppState } from '../../src/models/AppState';
 import { WordGraphNode } from '../../src/models/WordGraphNode';
+import { Position } from '../../src/models/Position';
 
 // Mock MobX's observer
 jest.mock('mobx-react-lite', () => ({
@@ -32,6 +33,8 @@ class MockWordGraphNode {
   replaces: string[];
   uppercase: boolean[];
   lowercase: boolean[];
+  _letters: Letter[] | null = null;
+  _positions: Position[] | null = null;
   
   constructor(word: string) {
     this.word = word;
@@ -40,6 +43,24 @@ class MockWordGraphNode {
     this.replaces = Array(word.length).fill('bcdfghjklmnpqrstvwxyz');
     this.uppercase = Array(word.length).fill(true);
     this.lowercase = Array(word.length).fill(true);
+  }
+  
+  getLetters(): Letter[] {
+    if (!this._letters) {
+      this._letters = Array.from(this.word).map(
+        (letter, index) => new Letter(this as unknown as WordGraphNode, letter, index)
+      );
+    }
+    return this._letters;
+  }
+  
+  getPositions(): Position[] {
+    if (!this._positions) {
+      this._positions = Array(this.word.length + 1)
+        .fill(0)
+        .map((_, index) => new Position(this as unknown as WordGraphNode, index));
+    }
+    return this._positions;
   }
   
   canDelete(position: number): boolean {

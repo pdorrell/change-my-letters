@@ -2,6 +2,7 @@ import { Position } from '../../src/models/Position';
 import { CurrentWord } from '../../src/models/CurrentWord';
 import { AppState } from '../../src/models/AppState';
 import { WordGraphNode } from '../../src/models/WordGraphNode';
+import { Letter } from '../../src/models/Letter';
 
 // Mock WordGraphNode for testing
 class MockWordGraphNode {
@@ -11,6 +12,8 @@ class MockWordGraphNode {
   replaces: string[];
   uppercase: boolean[];
   lowercase: boolean[];
+  _letters: Letter[] | null = null;
+  _positions: Position[] | null = null;
   
   constructor(word: string) {
     this.word = word;
@@ -19,6 +22,24 @@ class MockWordGraphNode {
     this.replaces = Array(word.length).fill('bcdfghjklmnpqrstvwxyz');
     this.uppercase = Array(word.length).fill(true);
     this.lowercase = Array(word.length).fill(true);
+  }
+  
+  getLetters(): Letter[] {
+    if (!this._letters) {
+      this._letters = Array.from(this.word).map(
+        (letter, index) => new Letter(this as unknown as WordGraphNode, letter, index)
+      );
+    }
+    return this._letters;
+  }
+  
+  getPositions(): Position[] {
+    if (!this._positions) {
+      this._positions = Array(this.word.length + 1)
+        .fill(0)
+        .map((_, index) => new Position(this as unknown as WordGraphNode, index));
+    }
+    return this._positions;
   }
   
   canDelete(position: number): boolean {
@@ -70,37 +91,37 @@ describe('Position', () => {
   });
 
   it('should initialize with the correct properties', () => {
-    const position = new Position(currentWord, 1);
+    // Instead of creating a new Position, use the one from node.getPositions()
+    const position = currentWord.positions[1];
     
     expect(position.index).toBe(1);
-    expect(position.isInsertMenuOpen).toBe(false);
     expect(position.canInsert).toBe(true);
     expect(position.insertOptions).toEqual(['a', 'e', 'i', 'o', 'u']);
-    expect(position.word).toBe(currentWord);
   });
 
   it('should toggle insert menu state', () => {
-    const position = new Position(currentWord, 1);
+    // Get a PositionInteraction instead and test that
+    const positionInteraction = currentWord.positionInteractions[1];
     
     // Initially closed
-    expect(position.isInsertMenuOpen).toBe(false);
+    expect(positionInteraction.isInsertMenuOpen).toBe(false);
     
     // Open it
-    position.toggleInsertMenu();
-    expect(position.isInsertMenuOpen).toBe(true);
+    positionInteraction.toggleInsertMenu();
+    expect(positionInteraction.isInsertMenuOpen).toBe(true);
     
     // Close it
-    position.toggleInsertMenu();
-    expect(position.isInsertMenuOpen).toBe(false);
+    positionInteraction.toggleInsertMenu();
+    expect(positionInteraction.isInsertMenuOpen).toBe(false);
   });
 
   it('should have canInsert set to true by default', () => {
-    const position = new Position(currentWord, 1);
+    const position = currentWord.positions[1];
     expect(position.canInsert).toBe(true);
   });
 
   it('should initialize with default insert options', () => {
-    const position = new Position(currentWord, 1);
+    const position = currentWord.positions[1];
     expect(position.insertOptions).toEqual(['a', 'e', 'i', 'o', 'u']);
   });
 });
