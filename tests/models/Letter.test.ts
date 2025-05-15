@@ -1,15 +1,72 @@
 import { Letter } from '../../src/models/Letter';
 import { CurrentWord } from '../../src/models/CurrentWord';
 import { AppState } from '../../src/models/AppState';
+import { WordGraphNode } from '../../src/models/WordGraphNode';
 
-// Create a real AppState and CurrentWord to test with
+// Mock WordGraphNode for testing
+class MockWordGraphNode {
+  word: string;
+  deletes: boolean[];
+  inserts: string[];
+  replaces: string[];
+  uppercase: boolean[];
+  lowercase: boolean[];
+  
+  constructor(word: string) {
+    this.word = word;
+    this.deletes = Array(word.length).fill(true);
+    this.inserts = Array(word.length + 1).fill('aeiou');
+    this.replaces = Array(word.length).fill('bcdfghjklmnpqrstvwxyz');
+    this.uppercase = Array(word.length).fill(true);
+    this.lowercase = Array(word.length).fill(true);
+  }
+  
+  canDelete(position: number): boolean {
+    return this.deletes[position];
+  }
+  
+  getInsertions(position: number): string {
+    return this.inserts[position];
+  }
+  
+  getReplacements(position: number): string {
+    return this.replaces[position];
+  }
+  
+  getPossibleInsertions(position: number): string[] {
+    return this.inserts[position]?.split('') || [];
+  }
+  
+  getPossibleReplacements(position: number): string[] {
+    return this.replaces[position]?.split('') || [];
+  }
+  
+  canUppercase(position: number): boolean {
+    return this.uppercase[position];
+  }
+  
+  canLowercase(position: number): boolean {
+    return this.lowercase[position];
+  }
+  
+  canChangeCaseAt(position: number): boolean {
+    return this.uppercase[position] || this.lowercase[position];
+  }
+}
+
 describe('Letter', () => {
   let appState: AppState;
   let currentWord: CurrentWord;
 
   beforeEach(() => {
-    appState = new AppState();
-    currentWord = new CurrentWord("test", appState);
+    appState = {
+      navigateTo: jest.fn(),
+      openMenu: jest.fn(),
+      closeAllMenus: jest.fn(),
+    } as unknown as AppState;
+    
+    const node = new MockWordGraphNode('test') as unknown as WordGraphNode;
+    currentWord = new CurrentWord(node, appState, false);
   });
 
   it('should initialize with the correct properties', () => {

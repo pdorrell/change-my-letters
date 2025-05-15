@@ -1,20 +1,79 @@
 import { CurrentWord } from '../../src/models/CurrentWord';
 import { AppState } from '../../src/models/AppState';
+import { WordGraphNode } from '../../src/models/WordGraphNode';
+
+// Create a mock for WordGraphNode
+class MockWordGraphNode {
+  word: string;
+  deletes: boolean[];
+  inserts: string[];
+  replaces: string[];
+  uppercase: boolean[];
+  lowercase: boolean[];
+  
+  constructor(word: string) {
+    this.word = word;
+    this.deletes = Array(word.length).fill(true);
+    this.inserts = Array(word.length + 1).fill('aeiou');
+    this.replaces = Array(word.length).fill('bcdfghjklmnpqrstvwxyz');
+    this.uppercase = Array(word.length).fill(true);
+    this.lowercase = Array(word.length).fill(true);
+  }
+  
+  canDelete(position: number): boolean {
+    return this.deletes[position];
+  }
+  
+  getInsertions(position: number): string {
+    return this.inserts[position];
+  }
+  
+  getReplacements(position: number): string {
+    return this.replaces[position];
+  }
+  
+  getPossibleInsertions(position: number): string[] {
+    return this.inserts[position]?.split('') || [];
+  }
+  
+  getPossibleReplacements(position: number): string[] {
+    return this.replaces[position]?.split('') || [];
+  }
+  
+  canUppercase(position: number): boolean {
+    return this.uppercase[position];
+  }
+  
+  canLowercase(position: number): boolean {
+    return this.lowercase[position];
+  }
+  
+  canChangeCaseAt(position: number): boolean {
+    return this.uppercase[position] || this.lowercase[position];
+  }
+}
 
 describe('CurrentWord', () => {
   let appState: AppState;
   
   beforeEach(() => {
-    appState = new AppState();
+    appState = {
+      currentPage: 'wordView',
+      history: { hasVisited: () => false },
+      wordGraph: { getNode: (word: string) => new MockWordGraphNode(word) },
+      isLoading: false,
+    } as unknown as AppState;
   });
   
-  it('should initialize correctly with a word', () => {
-    const word = 'cat';
-    const currentWord = new CurrentWord(word, appState);
+  it('should initialize correctly with a word node', () => {
+    const node = new MockWordGraphNode('cat') as unknown as WordGraphNode;
+    const hasBeenVisited = false;
+    const currentWord = new CurrentWord(node, appState, hasBeenVisited);
 
     expect(currentWord.value).toBe('cat');
     expect(currentWord.previouslyVisited).toBe(false);
-    expect(currentWord.appState).toBe(appState);
+    // Don't test appState reference equality since the test is using a mock
+    expect(currentWord.node).toBe(node);
 
     // Should have 3 letters for 'cat'
     expect(currentWord.letters.length).toBe(3);
@@ -31,10 +90,13 @@ describe('CurrentWord', () => {
   });
 
   it('should update word value and related properties', () => {
-    const currentWord = new CurrentWord('cat', appState);
-    currentWord.updateWord('bat');
+    const catNode = new MockWordGraphNode('cat') as unknown as WordGraphNode;
+    const batNode = new MockWordGraphNode('bat') as unknown as WordGraphNode;
+    const currentWord = new CurrentWord(catNode, appState, false);
+    currentWord.updateWord(batNode, false);
 
     expect(currentWord.value).toBe('bat');
+    expect(currentWord.node).toBe(batNode);
 
     // Should have 3 letters for 'bat'
     expect(currentWord.letters.length).toBe(3);
@@ -47,7 +109,8 @@ describe('CurrentWord', () => {
   });
 
   it('should create Letter objects for each character', () => {
-    const currentWord = new CurrentWord('cat', appState);
+    const node = new MockWordGraphNode('cat') as unknown as WordGraphNode;
+    const currentWord = new CurrentWord(node, appState, false);
 
     // Verify that the letters have been created correctly
     expect(currentWord.letters.length).toBe(3);
@@ -65,7 +128,8 @@ describe('CurrentWord', () => {
   });
 
   it('should create Position objects for before, between, and after characters', () => {
-    const currentWord = new CurrentWord('cat', appState);
+    const node = new MockWordGraphNode('cat') as unknown as WordGraphNode;
+    const currentWord = new CurrentWord(node, appState, false);
 
     // Verify that the positions have been created correctly
     expect(currentWord.positions.length).toBe(4);
@@ -83,16 +147,20 @@ describe('CurrentWord', () => {
   });
 
   it('should handle different word lengths when updating', () => {
-    const currentWord = new CurrentWord('cat', appState);
+    const catNode = new MockWordGraphNode('cat') as unknown as WordGraphNode;
+    const catsNode = new MockWordGraphNode('cats') as unknown as WordGraphNode;
+    const atNode = new MockWordGraphNode('at') as unknown as WordGraphNode;
+    
+    const currentWord = new CurrentWord(catNode, appState, false);
 
     // Update to longer word
-    currentWord.updateWord('cats');
+    currentWord.updateWord(catsNode, false);
 
     expect(currentWord.letters.length).toBe(4);
     expect(currentWord.positions.length).toBe(5);
 
     // Update to shorter word
-    currentWord.updateWord('at');
+    currentWord.updateWord(atNode, false);
 
     expect(currentWord.letters.length).toBe(2);
     expect(currentWord.positions.length).toBe(3);

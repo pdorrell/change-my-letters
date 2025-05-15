@@ -3,6 +3,7 @@ import { CurrentWord } from './CurrentWord';
 import { HistoryModel, WordChange } from './HistoryModel';
 import { WordGraph } from './WordGraph';
 import { WordLoader } from './WordLoader';
+import { WordGraphNode } from './WordGraphNode';
 
 // Type for the main application pages
 type AppPage = 'wordView' | 'historyView';
@@ -15,7 +16,7 @@ export class AppState {
   currentPage: AppPage = 'wordView';
   
   // The current word model
-  currentWord: CurrentWord;
+  currentWord: CurrentWord | null = null;
   
   // The word history model
   history: HistoryModel;
@@ -33,7 +34,6 @@ export class AppState {
   constructor() {
     // Initial word - will be replaced with proper initialization
     const initialWord = 'bet';
-    this.currentWord = new CurrentWord(initialWord, this);
     this.history = new HistoryModel(this, initialWord);
     this.wordGraph = new WordGraph();
 
@@ -62,12 +62,9 @@ export class AppState {
           this.setNewWord(randomWord);
         } else {
           // If we couldn't load any words, display an error status message
-          // This would be visible in the main UI where we show "Loading..." normally
           this.isLoading = false;
-          // We could set some error state here if needed
         }
         
-        this.updateCurrentWordState();
         this.isLoading = false;
       });
     } catch (error) {
@@ -80,24 +77,26 @@ export class AppState {
   }
   
   /**
-   * Update the current word's state based on the word graph
-   */
-  updateCurrentWordState(): void {
-    this.currentWord.updateState(this.wordGraph, this.history);
-  }
-  
-  
-  /**
    * Set a new current word
+   * @throws Error if the word doesn't exist in the graph
    */
   setNewWord(word: string): void {
-    // If the current word object doesn't exist yet, create it
-    if (!this.currentWord) {
-      this.currentWord = new CurrentWord(word, this);
-    } else {
-      this.currentWord.updateWord(word);
+    // Get the node for this word
+    const node = this.wordGraph.getNode(word);
+    
+    if (!node) {
+      throw new Error(`Word "${word}" doesn't exist in the word graph`);
     }
-    this.updateCurrentWordState();
+    
+    // Check if the word has been visited before
+    const hasBeenVisited = this.history.hasVisited(word);
+    
+    // Create or update the current word
+    if (!this.currentWord) {
+      this.currentWord = new CurrentWord(node, this, hasBeenVisited);
+    } else {
+      this.currentWord.updateWord(node, hasBeenVisited);
+    }
 
     // Close any open menus when the word changes
     this.closeAllMenus();
@@ -107,6 +106,8 @@ export class AppState {
    * Delete a letter from the current word
    */
   deleteLetter(position: number): void {
+    if (!this.currentWord) return;
+    
     const currentWord = this.currentWord.value;
     
     if (position >= 0 && position < currentWord.length) {
@@ -130,6 +131,8 @@ export class AppState {
    * Insert a letter into the current word
    */
   insertLetter(position: number, letter: string): void {
+    if (!this.currentWord) return;
+    
     const currentWord = this.currentWord.value;
     
     if (position >= 0 && position <= currentWord.length) {
@@ -154,6 +157,8 @@ export class AppState {
    * Replace a letter in the current word
    */
   replaceLetter(position: number, newLetter: string): void {
+    if (!this.currentWord) return;
+    
     const currentWord = this.currentWord.value;
     
     if (position >= 0 && position < currentWord.length) {
@@ -178,6 +183,8 @@ export class AppState {
    * Change the case of a letter
    */
   changeLetterCase(position: number, toUpperCase: boolean): void {
+    if (!this.currentWord) return;
+    
     const currentWord = this.currentWord.value;
     
     if (position >= 0 && position < currentWord.length) {
@@ -246,6 +253,8 @@ export class AppState {
    * Open a menu
    */
   openMenu(menuType: 'replace' | 'insert', position: number, buttonElement: HTMLElement): void {
+    if (!this.currentWord) return;
+    
     // If same menu, close it (toggle behavior)
     if (this.activeMenuType === menuType && this.activeMenuPosition === position) {
       this.closeAllMenus();
@@ -272,6 +281,8 @@ export class AppState {
    * Close all menus
    */
   closeAllMenus(): void {
+    if (!this.currentWord) return;
+    
     // Close existing open menu
     if (this.activeMenuType === 'replace' && this.activeMenuPosition >= 0) {
       if (this.activeMenuPosition < this.currentWord.letters.length) {

@@ -4,6 +4,7 @@ import { LetterView } from '../../src/views/LetterView';
 import { Letter } from '../../src/models/Letter';
 import { CurrentWord } from '../../src/models/CurrentWord';
 import { AppState } from '../../src/models/AppState';
+import { WordGraphNode } from '../../src/models/WordGraphNode';
 
 // Mock MobX's observer
 jest.mock('mobx-react-lite', () => ({
@@ -23,24 +24,77 @@ jest.mock('../../src/views/CurrentWordView', () => ({
   ),
 }));
 
+// Mock WordGraphNode for testing
+class MockWordGraphNode {
+  word: string;
+  deletes: boolean[];
+  inserts: string[];
+  replaces: string[];
+  uppercase: boolean[];
+  lowercase: boolean[];
+  
+  constructor(word: string) {
+    this.word = word;
+    this.deletes = Array(word.length).fill(true);
+    this.inserts = Array(word.length + 1).fill('aeiou');
+    this.replaces = Array(word.length).fill('bcdfghjklmnpqrstvwxyz');
+    this.uppercase = Array(word.length).fill(true);
+    this.lowercase = Array(word.length).fill(true);
+  }
+  
+  canDelete(position: number): boolean {
+    return this.deletes[position];
+  }
+  
+  getInsertions(position: number): string {
+    return this.inserts[position];
+  }
+  
+  getReplacements(position: number): string {
+    return this.replaces[position];
+  }
+  
+  getPossibleInsertions(position: number): string[] {
+    return this.inserts[position]?.split('') || [];
+  }
+  
+  getPossibleReplacements(position: number): string[] {
+    return this.replaces[position]?.split('') || [];
+  }
+  
+  canUppercase(position: number): boolean {
+    return this.uppercase[position];
+  }
+  
+  canLowercase(position: number): boolean {
+    return this.lowercase[position];
+  }
+  
+  canChangeCaseAt(position: number): boolean {
+    return this.uppercase[position] || this.lowercase[position];
+  }
+}
+
 describe('LetterView', () => {
   let appState: AppState;
   let currentWord: CurrentWord;
   let letter: Letter;
   
   beforeEach(() => {
-    // Create real instances but spy on the methods we want to test
-    appState = new AppState();
+    // Create mock AppState
+    appState = {
+      openMenu: jest.fn(),
+      closeAllMenus: jest.fn(),
+      deleteLetter: jest.fn(),
+      changeLetterCase: jest.fn(),
+      replaceLetter: jest.fn(),
+      navigateTo: jest.fn(),
+      history: { hasVisited: () => false },
+    } as unknown as AppState;
     
-    // Spy on AppState methods
-    appState.openMenu = jest.fn();
-    appState.closeAllMenus = jest.fn();
-    appState.deleteLetter = jest.fn();
-    appState.changeLetterCase = jest.fn();
-    appState.replaceLetter = jest.fn();
-    
-    // Create a CurrentWord with our AppState
-    currentWord = new CurrentWord('test', appState);
+    // Create a CurrentWord with our mocked AppState
+    const node = new MockWordGraphNode('test') as unknown as WordGraphNode;
+    currentWord = new CurrentWord(node, appState, false);
     
     // Create a Letter with default settings for tests
     letter = new Letter(currentWord, 'a', 0);

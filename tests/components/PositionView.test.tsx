@@ -4,6 +4,7 @@ import { PositionView } from '../../src/views/PositionView';
 import { Position } from '../../src/models/Position';
 import { CurrentWord } from '../../src/models/CurrentWord';
 import { AppState } from '../../src/models/AppState';
+import { WordGraphNode } from '../../src/models/WordGraphNode';
 
 // Mock MobX's observer
 jest.mock('mobx-react-lite', () => ({
@@ -23,22 +24,65 @@ jest.mock('../../src/views/CurrentWordView', () => ({
   ),
 }));
 
+// Mock WordGraphNode for testing
+class MockWordGraphNode implements Partial<WordGraphNode> {
+  word: string;
+  
+  constructor(word: string) {
+    this.word = word;
+  }
+  
+  getPossibleInsertions(position: number): string[] {
+    return ['a', 'e', 'i', 'o', 'u'];
+  }
+  
+  getPossibleReplacements(position: number): string[] {
+    return ['b', 'c', 'd', 'f', 'g'];
+  }
+  
+  canDelete(position: number): boolean {
+    return true;
+  }
+  
+  canChangeCaseAt(position: number): boolean {
+    return false;
+  }
+  
+  getInsertions(position: number): string {
+    return 'aeiou';
+  }
+  
+  getReplacements(position: number): string {
+    return 'bcdfg';
+  }
+  
+  canUppercase(position: number): boolean {
+    return false;
+  }
+  
+  canLowercase(position: number): boolean {
+    return false;
+  }
+}
+
 describe('PositionView', () => {
   let appState: AppState;
   let currentWord: CurrentWord;
   let position: Position;
   
   beforeEach(() => {
-    // Create real instances but spy on the methods we want to test
-    appState = new AppState();
+    // Create mock AppState with spies for the methods we want to test
+    appState = {
+      openMenu: jest.fn(),
+      closeAllMenus: jest.fn(),
+      insertLetter: jest.fn(),
+    } as unknown as AppState;
     
-    // Spy on AppState methods
-    appState.openMenu = jest.fn();
-    appState.closeAllMenus = jest.fn();
-    appState.insertLetter = jest.fn();
+    // Create a mock WordGraphNode for our tests
+    const node = new MockWordGraphNode('test') as unknown as WordGraphNode;
     
-    // Create a CurrentWord with our AppState
-    currentWord = new CurrentWord('test', appState);
+    // Create a CurrentWord with our mock WordGraphNode and AppState
+    currentWord = new CurrentWord(node, appState, false);
     
     // Create a Position with default settings for tests
     position = new Position(currentWord, 0);

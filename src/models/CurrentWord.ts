@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import { Letter } from './Letter';
 import { Position } from './Position';
 import { AppState } from './AppState';
-import { WordGraph } from './WordGraph';
+import { WordGraphNode } from './WordGraphNode';
 import { HistoryModel } from './HistoryModel';
 
 /**
@@ -13,7 +13,7 @@ export class CurrentWord {
   value: string;
 
   // Whether this word has been previously visited
-  previouslyVisited: boolean = false;
+  previouslyVisited: boolean;
 
   // Array of letter models representing each character
   letters: Letter[] = [];
@@ -24,20 +24,31 @@ export class CurrentWord {
   // Reference to the app state
   appState: AppState;
 
-  constructor(word: string, appState?: AppState) {
-    this.value = word;
-    this.appState = appState as AppState;
+  // Reference to the word graph node
+  node: WordGraphNode;
+
+  /**
+   * Create a new CurrentWord model
+   * @param node The WordGraphNode for this word
+   * @param appState The AppState reference
+   * @param hasBeenVisited Whether this word has been visited before
+   */
+  constructor(node: WordGraphNode, appState: AppState, hasBeenVisited: boolean) {
+    this.value = node.word;
+    this.node = node;
+    this.appState = appState;
+    this.previouslyVisited = hasBeenVisited;
 
     // Initialize letters and positions
-    this.initializeWord(word);
+    this.initializeWord();
 
     makeAutoObservable(this);
   }
 
   /**
-   * Initialize the letters and positions for a new word
+   * Initialize the letters and positions for the current word
    */
-  private initializeWord(word: string): void {
+  private initializeWord(): void {
     this.letters = [];
     this.positions = [];
 
@@ -45,67 +56,45 @@ export class CurrentWord {
     this.positions.push(new Position(this, 0));
 
     // Create letters and positions between letters
-    for (let i = 0; i < word.length; i++) {
-      this.letters.push(new Letter(this, word[i], i));
+    for (let i = 0; i < this.value.length; i++) {
+      this.letters.push(new Letter(this, this.value[i], i));
       this.positions.push(new Position(this, i + 1));
     }
+
+    // Update the state of the word's letters and positions
+    this.updateState();
   }
 
   /**
-   * Update the current word to a new value
+   * Update the current word to a new WordGraphNode
+   * @param newNode The new WordGraphNode
+   * @param hasBeenVisited Whether the new word has been visited before
    */
-  updateWord(newWord: string): void {
-    this.value = newWord;
-    this.initializeWord(newWord);
+  updateWord(newNode: WordGraphNode, hasBeenVisited: boolean): void {
+    this.value = newNode.word;
+    this.node = newNode;
+    this.previouslyVisited = hasBeenVisited;
+    this.initializeWord();
   }
 
   /**
-   * Update the state of this word's letters and positions based on the word graph and history
-   * @param wordGraph The word graph containing possible operations
-   * @param history The history model to check for previously visited words
+   * Update the state of this word's letters and positions based on the node
    */
-  updateState(wordGraph: WordGraph, history: HistoryModel): void {
-    const word = this.value;
-    
-    // Update whether the word has been previously visited
-    this.previouslyVisited = history.hasVisited(word);
-    
-    // Get the word graph node for this word
-    const node = wordGraph.getNode(word);
-    
-    // If the word isn't in the graph, we can't perform any operations
-    if (!node) {
-      // Reset all letter and position states to disallow any operations
-      this.letters.forEach(letter => {
-        letter.canDelete = false;
-        letter.canReplace = false;
-        letter.replacements = [];
-        letter.canUpperCase = false;
-        letter.canLowerCase = false;
-      });
-      
-      this.positions.forEach(position => {
-        position.canInsert = false;
-        position.insertOptions = [];
-      });
-      
-      return;
-    }
-    
+  updateState(): void {
     // Update letter states
     for (let i = 0; i < this.letters.length; i++) {
       const letter = this.letters[i];
       
       // Check if this letter can be deleted
-      letter.canDelete = node.canDelete(i);
+      letter.canDelete = this.node.canDelete(i);
       
       // Check if this letter can be replaced and get possible replacements
-      const replacements = node.getPossibleReplacements(i);
+      const replacements = this.node.getPossibleReplacements(i);
       letter.canReplace = replacements.length > 0;
       letter.replacements = replacements;
       
       // Check if this letter can change case
-      const canChangeCaseAtPosition = node.canChangeCaseAt(i);
+      const canChangeCaseAtPosition = this.node.canChangeCaseAt(i);
       letter.canUpperCase = canChangeCaseAtPosition && 
                           letter.value === letter.value.toLowerCase() && 
                           letter.value !== letter.value.toUpperCase();
@@ -120,7 +109,7 @@ export class CurrentWord {
       const position = this.positions[i];
       
       // Check if a letter can be inserted at this position
-      const insertions = node.getPossibleInsertions(i);
+      const insertions = this.node.getPossibleInsertions(i);
       position.canInsert = insertions.length > 0;
       position.insertOptions = insertions;
     }
