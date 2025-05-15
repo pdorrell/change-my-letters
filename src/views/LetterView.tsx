@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { LetterInteraction } from '../models/LetterInteraction';
+import { LetterInteraction } from '../models/interaction/LetterInteraction';
 import { LetterChoiceMenu } from './CurrentWordView';
 
 interface LetterViewProps {

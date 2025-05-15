@@ -1,6 +1,6 @@
 // This is a shim to help with the transition from CurrentWord to WordInteraction
 // Eventually all imports of CurrentWord should be replaced with WordInteraction directly
-import { WordInteraction } from './WordInteraction';
+import { WordInteraction } from './interaction/WordInteraction';
 import { AppState } from './AppState';
 import { WordGraphNode } from './WordGraphNode';
 

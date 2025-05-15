@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { PositionInteraction } from '../models/PositionInteraction';
+import { PositionInteraction } from '../models/interaction/PositionInteraction';
 import { LetterChoiceMenu } from './CurrentWordView';
 
 interface PositionViewProps {

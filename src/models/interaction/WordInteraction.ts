@@ -1,8 +1,8 @@
 import { makeObservable, observable, computed, action } from 'mobx';
-import { AppState } from './AppState';
+import { AppState } from '../AppState';
 import { LetterInteraction } from './LetterInteraction';
 import { PositionInteraction } from './PositionInteraction';
-import { WordGraphNode } from './WordGraphNode';
+import { WordGraphNode } from '../WordGraphNode';
 
 /**
  * Model representing the user's current interaction with a word

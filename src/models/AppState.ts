@@ -2,7 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { HistoryModel, WordChange } from './HistoryModel';
 import { WordGraph } from './WordGraph';
 import { WordLoader } from './WordLoader';
-import { WordInteraction } from './WordInteraction';
+import { WordInteraction } from './interaction/WordInteraction';
 
 // Type for the main application pages
 type AppPage = 'wordView' | 'historyView';

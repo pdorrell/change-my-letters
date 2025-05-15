@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { WordInteraction } from '../models/WordInteraction';
+import { WordInteraction } from '../models/interaction/WordInteraction';
 import { LetterView, LetterPlaceholder } from './LetterView';
 import { PositionView, PositionPlaceholder } from './PositionView';
 import {

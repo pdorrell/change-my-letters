@@ -1,6 +1,6 @@
-import { PositionInteraction } from '../../src/models/PositionInteraction';
+import { PositionInteraction } from '../../src/models/interaction/PositionInteraction';
 import { Position } from '../../src/models/Position';
-import { WordInteraction } from '../../src/models/WordInteraction';
+import { WordInteraction } from '../../src/models/interaction/WordInteraction';
 import { WordGraphNode } from '../../src/models/WordGraphNode';
 import { Letter } from '../../src/models/Letter';
 import { AppState } from '../../src/models/AppState';

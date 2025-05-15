@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import { Position } from './Position';
+import { Position } from '../Position';
 import { WordInteraction } from './WordInteraction';
 
 /**
