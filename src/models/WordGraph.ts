@@ -1,14 +1,14 @@
 import { makeAutoObservable } from 'mobx';
-import { WordGraphNode } from './WordGraphNode';
+import { Word } from './Word';
 import { WordGraphBuilder } from './WordGraphBuilder';
 
 /**
- * Represents a graph of words where each word is mapped to a WordGraphNode
+ * Represents a graph of words where each word is mapped to a Word object
  * that contains all possible operations (delete, insert, replace, case change)
  */
 export class WordGraph {
-  // A map from words to WordGraphNode objects
-  private wordNodes: Map<string, WordGraphNode> = new Map();
+  // A map from words to Word objects
+  private wordMap: Map<string, Word> = new Map();
 
   // All words in the graph
   words: Set<string> = new Set();
@@ -109,15 +109,15 @@ export class WordGraph {
    */
   getConnectedWords(word: string): string[] {
     const connected: Set<string> = new Set();
-    const node = this.getWordNode(word);
+    const wordObj = this.getWordObj(word);
     
-    if (!node) {
+    if (!wordObj) {
       return [];
     }
     
     // Check for deletions
     for (let i = 0; i < word.length; i++) {
-      if (node.canDelete(i)) {
+      if (wordObj.canDelete(i)) {
         const newWord = word.substring(0, i) + word.substring(i + 1);
         if (this.hasWord(newWord)) {
           connected.add(newWord);
@@ -127,7 +127,7 @@ export class WordGraph {
     
     // Check for insertions
     for (let i = 0; i <= word.length; i++) {
-      const insertions = node.getInsertions(i);
+      const insertions = wordObj.getInsertions(i);
       if (insertions) {
         for (const letter of insertions) {
           const newWord = word.substring(0, i) + letter + word.substring(i);
@@ -140,7 +140,7 @@ export class WordGraph {
     
     // Check for replacements
     for (let i = 0; i < word.length; i++) {
-      const replacements = node.getReplacements(i);
+      const replacements = wordObj.getReplacements(i);
       if (replacements) {
         for (const letter of replacements) {
           const newWord = word.substring(0, i) + letter + word.substring(i + 1);
@@ -156,7 +156,7 @@ export class WordGraph {
       const letter = word[i];
       
       // Check uppercase
-      if (node.canUppercase(i) && letter === letter.toLowerCase()) {
+      if (wordObj.canUppercase(i) && letter === letter.toLowerCase()) {
         const newWord = word.substring(0, i) + letter.toUpperCase() + word.substring(i + 1);
         if (this.hasWord(newWord)) {
           connected.add(newWord);
@@ -164,7 +164,7 @@ export class WordGraph {
       }
       
       // Check lowercase
-      if (node.canLowercase(i) && letter === letter.toUpperCase()) {
+      if (wordObj.canLowercase(i) && letter === letter.toUpperCase()) {
         const newWord = word.substring(0, i) + letter.toLowerCase() + word.substring(i + 1);
         if (this.hasWord(newWord)) {
           connected.add(newWord);
@@ -179,7 +179,7 @@ export class WordGraph {
    * Compute the word graph from a list of words
    */
   computeFromWordList(wordList: string[]): void {
-    this.wordNodes.clear();
+    this.wordMap.clear();
     this.words.clear();
     
     // Add all words to the set
@@ -201,9 +201,9 @@ export class WordGraph {
   toJson(): Record<string, Record<string, unknown>> {
     const jsonGraph: Record<string, Record<string, unknown>> = {};
     
-    // Convert each WordGraphNode to its JSON representation
-    for (const [word, node] of this.wordNodes.entries()) {
-      jsonGraph[word] = node.toJson();
+    // Convert each Word to its JSON representation
+    for (const [wordStr, wordObj] of this.wordMap.entries()) {
+      jsonGraph[wordStr] = wordObj.toJson();
     }
     
     // Ensure all words are included in the graph, even if they have no connections
@@ -220,21 +220,21 @@ export class WordGraph {
    * Load a pre-computed word graph from JSON
    */
   loadFromJson(jsonData: Record<string, Record<string, unknown>>): void {
-    this.wordNodes.clear();
+    this.wordMap.clear();
     this.words.clear();
 
-    for (const [word, nodeData] of Object.entries(jsonData)) {
-      this.words.add(word);
-      const node = WordGraphNode.fromJson(word, nodeData);
-      this.wordNodes.set(word, node);
+    for (const [wordStr, wordData] of Object.entries(jsonData)) {
+      this.words.add(wordStr);
+      const wordObj = Word.fromJson(wordStr, wordData);
+      this.wordMap.set(wordStr, wordObj);
     }
   }
 
   /**
-   * Get the word graph node for a specific word
+   * Get the Word object for a specific word
    */
-  getWordNode(word: string): WordGraphNode | undefined {
-    return this.wordNodes.get(word);
+  getWordObj(word: string): Word | undefined {
+    return this.wordMap.get(word);
   }
 
   /**
@@ -245,11 +245,11 @@ export class WordGraph {
   }
 
   /**
-   * Get the WordGraphNode for a word, or null if the word doesn't exist in the graph
-   * This method ensures a node is returned or null, even if the word exists in the words set
-   * but doesn't have a corresponding node
+   * Get the Word object for a word, or null if the word doesn't exist in the graph
+   * This method ensures a word object is returned or null, even if the word exists in the words set
+   * but doesn't have a corresponding word object
    */
-  getNode(word: string): WordGraphNode | null {
-    return this.wordNodes.get(word) || null;
+  getNode(word: string): Word | null {
+    return this.wordMap.get(word) || null;
   }
 }

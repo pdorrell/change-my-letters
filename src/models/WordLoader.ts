@@ -1,6 +1,6 @@
 import { WordGraph } from './WordGraph';
 import { WordGraphBuilder } from './WordGraphBuilder';
-import { ParseWordGraphJsonException } from './WordGraphNode';
+import { ParseWordGraphJsonException } from './Word';
 import { ErrorHandler } from '../utils/ErrorHandler';
 
 /**

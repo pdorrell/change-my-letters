@@ -3,11 +3,11 @@ import { LetterInteraction } from '../../src/models/interaction/LetterInteractio
 import { PositionInteraction } from '../../src/models/interaction/PositionInteraction';
 import { Letter } from '../../src/models/Letter';
 import { Position } from '../../src/models/Position';
-import { WordGraphNode } from '../../src/models/WordGraphNode';
+import { Word } from '../../src/models/Word';
 import { AppState } from '../../src/models/AppState';
 
-// Create a mock for WordGraphNode
-class MockWordGraphNode {
+// Create a mock for Word
+class MockWord {
   word: string;
   deletes: boolean[];
   inserts: string[];
@@ -29,7 +29,7 @@ class MockWordGraphNode {
   getLetters(): Letter[] {
     if (!this._letters) {
       this._letters = Array.from(this.word).map(
-        (letter, index) => new Letter(this as unknown as WordGraphNode, letter, index)
+        (letter, index) => new Letter(this as unknown as Word, letter, index)
       );
     }
     return this._letters;
@@ -39,7 +39,7 @@ class MockWordGraphNode {
     if (!this._positions) {
       this._positions = Array(this.word.length + 1)
         .fill(0)
-        .map((_, index) => new Position(this as unknown as WordGraphNode, index));
+        .map((_, index) => new Position(this as unknown as Word, index));
     }
     return this._positions;
   }
@@ -76,19 +76,19 @@ describe('WordInteraction', () => {
     appState = {
       currentPage: 'wordView',
       history: { hasVisited: () => false },
-      wordGraph: { getNode: (word: string) => new MockWordGraphNode(word) as unknown as WordGraphNode },
+      wordGraph: { getNode: (word: string) => new MockWord(word) as unknown as Word },
       isLoading: false,
     } as unknown as AppState;
   });
   
-  it('should initialize correctly with a word node', () => {
-    const node = new MockWordGraphNode('cat') as unknown as WordGraphNode;
+  it('should initialize correctly with a word', () => {
+    const wordObj = new MockWord('cat') as unknown as Word;
     const hasBeenVisited = false;
-    const wordInteraction = new WordInteraction(node, appState, hasBeenVisited);
+    const wordInteraction = new WordInteraction(wordObj, appState, hasBeenVisited);
 
     expect(wordInteraction.value).toBe('cat');
     expect(wordInteraction.previouslyVisited).toBe(false);
-    expect(wordInteraction.node).toBe(node);
+    expect(wordInteraction.word).toBe(wordObj);
 
     // Should have letterInteractions for each letter in 'cat'
     expect(wordInteraction.letterInteractions.length).toBe(3);
@@ -102,13 +102,13 @@ describe('WordInteraction', () => {
   });
 
   it('should update word value and related properties', () => {
-    const catNode = new MockWordGraphNode('cat') as unknown as WordGraphNode;
-    const batNode = new MockWordGraphNode('bat') as unknown as WordGraphNode;
-    const wordInteraction = new WordInteraction(catNode, appState, false);
-    wordInteraction.updateWord(batNode, false);
+    const catWord = new MockWord('cat') as unknown as Word;
+    const batWord = new MockWord('bat') as unknown as Word;
+    const wordInteraction = new WordInteraction(catWord, appState, false);
+    wordInteraction.updateWord(batWord, false);
 
     expect(wordInteraction.value).toBe('bat');
-    expect(wordInteraction.node).toBe(batNode);
+    expect(wordInteraction.word).toBe(batWord);
 
     // Should still have 3 letterInteractions
     expect(wordInteraction.letterInteractions.length).toBe(3);
@@ -118,8 +118,8 @@ describe('WordInteraction', () => {
   });
 
   it('should create letterInteractions for each character', () => {
-    const node = new MockWordGraphNode('cat') as unknown as WordGraphNode;
-    const wordInteraction = new WordInteraction(node, appState, false);
+    const wordObj = new MockWord('cat') as unknown as Word;
+    const wordInteraction = new WordInteraction(wordObj, appState, false);
 
     // Verify that the letterInteractions have been created correctly
     expect(wordInteraction.letterInteractions.length).toBe(3);
@@ -139,8 +139,8 @@ describe('WordInteraction', () => {
   });
 
   it('should create positionInteractions for before, between, and after characters', () => {
-    const node = new MockWordGraphNode('cat') as unknown as WordGraphNode;
-    const wordInteraction = new WordInteraction(node, appState, false);
+    const wordObj = new MockWord('cat') as unknown as Word;
+    const wordInteraction = new WordInteraction(wordObj, appState, false);
 
     // Verify that the positionInteractions have been created correctly
     expect(wordInteraction.positionInteractions.length).toBe(4);
@@ -156,28 +156,28 @@ describe('WordInteraction', () => {
   });
 
   it('should handle different word lengths when updating', () => {
-    const catNode = new MockWordGraphNode('cat') as unknown as WordGraphNode;
-    const catsNode = new MockWordGraphNode('cats') as unknown as WordGraphNode;
-    const atNode = new MockWordGraphNode('at') as unknown as WordGraphNode;
+    const catWord = new MockWord('cat') as unknown as Word;
+    const catsWord = new MockWord('cats') as unknown as Word;
+    const atWord = new MockWord('at') as unknown as Word;
     
-    const wordInteraction = new WordInteraction(catNode, appState, false);
+    const wordInteraction = new WordInteraction(catWord, appState, false);
 
     // Update to longer word
-    wordInteraction.updateWord(catsNode, false);
+    wordInteraction.updateWord(catsWord, false);
 
     expect(wordInteraction.letterInteractions.length).toBe(4);
     expect(wordInteraction.positionInteractions.length).toBe(5);
 
     // Update to shorter word
-    wordInteraction.updateWord(atNode, false);
+    wordInteraction.updateWord(atWord, false);
 
     expect(wordInteraction.letterInteractions.length).toBe(2);
     expect(wordInteraction.positionInteractions.length).toBe(3);
   });
 
   it('should close all menus', () => {
-    const node = new MockWordGraphNode('cat') as unknown as WordGraphNode;
-    const wordInteraction = new WordInteraction(node, appState, false);
+    const wordObj = new MockWord('cat') as unknown as Word;
+    const wordInteraction = new WordInteraction(wordObj, appState, false);
     
     // Open some menus
     wordInteraction.letterInteractions[0].isReplaceMenuOpen = true;
@@ -200,27 +200,35 @@ describe('WordInteraction', () => {
     }
   });
 
-  it('should have a computed value property that returns the node word', () => {
-    const node = new MockWordGraphNode('hello') as unknown as WordGraphNode;
-    const wordInteraction = new WordInteraction(node, appState, false);
+  it('should have a computed value property that returns the word string', () => {
+    const wordObj = new MockWord('hello') as unknown as Word;
+    const wordInteraction = new WordInteraction(wordObj, appState, false);
     
     expect(wordInteraction.value).toBe('hello');
     
-    // Update the node and check that value updates
-    const newNode = new MockWordGraphNode('world') as unknown as WordGraphNode;
-    wordInteraction.updateWord(newNode, false);
+    // Update the word and check that value updates
+    const newWord = new MockWord('world') as unknown as Word;
+    wordInteraction.updateWord(newWord, false);
     
     expect(wordInteraction.value).toBe('world');
   });
   
   it('should update previouslyVisited when word changes', () => {
-    const node = new MockWordGraphNode('cat') as unknown as WordGraphNode;
-    const wordInteraction = new WordInteraction(node, appState, false);
+    const wordObj = new MockWord('cat') as unknown as Word;
+    const wordInteraction = new WordInteraction(wordObj, appState, false);
     
     expect(wordInteraction.previouslyVisited).toBe(false);
     
-    wordInteraction.updateWord(node, true);
+    wordInteraction.updateWord(wordObj, true);
     
     expect(wordInteraction.previouslyVisited).toBe(true);
+  });
+
+  it('should initialize with a string and get the word from the graph', () => {
+    const wordInteraction = new WordInteraction('cat', appState, false);
+    
+    expect(wordInteraction.value).toBe('cat');
+    expect(wordInteraction.letterInteractions.length).toBe(3);
+    expect(wordInteraction.positionInteractions.length).toBe(4);
   });
 });

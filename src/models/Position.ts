@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import { WordGraphNode } from './WordGraphNode';
+import { Word } from './Word';
 
 /**
  * Model representing a position where a letter can be inserted
@@ -14,11 +14,11 @@ export class Position {
   // Possible letters that can be inserted
   insertOptions: string[] = [];
 
-  constructor(node: WordGraphNode, index: number) {
+  constructor(word: Word, index: number) {
     this.index = index;
 
-    // Get the position properties from the word graph node
-    this.insertOptions = node.getPossibleInsertions(index);
+    // Get the position properties from the word
+    this.insertOptions = word.getPossibleInsertions(index);
     this.canInsert = this.insertOptions.length > 0;
 
     makeAutoObservable(this);

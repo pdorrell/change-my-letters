@@ -13,16 +13,16 @@ export class ParseWordGraphJsonException extends Error {
 }
 
 /**
- * Represents a node in the word graph, containing all possible operations
- * that can be performed on a word
+ * Represents a word in the word graph, containing all possible operations
+ * that can be performed on it
  */
-export class WordGraphNode {
-  // Cached letter and position objects for this node
+export class Word {
+  // Cached letter and position objects for this word
   private _letters: Letter[] | null = null;
   private _positions: Position[] | null = null;
 
   constructor(
-    // The word this node represents
+    // The word string this represents
     public readonly word: string,
     
     // Boolean arrays indicating whether each letter can be deleted
@@ -44,7 +44,7 @@ export class WordGraphNode {
   }
 
   /**
-   * Get the letters for this word node, creating them if they don't exist
+   * Get the letters for this word, creating them if they don't exist
    */
   getLetters(): Letter[] {
     if (!this._letters) {
@@ -56,7 +56,7 @@ export class WordGraphNode {
   }
 
   /**
-   * Get the positions for this word node, creating them if they don't exist
+   * Get the positions for this word, creating them if they don't exist
    */
   getPositions(): Position[] {
     if (!this._positions) {
@@ -131,16 +131,13 @@ export class WordGraphNode {
    * @returns True if case change is possible at this position
    */
   canChangeCaseAt(position: number): boolean {
-    const letter = this.word[position];
-    return letter === letter.toLowerCase()
-      ? this.canUppercase(position)
-      : this.canLowercase(position);
+    return this.canUppercase(position) || this.canLowercase(position);
   }
 
   /**
-   * Create a WordGraphNode from the JSON representation
+   * Create a Word from the JSON representation
    */
-  static fromJson(word: string, data: Record<string, unknown>): WordGraphNode {
+  static fromJson(word: string, data: Record<string, unknown>): Word {
     const wordLength = word.length;
 
     /**
@@ -196,7 +193,7 @@ export class WordGraphNode {
     const uppercase = parseBooleanString(data.uppercase as string | undefined, wordLength);
     const lowercase = parseBooleanString(data.lowercase as string | undefined, wordLength);
 
-    return new WordGraphNode(
+    return new Word(
       word,
       deletes,
       inserts,
@@ -207,7 +204,7 @@ export class WordGraphNode {
   }
   
   /**
-   * Convert this node to its JSON representation
+   * Convert this word to its JSON representation
    */
   toJson(): Record<string, unknown> {
     const result: Record<string, unknown> = {};

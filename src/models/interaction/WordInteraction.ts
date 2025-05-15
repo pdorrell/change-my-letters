@@ -2,14 +2,16 @@ import { makeObservable, observable, computed, action } from 'mobx';
 import { AppState } from '../AppState';
 import { LetterInteraction } from './LetterInteraction';
 import { PositionInteraction } from './PositionInteraction';
-import { WordGraphNode } from '../WordGraphNode';
+import { Word } from '../Word';
+import { Letter } from '../Letter';
+import { Position } from '../Position';
 
 /**
  * Model representing the user's current interaction with a word
  */
 export class WordInteraction {
-  // The word graph node being interacted with
-  node: WordGraphNode;
+  // The word being interacted with
+  word: Word;
 
   // Reference to the app state
   appState: AppState;
@@ -23,8 +25,29 @@ export class WordInteraction {
   // Array of position interactions
   positionInteractions: PositionInteraction[] = [];
 
-  constructor(node: WordGraphNode, appState: AppState, hasBeenVisited: boolean) {
-    this.node = node;
+  // For backward compatibility - get the underlying letters
+  get letters(): Letter[] {
+    return this.letterInteractions.map(interaction => interaction.letter);
+  }
+
+  // For backward compatibility - get the underlying positions
+  get positions(): Position[] {
+    return this.positionInteractions.map(interaction => interaction.position);
+  }
+
+  constructor(wordOrString: Word | string, appState: AppState, hasBeenVisited: boolean = false) {
+    if (typeof wordOrString === 'string') {
+      // If a string was passed, get the word from the wordGraph
+      const word = appState.wordGraph.getNode(wordOrString);
+      if (!word) {
+        throw new Error(`Word "${wordOrString}" doesn't exist in the word graph`);
+      }
+      this.word = word;
+    } else {
+      // If a Word object was passed, use it directly
+      this.word = wordOrString;
+    }
+    
     this.appState = appState;
     this.previouslyVisited = hasBeenVisited;
 
@@ -33,10 +56,12 @@ export class WordInteraction {
 
     // Use makeObservable instead of makeAutoObservable for classes with inheritance
     makeObservable(this, {
-      node: observable,
+      word: observable,
       previouslyVisited: observable,
       letterInteractions: observable,
       positionInteractions: observable,
+      letters: computed,
+      positions: computed,
       value: computed,
       updateWord: action,
       closeAllMenus: action
@@ -47,9 +72,9 @@ export class WordInteraction {
    * Initialize the letter and position interactions for this word
    */
   private initializeInteractions(): void {
-    // Get the base Letter and Position objects from the node
-    const letters = this.node.getLetters();
-    const positions = this.node.getPositions();
+    // Get the base Letter and Position objects from the word
+    const letters = this.word.getLetters();
+    const positions = this.word.getPositions();
 
     // Create interaction wrappers for each
     this.letterInteractions = letters.map(
@@ -64,8 +89,8 @@ export class WordInteraction {
   /**
    * Update to a new word
    */
-  updateWord(node: WordGraphNode, hasBeenVisited: boolean): void {
-    this.node = node;
+  updateWord(word: Word, hasBeenVisited: boolean): void {
+    this.word = word;
     this.previouslyVisited = hasBeenVisited;
 
     // Reinitialize interactions for the new word
@@ -76,7 +101,7 @@ export class WordInteraction {
    * Get the current word value
    */
   get value(): string {
-    return this.node.word;
+    return this.word.word;
   }
 
   /**

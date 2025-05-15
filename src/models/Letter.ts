@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import { WordGraphNode } from './WordGraphNode';
+import { Word } from './Word';
 
 /**
  * Model representing a single letter in a word
@@ -22,18 +22,18 @@ export class Letter {
   canUpperCase: boolean = false;
   canLowerCase: boolean = false;
 
-  constructor(node: WordGraphNode, letter: string, position: number) {
+  constructor(word: Word, letter: string, position: number) {
     this.value = letter;
     this.position = position;
 
-    // Get the letter properties from the word graph node
-    this.canDelete = node.canDelete(position);
-    this.replacements = node.getPossibleReplacements(position);
+    // Get the letter properties from the word
+    this.canDelete = word.canDelete(position);
+    this.replacements = word.getPossibleReplacements(position);
     this.canReplace = this.replacements.length > 0;
 
     // Set case change properties
-    this.canUpperCase = letter === letter.toLowerCase() && letter !== '' && node.canUppercase(position);
-    this.canLowerCase = letter === letter.toUpperCase() && letter !== '' && node.canLowercase(position);
+    this.canUpperCase = letter === letter.toLowerCase() && letter !== '' && word.canUppercase(position);
+    this.canLowerCase = letter === letter.toUpperCase() && letter !== '' && word.canLowercase(position);
 
     makeAutoObservable(this);
   }
