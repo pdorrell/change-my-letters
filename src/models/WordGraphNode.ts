@@ -1,4 +1,6 @@
 import { makeAutoObservable } from 'mobx';
+import { Letter } from './Letter';
+import { Position } from './Position';
 
 /**
  * Exception thrown when there's an error parsing the JSON for a word graph
@@ -15,6 +17,10 @@ export class ParseWordGraphJsonException extends Error {
  * that can be performed on a word
  */
 export class WordGraphNode {
+  // Cached letter and position objects for this node
+  private _letters: Letter[] | null = null;
+  private _positions: Position[] | null = null;
+
   constructor(
     // The word this node represents
     public readonly word: string,
@@ -35,6 +41,30 @@ export class WordGraphNode {
     public readonly lowercase: boolean[]
   ) {
     makeAutoObservable(this);
+  }
+
+  /**
+   * Get the letters for this word node, creating them if they don't exist
+   */
+  getLetters(): Letter[] {
+    if (!this._letters) {
+      this._letters = Array.from(this.word).map(
+        (letter, index) => new Letter(this, letter, index)
+      );
+    }
+    return this._letters;
+  }
+
+  /**
+   * Get the positions for this word node, creating them if they don't exist
+   */
+  getPositions(): Position[] {
+    if (!this._positions) {
+      this._positions = Array(this.word.length + 1)
+        .fill(0)
+        .map((_, index) => new Position(this, index));
+    }
+    return this._positions;
   }
 
   /**

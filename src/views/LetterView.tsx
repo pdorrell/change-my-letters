@@ -1,10 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Letter } from '../models/Letter';
+import { LetterInteraction } from '../models/LetterInteraction';
 import { LetterChoiceMenu } from './CurrentWordView';
 
 interface LetterViewProps {
-  letter: Letter;
+  letterInteraction: LetterInteraction;
 }
 
 /**
@@ -28,8 +28,9 @@ export const LetterPlaceholder: React.FC = () => {
 /**
  * View component for displaying a single letter
  */
-export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
-  const appState = letter.word.appState;
+export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteraction }) => {
+  const letter = letterInteraction.letter;
+  const appState = letterInteraction.wordInteraction.appState;
   const replaceButtonRef = React.useRef<HTMLButtonElement>(null);
 
   const handleReplaceClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -98,12 +99,12 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letter }) => {
         </button>
       </div>
 
-      {letter.isReplaceMenuOpen && (
+      {letterInteraction.isReplaceMenuOpen && (
         <LetterChoiceMenu
           options={letter.replacements}
           onSelect={handleLetterChoice}
           previouslyVisited={[]} // We'll add this functionality later
-          word={letter.word}
+          wordInteraction={letterInteraction.wordInteraction}
         />
       )}
     </div>

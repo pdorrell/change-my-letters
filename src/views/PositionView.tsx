@@ -1,10 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Position } from '../models/Position';
+import { PositionInteraction } from '../models/PositionInteraction';
 import { LetterChoiceMenu } from './CurrentWordView';
 
 interface PositionViewProps {
-  position: Position;
+  positionInteraction: PositionInteraction;
 }
 
 /**
@@ -22,8 +22,9 @@ export const PositionPlaceholder: React.FC = () => {
 /**
  * View component for displaying a position where letters can be inserted
  */
-export const PositionView: React.FC<PositionViewProps> = observer(({ position }) => {
-  const appState = position.word.appState;
+export const PositionView: React.FC<PositionViewProps> = observer(({ positionInteraction }) => {
+  const position = positionInteraction.position;
+  const appState = positionInteraction.wordInteraction.appState;
   const insertButtonRef = React.useRef<HTMLButtonElement>(null);
 
   const handleInsertClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -43,16 +44,17 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ position })
         disabled={!position.canInsert}
         className={`insert-icon ${!position.canInsert ? 'hidden' : ''}`}
         title="Insert a letter here"
+        data-testid="position-view"
       >
         ➕
       </button>
 
-      {position.isInsertMenuOpen && (
+      {positionInteraction.isInsertMenuOpen && (
         <LetterChoiceMenu
           options={position.insertOptions}
           onSelect={handleLetterChoice}
           previouslyVisited={[]} // We'll add this functionality later
-          word={position.word}
+          wordInteraction={positionInteraction.wordInteraction}
         />
       )}
     </div>

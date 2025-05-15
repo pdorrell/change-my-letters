@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { CurrentWord } from '../models/CurrentWord';
+import { WordInteraction } from '../models/WordInteraction';
 import { LetterView, LetterPlaceholder } from './LetterView';
 import { PositionView, PositionPlaceholder } from './PositionView';
 import {
@@ -16,7 +16,7 @@ import {
 } from '@floating-ui/react';
 
 interface CurrentWordViewProps {
-  currentWord: CurrentWord;
+  currentWord: WordInteraction;
 }
 
 /**
@@ -94,11 +94,11 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
       <div className="current-word-container">
         <div className="word-display">
           {/* Render alternating sequence of positions and letters for the current word */}
-          {currentWord.positions.map((position, index) => (
+          {currentWord.positionInteractions.map((positionInteraction, index) => (
             <React.Fragment key={`position-${index}`}>
-              <PositionView position={position} />
-              {index < currentWord.letters.length && (
-                <LetterView letter={currentWord.letters[index]} />
+              <PositionView positionInteraction={positionInteraction} />
+              {index < currentWord.letterInteractions.length && (
+                <LetterView letterInteraction={currentWord.letterInteractions[index]} />
               )}
             </React.Fragment>
           ))}
@@ -123,10 +123,10 @@ export const LetterChoiceMenu: React.FC<{
   options: string[],
   onSelect: (letter: string) => void,
   previouslyVisited: string[],
-  word: CurrentWord
-}> = ({ options, onSelect, previouslyVisited, word }) => {
-  // Get appState directly from the word prop
-  const appState = word.appState;
+  wordInteraction: WordInteraction
+}> = ({ options, onSelect, previouslyVisited, wordInteraction }) => {
+  // Get appState directly from the wordInteraction prop
+  const appState = wordInteraction.appState;
   
   // Using floating-ui for positioning
   const {refs, floatingStyles, context} = useFloating({

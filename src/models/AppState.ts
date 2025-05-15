@@ -1,9 +1,9 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import { CurrentWord } from './CurrentWord';
 import { HistoryModel, WordChange } from './HistoryModel';
 import { WordGraph } from './WordGraph';
 import { WordLoader } from './WordLoader';
 import { WordGraphNode } from './WordGraphNode';
+import { WordInteraction } from './WordInteraction';
 
 // Type for the main application pages
 type AppPage = 'wordView' | 'historyView';
@@ -15,8 +15,8 @@ export class AppState {
   // The current page being displayed
   currentPage: AppPage = 'wordView';
   
-  // The current word model
-  currentWord: CurrentWord | null = null;
+  // The current word interaction model
+  currentWord: WordInteraction | null = null;
   
   // The word history model
   history: HistoryModel;
@@ -93,7 +93,7 @@ export class AppState {
     
     // Create or update the current word
     if (!this.currentWord) {
-      this.currentWord = new CurrentWord(node, this, hasBeenVisited);
+      this.currentWord = new WordInteraction(node, this, hasBeenVisited);
     } else {
       this.currentWord.updateWord(node, hasBeenVisited);
     }
@@ -270,10 +270,10 @@ export class AppState {
     this.activeButtonElement = buttonElement;
     
     // Set the corresponding menu state in the model
-    if (menuType === 'replace' && position >= 0 && position < this.currentWord.letters.length) {
-      this.currentWord.letters[position].isReplaceMenuOpen = true;
-    } else if (menuType === 'insert' && position >= 0 && position <= this.currentWord.letters.length) {
-      this.currentWord.positions[position].isInsertMenuOpen = true;
+    if (menuType === 'replace' && position >= 0 && position < this.currentWord.letterInteractions.length) {
+      this.currentWord.letterInteractions[position].isReplaceMenuOpen = true;
+    } else if (menuType === 'insert' && position >= 0 && position <= this.currentWord.positionInteractions.length) {
+      this.currentWord.positionInteractions[position].isInsertMenuOpen = true;
     }
   }
   
@@ -283,17 +283,10 @@ export class AppState {
   closeAllMenus(): void {
     if (!this.currentWord) return;
     
-    // Close existing open menu
-    if (this.activeMenuType === 'replace' && this.activeMenuPosition >= 0) {
-      if (this.activeMenuPosition < this.currentWord.letters.length) {
-        this.currentWord.letters[this.activeMenuPosition].isReplaceMenuOpen = false;
-      }
-    } else if (this.activeMenuType === 'insert' && this.activeMenuPosition >= 0) {
-      if (this.activeMenuPosition < this.currentWord.positions.length) {
-        this.currentWord.positions[this.activeMenuPosition].isInsertMenuOpen = false;
-      }
-    }
+    // Use the WordInteraction's closeAllMenus method
+    this.currentWord.closeAllMenus();
     
+    // Reset menu state in AppState
     this.activeMenuType = 'none';
     this.activeMenuPosition = -1;
     this.activeButtonElement = null;
