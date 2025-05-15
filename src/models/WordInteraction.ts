@@ -1,4 +1,4 @@
-import { makeAutoObservable, makeObservable, observable, computed, action } from 'mobx';
+import { makeObservable, observable, computed, action } from 'mobx';
 import { AppState } from './AppState';
 import { LetterInteraction } from './LetterInteraction';
 import { PositionInteraction } from './PositionInteraction';
@@ -39,8 +39,7 @@ export class WordInteraction {
       positionInteractions: observable,
       value: computed,
       updateWord: action,
-      closeAllMenus: action,
-      initializeInteractions: action
+      closeAllMenus: action
     });
   }
 

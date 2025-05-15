@@ -2,7 +2,6 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { HistoryModel, WordChange } from './HistoryModel';
 import { WordGraph } from './WordGraph';
 import { WordLoader } from './WordLoader';
-import { WordGraphNode } from './WordGraphNode';
 import { WordInteraction } from './WordInteraction';
 
 // Type for the main application pages

@@ -3,7 +3,6 @@
 import { WordInteraction } from './WordInteraction';
 import { AppState } from './AppState';
 import { WordGraphNode } from './WordGraphNode';
-import { makeAutoObservable } from 'mobx';
 
 /**
  * Shim class that wraps WordInteraction to maintain backward compatibility

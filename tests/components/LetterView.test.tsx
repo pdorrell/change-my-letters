@@ -117,54 +117,60 @@ describe('LetterView', () => {
     const node = new MockWordGraphNode('test') as unknown as WordGraphNode;
     currentWord = new CurrentWord(node, appState, false);
     
-    // Create a Letter with default settings for tests
-    letter = new Letter(currentWord, 'a', 0);
-    letter.canDelete = true;
-    letter.canReplace = true;
-    letter.replacements = ['b', 'c', 'd'];
+    // Get a Letter from the currentWord
+    letter = currentWord.letters[0];
   });
 
   it('renders a letter with its value', () => {
-    const { getByText } = render(<LetterView letter={letter} />);
-    expect(getByText('a')).toBeInTheDocument();
+    const letterInteraction = currentWord.letterInteractions[0];
+    const { getByText } = render(<LetterView letterInteraction={letterInteraction} />);
+    expect(getByText('t')).toBeInTheDocument();
   });
   
   it('shows delete icon when letter can be deleted', () => {
+    const letterInteraction = currentWord.letterInteractions[0];
     letter.canDelete = true;
-    const { container } = render(<LetterView letter={letter} />);
+    
+    const { container } = render(<LetterView letterInteraction={letterInteraction} />);
     
     const deleteButton = container.querySelector('.delete-icon:not(.hidden)');
     expect(deleteButton).toBeInTheDocument();
   });
   
   it('hides delete icon when letter cannot be deleted', () => {
+    const letterInteraction = currentWord.letterInteractions[0];
     letter.canDelete = false;
-    const { container } = render(<LetterView letter={letter} />);
+    
+    const { container } = render(<LetterView letterInteraction={letterInteraction} />);
     
     const deleteButton = container.querySelector('.delete-icon:not(.hidden)');
     expect(deleteButton).not.toBeInTheDocument();
   });
   
   it('shows replace icon when letter has replacements', () => {
+    const letterInteraction = currentWord.letterInteractions[0];
     letter.canReplace = true;
-    const { container } = render(<LetterView letter={letter} />);
+    
+    const { container } = render(<LetterView letterInteraction={letterInteraction} />);
     
     const replaceButton = container.querySelector('.replace-icon:not(.hidden)');
     expect(replaceButton).toBeInTheDocument();
   });
   
   it('shows letter choice menu when replace menu is open', () => {
-    letter.isReplaceMenuOpen = true;
+    const letterInteraction = currentWord.letterInteractions[0];
+    letterInteraction.isReplaceMenuOpen = true;
     
-    const { getByTestId } = render(<LetterView letter={letter} />);
+    const { getByTestId } = render(<LetterView letterInteraction={letterInteraction} />);
     
     expect(getByTestId('letter-choice-menu')).toBeInTheDocument();
   });
   
   it('calls deleteLetter when delete icon is clicked', () => {
+    const letterInteraction = currentWord.letterInteractions[0];
     letter.canDelete = true;
     
-    const { container } = render(<LetterView letter={letter} />);
+    const { container } = render(<LetterView letterInteraction={letterInteraction} />);
     
     const deleteButton = container.querySelector('.delete-icon:not(.hidden)');
     if (deleteButton) fireEvent.click(deleteButton);
@@ -173,9 +179,10 @@ describe('LetterView', () => {
   });
   
   it('calls openMenu when replace icon is clicked', () => {
+    const letterInteraction = currentWord.letterInteractions[0];
     letter.canReplace = true;
     
-    const { container } = render(<LetterView letter={letter} />);
+    const { container } = render(<LetterView letterInteraction={letterInteraction} />);
     
     const replaceButton = container.querySelector('.replace-icon:not(.hidden)');
     if (replaceButton) fireEvent.click(replaceButton);
@@ -184,21 +191,22 @@ describe('LetterView', () => {
   });
   
   it('shows uppercase icon when letter can be uppercased', () => {
+    const letterInteraction = currentWord.letterInteractions[0];
     letter.canUpperCase = true;
     letter.canLowerCase = false;
     
-    const { container } = render(<LetterView letter={letter} />);
+    const { container } = render(<LetterView letterInteraction={letterInteraction} />);
     
     const uppercaseButton = container.querySelector('button.case-icon[title="Make uppercase"]:not(.hidden)');
     expect(uppercaseButton).toBeInTheDocument();
   });
   
   it('shows lowercase icon when letter can be lowercased', () => {
-    const letterUpperCase = new Letter(currentWord, 'A', 0);
-    letterUpperCase.canUpperCase = false;
-    letterUpperCase.canLowerCase = true;
+    const letterInteraction = currentWord.letterInteractions[0];
+    letter.canUpperCase = false;
+    letter.canLowerCase = true;
     
-    const { container } = render(<LetterView letter={letterUpperCase} />);
+    const { container } = render(<LetterView letterInteraction={letterInteraction} />);
     
     const lowercaseButton = container.querySelector('button.case-icon[title="Make lowercase"]:not(.hidden)');
     expect(lowercaseButton).toBeInTheDocument();
@@ -206,10 +214,11 @@ describe('LetterView', () => {
   
   it('calls changeLetterCase with correct parameters when case icons are clicked', () => {
     // Test uppercase icon
+    const letterInteraction = currentWord.letterInteractions[0];
     letter.canUpperCase = true;
     letter.canLowerCase = false;
     
-    const { container: container1 } = render(<LetterView letter={letter} />);
+    const { container: container1 } = render(<LetterView letterInteraction={letterInteraction} />);
     
     const uppercaseButton = container1.querySelector('button.case-icon[title="Make uppercase"]:not(.hidden)');
     if (uppercaseButton) fireEvent.click(uppercaseButton);
@@ -219,12 +228,11 @@ describe('LetterView', () => {
     // Reset mocks
     jest.clearAllMocks();
     
-    // Test lowercase icon
-    const letterUpperCase = new Letter(currentWord, 'A', 0);
-    letterUpperCase.canUpperCase = false;
-    letterUpperCase.canLowerCase = true;
+    // Test lowercase icon - use the same letterInteraction but change the flags
+    letter.canUpperCase = false;
+    letter.canLowerCase = true;
     
-    const { container: container2 } = render(<LetterView letter={letterUpperCase} />);
+    const { container: container2 } = render(<LetterView letterInteraction={letterInteraction} />);
     
     const lowercaseButton = container2.querySelector('button.case-icon[title="Make lowercase"]:not(.hidden)');
     if (lowercaseButton) fireEvent.click(lowercaseButton);
@@ -233,9 +241,10 @@ describe('LetterView', () => {
   });
   
   it('calls replaceLetter when a letter choice is selected', () => {
-    letter.isReplaceMenuOpen = true;
+    const letterInteraction = currentWord.letterInteractions[0];
+    letterInteraction.isReplaceMenuOpen = true;
     
-    const { getAllByTestId } = render(<LetterView letter={letter} />);
+    const { getAllByTestId } = render(<LetterView letterInteraction={letterInteraction} />);
     
     const letterOptions = getAllByTestId('letter-choice-option');
     fireEvent.click(letterOptions[0]);

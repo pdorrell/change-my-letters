@@ -115,42 +115,46 @@ describe('PositionView', () => {
     // Create a CurrentWord with our mock WordGraphNode and AppState
     currentWord = new CurrentWord(node, appState, false);
     
-    // Create a Position with default settings for tests
-    position = new Position(currentWord, 0);
-    position.canInsert = true;
-    position.insertOptions = ['a', 'e', 'i', 'o', 'u'];
+    // Get the position from the currentWord
+    position = currentWord.positions[0];
   });
 
   it('renders without insert icon when insertion is not possible', () => {
+    // Set up a positionInteraction with a position that can't insert
+    const positionInteraction = currentWord.positionInteractions[0];
     position.canInsert = false;
     
-    const { container } = render(<PositionView position={position} />);
+    const { container } = render(<PositionView positionInteraction={positionInteraction} />);
     
     const insertButton = container.querySelector('.insert-icon:not(.hidden)');
     expect(insertButton).not.toBeInTheDocument();
   });
   
   it('shows insert icon when insertion is possible', () => {
+    // Set up a positionInteraction with a position that can insert
+    const positionInteraction = currentWord.positionInteractions[0];
     position.canInsert = true;
     
-    const { container } = render(<PositionView position={position} />);
+    const { container } = render(<PositionView positionInteraction={positionInteraction} />);
     
     const insertButton = container.querySelector('.insert-icon:not(.hidden)');
     expect(insertButton).toBeInTheDocument();
   });
   
   it('shows letter choice menu when insert menu is open', () => {
-    position.isInsertMenuOpen = true;
+    const positionInteraction = currentWord.positionInteractions[0];
+    positionInteraction.isInsertMenuOpen = true;
     
-    const { getByTestId } = render(<PositionView position={position} />);
+    const { getByTestId } = render(<PositionView positionInteraction={positionInteraction} />);
     
     expect(getByTestId('letter-choice-menu')).toBeInTheDocument();
   });
   
   it('calls openMenu when insert icon is clicked', () => {
+    const positionInteraction = currentWord.positionInteractions[0];
     position.canInsert = true;
     
-    const { container } = render(<PositionView position={position} />);
+    const { container } = render(<PositionView positionInteraction={positionInteraction} />);
     
     const insertButton = container.querySelector('.insert-icon:not(.hidden)');
     if (insertButton) fireEvent.click(insertButton);
@@ -159,9 +163,10 @@ describe('PositionView', () => {
   });
   
   it('calls insertLetter when a letter choice is selected', () => {
-    position.isInsertMenuOpen = true;
+    const positionInteraction = currentWord.positionInteractions[0];
+    positionInteraction.isInsertMenuOpen = true;
     
-    const { getAllByTestId } = render(<PositionView position={position} />);
+    const { getAllByTestId } = render(<PositionView positionInteraction={positionInteraction} />);
     
     const letterOptions = getAllByTestId('letter-choice-option');
     fireEvent.click(letterOptions[0]);
