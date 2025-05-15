@@ -12,6 +12,9 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
   return (
     <div className="app-container">
       <header>
+        <div className="version-display">
+          Version: <b>{appState.version}</b>
+        </div>
         <h1>Change My Letters</h1>
         <div className="app-controls">
           <button

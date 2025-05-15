@@ -4,6 +4,15 @@ import { WordGraph } from './WordGraph';
 import { WordLoader } from './WordLoader';
 import { WordInteraction } from './interaction/WordInteraction';
 
+// Get the application version from environment
+interface ProcessEnv {
+  APP_VERSION: string;
+}
+
+declare const process: {
+  env: ProcessEnv;
+}
+
 // Type for the main application pages
 type AppPage = 'wordView' | 'historyView';
 
@@ -23,6 +32,9 @@ export class AppState {
   // The word graph model containing possible word connections
   wordGraph: WordGraph;
   
+  // Application version
+  version: string;
+  
   // Loading state
   isLoading: boolean = true;
   
@@ -35,6 +47,9 @@ export class AppState {
     const initialWord = 'bet';
     this.history = new HistoryModel(this, initialWord);
     this.wordGraph = new WordGraph();
+    
+    // Set version from environment or fallback
+    this.version = process.env.APP_VERSION || 'development';
 
     makeAutoObservable(this);
 

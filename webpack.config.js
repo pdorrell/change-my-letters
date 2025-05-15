@@ -5,9 +5,23 @@ import os from 'os';
 import { fileURLToPath } from 'url';
 import * as sass from 'sass-embedded';
 import setupErrorLogger from './webpack-error-logger.js';
+import fs from 'fs';
+import webpack from 'webpack';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Get current date/time in YYYY/MM/DD HH:mm format
+const getFormattedDateTime = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  
+  return `${year}/${month}/${day} ${hours}:${minutes}`;
+};
 
 export default (env, argv) => {
   const isDevelopment = argv.mode === 'development';
@@ -77,7 +91,29 @@ export default (env, argv) => {
             noErrorOnMissing: true
           }
         ]
-      })
+      }),
+      // Handle version information
+      new webpack.DefinePlugin({
+        'process.env.APP_VERSION': JSON.stringify(
+          fs.existsSync(path.resolve(__dirname, 'version.txt')) 
+            ? (isDevelopment 
+                ? fs.readFileSync(path.resolve(__dirname, 'version.txt'), 'utf-8').trim() + '+' 
+                : getFormattedDateTime())
+            : getFormattedDateTime()
+        )
+      }),
+      // Plugin to update version.txt during build for production
+      {
+        apply: (compiler) => {
+          compiler.hooks.afterEmit.tap('VersionPlugin', (compilation) => {
+            if (!isDevelopment) {
+              const newVersion = getFormattedDateTime();
+              fs.writeFileSync(path.resolve(__dirname, 'version.txt'), newVersion);
+              console.log(`Updated version.txt to: ${newVersion}`);
+            }
+          });
+        }
+      }
     ],
     devServer: {
       static: [
