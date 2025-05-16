@@ -66,25 +66,4 @@ export class ApplicationLoader {
     }
   }
   
-  /**
-   * Reset the application with a new random word
-   */
-  resetApplication(): void {
-    if (!this.appState || !this.appState.wordGraph.words.size) {
-      // If we don't have a valid state, reload the application
-      this.loadApplication();
-      return;
-    }
-    
-    // Get a new random word
-    const words = Array.from(this.appState.wordGraph.words);
-    const randomWord = words[Math.floor(Math.random() * words.length)];
-    
-    // Create a new app state with the same graph but a new starting word
-    this.appState = new AppState(
-      randomWord, 
-      this.appState.wordGraph,
-      this.version
-    );
-  }
 }
