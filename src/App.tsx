@@ -43,6 +43,27 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
           >
             {appState.currentPage === 'wordView' ? '→ History' : '→ Current Word'}
           </button>
+          
+          {appState.currentPage === 'wordView' && (
+            <>
+              <button
+                onClick={() => appState.currentWord.say()}
+                title="Say the current word"
+              >
+                Say
+              </button>
+              <label className="say-immediately-container">
+                <input
+                  type="checkbox"
+                  checked={appState.sayImmediately}
+                  onChange={(e) => {
+                    appState.sayImmediately = e.target.checked;
+                  }}
+                />
+                Say Immediately
+              </label>
+            </>
+          )}
         </div>
       </header>
       <main>

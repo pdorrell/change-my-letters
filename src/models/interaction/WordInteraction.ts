@@ -64,7 +64,8 @@ export class WordInteraction {
       positions: computed,
       value: computed,
       updateWord: action,
-      closeAllMenus: action
+      closeAllMenus: action,
+      say: action
     });
   }
 
@@ -115,5 +116,22 @@ export class WordInteraction {
     this.positionInteractions.forEach(interaction => {
       interaction.isInsertMenuOpen = false;
     });
+  }
+  
+  /**
+   * Say the current word using text-to-speech
+   */
+  say(): void {
+    const word = this.value.toLowerCase();
+    
+    // Create an audio element and play the corresponding mp3
+    try {
+      const audio = new Audio(`/assets/words/${word}.mp3`);
+      audio.play().catch(error => {
+        console.error(`Error playing word audio for "${word}":`, error);
+      });
+    } catch (error) {
+      console.error(`Error creating audio for word "${word}":`, error);
+    }
   }
 }

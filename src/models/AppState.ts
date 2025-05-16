@@ -29,6 +29,9 @@ export class AppState {
   activeMenuType: 'none' | 'replace' | 'insert' = 'none';
   activeMenuPosition: number = -1;
   
+  // Audio settings
+  sayImmediately: boolean = false;
+  
   constructor(initialWord: string, wordGraph: WordGraph, version: string) {
     this.wordGraph = wordGraph;
     this.version = version;
@@ -67,6 +70,11 @@ export class AppState {
 
     // Close any open menus when the word changes
     this.closeAllMenus();
+    
+    // Say the word immediately if that option is enabled
+    if (this.sayImmediately) {
+      this.currentWord.say();
+    }
   }
   
   /**
