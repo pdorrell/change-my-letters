@@ -12,15 +12,15 @@ export class Letter {
   position: number;
 
   // Whether the letter can be deleted
-  canDelete: boolean = false;
+  canDelete: boolean;
 
   // Whether the letter can be replaced and the potential replacements
-  canReplace: boolean = false;
-  replacements: string[] = [];
+  canReplace: boolean;
+  replacements: string[];
 
   // Whether this letter can be upper or lower cased
-  canUpperCase: boolean = false;
-  canLowerCase: boolean = false;
+  canUpperCase: boolean;
+  canLowerCase: boolean;
 
   constructor(word: Word, letter: string, position: number) {
     this.value = letter;
