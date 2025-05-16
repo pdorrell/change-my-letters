@@ -4,6 +4,7 @@ import { configure } from 'mobx';
 import AppLoader from './AppLoader';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ErrorHandler } from './utils/ErrorHandler';
+import { ApplicationLoader } from './models/ApplicationLoader';
 import './styles/main.scss';
 
 // Configure MobX with less strict settings for development
@@ -86,10 +87,13 @@ if (!container) {
   throw new Error("Root element not found");
 }
 const root = createRoot(container);
+// Create a singleton ApplicationLoader instance
+const applicationLoader = new ApplicationLoader();
+
 root.render(
   <React.StrictMode>
     <ErrorBoundary>
-      <AppLoader />
+      <AppLoader applicationLoader={applicationLoader} />
     </ErrorBoundary>
   </React.StrictMode>
 );

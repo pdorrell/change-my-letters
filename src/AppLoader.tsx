@@ -3,14 +3,15 @@ import { observer } from 'mobx-react-lite';
 import App from './App';
 import { ApplicationLoader } from './models/ApplicationLoader';
 
+interface AppLoaderProps {
+  applicationLoader: ApplicationLoader;
+}
+
 /**
  * AppLoader is the top-level component that handles loading the application
  * state and displaying either a loading indicator or the main App component
  */
-const AppLoader: React.FC = observer(() => {
-  // Create a singleton ApplicationLoader instance
-  const [applicationLoader] = React.useState(() => new ApplicationLoader());
-  
+const AppLoader: React.FC<AppLoaderProps> = observer(({ applicationLoader }) => {
   // Show loading indicator while application data is loading
   if (applicationLoader.isLoading) {
     return (
