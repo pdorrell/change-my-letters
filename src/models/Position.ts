@@ -9,10 +9,10 @@ export class Position {
   index: number;
 
   // Whether a letter can be inserted at this position
-  canInsert: boolean = false;
+  canInsert: boolean;
 
   // Possible letters that can be inserted
-  insertOptions: string[] = [];
+  insertOptions: string[];
 
   constructor(word: Word, index: number) {
     this.index = index;
