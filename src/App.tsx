@@ -46,9 +46,7 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
         </div>
       </header>
       <main>
-        {appState.isLoading || !appState.currentWord ? (
-          <div className="loading">Loading word data...</div>
-        ) : appState.currentPage === 'wordView' ? (
+        {appState.currentPage === 'wordView' ? (
           <CurrentWordView currentWord={appState.currentWord} />
         ) : (
           <HistoryView history={appState.history} />

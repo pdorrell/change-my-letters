@@ -1,17 +1,7 @@
-import { makeAutoObservable, runInAction } from 'mobx';
+import { makeAutoObservable } from 'mobx';
 import { HistoryModel, WordChange } from './HistoryModel';
 import { WordGraph } from './WordGraph';
-import { WordLoader } from './WordLoader';
 import { WordInteraction } from './interaction/WordInteraction';
-
-// Get the application version from environment
-interface ProcessEnv {
-  APP_VERSION: string;
-}
-
-declare const process: {
-  env: ProcessEnv;
-}
 
 // Type for the main application pages
 type AppPage = 'wordView' | 'historyView';
@@ -24,7 +14,7 @@ export class AppState {
   currentPage: AppPage = 'wordView';
   
   // The current word interaction model
-  currentWord: WordInteraction | null = null;
+  currentWord: WordInteraction;
   
   // The word history model
   history: HistoryModel;
@@ -35,59 +25,26 @@ export class AppState {
   // Application version
   version: string;
   
-  // Loading state
-  isLoading: boolean = true;
-  
   // Menu state management
   activeMenuType: 'none' | 'replace' | 'insert' = 'none';
   activeMenuPosition: number = -1;
   
-  constructor() {
-    // Initial word - will be replaced with proper initialization
-    const initialWord = 'bet';
+  constructor(initialWord: string, wordGraph: WordGraph, version: string) {
+    this.wordGraph = wordGraph;
+    this.version = version;
+    
+    // Initialize history with the initial word
     this.history = new HistoryModel(this, initialWord);
-    this.wordGraph = new WordGraph();
     
-    // Set version from environment or fallback
-    this.version = process.env.APP_VERSION || 'development';
-
-    makeAutoObservable(this);
-
-    // Load the word graph
-    this.loadWordGraph();
-  }
-  
-  /**
-   * Load the default word graph
-   */
-  async loadWordGraph(): Promise<void> {
-    this.isLoading = true;
-    
-    try {
-      const graph = await WordLoader.loadDefaultWordGraph();
-      
-      runInAction(() => {
-        this.wordGraph = graph;
-        
-        // Initialize with a random word from the graph
-        if (graph.words.size > 0) {
-          const words = Array.from(graph.words);
-          const randomWord = words[Math.floor(Math.random() * words.length)];
-          this.setNewWord(randomWord);
-        } else {
-          // If we couldn't load any words, display an error status message
-          this.isLoading = false;
-        }
-        
-        this.isLoading = false;
-      });
-    } catch (error) {
-      // Error is already reported to ErrorHandler in WordLoader class
-      // Just update the UI state to show we're done loading
-      runInAction(() => {
-        this.isLoading = false;
-      });
+    // Initialize the current word
+    const wordNode = this.wordGraph.getNode(initialWord);
+    if (!wordNode) {
+      throw new Error(`Word "${initialWord}" doesn't exist in the word graph`);
     }
+    
+    this.currentWord = new WordInteraction(wordNode, this, false);
+    
+    makeAutoObservable(this);
   }
   
   /**
@@ -105,12 +62,8 @@ export class AppState {
     // Check if the word has been visited before
     const hasBeenVisited = this.history.hasVisited(word);
     
-    // Create or update the current word
-    if (!this.currentWord) {
-      this.currentWord = new WordInteraction(node, this, hasBeenVisited);
-    } else {
-      this.currentWord.updateWord(node, hasBeenVisited);
-    }
+    // Update the current word
+    this.currentWord.updateWord(node, hasBeenVisited);
 
     // Close any open menus when the word changes
     this.closeAllMenus();
@@ -251,6 +204,18 @@ export class AppState {
       this.history.reset(randomWord);
       this.setNewWord(randomWord);
     }
+  }
+  
+  /**
+   * Creates a new game state with the current word graph but a new starting word
+   */
+  static createNewGame(wordGraph: WordGraph, version: string): AppState {
+    if (wordGraph.words.size > 0) {
+      const words = Array.from(wordGraph.words);
+      const randomWord = words[Math.floor(Math.random() * words.length)];
+      return new AppState(randomWord, wordGraph, version);
+    }
+    throw new Error("Cannot create a new game with an empty word graph");
   }
   
   /**

@@ -216,6 +216,14 @@ Here is a suggested initial styling:
    * For letter menu choices this pink colour is the background colour.
    * For delete icon the pink colour replaces the icon's default background colour (the default background
      could just be transparent).
+     
+# Testing and TypeChecking
+
+For all changes made, you should verify that the following pass:
+
+* npm test
+* npm run typecheck
+* npm run lint
 
 # Deployment
 

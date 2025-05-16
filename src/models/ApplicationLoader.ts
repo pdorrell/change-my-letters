@@ -1,0 +1,90 @@
+import { makeAutoObservable, runInAction } from 'mobx';
+import { AppState } from './AppState';
+import { WordLoader } from './WordLoader';
+
+/**
+ * ApplicationLoader handles asynchronous loading of application data
+ * and initialization of the main app state.
+ */
+export class ApplicationLoader {
+  // Main application state, created after successful loading
+  appState: AppState | null = null;
+  
+  // Loading state flag
+  isLoading: boolean = true;
+  
+  // Error state
+  hasError: boolean = false;
+  errorMessage: string = '';
+  
+  // Application version from environment
+  version: string;
+  
+  constructor() {
+    // Set version from environment or fallback
+    this.version = process.env.APP_VERSION || 'development';
+    
+    makeAutoObservable(this);
+    
+    // Begin loading immediately
+    this.loadApplication();
+  }
+  
+  /**
+   * Load the application data and initialize AppState
+   */
+  async loadApplication(): Promise<void> {
+    this.isLoading = true;
+    this.hasError = false;
+    
+    try {
+      // Load the word graph
+      const wordGraph = await WordLoader.loadDefaultWordGraph();
+      
+      runInAction(() => {
+        // Initialize with a random word from the graph
+        if (wordGraph.words.size > 0) {
+          const words = Array.from(wordGraph.words);
+          const randomWord = words[Math.floor(Math.random() * words.length)];
+          
+          // Create the app state with the loaded data
+          this.appState = new AppState(randomWord, wordGraph, this.version);
+          this.isLoading = false;
+        } else {
+          // If we couldn't load any words, display an error
+          this.hasError = true;
+          this.errorMessage = 'No words found in word graph';
+          this.isLoading = false;
+        }
+      });
+    } catch (error) {
+      runInAction(() => {
+        this.hasError = true;
+        this.errorMessage = error instanceof Error ? error.message : 'Unknown error loading application';
+        this.isLoading = false;
+      });
+    }
+  }
+  
+  /**
+   * Reset the application with a new random word
+   */
+  resetApplication(): void {
+    if (!this.appState || !this.appState.wordGraph.words.size) {
+      // If we don't have a valid state, reload the application
+      this.loadApplication();
+      return;
+    }
+    
+    // Get a new random word
+    const words = Array.from(this.appState.wordGraph.words);
+    const randomWord = words[Math.floor(Math.random() * words.length)];
+    
+    // Create a new app state with the same graph but a new starting word
+    this.appState = new AppState(
+      randomWord, 
+      this.appState.wordGraph,
+      this.version
+    );
+  }
+}

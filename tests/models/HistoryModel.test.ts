@@ -1,13 +1,17 @@
 import { HistoryModel, WordChange } from '../../src/models/HistoryModel';
 import { AppState } from '../../src/models/AppState';
+import { createMockWordGraph } from '../mocks/MockWordGraph';
 
 describe('HistoryModel', () => {
   let historyModel: HistoryModel;
   let appState: AppState;
 
   beforeEach(() => {
-    // Create an AppState instance
-    appState = new AppState();
+    // Create a mock WordGraph
+    const mockWordGraph = createMockWordGraph();
+    
+    // Create an AppState instance with the mock WordGraph
+    appState = new AppState('cat', mockWordGraph, 'test-version');
     
     // Initialize the history model with AppState and the initial word
     historyModel = new HistoryModel(appState, 'cat');
