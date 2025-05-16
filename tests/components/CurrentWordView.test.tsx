@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { CurrentWordView } from '../../src/views/CurrentWordView';
-import { CurrentWord } from '../../src/models/CurrentWord';
+import { WordInteraction } from '../../src/models/interaction/WordInteraction';
 import { WordGraph } from '../../src/models/WordGraph';
 import { Letter } from '../../src/models/Letter';
 import { Position } from '../../src/models/Position';
@@ -77,10 +77,10 @@ const mockAppState = {
   wordGraph: mockWordGraph
 };
 
-// Ensure the mocked CurrentWord/WordInteraction will have access to our mock appState
-jest.mock('../../src/models/CurrentWord', () => {
+// Ensure the mocked WordInteraction will have access to our mock appState
+jest.mock('../../src/models/interaction/WordInteraction', () => {
   return {
-    CurrentWord: jest.fn().mockImplementation(() => ({
+    WordInteraction: jest.fn().mockImplementation(() => ({
       value: 'cat',
       node: { word: 'cat' },
       previouslyVisited: false,
@@ -101,11 +101,11 @@ jest.mock('../../src/models/CurrentWord', () => {
 });
 
 describe('CurrentWordView', () => {
-  let currentWord: CurrentWord;
+  let currentWord: WordInteraction;
   
   beforeEach(() => {
-    // Create a CurrentWord with our mocks
-    currentWord = new CurrentWord();
+    // Create a WordInteraction with our mocks
+    currentWord = new WordInteraction();
   });
   
   it('renders the current word with letters and positions', () => {

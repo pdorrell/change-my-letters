@@ -1,5 +1,5 @@
 import { Position } from '../../src/models/Position';
-import { CurrentWord } from '../../src/models/CurrentWord';
+import { WordInteraction } from '../../src/models/interaction/WordInteraction';
 import { AppState } from '../../src/models/AppState';
 import { WordGraphNode } from '../../src/models/WordGraphNode';
 import { Letter } from '../../src/models/Letter';
@@ -77,7 +77,7 @@ class MockWordGraphNode {
 
 describe('Position', () => {
   let appState: AppState;
-  let currentWord: CurrentWord;
+  let currentWord: WordInteraction;
 
   beforeEach(() => {
     appState = {
@@ -87,7 +87,7 @@ describe('Position', () => {
     } as unknown as AppState;
     
     const node = new MockWordGraphNode('test') as unknown as WordGraphNode;
-    currentWord = new CurrentWord(node, appState, false);
+    currentWord = new WordInteraction(node, appState, false);
   });
 
   it('should initialize with the correct properties', () => {

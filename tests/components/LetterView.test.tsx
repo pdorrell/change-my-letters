@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { LetterView } from '../../src/views/LetterView';
 import { Letter } from '../../src/models/Letter';
-import { CurrentWord } from '../../src/models/CurrentWord';
+import { WordInteraction } from '../../src/models/interaction/WordInteraction';
 import { AppState } from '../../src/models/AppState';
 import { WordGraphNode } from '../../src/models/WordGraphNode';
 import { Position } from '../../src/models/Position';
@@ -98,7 +98,7 @@ class MockWordGraphNode {
 
 describe('LetterView', () => {
   let appState: AppState;
-  let currentWord: CurrentWord;
+  let currentWord: WordInteraction;
   let letter: Letter;
   
   beforeEach(() => {
@@ -113,9 +113,9 @@ describe('LetterView', () => {
       history: { hasVisited: () => false },
     } as unknown as AppState;
     
-    // Create a CurrentWord with our mocked AppState
+    // Create a WordInteraction with our mocked AppState
     const node = new MockWordGraphNode('test') as unknown as WordGraphNode;
-    currentWord = new CurrentWord(node, appState, false);
+    currentWord = new WordInteraction(node, appState, false);
     
     // Get a Letter from the currentWord
     letter = currentWord.letters[0];

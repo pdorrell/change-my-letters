@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { PositionView } from '../../src/views/PositionView';
 import { Position } from '../../src/models/Position';
-import { CurrentWord } from '../../src/models/CurrentWord';
+import { WordInteraction } from '../../src/models/interaction/WordInteraction';
 import { AppState } from '../../src/models/AppState';
 import { WordGraphNode } from '../../src/models/WordGraphNode';
 import { Letter } from '../../src/models/Letter';
@@ -98,7 +98,7 @@ class MockWordGraphNode implements Partial<WordGraphNode> {
 
 describe('PositionView', () => {
   let appState: AppState;
-  let currentWord: CurrentWord;
+  let currentWord: WordInteraction;
   let position: Position;
   
   beforeEach(() => {
@@ -112,8 +112,8 @@ describe('PositionView', () => {
     // Create a mock WordGraphNode for our tests
     const node = new MockWordGraphNode('test') as unknown as WordGraphNode;
     
-    // Create a CurrentWord with our mock WordGraphNode and AppState
-    currentWord = new CurrentWord(node, appState, false);
+    // Create a WordInteraction with our mock WordGraphNode and AppState
+    currentWord = new WordInteraction(node, appState, false);
     
     // Get the position from the currentWord
     position = currentWord.positions[0];

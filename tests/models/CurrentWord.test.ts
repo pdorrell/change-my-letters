@@ -1,4 +1,4 @@
-import { CurrentWord } from '../../src/models/CurrentWord';
+import { WordInteraction } from '../../src/models/interaction/WordInteraction';
 import { AppState } from '../../src/models/AppState';
 import { Word } from '../../src/models/Word';
 
@@ -65,7 +65,7 @@ class MockWord {
   }
 }
 
-describe('CurrentWord', () => {
+describe('WordInteraction', () => {
   let appState: AppState;
   
   beforeEach(() => {
@@ -80,7 +80,7 @@ describe('CurrentWord', () => {
   it('should initialize correctly with a word', () => {
     const wordObj = new MockWord('cat') as unknown as Word;
     const hasBeenVisited = false;
-    const currentWord = new CurrentWord(wordObj, appState, hasBeenVisited);
+    const currentWord = new WordInteraction(wordObj, appState, hasBeenVisited);
 
     expect(currentWord.value).toBe('cat');
     expect(currentWord.previouslyVisited).toBe(false);
@@ -97,7 +97,7 @@ describe('CurrentWord', () => {
   it('should update word value and related properties', () => {
     const catWord = new MockWord('cat') as unknown as Word;
     const batWord = new MockWord('bat') as unknown as Word;
-    const currentWord = new CurrentWord(catWord, appState, false);
+    const currentWord = new WordInteraction(catWord, appState, false);
     currentWord.updateWord(batWord, false);
 
     expect(currentWord.value).toBe('bat');
@@ -112,7 +112,7 @@ describe('CurrentWord', () => {
 
   it('should access letters and positions via getters', () => {
     const word = new MockWord('cat') as unknown as Word;
-    const currentWord = new CurrentWord(word, appState, false);
+    const currentWord = new WordInteraction(word, appState, false);
 
     // letters and positions are getters that map from interactions
     expect(currentWord.letters.length).toBe(3);
@@ -124,7 +124,7 @@ describe('CurrentWord', () => {
     const catsWord = new MockWord('cats') as unknown as Word;
     const atWord = new MockWord('at') as unknown as Word;
     
-    const currentWord = new CurrentWord(catWord, appState, false);
+    const currentWord = new WordInteraction(catWord, appState, false);
 
     // Update to longer word
     currentWord.updateWord(catsWord, false);
