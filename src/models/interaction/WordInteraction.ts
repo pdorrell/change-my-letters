@@ -47,7 +47,7 @@ export class WordInteraction {
       // If a Word object was passed, use it directly
       this.word = wordOrString;
     }
-    
+
     this.appState = appState;
     this.previouslyVisited = hasBeenVisited;
 
@@ -117,16 +117,16 @@ export class WordInteraction {
       interaction.isInsertMenuOpen = false;
     });
   }
-  
+
   /**
    * Say the current word using text-to-speech
    */
   say(): void {
     const word = this.value.toLowerCase();
-    
+
     // Create an audio element and play the corresponding mp3
     try {
-      const audio = new Audio(`/assets/words/${word}.mp3`);
+      const audio = new Audio(`/assets/words/eleven_labs/${word}.mp3`);
       audio.play().catch(error => {
         console.error(`Error playing word audio for "${word}":`, error);
       });
