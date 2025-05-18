@@ -135,6 +135,60 @@ export class Word {
   }
 
   /**
+   * Get all possible words that can be reached from this word through a single change
+   * @returns Array of words that can be created from this word with one change
+   */
+  getPossibleNextWords(): string[] {
+    const possibleWords: Set<string> = new Set();
+    const currentWord = this.word;
+    
+    // Words from letter deletions
+    for (let i = 0; i < currentWord.length; i++) {
+      if (this.canDelete(i)) {
+        const newWord = currentWord.substring(0, i) + currentWord.substring(i + 1);
+        possibleWords.add(newWord);
+      }
+    }
+    
+    // Words from letter replacements
+    for (let i = 0; i < currentWord.length; i++) {
+      const replacements = this.getPossibleReplacements(i);
+      for (const letter of replacements) {
+        const newWord = currentWord.substring(0, i) + letter + currentWord.substring(i + 1);
+        possibleWords.add(newWord);
+      }
+    }
+    
+    // Words from letter insertions
+    for (let i = 0; i <= currentWord.length; i++) {
+      const insertions = this.getPossibleInsertions(i);
+      for (const letter of insertions) {
+        const newWord = currentWord.substring(0, i) + letter + currentWord.substring(i);
+        possibleWords.add(newWord);
+      }
+    }
+    
+    // Words from case changes
+    for (let i = 0; i < currentWord.length; i++) {
+      if (this.canUppercase(i)) {
+        const newWord = currentWord.substring(0, i) + 
+                        currentWord[i].toUpperCase() + 
+                        currentWord.substring(i + 1);
+        possibleWords.add(newWord);
+      }
+      
+      if (this.canLowercase(i)) {
+        const newWord = currentWord.substring(0, i) + 
+                        currentWord[i].toLowerCase() + 
+                        currentWord.substring(i + 1);
+        possibleWords.add(newWord);
+      }
+    }
+    
+    return Array.from(possibleWords);
+  }
+
+  /**
    * Create a Word from the JSON representation
    */
   static fromJson(word: string, data: Record<string, unknown>): Word {

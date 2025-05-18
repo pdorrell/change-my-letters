@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import { HistoryModel, WordChange } from './HistoryModel';
 import { WordGraph } from './WordGraph';
 import { WordInteraction } from './interaction/WordInteraction';
+import { WordSayer } from './WordSayer';
 
 // Type for the main application pages
 type AppPage = 'wordView' | 'historyView';
@@ -22,6 +23,9 @@ export class AppState {
   // The word graph model containing possible word connections
   wordGraph: WordGraph;
   
+  // Audio player for word pronunciation
+  wordSayer: WordSayer;
+  
   // Application version
   version: string;
   
@@ -36,6 +40,9 @@ export class AppState {
     this.wordGraph = wordGraph;
     this.version = version;
     
+    // Initialize the word sayer
+    this.wordSayer = new WordSayer();
+    
     // Initialize history with the initial word
     this.history = new HistoryModel(this, initialWord);
     
@@ -46,6 +53,9 @@ export class AppState {
     }
     
     this.currentWord = new WordInteraction(wordNode, this, false);
+    
+    // Preload the initial word's audio
+    this.wordSayer.preload(initialWord);
     
     makeAutoObservable(this);
   }
@@ -70,6 +80,15 @@ export class AppState {
 
     // Close any open menus when the word changes
     this.closeAllMenus();
+    
+    // Preload the current word (in case it's not already loaded)
+    this.wordSayer.preload(word);
+    
+    // Preload all possible next words
+    const possibleNextWords = node.getPossibleNextWords();
+    for (const nextWord of possibleNextWords) {
+      this.wordSayer.preload(nextWord);
+    }
     
     // Say the word immediately if that option is enabled
     if (this.sayImmediately) {

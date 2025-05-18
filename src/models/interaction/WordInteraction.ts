@@ -119,19 +119,10 @@ export class WordInteraction {
   }
 
   /**
-   * Say the current word using text-to-speech
+   * Say the current word using the wordSayer
    */
   say(): void {
-    const word = this.value.toLowerCase();
-
-    // Create an audio element and play the corresponding mp3
-    try {
-      const audio = new Audio(`/assets/words/eleven_labs/${word}.mp3`);
-      audio.play().catch(error => {
-        console.error(`Error playing word audio for "${word}":`, error);
-      });
-    } catch (error) {
-      console.error(`Error creating audio for word "${word}":`, error);
-    }
+    // Use the wordSayer to play the audio for this word
+    this.appState.wordSayer.say(this.word.word);
   }
 }
