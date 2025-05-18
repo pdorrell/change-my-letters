@@ -3,9 +3,10 @@ import { HistoryModel, WordChange } from './HistoryModel';
 import { WordGraph } from './WordGraph';
 import { WordInteraction } from './interaction/WordInteraction';
 import { WordSayer } from './WordSayer';
+import { ResetInteraction } from './ResetInteraction';
 
 // Type for the main application pages
-type AppPage = 'wordView' | 'historyView';
+type AppPage = 'wordView' | 'historyView' | 'resetView';
 
 /**
  * Main application state that manages the current page and models
@@ -25,6 +26,9 @@ export class AppState {
 
   // Audio player for word pronunciation
   wordSayer: WordSayer;
+  
+  // Reset word interaction model
+  resetInteraction: ResetInteraction;
 
   // Application version
   version: string;
@@ -42,6 +46,9 @@ export class AppState {
 
     // Initialize the word sayer
     this.wordSayer = new WordSayer();
+    
+    // Initialize reset interaction
+    this.resetInteraction = new ResetInteraction(this);
 
     // Initialize history with the initial word
     this.history = new HistoryModel(this, initialWord);
@@ -221,16 +228,11 @@ export class AppState {
   }
 
   /**
-   * Reset the game with a new random word
+   * Navigate to the reset word page
    */
   resetGame(): void {
-    if (this.wordGraph.words.size > 0) {
-      const words = Array.from(this.wordGraph.words);
-      const randomWord = words[Math.floor(Math.random() * words.length)];
-
-      this.history.reset(randomWord);
-      this.setNewWord(randomWord);
-    }
+    // Navigate to the reset view
+    this.navigateTo('resetView');
   }
 
   /**

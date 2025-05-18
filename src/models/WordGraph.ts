@@ -12,6 +12,9 @@ export class WordGraph {
 
   // All words in the graph
   words: Set<string> = new Set();
+  
+  // All words sorted alphabetically for efficient filtering
+  sortedWords: string[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -181,11 +184,15 @@ export class WordGraph {
   computeFromWordList(wordList: string[]): void {
     this.wordMap.clear();
     this.words.clear();
+    this.sortedWords = [];
     
     // Add all words to the set
     for (const word of wordList) {
       this.words.add(word);
     }
+    
+    // Create the sorted array of words
+    this.sortedWords = Array.from(this.words).sort();
     
     // Generate the graph using the builder
     const builder = new WordGraphBuilder(wordList);
@@ -222,12 +229,16 @@ export class WordGraph {
   loadFromJson(jsonData: Record<string, Record<string, unknown>>): void {
     this.wordMap.clear();
     this.words.clear();
+    this.sortedWords = [];
 
     for (const [wordStr, wordData] of Object.entries(jsonData)) {
       this.words.add(wordStr);
       const wordObj = Word.fromJson(wordStr, wordData);
       this.wordMap.set(wordStr, wordObj);
     }
+    
+    // Create the sorted array of words
+    this.sortedWords = Array.from(this.words).sort();
   }
 
   /**

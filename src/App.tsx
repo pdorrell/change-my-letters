@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { CurrentWordView } from './views/CurrentWordView';
 import { HistoryView } from './views/HistoryView';
+import { ResetView } from './views/ResetView';
 import { AppState } from './models/AppState';
 
 interface AppProps {
@@ -19,9 +20,9 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
         <div className="app-controls">
           <button
             onClick={() => appState.resetGame()}
-            title="Start a new game"
+            title="Choose a new word"
           >
-            Start Over
+            Reset...
           </button>
           <button
             onClick={() => appState.undo()}
@@ -69,8 +70,10 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
       <main>
         {appState.currentPage === 'wordView' ? (
           <CurrentWordView currentWord={appState.currentWord} />
-        ) : (
+        ) : appState.currentPage === 'historyView' ? (
           <HistoryView history={appState.history} />
+        ) : (
+          <ResetView resetInteraction={appState.resetInteraction} />
         )}
       </main>
     </div>
