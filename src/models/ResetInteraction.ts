@@ -60,13 +60,21 @@ export class ResetInteraction {
   }
   
   /**
-   * Choose a random word from the current filtered list
+   * Reset the state to default values
+   */
+  reset(): void {
+    this.filter = '';
+    this.matchStartOnly = true;
+  }
+  
+  /**
+   * Choose a random word from the full word list, ignoring current filtering
    */
   chooseRandom(): void {
-    const filteredWords = this.filteredWords;
-    if (filteredWords.length > 0) {
-      const randomIndex = Math.floor(Math.random() * filteredWords.length);
-      this.setNewWord(filteredWords[randomIndex]);
+    const allWords = this.appState.wordGraph.sortedWords;
+    if (allWords.length > 0) {
+      const randomIndex = Math.floor(Math.random() * allWords.length);
+      this.setNewWord(allWords[randomIndex]);
     }
   }
   

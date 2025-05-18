@@ -65,8 +65,8 @@ export const ResetView: React.FC<ResetViewProps> = observer(({ resetInteraction 
         <div className="reset-controls-right">
           <button 
             onClick={handleRandomClick}
-            disabled={filteredWords.length === 0}
-            title="Choose a random word from the filtered list"
+            disabled={resetInteraction.appState.wordGraph.sortedWords.length === 0}
+            title="Choose a random word from the full list (ignores filter)"
           >
             Choose Random
           </button>

@@ -232,6 +232,7 @@ export class AppState {
    */
   resetGame(): void {
     // Navigate to the reset view
+    // (The filter reset happens in navigateTo)
     this.navigateTo('resetView');
   }
 
@@ -252,6 +253,11 @@ export class AppState {
    */
   navigateTo(page: AppPage): void {
     this.currentPage = page;
+    
+    // If navigating to the reset view, reset the interaction state
+    if (page === 'resetView') {
+      this.resetInteraction.reset();
+    }
   }
 
   // Store the button element that triggered the menu
