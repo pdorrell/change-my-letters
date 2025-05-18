@@ -6,13 +6,17 @@
     "insert": "flpr//h/",
     "replace": "i/grtx/t"
   },
-  "ache": {},
+  "ache": {
+    "delete": "..h."
+  },
   "act": {
     "delete": ".c.",
     "insert": "f///s",
     "replace": "/nr/e"
   },
-  "acts": {},
+  "acts": {
+    "delete": "...s"
+  },
   "add": {
     "replace": "o/n/"
   },
@@ -50,6 +54,7 @@
     "replace": "io/mst"
   },
   "and": {
+    "delete": "..d",
     "insert": "bhlsw///",
     "replace": "e/d/ty"
   },
@@ -59,6 +64,7 @@
     "replace": "/cr/dy"
   },
   "any": {
+    "delete": "..y",
     "insert": "m///",
     "replace": "//dt"
   },
@@ -77,7 +83,9 @@
     "insert": "fhw///y",
     "replace": "/i/et"
   },
-  "army": {},
+  "army": {
+    "delete": "...y"
+  },
   "art": {
     "delete": ".r.",
     "insert": "cp///",
@@ -89,10 +97,12 @@
     "replace": "iu/mnt"
   },
   "ash": {
+    "delete": "..h",
     "insert": "bcdrw///",
     "replace": "//k"
   },
   "ask": {
+    "delete": "..k",
     "insert": "mt///",
     "replace": "//h"
   },
@@ -102,6 +112,7 @@
     "replace": "/mns"
   },
   "ate": {
+    "delete": "..e",
     "insert": "dfghlmr///",
     "replace": "/cgrx/"
   },
@@ -109,7 +120,9 @@
     "insert": "//l/",
     "replace": "/cgrt/"
   },
-  "axle": {},
+  "axle": {
+    "delete": "..l."
+  },
   "bad": {
     "insert": "/e/n/",
     "replace": "dhlmps/e/g"
@@ -127,6 +140,7 @@
     "replace": "hlsw/eo//gk"
   },
   "bang": {
+    "delete": "..n.",
     "replace": "ghr///dk"
   },
   "bank": {
@@ -167,21 +181,27 @@
     "replace": "/y/dg"
   },
   "beef": {
+    "delete": "...f",
     "replace": "r///nprst"
   },
   "been": {
+    "delete": "...n",
     "replace": "s//a/fprst"
   },
   "beep": {
+    "delete": "...p",
     "replace": "djkpsw///fnrst"
   },
   "beer": {
+    "delete": "...r",
     "replace": "dpv//a/fnpst"
   },
   "bees": {
+    "delete": "...s",
     "replace": "///fnprt"
   },
   "beet": {
+    "delete": "...t",
     "replace": "fm//alns/fnprs"
   },
   "beg": {
@@ -192,6 +212,7 @@
     "replace": "cfhstwy/aiu//t"
   },
   "belly": {
+    "delete": "....y",
     "replace": "j/u///"
   },
   "belt": {
@@ -229,6 +250,7 @@
     "replace": "fhkpsw/u/bgn"
   },
   "bite": {
+    "delete": "...e",
     "replace": "ks//k/"
   },
   "black": {
@@ -247,7 +269,9 @@
     "insert": "//e/e/",
     "replace": "s///"
   },
-  "bleed": {},
+  "bleed": {
+    "delete": "..ee."
+  },
   "blind": {
     "replace": "////k"
   },
@@ -283,6 +307,7 @@
     "replace": "cjmrs/i/gwxy"
   },
   "body": {
+    "delete": "..d.",
     "replace": "//n/"
   },
   "bog": {
@@ -292,7 +317,9 @@
     "delete": "b...",
     "replace": "cfghst//n/"
   },
-  "bomb": {},
+  "bomb": {
+    "delete": "..m."
+  },
   "bond": {
     "replace": "p/ae/l/ey"
   },
@@ -301,6 +328,7 @@
     "replace": "cdgntz//r/dy"
   },
   "bony": {
+    "delete": "..n.",
     "replace": "p//d/de"
   },
   "book": {
@@ -344,6 +372,7 @@
     "replace": "dfnp/aei//b"
   },
   "bully": {
+    "delete": "....y",
     "replace": "/e///"
   },
   "bum": {
@@ -351,6 +380,7 @@
     "replace": "ghmrsy//gnsty"
   },
   "bump": {
+    "delete": "...p",
     "replace": "djlp///"
   },
   "bun": {
@@ -358,9 +388,11 @@
     "replace": "fgprs/i/gmsty"
   },
   "bunk": {
+    "delete": "...k",
     "replace": "js/a//"
   },
   "burn": {
+    "delete": "..r.",
     "replace": "t/o//"
   },
   "bus": {
@@ -369,6 +401,7 @@
     "replace": "//gmnty"
   },
   "bust": {
+    "delete": "..st",
     "replace": "dgjmr/e//"
   },
   "but": {
@@ -384,6 +417,7 @@
     "replace": "m/"
   },
   "bye": {
+    "delete": "..e",
     "replace": "e/e/"
   },
   "cab": {
@@ -406,6 +440,7 @@
     "replace": "glnst/o/fknprsv/p"
   },
   "camp": {
+    "delete": "..m.",
     "replace": "dl///e"
   },
   "can": {
@@ -414,6 +449,7 @@
     "replace": "fmprtv//bprt"
   },
   "cane": {
+    "delete": "...e",
     "replace": "lpv/o/fkmprsv/"
   },
   "cap": {
@@ -421,6 +457,7 @@
     "replace": "glmnrstz/ou/bnrt"
   },
   "cape": {
+    "delete": "...e",
     "replace": "t/o/fkmnrsv/"
   },
   "car": {
@@ -428,6 +465,7 @@
     "replace": "ejotw//bnpt"
   },
   "card": {
+    "delete": "...d",
     "replace": "hy/o//et"
   },
   "care": {
@@ -447,6 +485,7 @@
     "replace": "bdrw///et"
   },
   "cast": {
+    "delete": "..s.",
     "replace": "eflmp/o/r/eh"
   },
   "cat": {
@@ -471,6 +510,7 @@
     "delete": "c..i."
   },
   "chant": {
+    "delete": "...n.",
     "replace": "///r/"
   },
   "chap": {
@@ -530,6 +570,7 @@
     "replace": "npr//bptw"
   },
   "code": {
+    "delete": "...e",
     "replace": "mr//mnpr/"
   },
   "coil": {
@@ -545,6 +586,7 @@
     "replace": "bfghst//r/t"
   },
   "colt": {
+    "delete": "..l.",
     "replace": "v//s/d"
   },
   "come": {
@@ -565,9 +607,11 @@
     "replace": "hmpt/au/bdtw"
   },
   "cope": {
+    "delete": "...e",
     "replace": "hr/a/dmnr/"
   },
   "cord": {
+    "delete": "..r.",
     "replace": "w/a/l/ekn"
   },
   "core": {
@@ -581,6 +625,7 @@
     "replace": "bhtw//i/dek"
   },
   "cost": {
+    "delete": "..s.",
     "replace": "hlmp/a/l/y"
   },
   "cosy": {
@@ -591,6 +636,7 @@
     "replace": "dghlnpr/au/bdpw"
   },
   "could": {
+    "delete": "..u..",
     "replace": "w////"
   },
   "cover": {
@@ -699,6 +745,7 @@
     "replace": "hmpt//w"
   },
   "dent": {
+    "delete": "...t",
     "replace": "bcrstw///"
   },
   "desk": {
@@ -727,9 +774,11 @@
     "replace": "bpr/o/dep"
   },
   "dine": {
+    "delete": "..n.",
     "replace": "flmnpvw/ou/cv/g"
   },
   "ding": {
+    "delete": "..n.",
     "replace": "krsw///e"
   },
   "dip": {
@@ -743,6 +792,7 @@
     "replace": "r/e//h"
   },
   "dive": {
+    "delete": "..v.",
     "replace": "fghl//cn/"
   },
   "dock": {
@@ -825,10 +875,12 @@
     "replace": "cjotw//t"
   },
   "earn": {
+    "delete": "...n",
     "insert": "l////",
     "replace": "wy///"
   },
   "east": {
+    "delete": "..s.",
     "replace": "cflmp///y"
   },
   "easy": {
@@ -888,6 +940,7 @@
     "replace": "hw/io//"
   },
   "fast": {
+    "delete": "..s.",
     "replace": "celmp/i/c/"
   },
   "fat": {
@@ -900,6 +953,7 @@
     "replace": "dghlmr//cd/"
   },
   "fawn": {
+    "delete": "..w.",
     "replace": "dly///"
   },
   "fear": {
@@ -947,6 +1001,7 @@
     "replace": "dw///t"
   },
   "fist": {
+    "delete": "..s.",
     "replace": "lm/a//h"
   },
   "fit": {
@@ -987,7 +1042,9 @@
     "delete": "f...",
     "replace": "s//a/"
   },
-  "float": {},
+  "float": {
+    "delete": "..o.."
+  },
   "flock": {
     "delete": "f....",
     "replace": "bc////"
@@ -1043,12 +1100,15 @@
     "replace": "n/u/gx"
   },
   "fork": {
+    "delete": "...k",
     "replace": "cpw//l/mt"
   },
   "form": {
+    "delete": "...m",
     "replace": "w/ai/a/kt"
   },
   "fort": {
+    "delete": "...t",
     "replace": "ps//o/km"
   },
   "foul": {
@@ -1088,6 +1148,7 @@
     "replace": "bgprs/a/r"
   },
   "fund": {
+    "delete": "...d",
     "replace": "/i//"
   },
   "fur": {
@@ -1169,6 +1230,7 @@
     "replace": "fhmw//l/"
   },
   "got": {
+    "delete": "..t",
     "insert": "//a/",
     "replace": "cdhlnpr/eu/"
   },
@@ -1227,9 +1289,11 @@
     "replace": "c/l/e/"
   },
   "growl": {
+    "delete": "....l",
     "replace": "p////n"
   },
   "grown": {
+    "delete": "....n",
     "replace": "f///a/l"
   },
   "grub": {
@@ -1240,6 +1304,7 @@
     "replace": "////t"
   },
   "guest": {
+    "delete": "..e..",
     "replace": "////s"
   },
   "guide": {
@@ -1255,6 +1320,7 @@
     "replace": "bfprs//mty"
   },
   "gust": {
+    "delete": "..s.",
     "insert": "//e//",
     "replace": "bdjmr///"
   },
@@ -1292,6 +1358,7 @@
     "replace": "bcfmtw/ei/iu/ft"
   },
   "halt": {
+    "delete": "..l.",
     "replace": "s///fl"
   },
   "ham": {
@@ -1307,6 +1374,7 @@
     "replace": "bgr///d"
   },
   "hard": {
+    "delete": "..r.",
     "replace": "cy/e/n/m"
   },
   "harm": {
@@ -1379,14 +1447,17 @@
     "replace": "y//a/dl"
   },
   "hen": {
+    "delete": "..n",
     "insert": "tw///",
     "replace": "dmpt//r"
   },
   "her": {
+    "delete": "..r",
     "insert": "//a/de",
     "replace": "//n"
   },
   "herd": {
+    "delete": "...d",
     "replace": "/a/al/e"
   },
   "here": {
@@ -1411,6 +1482,7 @@
     "replace": "ar/au/pst"
   },
   "hint": {
+    "delete": "..n.",
     "replace": "mt/u//"
   },
   "hip": {
@@ -1426,6 +1498,7 @@
     "replace": "/a/mpt"
   },
   "hiss": {
+    "delete": "..ss",
     "replace": "km///"
   },
   "hit": {
@@ -1462,6 +1535,7 @@
     "replace": "cmpt/i/tw"
   },
   "hope": {
+    "delete": "...e",
     "replace": "cr//lms/"
   },
   "horn": {
@@ -1469,6 +1543,7 @@
     "replace": "bctw///"
   },
   "horse": {
+    "delete": "..r..",
     "replace": "w//u//"
   },
   "hose": {
@@ -1476,6 +1551,7 @@
     "replace": "lnpr//lmp/t"
   },
   "host": {
+    "delete": "..s.",
     "replace": "clmp///e"
   },
   "hot": {
@@ -1487,6 +1563,7 @@
     "replace": "fpsty///"
   },
   "house": {
+    "delete": "..u..",
     "replace": "//r//"
   },
   "how": {
@@ -1500,17 +1577,21 @@
     "insert": "///e",
     "replace": "bjmrt//mt"
   },
-  "huge": {},
+  "huge": {
+    "delete": "...e"
+  },
   "hum": {
     "replace": "bgmrsy/ai/gt"
   },
   "hunt": {
+    "delete": "..n.",
     "replace": "/i/r/"
   },
   "hurl": {
     "replace": "///t"
   },
   "hurt": {
+    "delete": "..r.",
     "replace": "//n/l"
   },
   "hush": {
@@ -1539,6 +1620,7 @@
     "replace": "ao/fs"
   },
   "ink": {
+    "delete": "..k",
     "insert": "lpsw///",
     "replace": "//n"
   },
@@ -1624,6 +1706,7 @@
     "replace": "bhmpstw///"
   },
   "kind": {
+    "delete": "..n.",
     "replace": "fmw///g"
   },
   "king": {
@@ -1637,6 +1720,7 @@
     "replace": "bfhpsw//d"
   },
   "kite": {
+    "delete": "...e",
     "replace": "bs///"
   },
   "knee": {
@@ -1678,6 +1762,7 @@
     "replace": "bdhmps/ei/bgpwy"
   },
   "lady": {
+    "delete": "..dy",
     "replace": "//z/"
   },
   "lag": {
@@ -1692,12 +1777,14 @@
     "replace": "cmrstw/i/cmnt/"
   },
   "lamb": {
+    "delete": "..m.",
     "replace": "/i//ep"
   },
   "lame": {
     "replace": "cgnst/i/cknt/bp"
   },
   "lamp": {
+    "delete": "..m.",
     "replace": "cd/u//be"
   },
   "land": {
@@ -1726,6 +1813,7 @@
     "replace": "jprs/o/bdgpy"
   },
   "lawn": {
+    "delete": "...n",
     "replace": "dfy///"
   },
   "lay": {
@@ -1733,6 +1821,7 @@
     "replace": "dhmprsw//bdgpw"
   },
   "lazy": {
+    "delete": "..z.",
     "replace": "//d/"
   },
   "lead": {
@@ -1762,6 +1851,7 @@
     "replace": "brw/ai/gt"
   },
   "left": {
+    "delete": "..f.",
     "replace": "/i//"
   },
   "leg": {
@@ -1793,6 +1883,7 @@
     "replace": "dpt//dp"
   },
   "life": {
+    "delete": "..f.",
     "replace": "rw//kmnv/t"
   },
   "lift": {
@@ -1802,15 +1893,18 @@
     "replace": "emnrst////"
   },
   "like": {
+    "delete": "..k.",
     "replace": "bh/a/fmnv/"
   },
   "limb": {
     "replace": "/a//e"
   },
   "lime": {
+    "delete": "..m.",
     "replace": "t/a/fknv/b"
   },
   "line": {
+    "delete": "..n.",
     "replace": "dfmnpvw/a/fkmv/k"
   },
   "link": {
@@ -1826,6 +1920,7 @@
     "replace": "fm/ao/f/"
   },
   "live": {
+    "delete": "..v.",
     "replace": "dfgh/o/fkmn/"
   },
   "load": {
@@ -1848,6 +1943,7 @@
     "replace": "bdfj/ae/tw"
   },
   "long": {
+    "delete": "..n.",
     "replace": "s/u//"
   },
   "look": {
@@ -1867,6 +1963,7 @@
     "replace": "bmt/e//et"
   },
   "lost": {
+    "delete": "..s.",
     "replace": "chmp/ai//es"
   },
   "lot": {
@@ -1899,12 +1996,14 @@
     "replace": "bdhlps/u/npty"
   },
   "made": {
+    "delete": "...e",
     "replace": "fw/o/klt/"
   },
   "mail": {
     "replace": "fhjnprstw//l/n"
   },
   "main": {
+    "delete": "..i.",
     "replace": "gprv///l"
   },
   "make": {
@@ -1940,6 +2039,7 @@
     "replace": "p/eio//kt"
   },
   "mast": {
+    "delete": "..s.",
     "replace": "ceflp/iou//ks"
   },
   "mat": {
@@ -1948,6 +2048,7 @@
     "replace": "cefhorsv/e/dnpy"
   },
   "match": {
+    "delete": "...c.",
     "replace": "cw////"
   },
   "mate": {
@@ -1955,6 +2056,7 @@
     "replace": "dfghlr/u/dkl/h"
   },
   "math": {
+    "delete": "...h",
     "insert": "///c/",
     "replace": "p/o//e"
   },
@@ -1975,7 +2077,9 @@
     "insert": "////t",
     "replace": "blw/o//lt"
   },
-  "meant": {},
+  "meant": {
+    "delete": "...nt"
+  },
   "meat": {
     "delete": "mea.",
     "insert": "///n/",
@@ -1986,13 +2090,17 @@
     "replace": "bf//al/"
   },
   "melt": {
+    "delete": "..l.",
     "replace": "bf//ae/"
   },
   "men": {
+    "delete": "..n",
     "insert": "//a/u",
     "replace": "dhpt/a/t"
   },
-  "menu": {},
+  "menu": {
+    "delete": "...u"
+  },
   "mesh": {
     "replace": "///s"
   },
@@ -2000,6 +2108,7 @@
     "replace": "l/aio//h"
   },
   "met": {
+    "delete": "..t",
     "insert": "/e/ael/",
     "replace": "gjlnpswy/a/n"
   },
@@ -2090,7 +2199,9 @@
     "insert": "///i/",
     "replace": "lw//dlr/"
   },
-  "movie": {},
+  "movie": {
+    "delete": "...i."
+  },
   "mud": {
     "replace": "/a/gm"
   },
@@ -2139,6 +2250,7 @@
     "replace": "frsw///"
   },
   "nest": {
+    "delete": "..s.",
     "replace": "bprtvwz//ax/"
   },
   "net": {
@@ -2149,8 +2261,11 @@
     "insert": "k///s",
     "replace": "dfs/o/t"
   },
-  "news": {},
+  "news": {
+    "delete": "...s"
+  },
   "next": {
+    "delete": "..x.",
     "replace": "t//as/"
   },
   "nice": {
@@ -2171,9 +2286,12 @@
     "replace": "gt/"
   },
   "nod": {
+    "delete": "..d",
     "replace": "cpr//rtw"
   },
-  "noise": {},
+  "noise": {
+    "delete": "..i.."
+  },
   "none": {
     "delete": "n...",
     "replace": "bcdgtz/i/st/"
@@ -2190,13 +2308,16 @@
     "replace": "hlpr//nt/"
   },
   "not": {
+    "delete": "..t",
     "insert": "k///e",
     "replace": "cdghlpr/eu/drw"
   },
   "note": {
+    "delete": "...e",
     "replace": "v//ns/"
   },
   "now": {
+    "delete": "..w",
     "insert": "ks///",
     "replace": "bchlrst/e/drt"
   },
@@ -2251,8 +2372,11 @@
     "insert": "stw/w/e",
     "replace": "ai/fr"
   },
-  "once": {},
+  "once": {
+    "delete": "..c."
+  },
   "one": {
+    "delete": "..e",
     "insert": "bcdgntz//c/"
   },
   "open": {
@@ -2263,7 +2387,9 @@
     "insert": "fn/au/b",
     "replace": "/fn"
   },
-  "orb": {},
+  "orb": {
+    "delete": "..b"
+  },
   "our": {
     "delete": ".u.",
     "insert": "fhpsty///",
@@ -2306,9 +2432,11 @@
     "replace": "rw//cln/"
   },
   "paid": {
+    "delete": "..i.",
     "replace": "lrs///lnr"
   },
   "pail": {
+    "delete": "..i.",
     "replace": "fhjmnrstw///dnr"
   },
   "pain": {
@@ -2324,9 +2452,11 @@
     "replace": "//dnwy"
   },
   "pale": {
+    "delete": "...e",
     "replace": "mst/io/cgn/m"
   },
   "palm": {
+    "delete": "...m",
     "replace": "c///e"
   },
   "pan": {
@@ -2335,6 +2465,7 @@
     "replace": "cfmrtv/eiu/dlwy"
   },
   "pane": {
+    "delete": "...e",
     "insert": "/l///",
     "replace": "clv/i/cgl/t"
   },
@@ -2376,6 +2507,7 @@
     "delete": ".e..."
   },
   "peak": {
+    "delete": "...k",
     "insert": "s////",
     "replace": "blw//c/r"
   },
@@ -2406,6 +2538,7 @@
     "replace": "/ou/ant"
   },
   "pest": {
+    "delete": "..s.",
     "replace": "bnrtvwz/ao//"
   },
   "pet": {
@@ -2427,6 +2560,7 @@
     "replace": "bdr//ent"
   },
   "pile": {
+    "delete": "..l.",
     "replace": "mt/ao/np/l"
   },
   "pill": {
@@ -2440,6 +2574,7 @@
     "replace": "bstw/aeu/egt"
   },
   "pine": {
+    "delete": "..ne",
     "replace": "dflmnvw/a/lp/k"
   },
   "pink": {
@@ -2464,6 +2599,7 @@
     "replace": "///t/kt"
   },
   "plank": {
+    "delete": "....k",
     "replace": "b////et"
   },
   "plant": {
@@ -2524,6 +2660,7 @@
     "replace": "hmr/ai/krs/"
   },
   "pond": {
+    "delete": "..n.",
     "insert": "//u//",
     "replace": "b///y"
   },
@@ -2547,6 +2684,7 @@
     "replace": "cfw/a//et"
   },
   "port": {
+    "delete": "..r.",
     "insert": "s////",
     "replace": "fs/a/esu/ek"
   },
@@ -2554,6 +2692,7 @@
     "replace": "hlnr//klr/t"
   },
   "post": {
+    "delete": "..s.",
     "replace": "chlm/ae/eru/e"
   },
   "pot": {
@@ -2561,6 +2700,7 @@
     "replace": "cdghlnr/eiu/dp"
   },
   "pound": {
+    "delete": "..u..",
     "replace": "rsw////"
   },
   "pour": {
@@ -2582,6 +2722,7 @@
     "replace": "/e/o/y"
   },
   "prey": {
+    "delete": "..e.",
     "replace": "//a/p"
   },
   "price": {
@@ -2612,7 +2753,9 @@
     "delete": ".r..",
     "replace": "cd/l/e/d"
   },
-  "proud": {},
+  "proud": {
+    "delete": "...u."
+  },
   "prowl": {
     "replace": "g////"
   },
@@ -2624,9 +2767,11 @@
     "replace": "bdfn/i//p"
   },
   "pulp": {
+    "delete": "..l.",
     "replace": "g//m/l"
   },
   "pump": {
+    "delete": "..m.",
     "replace": "bdjl//l/"
   },
   "pun": {
@@ -2652,19 +2797,23 @@
     "replace": "///tz"
   },
   "quiet": {
+    "delete": "...e.",
     "replace": "///l/"
   },
   "quill": {
     "replace": "////t"
   },
   "quilt": {
+    "delete": "...l.",
     "replace": "///e/l"
   },
   "quit": {
     "insert": "///el/e",
     "replace": "s///dz"
   },
-  "quite": {},
+  "quite": {
+    "delete": "....e"
+  },
   "quiz": {
     "replace": "///dt"
   },
@@ -2678,6 +2827,7 @@
     "replace": "hjlpst/o/n/e"
   },
   "raft": {
+    "delete": "..f.",
     "replace": "/i//"
   },
   "rag": {
@@ -2697,6 +2847,7 @@
     "replace": "fhjmnpstw///dn"
   },
   "rain": {
+    "delete": "..i.",
     "insert": "gt////",
     "replace": "gmpv///dl"
   },
@@ -2714,9 +2865,11 @@
     "replace": "cfmptv/u/gmptwy"
   },
   "rang": {
+    "delete": "..ng",
     "replace": "bgh/iu//k"
   },
   "rank": {
+    "delete": "...k",
     "replace": "bst//c/g"
   },
   "rap": {
@@ -2746,6 +2899,7 @@
     "replace": "dhlmpsw//gmnptw"
   },
   "read": {
+    "delete": "..a.",
     "insert": "t////",
     "replace": "bdhl/o/e/lr"
   },
@@ -2798,10 +2952,13 @@
     "replace": "dkl/eo/bgmp"
   },
   "ride": {
+    "delete": "...e",
     "insert": "p///g/",
     "replace": "hstw/o/cfs/"
   },
-  "ridge": {},
+  "ridge": {
+    "delete": "...g."
+  },
   "rife": {
     "replace": "lw//cds/t"
   },
@@ -2820,6 +2977,7 @@
     "replace": "ah/au/bdgp"
   },
   "ring": {
+    "delete": "..n.",
     "replace": "dksw/au//"
   },
   "rip": {
@@ -2833,6 +2991,7 @@
     "replace": "d///e"
   },
   "road": {
+    "delete": "..a.",
     "replace": "lt/e//mr"
   },
   "roam": {
@@ -2848,6 +3007,7 @@
     "replace": "bcjms/iu/dtw"
   },
   "robe": {
+    "delete": "...e",
     "replace": "//dlps/"
   },
   "rock": {
@@ -2858,6 +3018,7 @@
     "replace": "cnp/ei/btw"
   },
   "rode": {
+    "delete": "...e",
     "replace": "cm/i/blps/"
   },
   "role": {
@@ -2894,7 +3055,9 @@
     "insert": "g///y",
     "replace": "t/io/gmnt"
   },
-  "ruby": {},
+  "ruby": {
+    "delete": "...y"
+  },
   "rug": {
     "insert": "//n/",
     "replace": "bhjmt/ai/bmnt"
@@ -2911,12 +3074,14 @@
     "replace": "bfgps/a/bgmt"
   },
   "rung": {
+    "delete": "..ng",
     "replace": "ls/ai//"
   },
   "rush": {
     "replace": "hp/a//t"
   },
   "rust": {
+    "delete": "..s.",
     "insert": "ct////",
     "replace": "bdgjm/e//h"
   },
@@ -2940,6 +3105,7 @@
     "replace": "blrtw//dptwy"
   },
   "said": {
+    "delete": "..i.",
     "replace": "lpr/l/n/l"
   },
   "sail": {
@@ -2955,6 +3121,7 @@
     "replace": "mpt//fkmv/t"
   },
   "salt": {
+    "delete": "..l.",
     "replace": "h///e"
   },
   "same": {
@@ -2996,7 +3163,9 @@
     "insert": "////f",
     "replace": "/ot//n"
   },
-  "scarf": {},
+  "scarf": {
+    "delete": "....f"
+  },
   "scene": {
     "replace": "////t"
   },
@@ -3019,10 +3188,12 @@
     "replace": "pt//tw"
   },
   "seal": {
+    "delete": "...l",
     "insert": "/t///",
     "replace": "dhmr//l/mt"
   },
   "seam": {
+    "delete": "...m",
     "insert": "/t///",
     "replace": "bt/l/e/lt"
   },
@@ -3062,6 +3233,7 @@
     "replace": "blt/a/e/t"
   },
   "sent": {
+    "delete": "..n.",
     "insert": "/cp///",
     "replace": "bcdrtw//a/d"
   },
@@ -3108,6 +3280,7 @@
     "replace": "t//y"
   },
   "shed": {
+    "delete": "...d",
     "insert": "//r//",
     "replace": "/el//"
   },
@@ -3138,10 +3311,12 @@
     "replace": "/t//o/"
   },
   "shoe": {
+    "delete": "..o.",
     "insert": "///nr/",
     "replace": "///ptw"
   },
   "shone": {
+    "delete": "...n.",
     "replace": "p/t/i/r/"
   },
   "shook": {
@@ -3170,13 +3345,16 @@
     "replace": "/lop/u/epw"
   },
   "shout": {
+    "delete": "..ou.",
     "replace": "/pt//or/"
   },
   "show": {
     "delete": "sh..",
     "replace": "/lnt//ept"
   },
-  "shred": {},
+  "shred": {
+    "delete": "..r.."
+  },
   "shut": {
     "delete": "s...",
     "insert": "//o//",
@@ -3194,6 +3372,7 @@
     "replace": "hrtw//tz/"
   },
   "sift": {
+    "delete": "..f.",
     "insert": "/hw///",
     "replace": "glr/o//"
   },
@@ -3202,9 +3381,11 @@
     "replace": "h///n"
   },
   "sight": {
+    "delete": "....t",
     "replace": "elmnrt////"
   },
   "sign": {
+    "delete": "..g.",
     "replace": "///h"
   },
   "silk": {
@@ -3215,13 +3396,16 @@
     "insert": "/kpt///y",
     "replace": "bhkmptw/e//k"
   },
-  "silly": {},
+  "silly": {
+    "delete": "....y"
+  },
   "sin": {
     "delete": "s..",
     "insert": "/kp/g/gk",
     "replace": "bptw/ou/prtx"
   },
   "sing": {
+    "delete": "...g",
     "insert": "/tw///",
     "replace": "dkrw/ou//k"
   },
@@ -3243,6 +3427,7 @@
     "replace": "bfhkpw/ae/nprx"
   },
   "site": {
+    "delete": "...e",
     "insert": "/p///",
     "replace": "bk//dz/"
   },
@@ -3272,6 +3457,7 @@
     "replace": "/hln//nt"
   },
   "skirt": {
+    "delete": "...r.",
     "replace": "/h///"
   },
   "skit": {
@@ -3475,6 +3661,7 @@
     "replace": "tw/iu/bw"
   },
   "song": {
+    "delete": "...g",
     "replace": "l/iu//"
   },
   "soon": {
@@ -3531,7 +3718,9 @@
     "delete": ".p..",
     "replace": "/ew/io/n"
   },
-  "spawn": {},
+  "spawn": {
+    "delete": "...w."
+  },
   "speak": {
     "delete": "s....",
     "replace": "/n///r"
@@ -3629,12 +3818,14 @@
     "replace": "/n//bry"
   },
   "stage": {
+    "delete": "....e",
     "replace": "///klrt/"
   },
   "stain": {
     "replace": "////r"
   },
   "stair": {
+    "delete": "..ai.",
     "replace": "////n"
   },
   "stake": {
@@ -3665,9 +3856,11 @@
     "replace": "/co/i/bgy"
   },
   "stare": {
+    "delete": "....e",
     "replace": "/hn/o/gklt/kt"
   },
   "stark": {
+    "delete": "....k",
     "replace": "/hp/o/cl/et"
   },
   "start": {
@@ -3749,6 +3942,7 @@
     "replace": "////dp"
   },
   "stoop": {
+    "delete": "..oo.",
     "replace": "/cw///dl"
   },
   "stop": {
@@ -3839,10 +4033,12 @@
     "replace": "bfgpr/io/m"
   },
   "sung": {
+    "delete": "...g",
     "insert": "/w///",
     "replace": "lr/io//k"
   },
   "sunk": {
+    "delete": "...k",
     "replace": "bj/ai/c/g"
   },
   "sure": {
@@ -3948,7 +4144,9 @@
     "insert": "s///",
     "replace": "cl/u/gnprx"
   },
-  "table": {},
+  "table": {
+    "delete": "..b.."
+  },
   "tack": {
     "insert": "s/r///",
     "replace": "hjlprs/iu/lns/"
@@ -3987,6 +4185,7 @@
     "replace": "cfmprv/eio/bgprx"
   },
   "tank": {
+    "delete": "...k",
     "replace": "brs//cls/"
   },
   "tap": {
@@ -3994,6 +4193,7 @@
     "replace": "cglmnrsz/io/bgnrx"
   },
   "tape": {
+    "delete": "...e",
     "replace": "c/y/klm/"
   },
   "tar": {
@@ -4012,6 +4212,7 @@
     "replace": "ps//n"
   },
   "team": {
+    "delete": "...m",
     "insert": "s////",
     "replace": "bs/r/r/r"
   },
@@ -4061,6 +4262,7 @@
     "replace": "s/io/"
   },
   "them": {
+    "delete": "...m",
     "replace": "///ny"
   },
   "then": {
@@ -4072,6 +4274,7 @@
     "replace": "w////"
   },
   "they": {
+    "delete": "...y",
     "replace": "///mn"
   },
   "thick": {
@@ -4084,9 +4287,11 @@
     "replace": "c/w/ae/s"
   },
   "thing": {
+    "delete": "....g",
     "replace": "////k"
   },
   "think": {
+    "delete": "....k",
     "replace": "///c/g"
   },
   "this": {
@@ -4124,6 +4329,7 @@
     "replace": "klnps/au//"
   },
   "tide": {
+    "delete": "..d.",
     "replace": "hrsw//lmr/y"
   },
   "tidy": {
@@ -4137,6 +4343,7 @@
     "replace": "elmnrs////"
   },
   "tile": {
+    "delete": "..l.",
     "replace": "mp/a/dmr/lt"
   },
   "till": {
@@ -4148,6 +4355,7 @@
     "replace": "//n/el"
   },
   "time": {
+    "delete": "..m.",
     "replace": "l/a/dlr/"
   },
   "tin": {
@@ -4160,6 +4368,7 @@
     "replace": "hm/e/l/y"
   },
   "tiny": {
+    "delete": "...y",
     "replace": "//d/t"
   },
   "tip": {
@@ -4167,6 +4376,7 @@
     "replace": "dhlrsz/ao/en"
   },
   "tire": {
+    "delete": "..r.",
     "replace": "fhw/o/dlm/"
   },
   "to": {
@@ -4177,6 +4387,7 @@
     "replace": "lr//l/"
   },
   "toe": {
+    "delete": "..e",
     "insert": "//nr/",
     "replace": "w/hi/mnpwy"
   },
@@ -4188,6 +4399,7 @@
     "replace": "dr/aei/o/d"
   },
   "tom": {
+    "delete": "..m",
     "replace": "m//enpwy"
   },
   "ton": {
@@ -4211,16 +4423,21 @@
     "insert": "////h",
     "replace": "bfrs/r//kl"
   },
-  "tooth": {},
+  "tooth": {
+    "delete": "....h"
+  },
   "top": {
+    "delete": "..p",
     "insert": "s///",
     "replace": "chmp/ai/emnwy"
   },
   "tore": {
+    "delete": "..r.",
     "insert": "s////",
     "replace": "bcmpsw/i/n/n"
   },
   "torn": {
+    "delete": "..r.",
     "insert": "/h///",
     "replace": "bchw/u/w/e"
   },
@@ -4232,6 +4449,7 @@
     "replace": "fhpsy///"
   },
   "tow": {
+    "delete": "..w",
     "insert": "s///n",
     "replace": "bchlnrs//emnpy"
   },
@@ -4240,6 +4458,7 @@
     "replace": "d//r/"
   },
   "toy": {
+    "delete": "..y",
     "replace": "bj/r/emnpw"
   },
   "trace": {
@@ -4266,7 +4485,9 @@
     "insert": "////p",
     "replace": "c/e/i/py"
   },
-  "tramp": {},
+  "tramp": {
+    "delete": "...mp"
+  },
   "trap": {
     "delete": "tr..",
     "insert": "s///m/",
@@ -4320,7 +4541,9 @@
     "insert": "///u/",
     "replace": "/o//d"
   },
-  "trout": {},
+  "trout": {
+    "delete": "...u."
+  },
   "truck": {
     "delete": ".r...",
     "replace": "//ai/n/"
@@ -4344,6 +4567,7 @@
     "replace": "r/a/g"
   },
   "tube": {
+    "delete": "...e",
     "replace": "//n/"
   },
   "tuck": {
@@ -4402,15 +4626,19 @@
     "replace": "ai/p"
   },
   "use": {
+    "delete": "..e",
     "insert": "///dr"
   },
   "used": {
+    "delete": "...d",
     "replace": "///r"
   },
   "user": {
+    "delete": "...r",
     "replace": "///d"
   },
   "vain": {
+    "delete": "..i.",
     "replace": "gmpr/e//"
   },
   "van": {
@@ -4419,6 +4647,7 @@
     "replace": "cfmprt//t"
   },
   "vane": {
+    "delete": "...e",
     "replace": "clp/i//"
   },
   "vat": {
@@ -4496,9 +4725,11 @@
     "replace": "fh/o//np"
   },
   "warn": {
+    "delete": "...n",
     "replace": "ey/o//mp"
   },
   "warp": {
+    "delete": "...p",
     "replace": "//s/mn"
   },
   "was": {
@@ -4511,6 +4742,7 @@
     "replace": "bcdr/i//p"
   },
   "wasp": {
+    "delete": "...p",
     "replace": "//r/h"
   },
   "watch": {
@@ -4543,9 +4775,11 @@
     "replace": "bdfhnprty///kn"
   },
   "web": {
+    "delete": "..b",
     "replace": "//dt"
   },
   "wed": {
+    "delete": "..d",
     "insert": "/e/e/",
     "replace": "blr//bt"
   },
@@ -4565,9 +4799,11 @@
     "replace": "bcfhsty/ai//"
   },
   "went": {
+    "delete": "..n.",
     "replace": "bcdrst/a/ps/"
   },
   "wept": {
+    "delete": "..p.",
     "insert": "s////",
     "replace": "k//ns/"
   },
@@ -4576,9 +4812,11 @@
     "replace": "h/io//"
   },
   "west": {
+    "delete": "..s.",
     "replace": "bnprtvz//np/"
   },
   "wet": {
+    "delete": "..t",
     "insert": "//nps/",
     "replace": "gjlmnpsy/i/bd"
   },
@@ -4623,7 +4861,9 @@
     "delete": "w....",
     "replace": "//i/s/"
   },
-  "whom": {},
+  "whom": {
+    "delete": "...m"
+  },
   "whose": {
     "delete": "w....",
     "replace": "t///l/"
@@ -4650,13 +4890,16 @@
     "replace": "bpst/o/t"
   },
   "wind": {
+    "delete": "...d",
     "replace": "fkm/a/l/egk"
   },
   "wine": {
+    "delete": "...e",
     "insert": "s/h///",
     "replace": "dflmnpv//dfprs/dgk"
   },
   "wing": {
+    "delete": "...g",
     "insert": "s////",
     "replace": "dkrs///dek"
   },
@@ -4683,6 +4926,7 @@
     "replace": "bfhkps/e/n"
   },
   "with": {
+    "delete": "...h",
     "replace": "//s/"
   },
   "woe": {
@@ -4691,6 +4935,7 @@
     "replace": "t//no"
   },
   "woke": {
+    "delete": "..k.",
     "replace": "jp/a/rv/"
   },
   "wolf": {
@@ -4706,9 +4951,11 @@
     "replace": "z/h/en"
   },
   "wood": {
+    "delete": "...d",
     "replace": "fghm//r/l"
   },
   "wool": {
+    "delete": "...l",
     "replace": "cfpt///d"
   },
   "word": {
@@ -4716,6 +4963,7 @@
     "replace": "c//o/ekmn"
   },
   "wore": {
+    "delete": "..r.",
     "insert": "s///s/",
     "replace": "bcmpst/ei/kv/dkmn"
   },
@@ -4726,10 +4974,12 @@
     "replace": "f/a//dekn"
   },
   "worn": {
+    "delete": "..r.",
     "insert": "s////",
     "replace": "bcht/a//dekm"
   },
   "worse": {
+    "delete": "...s.",
     "replace": "h////t"
   },
   "worst": {
@@ -4742,6 +4992,7 @@
     "replace": "prs///l/"
   },
   "wove": {
+    "delete": "..v.",
     "replace": "lm/a/kr/"
   },
   "wrap": {
