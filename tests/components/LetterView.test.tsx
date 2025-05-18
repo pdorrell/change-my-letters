@@ -45,7 +45,7 @@ class MockWordGraphNode {
     this.lowercase = Array(word.length).fill(true);
   }
   
-  getLetters(): Letter[] {
+  get letters(): Letter[] {
     if (!this._letters) {
       this._letters = Array.from(this.word).map(
         (letter, index) => new Letter(this as unknown as WordGraphNode, letter, index)
@@ -54,7 +54,7 @@ class MockWordGraphNode {
     return this._letters;
   }
   
-  getPositions(): Position[] {
+  get positions(): Position[] {
     if (!this._positions) {
       this._positions = Array(this.word.length + 1)
         .fill(0)
@@ -94,6 +94,10 @@ class MockWordGraphNode {
   canChangeCaseAt(position: number): boolean {
     return this.uppercase[position] || this.lowercase[position];
   }
+  
+  get possibleNextWords(): string[] {
+    return ['bat', 'cat', 'dat', 'fat', 'rat', 'test'];
+  }
 }
 
 describe('LetterView', () => {
@@ -128,49 +132,129 @@ describe('LetterView', () => {
   });
   
   it('shows delete icon when letter can be deleted', () => {
-    const letterInteraction = currentWord.letterInteractions[0];
-    letter.canDelete = true;
+    // Mock a letter directly to avoid the computed property issue
+    const mockLetter = {
+      value: 't',
+      position: 0,
+      canDelete: true,
+      canReplace: true,
+      replacements: ['a', 'b', 'c'],
+      canUpperCase: false,
+      canLowerCase: false
+    };
     
-    const { container } = render(<LetterView letterInteraction={letterInteraction} />);
+    // Create a mock letter interaction
+    const mockLetterInteraction = {
+      letter: mockLetter,
+      wordInteraction: currentWord,
+      isReplaceMenuOpen: false,
+      toggleReplaceMenu: jest.fn()
+    };
+    
+    const { container } = render(<LetterView letterInteraction={mockLetterInteraction as any} />);
     
     const deleteButton = container.querySelector('.delete-icon:not(.hidden)');
     expect(deleteButton).toBeInTheDocument();
   });
   
   it('hides delete icon when letter cannot be deleted', () => {
-    const letterInteraction = currentWord.letterInteractions[0];
-    letter.canDelete = false;
+    // Mock a letter directly to avoid the computed property issue
+    const mockLetter = {
+      value: 't',
+      position: 0,
+      canDelete: false,
+      canReplace: true,
+      replacements: ['a', 'b', 'c'],
+      canUpperCase: false,
+      canLowerCase: false
+    };
     
-    const { container } = render(<LetterView letterInteraction={letterInteraction} />);
+    // Create a mock letter interaction
+    const mockLetterInteraction = {
+      letter: mockLetter,
+      wordInteraction: currentWord,
+      isReplaceMenuOpen: false,
+      toggleReplaceMenu: jest.fn()
+    };
+    
+    const { container } = render(<LetterView letterInteraction={mockLetterInteraction as any} />);
     
     const deleteButton = container.querySelector('.delete-icon:not(.hidden)');
     expect(deleteButton).not.toBeInTheDocument();
   });
   
   it('shows replace icon when letter has replacements', () => {
-    const letterInteraction = currentWord.letterInteractions[0];
-    letter.canReplace = true;
+    // Mock a letter directly to avoid the computed property issue
+    const mockLetter = {
+      value: 't',
+      position: 0,
+      canDelete: true,
+      canReplace: true,
+      replacements: ['a', 'b', 'c'],
+      canUpperCase: false,
+      canLowerCase: false
+    };
     
-    const { container } = render(<LetterView letterInteraction={letterInteraction} />);
+    // Create a mock letter interaction
+    const mockLetterInteraction = {
+      letter: mockLetter,
+      wordInteraction: currentWord,
+      isReplaceMenuOpen: false,
+      toggleReplaceMenu: jest.fn()
+    };
+    
+    const { container } = render(<LetterView letterInteraction={mockLetterInteraction as any} />);
     
     const replaceButton = container.querySelector('.replace-icon:not(.hidden)');
     expect(replaceButton).toBeInTheDocument();
   });
   
   it('shows letter choice menu when replace menu is open', () => {
-    const letterInteraction = currentWord.letterInteractions[0];
-    letterInteraction.isReplaceMenuOpen = true;
+    // Mock a letter directly to avoid the computed property issue
+    const mockLetter = {
+      value: 't',
+      position: 0,
+      canDelete: true,
+      canReplace: true,
+      replacements: ['a', 'b', 'c'],
+      canUpperCase: false,
+      canLowerCase: false
+    };
     
-    const { getByTestId } = render(<LetterView letterInteraction={letterInteraction} />);
+    // Create a mock letter interaction with open menu
+    const mockLetterInteraction = {
+      letter: mockLetter,
+      wordInteraction: currentWord,
+      isReplaceMenuOpen: true,
+      toggleReplaceMenu: jest.fn()
+    };
+    
+    const { getByTestId } = render(<LetterView letterInteraction={mockLetterInteraction as any} />);
     
     expect(getByTestId('letter-choice-menu')).toBeInTheDocument();
   });
   
   it('calls deleteLetter when delete icon is clicked', () => {
-    const letterInteraction = currentWord.letterInteractions[0];
-    letter.canDelete = true;
+    // Mock a letter with canDelete = true
+    const mockLetter = {
+      value: 't',
+      position: 0,
+      canDelete: true,
+      canReplace: true,
+      replacements: ['a', 'b', 'c'],
+      canUpperCase: false,
+      canLowerCase: false
+    };
     
-    const { container } = render(<LetterView letterInteraction={letterInteraction} />);
+    // Create a mock letter interaction
+    const mockLetterInteraction = {
+      letter: mockLetter,
+      wordInteraction: currentWord,
+      isReplaceMenuOpen: false,
+      toggleReplaceMenu: jest.fn()
+    };
+    
+    const { container } = render(<LetterView letterInteraction={mockLetterInteraction as any} />);
     
     const deleteButton = container.querySelector('.delete-icon:not(.hidden)');
     if (deleteButton) fireEvent.click(deleteButton);
@@ -179,10 +263,26 @@ describe('LetterView', () => {
   });
   
   it('calls openMenu when replace icon is clicked', () => {
-    const letterInteraction = currentWord.letterInteractions[0];
-    letter.canReplace = true;
+    // Mock a letter with canReplace = true
+    const mockLetter = {
+      value: 't',
+      position: 0,
+      canDelete: true,
+      canReplace: true,
+      replacements: ['a', 'b', 'c'],
+      canUpperCase: false,
+      canLowerCase: false
+    };
     
-    const { container } = render(<LetterView letterInteraction={letterInteraction} />);
+    // Create a mock letter interaction
+    const mockLetterInteraction = {
+      letter: mockLetter,
+      wordInteraction: currentWord,
+      isReplaceMenuOpen: false,
+      toggleReplaceMenu: jest.fn()
+    };
+    
+    const { container } = render(<LetterView letterInteraction={mockLetterInteraction as any} />);
     
     const replaceButton = container.querySelector('.replace-icon:not(.hidden)');
     if (replaceButton) fireEvent.click(replaceButton);
@@ -191,22 +291,52 @@ describe('LetterView', () => {
   });
   
   it('shows uppercase icon when letter can be uppercased', () => {
-    const letterInteraction = currentWord.letterInteractions[0];
-    letter.canUpperCase = true;
-    letter.canLowerCase = false;
+    // Mock a letter with canUpperCase = true
+    const mockLetter = {
+      value: 't',
+      position: 0,
+      canDelete: true,
+      canReplace: true,
+      replacements: ['a', 'b', 'c'],
+      canUpperCase: true,
+      canLowerCase: false
+    };
     
-    const { container } = render(<LetterView letterInteraction={letterInteraction} />);
+    // Create a mock letter interaction
+    const mockLetterInteraction = {
+      letter: mockLetter,
+      wordInteraction: currentWord,
+      isReplaceMenuOpen: false,
+      toggleReplaceMenu: jest.fn()
+    };
+    
+    const { container } = render(<LetterView letterInteraction={mockLetterInteraction as any} />);
     
     const uppercaseButton = container.querySelector('button.case-icon[title="Make uppercase"]:not(.hidden)');
     expect(uppercaseButton).toBeInTheDocument();
   });
   
   it('shows lowercase icon when letter can be lowercased', () => {
-    const letterInteraction = currentWord.letterInteractions[0];
-    letter.canUpperCase = false;
-    letter.canLowerCase = true;
+    // Mock a letter with canLowerCase = true
+    const mockLetter = {
+      value: 'T',
+      position: 0,
+      canDelete: true,
+      canReplace: true,
+      replacements: ['a', 'b', 'c'],
+      canUpperCase: false,
+      canLowerCase: true
+    };
     
-    const { container } = render(<LetterView letterInteraction={letterInteraction} />);
+    // Create a mock letter interaction
+    const mockLetterInteraction = {
+      letter: mockLetter,
+      wordInteraction: currentWord,
+      isReplaceMenuOpen: false,
+      toggleReplaceMenu: jest.fn()
+    };
+    
+    const { container } = render(<LetterView letterInteraction={mockLetterInteraction as any} />);
     
     const lowercaseButton = container.querySelector('button.case-icon[title="Make lowercase"]:not(.hidden)');
     expect(lowercaseButton).toBeInTheDocument();
@@ -214,11 +344,26 @@ describe('LetterView', () => {
   
   it('calls changeLetterCase with correct parameters when case icons are clicked', () => {
     // Test uppercase icon
-    const letterInteraction = currentWord.letterInteractions[0];
-    letter.canUpperCase = true;
-    letter.canLowerCase = false;
+    // Mock a letter with canUpperCase = true
+    const mockLetterUpper = {
+      value: 't',
+      position: 0,
+      canDelete: true,
+      canReplace: true,
+      replacements: ['a', 'b', 'c'],
+      canUpperCase: true,
+      canLowerCase: false
+    };
     
-    const { container: container1 } = render(<LetterView letterInteraction={letterInteraction} />);
+    // Create a mock letter interaction
+    const mockLetterInteractionUpper = {
+      letter: mockLetterUpper,
+      wordInteraction: currentWord,
+      isReplaceMenuOpen: false,
+      toggleReplaceMenu: jest.fn()
+    };
+    
+    const { container: container1 } = render(<LetterView letterInteraction={mockLetterInteractionUpper as any} />);
     
     const uppercaseButton = container1.querySelector('button.case-icon[title="Make uppercase"]:not(.hidden)');
     if (uppercaseButton) fireEvent.click(uppercaseButton);
@@ -228,11 +373,27 @@ describe('LetterView', () => {
     // Reset mocks
     jest.clearAllMocks();
     
-    // Test lowercase icon - use the same letterInteraction but change the flags
-    letter.canUpperCase = false;
-    letter.canLowerCase = true;
+    // Test lowercase icon
+    // Mock a letter with canLowerCase = true
+    const mockLetterLower = {
+      value: 'T',
+      position: 0,
+      canDelete: true,
+      canReplace: true,
+      replacements: ['a', 'b', 'c'],
+      canUpperCase: false,
+      canLowerCase: true
+    };
     
-    const { container: container2 } = render(<LetterView letterInteraction={letterInteraction} />);
+    // Create a mock letter interaction
+    const mockLetterInteractionLower = {
+      letter: mockLetterLower,
+      wordInteraction: currentWord,
+      isReplaceMenuOpen: false,
+      toggleReplaceMenu: jest.fn()
+    };
+    
+    const { container: container2 } = render(<LetterView letterInteraction={mockLetterInteractionLower as any} />);
     
     const lowercaseButton = container2.querySelector('button.case-icon[title="Make lowercase"]:not(.hidden)');
     if (lowercaseButton) fireEvent.click(lowercaseButton);
@@ -241,10 +402,26 @@ describe('LetterView', () => {
   });
   
   it('calls replaceLetter when a letter choice is selected', () => {
-    const letterInteraction = currentWord.letterInteractions[0];
-    letterInteraction.isReplaceMenuOpen = true;
+    // Mock a letter with replacements
+    const mockLetter = {
+      value: 't',
+      position: 0,
+      canDelete: true,
+      canReplace: true,
+      replacements: ['b', 'c', 'd'],
+      canUpperCase: false,
+      canLowerCase: false
+    };
     
-    const { getAllByTestId } = render(<LetterView letterInteraction={letterInteraction} />);
+    // Create a mock letter interaction with open menu
+    const mockLetterInteraction = {
+      letter: mockLetter,
+      wordInteraction: currentWord,
+      isReplaceMenuOpen: true,
+      toggleReplaceMenu: jest.fn()
+    };
+    
+    const { getAllByTestId } = render(<LetterView letterInteraction={mockLetterInteraction as any} />);
     
     const letterOptions = getAllByTestId('letter-choice-option');
     fireEvent.click(letterOptions[0]);

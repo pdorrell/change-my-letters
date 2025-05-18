@@ -29,7 +29,7 @@ describe('Word', () => {
       [false, true, false]
     );
 
-    const letters = word.getLetters();
+    const letters = word.letters;
     
     // Should have three letters for 'cat'
     expect(letters.length).toBe(3);
@@ -40,7 +40,7 @@ describe('Word', () => {
     expect(letters[2].value).toBe('t');
 
     // Letters should be cached
-    expect(word.getLetters()).toBe(letters);
+    expect(word.letters).toBe(letters);
   });
 
   it('should create and cache position objects', () => {
@@ -53,7 +53,7 @@ describe('Word', () => {
       [false, true, false]
     );
 
-    const positions = word.getPositions();
+    const positions = word.positions;
     
     // Should have four positions for 'cat'
     expect(positions.length).toBe(4);
@@ -65,7 +65,7 @@ describe('Word', () => {
     expect(positions[3].index).toBe(3);
 
     // Positions should be cached
-    expect(word.getPositions()).toBe(positions);
+    expect(word.positions).toBe(positions);
   });
 
   it('should handle get operations like canDelete, getReplacements, etc.', () => {

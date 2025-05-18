@@ -25,7 +25,7 @@ class MockWordGraphNode {
     this.lowercase = Array(word.length).fill(true);
   }
   
-  getLetters(): Letter[] {
+  get letters(): Letter[] {
     if (!this._letters) {
       this._letters = Array.from(this.word).map(
         (letter, index) => new Letter(this as unknown as WordGraphNode, letter, index)
@@ -34,7 +34,7 @@ class MockWordGraphNode {
     return this._letters;
   }
   
-  getPositions(): Position[] {
+  get positions(): Position[] {
     if (!this._positions) {
       this._positions = Array(this.word.length + 1)
         .fill(0)
@@ -85,7 +85,7 @@ describe('LetterInteraction', () => {
     
     // Create a node and letter
     const node = new MockWordGraphNode('cat') as unknown as WordGraphNode;
-    letter = node.getLetters()[0]; // 'c'
+    letter = node.letters[0]; // 'c'
     
     // Create a word interaction
     wordInteraction = new WordInteraction(node, appState, false);

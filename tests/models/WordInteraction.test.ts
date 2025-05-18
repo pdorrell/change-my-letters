@@ -26,7 +26,7 @@ class MockWord {
     this.lowercase = Array(word.length).fill(true);
   }
   
-  getLetters(): Letter[] {
+  get letters(): Letter[] {
     if (!this._letters) {
       this._letters = Array.from(this.word).map(
         (letter, index) => new Letter(this as unknown as Word, letter, index)
@@ -35,7 +35,7 @@ class MockWord {
     return this._letters;
   }
   
-  getPositions(): Position[] {
+  get positions(): Position[] {
     if (!this._positions) {
       this._positions = Array(this.word.length + 1)
         .fill(0)
@@ -66,6 +66,10 @@ class MockWord {
   
   canChangeCaseAt(position: number): boolean {
     return this.uppercase[position] || this.lowercase[position];
+  }
+  
+  get possibleNextWords(): string[] {
+    return ['bat', 'cat', 'dat', 'fat', 'rat', 'mat'];
   }
 }
 

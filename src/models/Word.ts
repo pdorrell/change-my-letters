@@ -46,7 +46,7 @@ export class Word {
   /**
    * Get the letters for this word, creating them if they don't exist
    */
-  getLetters(): Letter[] {
+  get letters(): Letter[] {
     if (!this._letters) {
       this._letters = Array.from(this.word).map(
         (letter, index) => new Letter(this, letter, index)
@@ -58,7 +58,7 @@ export class Word {
   /**
    * Get the positions for this word, creating them if they don't exist
    */
-  getPositions(): Position[] {
+  get positions(): Position[] {
     if (!this._positions) {
       this._positions = Array(this.word.length + 1)
         .fill(0)
@@ -138,7 +138,7 @@ export class Word {
    * Get all possible words that can be reached from this word through a single change
    * @returns Array of words that can be created from this word with one change
    */
-  getPossibleNextWords(): string[] {
+  get possibleNextWords(): string[] {
     const possibleWords: Set<string> = new Set();
     const currentWord = this.word;
     

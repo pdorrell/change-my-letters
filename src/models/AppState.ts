@@ -92,7 +92,7 @@ export class AppState {
     this.wordSayer.preload(word);
 
     // Preload all possible next words
-    const possibleNextWords = node.getPossibleNextWords();
+    const possibleNextWords = node.possibleNextWords;
     for (const nextWord of possibleNextWords) {
       this.wordSayer.preload(nextWord);
     }

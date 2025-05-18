@@ -74,8 +74,8 @@ export class WordInteraction {
    */
   private initializeInteractions(): void {
     // Get the base Letter and Position objects from the word
-    const letters = this.word.getLetters();
-    const positions = this.word.getPositions();
+    const letters = this.word.letters;
+    const positions = this.word.positions;
 
     // Create interaction wrappers for each
     this.letterInteractions = letters.map(

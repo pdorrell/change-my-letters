@@ -11,30 +11,43 @@ export class Letter {
   // Position in the word
   position: number;
 
-  // Whether the letter can be deleted
-  canDelete: boolean;
-
-  // Whether the letter can be replaced and the potential replacements
-  canReplace: boolean;
-  replacements: string[];
-
-  // Whether this letter can be upper or lower cased
-  canUpperCase: boolean;
-  canLowerCase: boolean;
+  // Reference to parent word
+  private word: Word;
 
   constructor(word: Word, letter: string, position: number) {
     this.value = letter;
     this.position = position;
-
-    // Get the letter properties from the word
-    this.canDelete = word.canDelete(position);
-    this.replacements = word.getPossibleReplacements(position);
-    this.canReplace = this.replacements.length > 0;
-
-    // Set case change properties
-    this.canUpperCase = letter === letter.toLowerCase() && letter !== '' && word.canUppercase(position);
-    this.canLowerCase = letter === letter.toUpperCase() && letter !== '' && word.canLowercase(position);
+    this.word = word;
 
     makeAutoObservable(this);
+  }
+
+  // Whether the letter can be deleted
+  get canDelete(): boolean {
+    return this.word.canDelete(this.position);
+  }
+
+  // The potential replacements for this letter
+  get replacements(): string[] {
+    return this.word.getPossibleReplacements(this.position);
+  }
+
+  // Whether the letter can be replaced
+  get canReplace(): boolean {
+    return this.replacements.length > 0;
+  }
+
+  // Whether this letter can be upper cased
+  get canUpperCase(): boolean {
+    return this.value === this.value.toLowerCase() && 
+           this.value !== '' && 
+           this.word.canUppercase(this.position);
+  }
+
+  // Whether this letter can be lower cased
+  get canLowerCase(): boolean {
+    return this.value === this.value.toUpperCase() && 
+           this.value !== '' && 
+           this.word.canLowercase(this.position);
   }
 }

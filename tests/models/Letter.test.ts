@@ -24,7 +24,7 @@ class MockWordGraphNode {
     this.lowercase = Array(word.length).fill(true);
   }
   
-  getLetters(): Letter[] {
+  get letters(): Letter[] {
     if (!this._letters) {
       this._letters = Array.from(this.word).map(
         (letter, index) => new Letter(this as unknown as WordGraphNode, letter, index)
@@ -33,7 +33,7 @@ class MockWordGraphNode {
     return this._letters;
   }
   
-  getPositions(): Position[] {
+  get positions(): Position[] {
     if (!this._positions) {
       this._positions = Array(this.word.length + 1)
         .fill(0)
@@ -72,6 +72,10 @@ class MockWordGraphNode {
   
   canChangeCaseAt(position: number): boolean {
     return this.uppercase[position] || this.lowercase[position];
+  }
+  
+  get possibleNextWords(): string[] {
+    return ['bat', 'cat', 'dat', 'fat', 'rat', 'test'];
   }
 }
 
@@ -117,28 +121,30 @@ describe('Letter', () => {
     expect(letterInteraction.isReplaceMenuOpen).toBe(false);
   });
 
-  it('should set canUpperCase for lowercase letters', () => {
-    // Mock the canUpperCase property since we're using pre-existing letters
-    const letter = currentWord.letters[0];
+  it('should have canUpperCase property for lowercase letters', () => {
+    // Override the node to control uppercase property
+    const mockNode = new MockWordGraphNode('test') as unknown as WordGraphNode;
+    // Ensure uppercase is true for position 0
+    mockNode.uppercase[0] = true;
     
-    // Mock the behavior by setting the property directly for testing
-    letter.canUpperCase = true;
+    // Create a new Letter directly
+    const letter = new Letter(mockNode, 't', 0);
+    
+    // Since 't' is lowercase and uppercase[0] is true, canUpperCase should be true
     expect(letter.canUpperCase).toBe(true);
-    
-    letter.canUpperCase = false;
-    expect(letter.canUpperCase).toBe(false);
   });
 
-  it('should set canLowerCase for uppercase letters', () => {
-    // Mock the canLowerCase property since we're using pre-existing letters
-    const letter = currentWord.letters[0];
+  it('should have canLowerCase property for uppercase letters', () => {
+    // Override the node to control lowercase property
+    const mockNode = new MockWordGraphNode('TEST') as unknown as WordGraphNode;
+    // Ensure lowercase is true for position 0
+    mockNode.lowercase[0] = true;
     
-    // Mock the behavior by setting the property directly for testing
-    letter.canLowerCase = true;
+    // Create a new Letter directly with uppercase letter
+    const letter = new Letter(mockNode, 'T', 0);
+    
+    // Since 'T' is uppercase and lowercase[0] is true, canLowerCase should be true
     expect(letter.canLowerCase).toBe(true);
-    
-    letter.canLowerCase = false;
-    expect(letter.canLowerCase).toBe(false);
   });
 
   it('should have replacements', () => {

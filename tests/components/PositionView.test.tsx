@@ -45,7 +45,7 @@ class MockWordGraphNode implements Partial<WordGraphNode> {
     this.lowercase = Array(word.length).fill(false);
   }
   
-  getLetters(): Letter[] {
+  get letters(): Letter[] {
     if (!this._letters) {
       this._letters = Array.from(this.word).map(
         (letter, index) => new Letter(this as unknown as WordGraphNode, letter, index)
@@ -54,7 +54,7 @@ class MockWordGraphNode implements Partial<WordGraphNode> {
     return this._letters;
   }
   
-  getPositions(): Position[] {
+  get positions(): Position[] {
     if (!this._positions) {
       this._positions = Array(this.word.length + 1)
         .fill(0)
@@ -94,6 +94,10 @@ class MockWordGraphNode implements Partial<WordGraphNode> {
   canLowercase(position: number): boolean {
     return false;
   }
+  
+  get possibleNextWords(): string[] {
+    return ['bat', 'cat', 'dat', 'fat', 'rat', 'test'];
+  }
 }
 
 describe('PositionView', () => {
@@ -120,41 +124,83 @@ describe('PositionView', () => {
   });
 
   it('renders without insert icon when insertion is not possible', () => {
-    // Set up a positionInteraction with a position that can't insert
-    const positionInteraction = currentWord.positionInteractions[0];
-    position.canInsert = false;
+    // Create a custom mock position and positionInteraction
+    const mockPosition = {
+      index: 0,
+      canInsert: false,
+      insertOptions: []
+    };
     
-    const { container } = render(<PositionView positionInteraction={positionInteraction} />);
+    const mockPositionInteraction = {
+      position: mockPosition,
+      wordInteraction: currentWord,
+      isInsertMenuOpen: false,
+      toggleInsertMenu: jest.fn()
+    };
+    
+    const { container } = render(<PositionView positionInteraction={mockPositionInteraction as any} />);
     
     const insertButton = container.querySelector('.insert-icon:not(.hidden)');
     expect(insertButton).not.toBeInTheDocument();
   });
   
   it('shows insert icon when insertion is possible', () => {
-    // Set up a positionInteraction with a position that can insert
-    const positionInteraction = currentWord.positionInteractions[0];
-    position.canInsert = true;
+    // Create a custom mock position and positionInteraction
+    const mockPosition = {
+      index: 0,
+      canInsert: true,
+      insertOptions: ['a', 'e', 'i', 'o', 'u']
+    };
     
-    const { container } = render(<PositionView positionInteraction={positionInteraction} />);
+    const mockPositionInteraction = {
+      position: mockPosition,
+      wordInteraction: currentWord,
+      isInsertMenuOpen: false,
+      toggleInsertMenu: jest.fn()
+    };
+    
+    const { container } = render(<PositionView positionInteraction={mockPositionInteraction as any} />);
     
     const insertButton = container.querySelector('.insert-icon:not(.hidden)');
     expect(insertButton).toBeInTheDocument();
   });
   
   it('shows letter choice menu when insert menu is open', () => {
-    const positionInteraction = currentWord.positionInteractions[0];
-    positionInteraction.isInsertMenuOpen = true;
+    // Create a custom mock position and positionInteraction with open menu
+    const mockPosition = {
+      index: 0,
+      canInsert: true,
+      insertOptions: ['a', 'e', 'i', 'o', 'u']
+    };
     
-    const { getByTestId } = render(<PositionView positionInteraction={positionInteraction} />);
+    const mockPositionInteraction = {
+      position: mockPosition,
+      wordInteraction: currentWord,
+      isInsertMenuOpen: true,
+      toggleInsertMenu: jest.fn()
+    };
+    
+    const { getByTestId } = render(<PositionView positionInteraction={mockPositionInteraction as any} />);
     
     expect(getByTestId('letter-choice-menu')).toBeInTheDocument();
   });
   
   it('calls openMenu when insert icon is clicked', () => {
-    const positionInteraction = currentWord.positionInteractions[0];
-    position.canInsert = true;
+    // Create a custom mock position and positionInteraction
+    const mockPosition = {
+      index: 0,
+      canInsert: true,
+      insertOptions: ['a', 'e', 'i', 'o', 'u']
+    };
     
-    const { container } = render(<PositionView positionInteraction={positionInteraction} />);
+    const mockPositionInteraction = {
+      position: mockPosition,
+      wordInteraction: currentWord,
+      isInsertMenuOpen: false,
+      toggleInsertMenu: jest.fn()
+    };
+    
+    const { container } = render(<PositionView positionInteraction={mockPositionInteraction as any} />);
     
     const insertButton = container.querySelector('.insert-icon:not(.hidden)');
     if (insertButton) fireEvent.click(insertButton);
@@ -163,10 +209,21 @@ describe('PositionView', () => {
   });
   
   it('calls insertLetter when a letter choice is selected', () => {
-    const positionInteraction = currentWord.positionInteractions[0];
-    positionInteraction.isInsertMenuOpen = true;
+    // Create a custom mock position and positionInteraction with open menu
+    const mockPosition = {
+      index: 0,
+      canInsert: true,
+      insertOptions: ['a', 'e', 'i', 'o', 'u']
+    };
     
-    const { getAllByTestId } = render(<PositionView positionInteraction={positionInteraction} />);
+    const mockPositionInteraction = {
+      position: mockPosition,
+      wordInteraction: currentWord,
+      isInsertMenuOpen: true,
+      toggleInsertMenu: jest.fn()
+    };
+    
+    const { getAllByTestId } = render(<PositionView positionInteraction={mockPositionInteraction as any} />);
     
     const letterOptions = getAllByTestId('letter-choice-option');
     fireEvent.click(letterOptions[0]);

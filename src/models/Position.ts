@@ -8,19 +8,23 @@ export class Position {
   // Position index
   index: number;
 
-  // Whether a letter can be inserted at this position
-  canInsert: boolean;
-
-  // Possible letters that can be inserted
-  insertOptions: string[];
+  // Reference to parent word
+  private word: Word;
 
   constructor(word: Word, index: number) {
     this.index = index;
-
-    // Get the position properties from the word
-    this.insertOptions = word.getPossibleInsertions(index);
-    this.canInsert = this.insertOptions.length > 0;
+    this.word = word;
 
     makeAutoObservable(this);
+  }
+
+  // Possible letters that can be inserted
+  get insertOptions(): string[] {
+    return this.word.getPossibleInsertions(this.index);
+  }
+
+  // Whether a letter can be inserted at this position
+  get canInsert(): boolean {
+    return this.insertOptions.length > 0;
   }
 }
