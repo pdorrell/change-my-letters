@@ -11,13 +11,10 @@ import { Position } from '../Position';
  */
 export class WordInteraction {
   // The word being interacted with
-  word: Word;
-
-  // Reference to the app state
-  appState: AppState;
+  public word: Word;
 
   // Whether this word has been visited before
-  previouslyVisited: boolean;
+  public previouslyVisited: boolean;
 
   // Array of letter interactions
   letterInteractions: LetterInteraction[] = [];
@@ -35,7 +32,14 @@ export class WordInteraction {
     return this.positionInteractions.map(interaction => interaction.position);
   }
 
-  constructor(wordOrString: Word | string, appState: AppState, hasBeenVisited: boolean = false) {
+  constructor(
+    wordOrString: Word | string,
+    
+    // Reference to the app state
+    public readonly appState: AppState,
+    
+    hasBeenVisited: boolean = false
+  ) {
     if (typeof wordOrString === 'string') {
       // If a string was passed, get the word from the wordGraph
       const word = appState.wordGraph.getNode(wordOrString);
@@ -48,7 +52,6 @@ export class WordInteraction {
       this.word = wordOrString;
     }
 
-    this.appState = appState;
     this.previouslyVisited = hasBeenVisited;
 
     // Initialize letter and position interactions

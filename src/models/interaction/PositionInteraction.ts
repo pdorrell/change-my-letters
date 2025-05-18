@@ -6,19 +6,16 @@ import { WordInteraction } from './WordInteraction';
  * Model representing the interaction state for a position
  */
 export class PositionInteraction {
-  // The position this interaction is for
-  position: Position;
-
-  // Reference to the parent word interaction
-  wordInteraction: WordInteraction;
-
   // Whether the insert menu is currently open
   isInsertMenuOpen: boolean = false;
 
-  constructor(position: Position, wordInteraction: WordInteraction) {
-    this.position = position;
-    this.wordInteraction = wordInteraction;
+  constructor(
+    // The position this interaction is for
+    public readonly position: Position,
 
+    // Reference to the parent word interaction
+    public readonly wordInteraction: WordInteraction
+  ) {
     makeAutoObservable(this);
   }
 

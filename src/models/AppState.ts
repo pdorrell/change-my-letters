@@ -21,17 +21,11 @@ export class AppState {
   // The word history model
   history: HistoryModel;
 
-  // The word graph model containing possible word connections
-  wordGraph: WordGraph;
-
   // Audio player for word pronunciation
   wordSayer: WordSayer;
   
   // Reset word interaction model
   resetInteraction: ResetInteraction;
-
-  // Application version
-  version: string;
 
   // Menu state management
   activeMenuType: 'none' | 'replace' | 'insert' = 'none';
@@ -40,9 +34,15 @@ export class AppState {
   // Audio settings
   sayImmediately: boolean = true;
 
-  constructor(initialWord: string, wordGraph: WordGraph, version: string) {
-    this.wordGraph = wordGraph;
-    this.version = version;
+  constructor(
+    initialWord: string, 
+    
+    // The word graph model containing possible word connections
+    public readonly wordGraph: WordGraph,
+    
+    // Application version
+    public readonly version: string
+  ) {
 
     // Initialize the word sayer
     this.wordSayer = new WordSayer();

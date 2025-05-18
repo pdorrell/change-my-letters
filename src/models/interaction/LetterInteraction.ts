@@ -6,19 +6,16 @@ import { WordInteraction } from './WordInteraction';
  * Model representing the interaction state for a letter
  */
 export class LetterInteraction {
-  // The letter this interaction is for
-  letter: Letter;
-
-  // Reference to the parent word interaction
-  wordInteraction: WordInteraction;
-
   // Whether the replacement menu is currently open
   isReplaceMenuOpen: boolean = false;
 
-  constructor(letter: Letter, wordInteraction: WordInteraction) {
-    this.letter = letter;
-    this.wordInteraction = wordInteraction;
+  constructor(
+    // The letter this interaction is for
+    public readonly letter: Letter,
 
+    // Reference to the parent word interaction
+    public readonly wordInteraction: WordInteraction
+  ) {
     makeAutoObservable(this);
   }
 

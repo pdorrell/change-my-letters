@@ -5,16 +5,13 @@ import { Word } from './Word';
  * Model representing a position where a letter can be inserted
  */
 export class Position {
-  // Position index
-  index: number;
-
-  // Reference to parent word
-  private word: Word;
-
-  constructor(word: Word, index: number) {
-    this.index = index;
-    this.word = word;
-
+  constructor(
+    // Reference to parent word
+    private word: Word,
+    
+    // Position index
+    public readonly index: number
+  ) {
     makeAutoObservable(this);
   }
 

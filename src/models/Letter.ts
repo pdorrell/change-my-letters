@@ -5,20 +5,16 @@ import { Word } from './Word';
  * Model representing a single letter in a word
  */
 export class Letter {
-  // The letter value
-  value: string;
+  constructor(
+    // Reference to parent word
+    private word: Word,
 
-  // Position in the word
-  position: number;
+    // The letter value
+    public readonly value: string,
 
-  // Reference to parent word
-  private word: Word;
-
-  constructor(word: Word, letter: string, position: number) {
-    this.value = letter;
-    this.position = position;
-    this.word = word;
-
+    // Position in the word
+    public readonly position: number
+  ) {
     makeAutoObservable(this);
   }
 
