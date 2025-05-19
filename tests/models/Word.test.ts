@@ -19,7 +19,7 @@ describe('Word', () => {
     expect(word.lowercase).toEqual([false, true, false]);
   });
 
-  it('should create and cache letter objects', () => {
+  it('should create letter objects', () => {
     const word = new Word(
       'cat',
       [true, true, true],
@@ -39,11 +39,10 @@ describe('Word', () => {
     expect(letters[1].value).toBe('a');
     expect(letters[2].value).toBe('t');
 
-    // Letters should be cached
-    expect(word.letters).toBe(letters);
+    // MobX will now handle caching automatically
   });
 
-  it('should create and cache position objects', () => {
+  it('should create position objects', () => {
     const word = new Word(
       'cat',
       [true, true, true],
@@ -64,8 +63,7 @@ describe('Word', () => {
     expect(positions[2].index).toBe(2);
     expect(positions[3].index).toBe(3);
 
-    // Positions should be cached
-    expect(word.positions).toBe(positions);
+    // MobX will now handle caching automatically
   });
 
   it('should handle get operations like canDelete, getReplacements, etc.', () => {

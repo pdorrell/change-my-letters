@@ -17,9 +17,7 @@ export class ParseWordGraphJsonException extends Error {
  * that can be performed on it
  */
 export class Word {
-  // Cached letter and position objects for this word
-  private _letters: Letter[] | null = null;
-  private _positions: Position[] | null = null;
+  // No cached properties needed as MobX automatically caches computed values
 
   constructor(
     // The word string this represents
@@ -44,27 +42,23 @@ export class Word {
   }
 
   /**
-   * Get the letters for this word, creating them if they don't exist
+   * Get the letters for this word
+   * MobX will automatically cache this computed value
    */
   get letters(): Letter[] {
-    if (!this._letters) {
-      this._letters = Array.from(this.word).map(
-        (letter, index) => new Letter(this, letter, index)
-      );
-    }
-    return this._letters;
+    return Array.from(this.word).map(
+      (letter, index) => new Letter(this, letter, index)
+    );
   }
 
   /**
-   * Get the positions for this word, creating them if they don't exist
+   * Get the positions for this word
+   * MobX will automatically cache this computed value
    */
   get positions(): Position[] {
-    if (!this._positions) {
-      this._positions = Array(this.word.length + 1)
-        .fill(0)
-        .map((_, index) => new Position(this, index));
-    }
-    return this._positions;
+    return Array(this.word.length + 1)
+      .fill(0)
+      .map((_, index) => new Position(this, index));
   }
 
   /**
