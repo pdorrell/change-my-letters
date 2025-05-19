@@ -1,10 +1,14 @@
 import { makeAutoObservable } from 'mobx';
 import { Word } from './Word';
+import { LetterChanges, DeleteChange, ReplaceChange } from './WordChange';
 
 /**
  * Model representing a single letter in a word
  */
 export class Letter {
+  // Direct object references to possible changes
+  public readonly changes: LetterChanges = new LetterChanges();
+
   constructor(
     // Reference to parent word
     private word: Word,
@@ -34,4 +38,16 @@ export class Letter {
   }
 
   // Case-related properties have been removed
+
+  /**
+   * Set the possible changes for this letter
+   * @param deleteChange The change that results from deleting this letter
+   * @param replaceChanges Array of changes that result from replacing this letter
+   */
+  setChanges(deleteChange: DeleteChange | null, replaceChanges: ReplaceChange[]): void {
+    Object.assign(this.changes, {
+      deleteChange: deleteChange,
+      replaceChanges: replaceChanges
+    });
+  }
 }

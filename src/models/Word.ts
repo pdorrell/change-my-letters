@@ -1,6 +1,8 @@
 import { makeAutoObservable } from 'mobx';
 import { Letter } from './Letter';
 import { Position } from './Position';
+import { WordChanges, DeleteChange, InsertChange, ReplaceChange } from './WordChange';
+import { WordGetter } from './WordGetter';
 
 /**
  * Exception thrown when there's an error parsing the JSON for a word graph
@@ -18,6 +20,9 @@ export class ParseWordGraphJsonException extends Error {
  */
 export class Word {
   // No cached properties needed as MobX automatically caches computed values
+
+  // Object references to possible word changes
+  public readonly changes: WordChanges = new WordChanges();
 
   constructor(
     // The word string this represents
@@ -228,5 +233,106 @@ export class Word {
     
     // Always return the result, even if empty
     return result;
+  }
+  
+  /**
+   * Populate the changes attribute with direct object references to resulting Words
+   * @param wordGetter Interface for retrieving Word objects by string
+   */
+  populateChanges(wordGetter: WordGetter): void {
+    const currentWord = this.word;
+    const deleteChanges: DeleteChange[] = [];
+    const insertChanges: InsertChange[][] = [];
+    const replaceChanges: ReplaceChange[][] = [];
+    
+    // Initialize arrays
+    for (let i = 0; i < currentWord.length; i++) {
+      replaceChanges[i] = [];
+    }
+    
+    for (let i = 0; i <= currentWord.length; i++) {
+      insertChanges[i] = [];
+    }
+    
+    // Populate deletion changes
+    for (let i = 0; i < currentWord.length; i++) {
+      if (this.canDelete(i)) {
+        const newWordStr = currentWord.substring(0, i) + currentWord.substring(i + 1);
+        const resultWord = wordGetter.getWord(newWordStr);
+        
+        if (resultWord) {
+          const change = new DeleteChange(resultWord);
+          deleteChanges[i] = change;
+        }
+      }
+    }
+    
+    // Populate replacement changes
+    for (let i = 0; i < currentWord.length; i++) {
+      const replacements = this.getPossibleReplacements(i);
+      
+      for (const letter of replacements) {
+        const newWordStr = currentWord.substring(0, i) + letter + currentWord.substring(i + 1);
+        const resultWord = wordGetter.getWord(newWordStr);
+        
+        if (resultWord) {
+          const change = new ReplaceChange(resultWord, letter);
+          replaceChanges[i].push(change);
+        }
+      }
+    }
+    
+    // Populate insertion changes
+    for (let i = 0; i <= currentWord.length; i++) {
+      const insertions = this.getPossibleInsertions(i);
+      
+      for (const letter of insertions) {
+        const newWordStr = currentWord.substring(0, i) + letter + currentWord.substring(i);
+        const resultWord = wordGetter.getWord(newWordStr);
+        
+        if (resultWord) {
+          const change = new InsertChange(resultWord, letter);
+          insertChanges[i].push(change);
+        }
+      }
+    }
+    
+    // Set the changes
+    Object.assign(this.changes, {
+      deleteChanges: deleteChanges,
+      insertChanges: insertChanges,
+      replaceChanges: replaceChanges
+    });
+    
+    // Populate letter and position changes
+    this.populateLetterChanges();
+    this.populatePositionChanges();
+  }
+  
+  /**
+   * Populate the changes for all letters in this word
+   */
+  private populateLetterChanges(): void {
+    // Iterate over letters to set their changes
+    this.letters.forEach((letter, index) => {
+      const deleteChange = this.changes.deleteChanges[index] || null;
+      const replaceChanges = this.changes.replaceChanges[index] || [];
+      
+      // Set the letter changes
+      letter.setChanges(deleteChange, replaceChanges);
+    });
+  }
+  
+  /**
+   * Populate the changes for all positions in this word
+   */
+  private populatePositionChanges(): void {
+    // Iterate over positions to set their changes
+    this.positions.forEach((position, index) => {
+      const insertChanges = this.changes.insertChanges[index] || [];
+      
+      // Set the position changes
+      position.setChanges(insertChanges);
+    });
   }
 }

@@ -1,10 +1,14 @@
 import { makeAutoObservable } from 'mobx';
 import { Word } from './Word';
+import { PositionChanges, InsertChange } from './WordChange';
 
 /**
  * Model representing a position where a letter can be inserted
  */
 export class Position {
+  // Direct object references to possible changes
+  public readonly changes: PositionChanges = new PositionChanges();
+
   constructor(
     // Reference to parent word
     private word: Word,
@@ -23,5 +27,15 @@ export class Position {
   // Whether a letter can be inserted at this position
   get canInsert(): boolean {
     return this.insertOptions.length > 0;
+  }
+  
+  /**
+   * Set the possible changes for this position
+   * @param insertChanges Array of changes that result from inserting letters at this position
+   */
+  setChanges(insertChanges: InsertChange[]): void {
+    Object.assign(this.changes, {
+      insertChanges: insertChanges
+    });
   }
 }

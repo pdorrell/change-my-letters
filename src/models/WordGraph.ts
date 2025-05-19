@@ -1,12 +1,13 @@
 import { makeAutoObservable } from 'mobx';
 import { Word } from './Word';
 import { WordGraphBuilder } from './WordGraphBuilder';
+import { WordGetter } from './WordGetter';
 
 /**
  * Represents a graph of words where each word is mapped to a Word object
- * that contains all possible operations (delete, insert, replace, case change)
+ * that contains all possible operations (delete, insert, replace)
  */
-export class WordGraph {
+export class WordGraph implements WordGetter {
   // A map from words to Word objects
   private wordMap: Map<string, Word> = new Map();
 
@@ -243,5 +244,27 @@ export class WordGraph {
    */
   getNode(word: string): Word | null {
     return this.wordMap.get(word) || null;
+  }
+  
+  /**
+   * Get a Word object by its string value (implements WordGetter interface)
+   * @param word The word string to look up
+   * @returns The Word object, or null if not found
+   */
+  getWord(word: string): Word | null {
+    return this.getNode(word);
+  }
+  
+  /**
+   * Populate the changes for all words in the graph
+   * This creates direct object references between words via the changes attributes
+   */
+  populateChanges(): void {
+    // Iterate through all words and populate their changes
+    for (const [, wordObj] of this.wordMap.entries()) {
+      wordObj.populateChanges(this);
+    }
+    
+    console.log('Populated direct object references for all word changes');
   }
 }

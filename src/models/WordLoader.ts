@@ -56,6 +56,10 @@ export class WordLoader {
     
     try {
       wordGraph.loadFromJson(jsonGraph);
+      
+      // Populate the changes with direct object references
+      wordGraph.populateChanges();
+      
       return wordGraph;
     } catch (error) {
       // Even the sample graph could theoretically have an error
@@ -111,6 +115,9 @@ export class WordLoader {
           return WordLoader.createSampleWordGraph();
         }
       }
+      
+      // Populate the changes with direct object references
+      wordGraph.populateChanges();
 
       return wordGraph;
     } catch (error) {
