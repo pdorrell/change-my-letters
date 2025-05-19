@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { LetterInteraction } from '../models/interaction/LetterInteraction';
 import { LetterChoiceMenu } from './CurrentWordView';
+import { Word } from '../models/Word';
 
 interface LetterViewProps {
   letterInteraction: LetterInteraction;
@@ -38,14 +39,15 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
   };
 
   const handleDeleteClick = () => {
-    appState.deleteLetter(letter.position);
+    if (letter.changes.deleteChange) {
+      appState.setNewWord(letter.changes.deleteChange.result);
+    }
   };
 
   // Case change handler has been removed
 
-  const handleLetterChoice = (newLetter: string) => {
-    appState.replaceLetter(letter.position, newLetter);
-    appState.closeAllMenus();
+  const handleWordChoice = (newWord: Word) => {
+    appState.setNewWord(newWord);
   };
 
   return (
@@ -79,8 +81,8 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
 
       {letterInteraction.isReplaceMenuOpen && (
         <LetterChoiceMenu
-          options={letter.replacements}
-          onSelect={handleLetterChoice}
+          options={letter.changes.replaceChanges}
+          onSelect={handleWordChoice}
           previouslyVisited={[]} // We'll add this functionality later
           wordInteraction={letterInteraction.wordInteraction}
         />

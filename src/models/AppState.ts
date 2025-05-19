@@ -1,9 +1,10 @@
 import { makeAutoObservable } from 'mobx';
-import { HistoryModel, WordChange } from './HistoryModel';
+import { HistoryModel } from './HistoryModel';
 import { WordGraph } from './WordGraph';
 import { WordInteraction } from './interaction/WordInteraction';
 import { WordSayer } from './WordSayer';
 import { ResetInteraction } from './ResetInteraction';
+import { Word } from './Word';
 
 // Type for the main application pages
 type AppPage = 'wordView' | 'historyView' | 'resetView';
@@ -69,21 +70,17 @@ export class AppState {
 
   /**
    * Set a new current word
-   * @throws Error if the word doesn't exist in the graph
+   * @param wordObj The Word object to set as the current word
    */
-  setNewWord(word: string): void {
-    // Get the node for this word
-    const node = this.wordGraph.getNode(word);
-
-    if (!node) {
-      throw new Error(`Word "${word}" doesn't exist in the word graph`);
-    }
+  setNewWord(wordObj: Word): void {
+    // Get the word string value
+    const word = wordObj.word;
 
     // Check if the word has been visited before
     const hasBeenVisited = this.history.hasVisited(word);
 
     // Update the current word
-    this.currentWord.updateWord(node, hasBeenVisited);
+    this.currentWord.updateWord(wordObj, hasBeenVisited);
 
     // Close any open menus when the word changes
     this.closeAllMenus();
@@ -92,7 +89,7 @@ export class AppState {
     this.wordSayer.preload(word);
 
     // Preload all possible next words
-    const possibleNextWords = node.possibleNextWords;
+    const possibleNextWords = wordObj.possibleNextWords;
     for (const nextWord of possibleNextWords) {
       this.wordSayer.preload(nextWord);
     }
@@ -103,82 +100,8 @@ export class AppState {
     }
   }
 
-  /**
-   * Delete a letter from the current word
-   */
-  deleteLetter(position: number): void {
-    if (!this.currentWord) return;
-
-    const currentWord = this.currentWord.value;
-
-    if (position >= 0 && position < currentWord.length) {
-      const newWord = currentWord.substring(0, position) + currentWord.substring(position + 1);
-
-      // Check if the new word exists in our graph
-      if (this.wordGraph.words.has(newWord)) {
-        // Add to history
-        const change: WordChange = {
-          type: 'delete_letter',
-          position
-        };
-
-        this.history.addWord(newWord, change);
-        this.setNewWord(newWord);
-      }
-    }
-  }
-
-  /**
-   * Insert a letter into the current word
-   */
-  insertLetter(position: number, letter: string): void {
-    if (!this.currentWord) return;
-
-    const currentWord = this.currentWord.value;
-
-    if (position >= 0 && position <= currentWord.length) {
-      const newWord = currentWord.substring(0, position) + letter + currentWord.substring(position);
-
-      // Check if the new word exists in our graph
-      if (this.wordGraph.words.has(newWord)) {
-        // Add to history
-        const change: WordChange = {
-          type: 'insert_letter',
-          position,
-          letter
-        };
-
-        this.history.addWord(newWord, change);
-        this.setNewWord(newWord);
-      }
-    }
-  }
-
-  /**
-   * Replace a letter in the current word
-   */
-  replaceLetter(position: number, newLetter: string): void {
-    if (!this.currentWord) return;
-
-    const currentWord = this.currentWord.value;
-
-    if (position >= 0 && position < currentWord.length) {
-      const newWord = currentWord.substring(0, position) + newLetter + currentWord.substring(position + 1);
-
-      // Check if the new word exists in our graph
-      if (this.wordGraph.words.has(newWord)) {
-        // Add to history
-        const change: WordChange = {
-          type: 'replace_letter',
-          position,
-          letter: newLetter
-        };
-
-        this.history.addWord(newWord, change);
-        this.setNewWord(newWord);
-      }
-    }
-  }
+  // Note: The deleteLetter, insertLetter, and replaceLetter methods have been removed
+  // Changes are now handled directly through LetterChange objects with direct references to resulting Word objects
 
   // Case-change method has been removed
 
@@ -186,9 +109,12 @@ export class AppState {
    * Undo the last word change
    */
   undo(): void {
-    const prevWord = this.history.undo();
-    if (prevWord) {
-      this.setNewWord(prevWord);
+    const prevWordStr = this.history.undo();
+    if (prevWordStr) {
+      const wordObj = this.wordGraph.getNode(prevWordStr);
+      if (wordObj) {
+        this.setNewWord(wordObj);
+      }
     }
   }
 
@@ -196,9 +122,12 @@ export class AppState {
    * Redo a previously undone word change
    */
   redo(): void {
-    const nextWord = this.history.redo();
-    if (nextWord) {
-      this.setNewWord(nextWord);
+    const nextWordStr = this.history.redo();
+    if (nextWordStr) {
+      const wordObj = this.wordGraph.getNode(nextWordStr);
+      if (wordObj) {
+        this.setNewWord(wordObj);
+      }
     }
   }
 

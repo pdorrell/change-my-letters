@@ -3,6 +3,8 @@ import { observer } from 'mobx-react-lite';
 import { WordInteraction } from '../models/interaction/WordInteraction';
 import { LetterView, LetterPlaceholder } from './LetterView';
 import { PositionView, PositionPlaceholder } from './PositionView';
+import { LetterChange } from '../models/WordChange';
+import { Word } from '../models/Word';
 import {
   useFloating,
   autoUpdate,
@@ -120,8 +122,8 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
  * View component for the letter choice menu
  */
 export const LetterChoiceMenu: React.FC<{
-  options: string[],
-  onSelect: (letter: string) => void,
+  options: LetterChange[],
+  onSelect: (wordObj: Word) => void,
   previouslyVisited: string[],
   wordInteraction: WordInteraction
 }> = ({ options, onSelect, previouslyVisited, wordInteraction }) => {
@@ -185,9 +187,12 @@ export const LetterChoiceMenu: React.FC<{
         }}
         {...getFloatingProps()}
       >
-        {options.map((letter, index) => {
+        {options.map((change, index) => {
+          const letter = change.letter;
+          const resultWord = change.result;
+          
           // Check if this letter would lead to a previously visited word
-          const isPreviouslyVisited = previouslyVisited.includes(letter);
+          const isPreviouslyVisited = previouslyVisited.includes(resultWord.word);
 
           return (
             <div
@@ -195,7 +200,7 @@ export const LetterChoiceMenu: React.FC<{
               className={`letter-choice-option ${isPreviouslyVisited ? 'previously-visited' : ''}`}
               onClick={(e) => {
                 e.stopPropagation();
-                onSelect(letter);
+                onSelect(resultWord);
               }}
             >
               {letter}

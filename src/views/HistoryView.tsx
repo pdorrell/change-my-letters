@@ -21,10 +21,13 @@ export const HistoryView: React.FC<HistoryViewProps> = observer(({ history }) =>
             key={`history-${index}`}
             className={`history-item ${index === history.currentIndex ? 'current' : ''}`}
             onClick={() => {
-              const word = history.jumpToIndex(index);
-              if (word) {
-                appState.setNewWord(word);
-                appState.navigateTo('wordView');
+              const wordStr = history.jumpToIndex(index);
+              if (wordStr) {
+                const wordObj = appState.wordGraph.getNode(wordStr);
+                if (wordObj) {
+                  appState.setNewWord(wordObj);
+                  appState.navigateTo('wordView');
+                }
               }
             }}
           >

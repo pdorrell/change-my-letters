@@ -14,11 +14,11 @@ jest.mock('mobx-react-lite', () => ({
 
 // Mock the LetterChoiceMenu component only (not the model classes)
 jest.mock('../../src/views/CurrentWordView', () => ({
-  LetterChoiceMenu: ({ options, onSelect }: { options: string[], onSelect: (letter: string) => void }) => (
+  LetterChoiceMenu: ({ options, onSelect }: { options: any[], onSelect: (word: any) => void }) => (
     <div data-testid="letter-choice-menu">
-      {options.map((letter, index) => (
-        <div key={index} data-testid="letter-choice-option" onClick={() => onSelect(letter)}>
-          {letter}
+      {options.map((option, index) => (
+        <div key={index} data-testid="letter-choice-option" onClick={() => onSelect(option.result)}>
+          {option.letter}
         </div>
       ))}
     </div>
@@ -110,7 +110,7 @@ describe('PositionView', () => {
     appState = {
       openMenu: jest.fn(),
       closeAllMenus: jest.fn(),
-      insertLetter: jest.fn(),
+      setNewWord: jest.fn(),
     } as unknown as AppState;
     
     // Create a mock WordGraphNode for our tests
@@ -170,7 +170,16 @@ describe('PositionView', () => {
     const mockPosition = {
       index: 0,
       canInsert: true,
-      insertOptions: ['a', 'e', 'i', 'o', 'u']
+      insertOptions: ['a', 'e', 'i', 'o', 'u'],
+      changes: {
+        insertChanges: [
+          { letter: 'a', result: { word: 'atest' } },
+          { letter: 'e', result: { word: 'etest' } },
+          { letter: 'i', result: { word: 'itest' } },
+          { letter: 'o', result: { word: 'otest' } },
+          { letter: 'u', result: { word: 'utest' } }
+        ]
+      }
     };
     
     const mockPositionInteraction = {
@@ -208,12 +217,21 @@ describe('PositionView', () => {
     expect(appState.openMenu).toHaveBeenCalledWith('insert', 0, expect.anything());
   });
   
-  it('calls insertLetter when a letter choice is selected', () => {
+  it('calls setNewWord when a letter choice is selected', () => {
     // Create a custom mock position and positionInteraction with open menu
     const mockPosition = {
       index: 0,
       canInsert: true,
-      insertOptions: ['a', 'e', 'i', 'o', 'u']
+      insertOptions: ['a', 'e', 'i', 'o', 'u'],
+      changes: {
+        insertChanges: [
+          { letter: 'a', result: { word: 'atest' } },
+          { letter: 'e', result: { word: 'etest' } },
+          { letter: 'i', result: { word: 'itest' } },
+          { letter: 'o', result: { word: 'otest' } },
+          { letter: 'u', result: { word: 'utest' } }
+        ]
+      }
     };
     
     const mockPositionInteraction = {
@@ -228,7 +246,7 @@ describe('PositionView', () => {
     const letterOptions = getAllByTestId('letter-choice-option');
     fireEvent.click(letterOptions[0]);
     
-    expect(appState.insertLetter).toHaveBeenCalledWith(0, 'a');
-    expect(appState.closeAllMenus).toHaveBeenCalled();
+    expect(appState.setNewWord).toHaveBeenCalledWith({ word: 'atest' });
+    // closeAllMenus is now called within setNewWord
   });
 });

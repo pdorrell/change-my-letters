@@ -14,11 +14,11 @@ jest.mock('mobx-react-lite', () => ({
 
 // Mock the LetterChoiceMenu component only (not the model classes)
 jest.mock('../../src/views/CurrentWordView', () => ({
-  LetterChoiceMenu: ({ options, onSelect }: { options: string[], onSelect: (letter: string) => void }) => (
+  LetterChoiceMenu: ({ options, onSelect }: { options: any[], onSelect: (word: any) => void }) => (
     <div data-testid="letter-choice-menu">
-      {options.map((letter, index) => (
-        <div key={index} data-testid="letter-choice-option" onClick={() => onSelect(letter)}>
-          {letter}
+      {options.map((option, index) => (
+        <div key={index} data-testid="letter-choice-option" onClick={() => onSelect(option.result)}>
+          {option.letter}
         </div>
       ))}
     </div>
@@ -96,8 +96,7 @@ describe('LetterView', () => {
     appState = {
       openMenu: jest.fn(),
       closeAllMenus: jest.fn(),
-      deleteLetter: jest.fn(),
-      replaceLetter: jest.fn(),
+      setNewWord: jest.fn(),
       navigateTo: jest.fn(),
       history: { hasVisited: () => false },
     } as unknown as AppState;
@@ -123,7 +122,15 @@ describe('LetterView', () => {
       position: 0,
       canDelete: true,
       canReplace: true,
-      replacements: ['a', 'b', 'c']
+      replacements: ['a', 'b', 'c'],
+      changes: {
+        deleteChange: { result: { word: 'est' } },
+        replaceChanges: [
+          { letter: 'a', result: { word: 'aest' } },
+          { letter: 'b', result: { word: 'best' } },
+          { letter: 'c', result: { word: 'cest' } }
+        ]
+      }
     };
     
     // Create a mock letter interaction
@@ -147,7 +154,15 @@ describe('LetterView', () => {
       position: 0,
       canDelete: false,
       canReplace: true,
-      replacements: ['a', 'b', 'c']
+      replacements: ['a', 'b', 'c'],
+      changes: {
+        deleteChange: null,
+        replaceChanges: [
+          { letter: 'a', result: { word: 'aest' } },
+          { letter: 'b', result: { word: 'best' } },
+          { letter: 'c', result: { word: 'cest' } }
+        ]
+      }
     };
     
     // Create a mock letter interaction
@@ -171,7 +186,15 @@ describe('LetterView', () => {
       position: 0,
       canDelete: true,
       canReplace: true,
-      replacements: ['a', 'b', 'c']
+      replacements: ['a', 'b', 'c'],
+      changes: {
+        deleteChange: { result: { word: 'est' } },
+        replaceChanges: [
+          { letter: 'a', result: { word: 'aest' } },
+          { letter: 'b', result: { word: 'best' } },
+          { letter: 'c', result: { word: 'cest' } }
+        ]
+      }
     };
     
     // Create a mock letter interaction
@@ -195,7 +218,15 @@ describe('LetterView', () => {
       position: 0,
       canDelete: true,
       canReplace: true,
-      replacements: ['a', 'b', 'c']
+      replacements: ['a', 'b', 'c'],
+      changes: {
+        deleteChange: { result: { word: 'est' } },
+        replaceChanges: [
+          { letter: 'a', result: { word: 'aest' } },
+          { letter: 'b', result: { word: 'best' } },
+          { letter: 'c', result: { word: 'cest' } }
+        ]
+      }
     };
     
     // Create a mock letter interaction with open menu
@@ -211,14 +242,22 @@ describe('LetterView', () => {
     expect(getByTestId('letter-choice-menu')).toBeInTheDocument();
   });
   
-  it('calls deleteLetter when delete icon is clicked', () => {
+  it('calls setNewWord when delete icon is clicked', () => {
     // Mock a letter with canDelete = true
     const mockLetter = {
       value: 't',
       position: 0,
       canDelete: true,
       canReplace: true,
-      replacements: ['a', 'b', 'c']
+      replacements: ['a', 'b', 'c'],
+      changes: {
+        deleteChange: { result: { word: 'est' } },
+        replaceChanges: [
+          { letter: 'a', result: { word: 'aest' } },
+          { letter: 'b', result: { word: 'best' } },
+          { letter: 'c', result: { word: 'cest' } }
+        ]
+      }
     };
     
     // Create a mock letter interaction
@@ -234,7 +273,7 @@ describe('LetterView', () => {
     const deleteButton = container.querySelector('.delete-icon:not(.hidden)');
     if (deleteButton) fireEvent.click(deleteButton);
     
-    expect(appState.deleteLetter).toHaveBeenCalledWith(0);
+    expect(appState.setNewWord).toHaveBeenCalledWith({ word: 'est' });
   });
   
   it('calls openMenu when replace icon is clicked', () => {
@@ -265,14 +304,22 @@ describe('LetterView', () => {
   
   // Case-related tests have been removed
   
-  it('calls replaceLetter when a letter choice is selected', () => {
+  it('calls setNewWord when a letter choice is selected', () => {
     // Mock a letter with replacements
     const mockLetter = {
       value: 't',
       position: 0,
       canDelete: true,
       canReplace: true,
-      replacements: ['b', 'c', 'd']
+      replacements: ['b', 'c', 'd'],
+      changes: {
+        deleteChange: { result: { word: 'est' } },
+        replaceChanges: [
+          { letter: 'b', result: { word: 'best' } },
+          { letter: 'c', result: { word: 'cest' } },
+          { letter: 'd', result: { word: 'dest' } }
+        ]
+      }
     };
     
     // Create a mock letter interaction with open menu
@@ -288,7 +335,7 @@ describe('LetterView', () => {
     const letterOptions = getAllByTestId('letter-choice-option');
     fireEvent.click(letterOptions[0]);
     
-    expect(appState.replaceLetter).toHaveBeenCalledWith(0, 'b');
-    expect(appState.closeAllMenus).toHaveBeenCalled();
+    expect(appState.setNewWord).toHaveBeenCalledWith({ word: 'best' });
+    // closeAllMenus is now called within setNewWord
   });
 });

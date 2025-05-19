@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { PositionInteraction } from '../models/interaction/PositionInteraction';
 import { LetterChoiceMenu } from './CurrentWordView';
+import { Word } from '../models/Word';
 
 interface PositionViewProps {
   positionInteraction: PositionInteraction;
@@ -31,9 +32,8 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ positionInt
     appState.openMenu('insert', position.index, event.currentTarget);
   };
 
-  const handleLetterChoice = (letter: string) => {
-    appState.insertLetter(position.index, letter);
-    appState.closeAllMenus();
+  const handleWordChoice = (newWord: Word) => {
+    appState.setNewWord(newWord);
   };
 
   return (
@@ -51,8 +51,8 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ positionInt
 
       {positionInteraction.isInsertMenuOpen && (
         <LetterChoiceMenu
-          options={position.insertOptions}
-          onSelect={handleLetterChoice}
+          options={position.changes.insertChanges}
+          onSelect={handleWordChoice}
           previouslyVisited={[]} // We'll add this functionality later
           wordInteraction={positionInteraction.wordInteraction}
         />
