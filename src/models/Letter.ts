@@ -33,17 +33,5 @@ export class Letter {
     return this.replacements.length > 0;
   }
 
-  // Whether this letter can be upper cased
-  get canUpperCase(): boolean {
-    return this.value === this.value.toLowerCase() && 
-           this.value !== '' && 
-           this.word.canUppercase(this.position);
-  }
-
-  // Whether this letter can be lower cased
-  get canLowerCase(): boolean {
-    return this.value === this.value.toUpperCase() && 
-           this.value !== '' && 
-           this.word.canLowercase(this.position);
-  }
+  // Case-related properties have been removed
 }

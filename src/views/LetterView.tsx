@@ -41,13 +41,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
     appState.deleteLetter(letter.position);
   };
 
-  const handleCaseChange = () => {
-    if (letter.canUpperCase) {
-      appState.changeLetterCase(letter.position, true);
-    } else if (letter.canLowerCase) {
-      appState.changeLetterCase(letter.position, false);
-    }
-  };
+  // Case change handler has been removed
 
   const handleLetterChoice = (newLetter: string) => {
     appState.replaceLetter(letter.position, newLetter);
@@ -80,23 +74,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
           🔄
         </button>
 
-        <button
-          onClick={handleCaseChange}
-          disabled={!letter.canUpperCase}
-          className={`case-icon ${!letter.canUpperCase ? 'hidden' : ''}`}
-          title="Make uppercase"
-        >
-          ⬆️
-        </button>
-
-        <button
-          onClick={handleCaseChange}
-          disabled={!letter.canLowerCase}
-          className={`case-icon ${!letter.canLowerCase ? 'hidden' : ''}`}
-          title="Make lowercase"
-        >
-          ⬇️
-        </button>
+        {/* Case change buttons have been removed */}
       </div>
 
       {letterInteraction.isReplaceMenuOpen && (

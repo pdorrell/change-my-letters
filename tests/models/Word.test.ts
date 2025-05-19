@@ -6,17 +6,13 @@ describe('Word', () => {
       'cat',
       [true, true, true],
       ['aeiou', 'aeiou', 'aeiou', 'aeiou'],
-      ['bcdf', 'bcdf', 'bcdf'],
-      [true, false, true],
-      [false, true, false]
+      ['bcdf', 'bcdf', 'bcdf']
     );
 
     expect(word.word).toBe('cat');
     expect(word.deletes).toEqual([true, true, true]);
     expect(word.inserts).toEqual(['aeiou', 'aeiou', 'aeiou', 'aeiou']);
     expect(word.replaces).toEqual(['bcdf', 'bcdf', 'bcdf']);
-    expect(word.uppercase).toEqual([true, false, true]);
-    expect(word.lowercase).toEqual([false, true, false]);
   });
 
   it('should create letter objects', () => {
@@ -24,9 +20,7 @@ describe('Word', () => {
       'cat',
       [true, true, true],
       ['aeiou', 'aeiou', 'aeiou', 'aeiou'],
-      ['bcdf', 'bcdf', 'bcdf'],
-      [true, false, true],
-      [false, true, false]
+      ['bcdf', 'bcdf', 'bcdf']
     );
 
     const letters = word.letters;
@@ -47,9 +41,7 @@ describe('Word', () => {
       'cat',
       [true, true, true],
       ['aeiou', 'aeiou', 'aeiou', 'aeiou'],
-      ['bcdf', 'bcdf', 'bcdf'],
-      [true, false, true],
-      [false, true, false]
+      ['bcdf', 'bcdf', 'bcdf']
     );
 
     const positions = word.positions;
@@ -71,9 +63,7 @@ describe('Word', () => {
       'cat',
       [true, false, true],
       ['aeiou', 'aeiou', 'aeiou', 'aeiou'],
-      ['bcdf', 'bcdf', 'bcdf'],
-      [true, false, true],
-      [false, true, false]
+      ['bcdf', 'bcdf', 'bcdf']
     );
 
     // Test canDelete
@@ -93,27 +83,14 @@ describe('Word', () => {
     // Test getPossibleInsertions
     expect(word.getPossibleInsertions(0)).toEqual(['a', 'e', 'i', 'o', 'u']);
 
-    // Test canUppercase
-    expect(word.canUppercase(0)).toBe(true);
-    expect(word.canUppercase(1)).toBe(false);
-
-    // Test canLowercase
-    expect(word.canLowercase(0)).toBe(false);
-    expect(word.canLowercase(1)).toBe(true);
-
-    // Test canChangeCaseAt - this depends on letter case and possible changes
-    expect(word.canChangeCaseAt(0)).toBe(true);  // Can uppercase
-    expect(word.canChangeCaseAt(1)).toBe(true);  // Can lowercase
-    expect(word.canChangeCaseAt(2)).toBe(true);  // Can uppercase
+    // Case-related tests have been removed
   });
 
   it('should be created from JSON', () => {
     const json = {
       delete: 'c.t',
       insert: 'aeiou/aeiou/aeiou/aeiou',
-      replace: 'bcdf/bcdf/bcdf',
-      uppercase: 'c.t',
-      lowercase: '.a.'
+      replace: 'bcdf/bcdf/bcdf'
     };
 
     const word = Word.fromJson('cat', json);
@@ -121,10 +98,8 @@ describe('Word', () => {
     expect(word.word).toBe('cat');
     expect(word.deletes).toEqual([true, false, true]);
     expect(word.replaces).toEqual(['bcdf', 'bcdf', 'bcdf']);
-
-    // Test that uppercase and lowercase are parsed correctly
-    expect(word.uppercase).toEqual([true, false, true]);
-    expect(word.lowercase).toEqual([false, true, false]);
+    
+    // Case-related tests have been removed
   });
 
   it('should convert to JSON', () => {
@@ -132,9 +107,7 @@ describe('Word', () => {
       'cat',
       [true, false, true],
       ['aeiou', 'aeiou', 'aeiou', 'aeiou'],
-      ['bcdf', 'bcdf', 'bcdf'],
-      [true, false, true],
-      [false, true, false]
+      ['bcdf', 'bcdf', 'bcdf']
     );
 
     const json = word.toJson();
@@ -142,7 +115,6 @@ describe('Word', () => {
     expect(json.delete).toBe('c.t');
     expect(json.insert).toBe('aeiou/aeiou/aeiou/aeiou');
     expect(json.replace).toBe('bcdf/bcdf/bcdf');
-    expect(json.uppercase).toBe('c.t');
-    expect(json.lowercase).toBe('.a.');
+    // Case-related tests have been removed
   });
 });

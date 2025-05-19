@@ -180,32 +180,7 @@ export class AppState {
     }
   }
 
-  /**
-   * Change the case of a letter
-   */
-  changeLetterCase(position: number, toUpperCase: boolean): void {
-    if (!this.currentWord) return;
-
-    const currentWord = this.currentWord.value;
-
-    if (position >= 0 && position < currentWord.length) {
-      const letter = currentWord[position];
-      const newLetter = toUpperCase ? letter.toUpperCase() : letter.toLowerCase();
-      const newWord = currentWord.substring(0, position) + newLetter + currentWord.substring(position + 1);
-
-      // Check if the new word exists in our graph
-      if (this.wordGraph.words.has(newWord)) {
-        // Add to history
-        const change: WordChange = {
-          type: toUpperCase ? 'upper_case_letter' : 'lower_case_letter',
-          position
-        };
-
-        this.history.addWord(newWord, change);
-        this.setNewWord(newWord);
-      }
-    }
-  }
+  // Case-change method has been removed
 
   /**
    * Undo the last word change

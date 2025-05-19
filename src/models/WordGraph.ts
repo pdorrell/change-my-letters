@@ -154,26 +154,7 @@ export class WordGraph {
       }
     }
     
-    // Check for case changes
-    for (let i = 0; i < word.length; i++) {
-      const letter = word[i];
-      
-      // Check uppercase
-      if (wordObj.canUppercase(i) && letter === letter.toLowerCase()) {
-        const newWord = word.substring(0, i) + letter.toUpperCase() + word.substring(i + 1);
-        if (this.hasWord(newWord)) {
-          connected.add(newWord);
-        }
-      }
-      
-      // Check lowercase
-      if (wordObj.canLowercase(i) && letter === letter.toUpperCase()) {
-        const newWord = word.substring(0, i) + letter.toLowerCase() + word.substring(i + 1);
-        if (this.hasWord(newWord)) {
-          connected.add(newWord);
-        }
-      }
-    }
+    // Case-change logic has been removed
     
     return Array.from(connected);
   }

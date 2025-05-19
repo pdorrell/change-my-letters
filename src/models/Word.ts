@@ -30,13 +30,7 @@ export class Word {
     public readonly inserts: string[],
     
     // Arrays of possible letters that can replace each current letter
-    public readonly replaces: string[],
-    
-    // Boolean arrays indicating whether each letter can be uppercased
-    public readonly uppercase: boolean[],
-    
-    // Boolean arrays indicating whether each letter can be lowercased
-    public readonly lowercase: boolean[]
+    public readonly replaces: string[]
   ) {
     makeAutoObservable(this);
   }
@@ -103,30 +97,7 @@ export class Word {
     return this.deletes[position];
   }
 
-  /**
-   * Check if a letter at the given position can be uppercased
-   * @returns True if the letter can be uppercased
-   */
-  canUppercase(position: number): boolean {
-    return this.uppercase[position];
-  }
-
-  /**
-   * Check if a letter at the given position can be lowercased
-   * @returns True if the letter can be lowercased
-   */
-  canLowercase(position: number): boolean {
-    return this.lowercase[position];
-  }
-  
-  /**
-   * Check if changing the case of a letter at the given position results in a valid word
-   * @param position The position of the letter to check
-   * @returns True if case change is possible at this position
-   */
-  canChangeCaseAt(position: number): boolean {
-    return this.canUppercase(position) || this.canLowercase(position);
-  }
+  // Case-related methods have been removed
 
   /**
    * Get all possible words that can be reached from this word through a single change
@@ -158,23 +129,6 @@ export class Word {
       const insertions = this.getPossibleInsertions(i);
       for (const letter of insertions) {
         const newWord = currentWord.substring(0, i) + letter + currentWord.substring(i);
-        possibleWords.add(newWord);
-      }
-    }
-    
-    // Words from case changes
-    for (let i = 0; i < currentWord.length; i++) {
-      if (this.canUppercase(i)) {
-        const newWord = currentWord.substring(0, i) + 
-                        currentWord[i].toUpperCase() + 
-                        currentWord.substring(i + 1);
-        possibleWords.add(newWord);
-      }
-      
-      if (this.canLowercase(i)) {
-        const newWord = currentWord.substring(0, i) + 
-                        currentWord[i].toLowerCase() + 
-                        currentWord.substring(i + 1);
         possibleWords.add(newWord);
       }
     }
@@ -236,18 +190,14 @@ export class Word {
     const inserts = parseSlashSeparatedString(data.insert as string | undefined, wordLength + 1);
     const replaces = parseSlashSeparatedString(data.replace as string | undefined, wordLength);
 
-    // Process boolean arrays (deletes, uppercase, lowercase)
+    // Process boolean arrays (deletes)
     const deletes = parseBooleanString(data.delete as string | undefined, wordLength);
-    const uppercase = parseBooleanString(data.uppercase as string | undefined, wordLength);
-    const lowercase = parseBooleanString(data.lowercase as string | undefined, wordLength);
 
     return new Word(
       word,
       deletes,
       inserts,
-      replaces,
-      uppercase,
-      lowercase
+      replaces
     );
   }
   
@@ -265,24 +215,6 @@ export class Word {
         deleteString += this.deletes[i] ? this.word[i] : '.';
       }
       result.delete = deleteString;
-    }
-    
-    if (this.uppercase.some(val => val)) {
-      let uppercaseString = '';
-      for (let i = 0; i < this.uppercase.length; i++) {
-        // Use the actual letter from the word when the boolean is true
-        uppercaseString += this.uppercase[i] ? this.word[i] : '.';
-      }
-      result.uppercase = uppercaseString;
-    }
-    
-    if (this.lowercase.some(val => val)) {
-      let lowercaseString = '';
-      for (let i = 0; i < this.lowercase.length; i++) {
-        // Use the actual letter from the word when the boolean is true
-        lowercaseString += this.lowercase[i] ? this.word[i] : '.';
-      }
-      result.lowercase = lowercaseString;
     }
     
     // Convert string arrays to slash-separated strings
