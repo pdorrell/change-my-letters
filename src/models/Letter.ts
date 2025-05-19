@@ -7,7 +7,7 @@ import { LetterChanges, DeleteChange, ReplaceChange } from './WordChange';
  */
 export class Letter {
   // Direct object references to possible changes
-  public readonly changes: LetterChanges = new LetterChanges();
+  public changes: LetterChanges = new LetterChanges();
 
   constructor(
     // Reference to parent word
@@ -45,6 +45,9 @@ export class Letter {
    * @param replaceChanges Array of changes that result from replacing this letter
    */
   setChanges(deleteChange: DeleteChange | null, replaceChanges: ReplaceChange[]): void {
+    // Set changes for letter
+    
+    // Update the existing changes object instead of replacing it
     Object.assign(this.changes, {
       deleteChange: deleteChange,
       replaceChanges: replaceChanges

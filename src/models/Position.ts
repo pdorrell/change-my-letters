@@ -7,12 +7,12 @@ import { PositionChanges, InsertChange } from './WordChange';
  */
 export class Position {
   // Direct object references to possible changes
-  public readonly changes: PositionChanges = new PositionChanges();
+  public changes: PositionChanges = new PositionChanges();
 
   constructor(
     // Reference to parent word
     private word: Word,
-    
+
     // Position index
     public readonly index: number
   ) {
@@ -28,12 +28,15 @@ export class Position {
   get canInsert(): boolean {
     return this.insertOptions.length > 0;
   }
-  
+
   /**
    * Set the possible changes for this position
    * @param insertChanges Array of changes that result from inserting letters at this position
    */
   setChanges(insertChanges: InsertChange[]): void {
+    // Set changes for position
+    
+    // Update the existing changes object instead of replacing it
     Object.assign(this.changes, {
       insertChanges: insertChanges
     });

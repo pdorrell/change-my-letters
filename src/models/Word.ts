@@ -27,13 +27,13 @@ export class Word {
   constructor(
     // The word string this represents
     public readonly word: string,
-    
+
     // Boolean arrays indicating whether each letter can be deleted
     public readonly deletes: boolean[],
-    
+
     // Arrays of possible letters that can be inserted at each position
     public readonly inserts: string[],
-    
+
     // Arrays of possible letters that can replace each current letter
     public readonly replaces: string[]
   ) {
@@ -111,7 +111,7 @@ export class Word {
   get possibleNextWords(): string[] {
     const possibleWords: Set<string> = new Set();
     const currentWord = this.word;
-    
+
     // Words from letter deletions
     for (let i = 0; i < currentWord.length; i++) {
       if (this.canDelete(i)) {
@@ -119,7 +119,7 @@ export class Word {
         possibleWords.add(newWord);
       }
     }
-    
+
     // Words from letter replacements
     for (let i = 0; i < currentWord.length; i++) {
       const replacements = this.getPossibleReplacements(i);
@@ -128,7 +128,7 @@ export class Word {
         possibleWords.add(newWord);
       }
     }
-    
+
     // Words from letter insertions
     for (let i = 0; i <= currentWord.length; i++) {
       const insertions = this.getPossibleInsertions(i);
@@ -137,7 +137,7 @@ export class Word {
         possibleWords.add(newWord);
       }
     }
-    
+
     return Array.from(possibleWords);
   }
 
@@ -158,7 +158,7 @@ export class Word {
         // Return array of empty strings with the correct length
         return Array(expectedLength).fill('');
       }
-      
+
       // Handle slash-separated string format
       const parts = str.split('/');
       if (parts.length !== expectedLength) {
@@ -205,13 +205,13 @@ export class Word {
       replaces
     );
   }
-  
+
   /**
    * Convert this word to its JSON representation
    */
   toJson(): Record<string, unknown> {
     const result: Record<string, unknown> = {};
-    
+
     // Convert boolean arrays to strings, using the actual letters from the word
     if (this.deletes.some(val => val)) {
       let deleteString = '';
@@ -221,20 +221,20 @@ export class Word {
       }
       result.delete = deleteString;
     }
-    
+
     // Convert string arrays to slash-separated strings
     if (this.inserts.some(str => str.length > 0)) {
       result.insert = this.inserts.join('/');
     }
-    
+
     if (this.replaces.some(str => str.length > 0)) {
       result.replace = this.replaces.join('/');
     }
-    
+
     // Always return the result, even if empty
     return result;
   }
-  
+
   /**
    * Populate the changes attribute with direct object references to resulting Words
    * @param wordGetter Interface for retrieving Word objects by string
@@ -244,93 +244,111 @@ export class Word {
     const deleteChanges: DeleteChange[] = [];
     const insertChanges: InsertChange[][] = [];
     const replaceChanges: ReplaceChange[][] = [];
-    
-    // Initialize arrays
+
+    const getExpectedWord = (word: string): Word => {
+      const foundWord = wordGetter.getWord(word);
+      if (foundWord === null) {
+        throw new Error(`Word ${word} not found`);
+      }
+      return foundWord;
+    }
+
+    // Initialize arrays - create a proper initialization for all arrays
     for (let i = 0; i < currentWord.length; i++) {
+      deleteChanges[i] = null;
       replaceChanges[i] = [];
     }
-    
+
     for (let i = 0; i <= currentWord.length; i++) {
       insertChanges[i] = [];
     }
-    
+
     // Populate deletion changes
     for (let i = 0; i < currentWord.length; i++) {
+      
       if (this.canDelete(i)) {
         const newWordStr = currentWord.substring(0, i) + currentWord.substring(i + 1);
-        const resultWord = wordGetter.getWord(newWordStr);
-        
+        const resultWord = getExpectedWord(newWordStr);
+
         if (resultWord) {
           const change = new DeleteChange(resultWord);
           deleteChanges[i] = change;
         }
       }
     }
-    
+
     // Populate replacement changes
     for (let i = 0; i < currentWord.length; i++) {
       const replacements = this.getPossibleReplacements(i);
-      
+
       for (const letter of replacements) {
         const newWordStr = currentWord.substring(0, i) + letter + currentWord.substring(i + 1);
-        const resultWord = wordGetter.getWord(newWordStr);
-        
+        const resultWord = getExpectedWord(newWordStr);
+
         if (resultWord) {
           const change = new ReplaceChange(resultWord, letter);
           replaceChanges[i].push(change);
         }
       }
     }
-    
+
     // Populate insertion changes
     for (let i = 0; i <= currentWord.length; i++) {
       const insertions = this.getPossibleInsertions(i);
-      
+
       for (const letter of insertions) {
         const newWordStr = currentWord.substring(0, i) + letter + currentWord.substring(i);
-        const resultWord = wordGetter.getWord(newWordStr);
-        
+        const resultWord = getExpectedWord(newWordStr);
+
         if (resultWord) {
           const change = new InsertChange(resultWord, letter);
           insertChanges[i].push(change);
         }
       }
     }
-    
+
     // Set the changes
     Object.assign(this.changes, {
       deleteChanges: deleteChanges,
       insertChanges: insertChanges,
       replaceChanges: replaceChanges
     });
-    
+
+    // Changes have been populated
+
     // Populate letter and position changes
     this.populateLetterChanges();
     this.populatePositionChanges();
   }
-  
+
   /**
    * Populate the changes for all letters in this word
    */
   private populateLetterChanges(): void {
     // Iterate over letters to set their changes
     this.letters.forEach((letter, index) => {
-      const deleteChange = this.changes.deleteChanges[index] || null;
-      const replaceChanges = this.changes.replaceChanges[index] || [];
       
+      const deleteChange = this.changes.deleteChanges && index < this.changes.deleteChanges.length ? 
+                           this.changes.deleteChanges[index] : null;
+                           
+      const replaceChanges = this.changes.replaceChanges && index < this.changes.replaceChanges.length ? 
+                            this.changes.replaceChanges[index] : [];
+
       // Set the letter changes
       letter.setChanges(deleteChange, replaceChanges);
     });
   }
-  
+
   /**
    * Populate the changes for all positions in this word
    */
   private populatePositionChanges(): void {
     // Iterate over positions to set their changes
     this.positions.forEach((position, index) => {
-      const insertChanges = this.changes.insertChanges[index] || [];
       
+      const insertChanges = this.changes.insertChanges && index < this.changes.insertChanges.length ? 
+                           this.changes.insertChanges[index] : [];
+
       // Set the position changes
       position.setChanges(insertChanges);
     });
