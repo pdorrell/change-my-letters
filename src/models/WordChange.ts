@@ -65,9 +65,9 @@ export class ReplaceChange extends LetterChange {
  */
 export class WordChanges {
   constructor(
-    public readonly deleteChanges: DeleteChange[] = [],
-    public readonly insertChanges: InsertChange[][] = [],
-    public readonly replaceChanges: ReplaceChange[][] = []
+    public deleteChanges: (DeleteChange | null)[] = [],
+    public insertChanges: InsertChange[][] = [],
+    public replaceChanges: ReplaceChange[][] = []
   ) {}
 }
 
@@ -76,8 +76,8 @@ export class WordChanges {
  */
 export class LetterChanges {
   constructor(
-    public readonly deleteChange: DeleteChange | null = null,
-    public readonly replaceChanges: ReplaceChange[] = []
+    public deleteChange: DeleteChange | null = null,
+    public replaceChanges: ReplaceChange[] = []
   ) {}
 }
 
@@ -86,6 +86,6 @@ export class LetterChanges {
  */
 export class PositionChanges {
   constructor(
-    public readonly insertChanges: InsertChange[] = []
+    public insertChanges: InsertChange[] = []
   ) {}
 }

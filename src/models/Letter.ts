@@ -46,11 +46,13 @@ export class Letter {
    */
   setChanges(deleteChange: DeleteChange | null, replaceChanges: ReplaceChange[]): void {
     // Set changes for letter
-    
-    // Update the existing changes object instead of replacing it
-    Object.assign(this.changes, {
-      deleteChange: deleteChange,
-      replaceChanges: replaceChanges
+    console.log(`Final letter changes for ${this.value} at position ${this.position}:`, {
+      deleteChange: deleteChange ? deleteChange.result.word : null,
+      replaceChanges: replaceChanges ? replaceChanges.map(rc => rc.letter) : []
     });
+    
+    // Direct assignment to properties
+    this.changes.deleteChange = deleteChange || null;
+    this.changes.replaceChanges = replaceChanges || [];
   }
 }

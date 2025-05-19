@@ -35,10 +35,11 @@ export class Position {
    */
   setChanges(insertChanges: InsertChange[]): void {
     // Set changes for position
-    
-    // Update the existing changes object instead of replacing it
-    Object.assign(this.changes, {
-      insertChanges: insertChanges
+    console.log(`Final position changes for position ${this.index}:`, {
+      insertChanges: insertChanges ? insertChanges.map(ic => ic.letter) : []
     });
+    
+    // Direct assignment to property
+    this.changes.insertChanges = insertChanges || [];
   }
 }

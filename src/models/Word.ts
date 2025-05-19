@@ -40,24 +40,36 @@ export class Word {
     makeAutoObservable(this);
   }
 
+  // Cache the letters array to maintain object identity
+  private _letters: Letter[] | null = null;
+  
   /**
    * Get the letters for this word
-   * MobX will automatically cache this computed value
+   * We manually cache this to maintain object identity
    */
   get letters(): Letter[] {
-    return Array.from(this.word).map(
-      (letter, index) => new Letter(this, letter, index)
-    );
+    if (!this._letters) {
+      this._letters = Array.from(this.word).map(
+        (letter, index) => new Letter(this, letter, index)
+      );
+    }
+    return this._letters;
   }
+
+  // Cache the positions array to maintain object identity
+  private _positions: Position[] | null = null;
 
   /**
    * Get the positions for this word
-   * MobX will automatically cache this computed value
+   * We manually cache this to maintain object identity
    */
   get positions(): Position[] {
-    return Array(this.word.length + 1)
-      .fill(0)
-      .map((_, index) => new Position(this, index));
+    if (!this._positions) {
+      this._positions = Array(this.word.length + 1)
+        .fill(0)
+        .map((_, index) => new Position(this, index));
+    }
+    return this._positions;
   }
 
   /**
@@ -241,21 +253,17 @@ export class Word {
    */
   populateChanges(wordGetter: WordGetter): void {
     const currentWord = this.word;
-    const deleteChanges: DeleteChange[] = [];
+    const deleteChanges: (DeleteChange | null)[] = [];
     const insertChanges: InsertChange[][] = [];
     const replaceChanges: ReplaceChange[][] = [];
 
-    const getExpectedWord = (word: string): Word => {
-      const foundWord = wordGetter.getWord(word);
-      if (foundWord === null) {
-        throw new Error(`Word ${word} not found`);
-      }
-      return foundWord;
+    const getWordOrNull = (word: string): Word | null => {
+      return wordGetter.getWord(word);
     }
 
     // Initialize arrays - create a proper initialization for all arrays
     for (let i = 0; i < currentWord.length; i++) {
-      deleteChanges[i] = null;
+      deleteChanges[i] = null; // Initialize with null for letters that can't be deleted
       replaceChanges[i] = [];
     }
 
@@ -268,7 +276,7 @@ export class Word {
       
       if (this.canDelete(i)) {
         const newWordStr = currentWord.substring(0, i) + currentWord.substring(i + 1);
-        const resultWord = getExpectedWord(newWordStr);
+        const resultWord = getWordOrNull(newWordStr);
 
         if (resultWord) {
           const change = new DeleteChange(resultWord);
@@ -283,7 +291,7 @@ export class Word {
 
       for (const letter of replacements) {
         const newWordStr = currentWord.substring(0, i) + letter + currentWord.substring(i + 1);
-        const resultWord = getExpectedWord(newWordStr);
+        const resultWord = getWordOrNull(newWordStr);
 
         if (resultWord) {
           const change = new ReplaceChange(resultWord, letter);
@@ -298,7 +306,7 @@ export class Word {
 
       for (const letter of insertions) {
         const newWordStr = currentWord.substring(0, i) + letter + currentWord.substring(i);
-        const resultWord = getExpectedWord(newWordStr);
+        const resultWord = getWordOrNull(newWordStr);
 
         if (resultWord) {
           const change = new InsertChange(resultWord, letter);
@@ -307,12 +315,10 @@ export class Word {
       }
     }
 
-    // Set the changes
-    Object.assign(this.changes, {
-      deleteChanges: deleteChanges,
-      insertChanges: insertChanges,
-      replaceChanges: replaceChanges
-    });
+    // Set the changes directly
+    this.changes.deleteChanges = deleteChanges;
+    this.changes.insertChanges = insertChanges;
+    this.changes.replaceChanges = replaceChanges;
 
     // Changes have been populated
 
@@ -325,6 +331,11 @@ export class Word {
    * Populate the changes for all letters in this word
    */
   private populateLetterChanges(): void {
+    console.log(`Populating letter changes for word "${this.word}":`, {
+      deleteChanges: this.changes.deleteChanges.map(dc => dc ? true : false),
+      replaceChanges: this.changes.replaceChanges.map(arr => arr.length)
+    });
+    
     // Iterate over letters to set their changes
     this.letters.forEach((letter, index) => {
       
@@ -333,6 +344,11 @@ export class Word {
                            
       const replaceChanges = this.changes.replaceChanges && index < this.changes.replaceChanges.length ? 
                             this.changes.replaceChanges[index] : [];
+
+      console.log(`Setting changes for letter "${letter.value}" at position ${letter.position}:`, {
+        deleteChange: deleteChange ? true : false,
+        replaceChanges: replaceChanges.length
+      });
 
       // Set the letter changes
       letter.setChanges(deleteChange, replaceChanges);
