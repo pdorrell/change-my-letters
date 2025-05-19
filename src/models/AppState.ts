@@ -51,14 +51,14 @@ export class AppState {
     // Initialize reset interaction
     this.resetInteraction = new ResetInteraction(this);
 
-    // Initialize history with the initial word
-    this.history = new HistoryModel(this, initialWord);
-
     // Initialize the current word
     const wordNode = this.wordGraph.getNode(initialWord);
     if (!wordNode) {
       throw new Error(`Word "${initialWord}" doesn't exist in the word graph`);
     }
+
+    // Initialize history with the initial word object
+    this.history = new HistoryModel(this, wordNode);
 
     this.currentWord = new WordInteraction(wordNode, this, false);
 
@@ -109,12 +109,9 @@ export class AppState {
    * Undo the last word change
    */
   undo(): void {
-    const prevWordStr = this.history.undo();
-    if (prevWordStr) {
-      const wordObj = this.wordGraph.getNode(prevWordStr);
-      if (wordObj) {
-        this.setNewWord(wordObj);
-      }
+    const prevWordObj = this.history.undo();
+    if (prevWordObj) {
+      this.setNewWord(prevWordObj);
     }
   }
 
@@ -122,12 +119,9 @@ export class AppState {
    * Redo a previously undone word change
    */
   redo(): void {
-    const nextWordStr = this.history.redo();
-    if (nextWordStr) {
-      const wordObj = this.wordGraph.getNode(nextWordStr);
-      if (wordObj) {
-        this.setNewWord(wordObj);
-      }
+    const nextWordObj = this.history.redo();
+    if (nextWordObj) {
+      this.setNewWord(nextWordObj);
     }
   }
 

@@ -82,14 +82,14 @@ export class ResetInteraction {
    * Set a new word as the current word and reset the history
    */
   setNewWord(word: string): void {
-    // Reset the history with the new word
-    this.appState.history.reset(word);
-    
     // Get the Word object from the word graph
     const wordObj = this.appState.wordGraph.getNode(word);
     if (!wordObj) {
       throw new Error(`Word "${word}" doesn't exist in the word graph`);
     }
+    
+    // Reset the history with the new word object
+    this.appState.history.reset(wordObj);
     
     // Set the new word as current using the Word object
     this.appState.setNewWord(wordObj);

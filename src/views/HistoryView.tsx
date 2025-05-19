@@ -21,17 +21,14 @@ export const HistoryView: React.FC<HistoryViewProps> = observer(({ history }) =>
             key={`history-${index}`}
             className={`history-item ${index === history.currentIndex ? 'current' : ''}`}
             onClick={() => {
-              const wordStr = history.jumpToIndex(index);
-              if (wordStr) {
-                const wordObj = appState.wordGraph.getNode(wordStr);
-                if (wordObj) {
-                  appState.setNewWord(wordObj);
-                  appState.navigateTo('wordView');
-                }
+              const wordObj = history.jumpToIndex(index);
+              if (wordObj) {
+                appState.setNewWord(wordObj);
+                appState.navigateTo('wordView');
               }
             }}
           >
-            <div className="history-word">{entry.word}</div>
+            <div className="history-word">{entry.wordString}</div>
             {entry.change && (
               <div className="history-change">
                 {entry.change.type === 'delete_letter' && `Deleted letter at position ${entry.change.position}`}

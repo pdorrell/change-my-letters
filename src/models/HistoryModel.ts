@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import { AppState } from './AppState';
+import { Word } from './Word';
 
 /**
  * Represents a change from one word to another
@@ -14,7 +15,8 @@ export type WordChange = {
  * Represents an entry in the word history
  */
 export type HistoryEntry = {
-  word: string;
+  word: Word;
+  wordString: string; // Keep string representation for compatibility
   change?: WordChange; // No change for the initial word
 };
 
@@ -32,16 +34,16 @@ export class HistoryModel {
   previouslyVisitedWords: Set<string> = new Set();
 
   // Current word being visited
-  visitingWord: string;
+  visitingWord: Word;
 
   // Reference to app state
   appState: AppState;
 
-  constructor(appState: AppState, initialWord: string) {
+  constructor(appState: AppState, initialWord: Word) {
     this.appState = appState;
 
     // Initialize with the starting word
-    this.entries = [{ word: initialWord }];
+    this.entries = [{ word: initialWord, wordString: initialWord.word }];
     this.visitingWord = initialWord;
 
     makeAutoObservable(this);
@@ -50,17 +52,17 @@ export class HistoryModel {
   /**
    * Add a new word to the history
    */
-  addWord(word: string, change: WordChange): void {
+  addWord(word: Word, change: WordChange): void {
     // If we're not at the end of the history, remove all future entries
     if (this.currentIndex < this.entries.length - 1) {
       this.entries = this.entries.slice(0, this.currentIndex + 1);
     }
     
     // Add the current visiting word to previously visited
-    this.previouslyVisitedWords.add(this.visitingWord);
+    this.previouslyVisitedWords.add(this.visitingWord.word);
     
     // Add the new word to history
-    this.entries.push({ word, change });
+    this.entries.push({ word, wordString: word.word, change });
     
     // Update the current word and index
     this.visitingWord = word;
@@ -70,16 +72,17 @@ export class HistoryModel {
   /**
    * Check if a word has been visited before
    */
-  hasVisited(word: string): boolean {
-    return this.previouslyVisitedWords.has(word);
+  hasVisited(word: Word | string): boolean {
+    const wordString = typeof word === 'string' ? word : word.word;
+    return this.previouslyVisitedWords.has(wordString);
   }
   
   /**
    * Undo the last change
    */
-  undo(): string | null {
+  undo(): Word | null {
     if (this.currentIndex > 0) {
-      this.previouslyVisitedWords.add(this.visitingWord);
+      this.previouslyVisitedWords.add(this.visitingWord.word);
       this.currentIndex--;
       this.visitingWord = this.entries[this.currentIndex].word;
       return this.visitingWord;
@@ -90,9 +93,9 @@ export class HistoryModel {
   /**
    * Redo a previously undone change
    */
-  redo(): string | null {
+  redo(): Word | null {
     if (this.currentIndex < this.entries.length - 1) {
-      this.previouslyVisitedWords.add(this.visitingWord);
+      this.previouslyVisitedWords.add(this.visitingWord.word);
       this.currentIndex++;
       this.visitingWord = this.entries[this.currentIndex].word;
       return this.visitingWord;
@@ -117,16 +120,16 @@ export class HistoryModel {
   /**
    * Get the current word
    */
-  get currentWord(): string {
+  get currentWord(): Word {
     return this.entries[this.currentIndex].word;
   }
   
   /**
    * Jump to a specific point in history
    */
-  jumpToIndex(index: number): string | null {
+  jumpToIndex(index: number): Word | null {
     if (index >= 0 && index < this.entries.length) {
-      this.previouslyVisitedWords.add(this.visitingWord);
+      this.previouslyVisitedWords.add(this.visitingWord.word);
       this.currentIndex = index;
       this.visitingWord = this.entries[index].word;
       return this.visitingWord;
@@ -137,8 +140,8 @@ export class HistoryModel {
   /**
    * Clear the history and start with a new word
    */
-  reset(initialWord: string): void {
-    this.entries = [{ word: initialWord }];
+  reset(initialWord: Word): void {
+    this.entries = [{ word: initialWord, wordString: initialWord.word }];
     this.currentIndex = 0;
     this.previouslyVisitedWords.clear();
     this.visitingWord = initialWord;

@@ -1,5 +1,6 @@
 import { HistoryModel, WordChange } from '../../src/models/HistoryModel';
 import { AppState } from '../../src/models/AppState';
+import { Word } from '../../src/models/Word';
 import { createMockWordGraph } from '../mocks/MockWordGraph';
 
 describe('HistoryModel', () => {
@@ -13,15 +14,20 @@ describe('HistoryModel', () => {
     // Create an AppState instance with the mock WordGraph
     appState = new AppState('cat', mockWordGraph, 'test-version');
     
+    // Get the Word object
+    const catWord = mockWordGraph.getNode('cat');
+    
     // Initialize the history model with AppState and the initial word
-    historyModel = new HistoryModel(appState, 'cat');
+    historyModel = new HistoryModel(appState, catWord!);
   });
 
   it('should initialize with initial word', () => {
-    expect(historyModel.entries).toEqual([{ word: 'cat' }]);
+    const catWord = appState.wordGraph.getNode('cat')!;
+    expect(historyModel.entries[0].wordString).toBe('cat');
+    expect(historyModel.entries[0].word).toBe(catWord);
     expect(historyModel.currentIndex).toBe(0);
     expect(historyModel.hasVisited('cat')).toBe(false);
-    expect(historyModel.visitingWord).toBe('cat');
+    expect(historyModel.visitingWord).toBe(catWord);
   });
 
   it('should add words to history with change information', () => {
@@ -31,10 +37,12 @@ describe('HistoryModel', () => {
       letter: 'b'
     };
     
-    historyModel.addWord('bat', change);
+    const batWord = appState.wordGraph.getNode('bat')!;
+    historyModel.addWord(batWord, change);
     
     expect(historyModel.entries.length).toBe(2);
-    expect(historyModel.entries[1].word).toBe('bat');
+    expect(historyModel.entries[1].wordString).toBe('bat');
+    expect(historyModel.entries[1].word).toBe(batWord);
     expect(historyModel.entries[1].change).toEqual(change);
     expect(historyModel.currentIndex).toBe(1);
     
@@ -55,17 +63,23 @@ describe('HistoryModel', () => {
       letter: 'r'
     };
     
-    historyModel.addWord('bat', change1);
-    historyModel.addWord('rat', change2);
+    const batWord = appState.wordGraph.getNode('bat')!;
+    const ratWord = appState.wordGraph.getNode('rat')!;
+    const catWord = appState.wordGraph.getNode('cat')!;
+    
+    historyModel.addWord(batWord, change1);
+    historyModel.addWord(ratWord, change2);
     
     // Undo should move back in history
     const undoResult = historyModel.undo();
-    expect(undoResult).toBe('bat');
+    expect(undoResult).toBe(batWord);
+    expect(undoResult!.word).toBe('bat');
     expect(historyModel.currentIndex).toBe(1);
     
     // Undo again
     const undoResult2 = historyModel.undo();
-    expect(undoResult2).toBe('cat');
+    expect(undoResult2).toBe(catWord);
+    expect(undoResult2!.word).toBe('cat');
     expect(historyModel.currentIndex).toBe(0);
     
     // Can't undo beyond the beginning
@@ -75,11 +89,13 @@ describe('HistoryModel', () => {
     
     // Redo should move forward in history
     const redoResult = historyModel.redo();
-    expect(redoResult).toBe('bat');
+    expect(redoResult).toBe(batWord);
+    expect(redoResult!.word).toBe('bat');
     expect(historyModel.currentIndex).toBe(1);
     
     const redoResult2 = historyModel.redo();
-    expect(redoResult2).toBe('rat');
+    expect(redoResult2).toBe(ratWord);
+    expect(redoResult2!.word).toBe('rat');
     expect(historyModel.currentIndex).toBe(2);
     
     // Can't redo beyond the end
@@ -117,17 +133,23 @@ describe('HistoryModel', () => {
       letter: 'r'
     };
     
-    historyModel.addWord('bat', change1);
-    historyModel.addWord('rat', change2);
+    const batWord = appState.wordGraph.getNode('bat')!;
+    const ratWord = appState.wordGraph.getNode('rat')!;
+    const catWord = appState.wordGraph.getNode('cat')!;
+    
+    historyModel.addWord(batWord, change1);
+    historyModel.addWord(ratWord, change2);
     
     // Jump to index 0
     const jumpResult = historyModel.jumpToIndex(0);
-    expect(jumpResult).toBe('cat');
+    expect(jumpResult).toBe(catWord);
+    expect(jumpResult!.word).toBe('cat');
     expect(historyModel.currentIndex).toBe(0);
     
     // Jump to index 2
     const jumpResult2 = historyModel.jumpToIndex(2);
-    expect(jumpResult2).toBe('rat');
+    expect(jumpResult2).toBe(ratWord);
+    expect(jumpResult2!.word).toBe('rat');
     expect(historyModel.currentIndex).toBe(2);
     
     // Invalid index returns null
@@ -143,12 +165,16 @@ describe('HistoryModel', () => {
       letter: 'b'
     };
     
-    historyModel.addWord('bat', change);
+    const batWord = appState.wordGraph.getNode('bat')!;
+    const dogWord = appState.wordGraph.getNode('dog')!;
     
-    historyModel.reset('dog');
+    historyModel.addWord(batWord, change);
+    
+    historyModel.reset(dogWord);
     
     expect(historyModel.entries.length).toBe(1);
-    expect(historyModel.entries[0].word).toBe('dog');
+    expect(historyModel.entries[0].wordString).toBe('dog');
+    expect(historyModel.entries[0].word).toBe(dogWord);
     expect(historyModel.entries[0].change).toBeUndefined();
     expect(historyModel.currentIndex).toBe(0);
     expect(historyModel.hasVisited('cat')).toBe(false);
@@ -175,20 +201,27 @@ describe('HistoryModel', () => {
       letter: 'f'
     };
     
-    historyModel.addWord('bat', change1);
-    historyModel.addWord('rat', change2);
+    const batWord = appState.wordGraph.getNode('bat')!;
+    const ratWord = appState.wordGraph.getNode('rat')!;
+    const fatWord = appState.wordGraph.getNode('fat')!;
+    const catWord = appState.wordGraph.getNode('cat')!;
+    
+    historyModel.addWord(batWord, change1);
+    historyModel.addWord(ratWord, change2);
     
     // Undo twice
     historyModel.undo();
     historyModel.undo();
     
     // Add a new word
-    historyModel.addWord('fat', change3);
+    historyModel.addWord(fatWord, change3);
     
     // History should be truncated, with only 'cat' and 'fat'
     expect(historyModel.entries.length).toBe(2);
-    expect(historyModel.entries[0].word).toBe('cat');
-    expect(historyModel.entries[1].word).toBe('fat');
+    expect(historyModel.entries[0].wordString).toBe('cat');
+    expect(historyModel.entries[0].word).toBe(catWord);
+    expect(historyModel.entries[1].wordString).toBe('fat');
+    expect(historyModel.entries[1].word).toBe(fatWord);
     expect(historyModel.currentIndex).toBe(1);
     
     // Redo should not work now
@@ -220,7 +253,11 @@ describe('HistoryModel', () => {
   });
   
   it('should provide currentWord property', () => {
-    expect(historyModel.currentWord).toBe('cat');
+    const catWord = appState.wordGraph.getNode('cat')!;
+    const batWord = appState.wordGraph.getNode('bat')!;
+    
+    expect(historyModel.currentWord).toBe(catWord);
+    expect(historyModel.currentWord.word).toBe('cat');
     
     const change: WordChange = {
       type: 'replace_letter',
@@ -228,10 +265,12 @@ describe('HistoryModel', () => {
       letter: 'b'
     };
     
-    historyModel.addWord('bat', change);
-    expect(historyModel.currentWord).toBe('bat');
+    historyModel.addWord(batWord, change);
+    expect(historyModel.currentWord).toBe(batWord);
+    expect(historyModel.currentWord.word).toBe('bat');
     
     historyModel.undo();
-    expect(historyModel.currentWord).toBe('cat');
+    expect(historyModel.currentWord).toBe(catWord);
+    expect(historyModel.currentWord.word).toBe('cat');
   });
 });
