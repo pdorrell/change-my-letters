@@ -4,9 +4,7 @@ import { LetterInteraction } from '../models/interaction/LetterInteraction';
 import { LetterChoiceMenu } from './CurrentWordView';
 import { Word } from '../models/Word';
 
-interface LetterViewProps {
-  letterInteraction: LetterInteraction;
-}
+interface LetterViewProps { letterInteraction: LetterInteraction; }
 
 /**
  * Placeholder component that maintains the same dimensions as a letter

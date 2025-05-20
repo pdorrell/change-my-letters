@@ -2,9 +2,7 @@ import React, { useRef, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { ResetInteraction } from '../models/ResetInteraction';
 
-interface ResetViewProps {
-  resetInteraction: ResetInteraction;
-}
+interface ResetViewProps { resetInteraction: ResetInteraction; }
 
 export const ResetView: React.FC<ResetViewProps> = observer(({ resetInteraction }) => {
   // Create a ref for the filter input to focus it on mount
@@ -63,14 +61,14 @@ export const ResetView: React.FC<ResetViewProps> = observer(({ resetInteraction 
           </label>
         </div>
         <div className="reset-controls-right">
-          <button 
+          <button
             onClick={handleRandomClick}
             disabled={resetInteraction.appState.wordGraph.sortedWords.length === 0}
             title="Choose a random word from the full list (ignores filter)"
           >
             Choose Random
           </button>
-          <button 
+          <button
             onClick={handleCancelClick}
             title="Return to the current word without changing"
           >
@@ -84,8 +82,8 @@ export const ResetView: React.FC<ResetViewProps> = observer(({ resetInteraction 
           <p>
             {filteredWords.map((word, index) => (
               <React.Fragment key={word}>
-                <span 
-                  className="reset-word-option" 
+                <span
+                  className="reset-word-option"
                   onClick={() => handleWordClick(word)}
                   title={`Set current word to '${word}'`}
                 >

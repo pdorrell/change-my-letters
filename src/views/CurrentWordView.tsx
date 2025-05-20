@@ -17,9 +17,7 @@ import {
   FloatingPortal
 } from '@floating-ui/react';
 
-interface CurrentWordViewProps {
-  currentWord: WordInteraction;
-}
+interface CurrentWordViewProps { currentWord: WordInteraction; }
 
 /**
  * View component for displaying the current word
@@ -121,12 +119,7 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
 /**
  * View component for the letter choice menu
  */
-export const LetterChoiceMenu: React.FC<{
-  options: LetterChange[],
-  onSelect: (wordObj: Word) => void,
-  previouslyVisited: string[],
-  wordInteraction: WordInteraction
-}> = ({ options, onSelect, previouslyVisited, wordInteraction }) => {
+export const LetterChoiceMenu: React.FC<{ options: LetterChange[], onSelect: (wordObj: Word) => void, previouslyVisited: string[], wordInteraction: WordInteraction }> = ({ options, onSelect, previouslyVisited, wordInteraction }) => {
   // Get appState directly from the wordInteraction prop
   const appState = wordInteraction.appState;
   
