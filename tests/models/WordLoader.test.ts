@@ -1,106 +1,125 @@
 import { WordLoader } from '../../src/models/WordLoader';
+import { DataFileFetcherTestDouble } from '../test_doubles/DataFileFetcherTestDouble';
 import { WordGraph } from '../../src/models/WordGraph';
-import fs from 'fs';
-import path from 'path';
 
-// Mock necessary modules
-jest.mock('fs');
-jest.mock('path');
+// Mock the ErrorHandler
 jest.mock('../../src/utils/ErrorHandler', () => ({
   ErrorHandler: {
     reportError: jest.fn()
   }
 }));
 
-// Mock the fetch API
-global.fetch = jest.fn();
-
 describe('WordLoader', () => {
   const mockWordListText = 'cat\nhat\nrat\nbat\n';
   const mockJsonGraph = {
-    words: {
-      'cat': {
-        word: 'cat',
-        replacements: { '0': ['h', 'r', 'b'] },
-        insertions: {},
-        canDeleteArray: [],
-        canUpperCase: [],
-        canLowerCase: []
-      },
-      'hat': {
-        word: 'hat',
-        replacements: { '0': ['c', 'r', 'b'] },
-        insertions: {},
-        canDeleteArray: [],
-        canUpperCase: [],
-        canLowerCase: []
-      }
+    cat: {
+      delete: 'c.t',
+      insert: 'a/b/c/d',
+      replace: 'b/a/t',
+    },
+    hat: {
+      delete: 'h.t',
+      insert: 'a/b/c/d',
+      replace: 'c/a/t',
+    },
+    bat: {
+      delete: 'b.t',
+      insert: 'a/b/c/d',
+      replace: 'c/a/t',
+    },
+    at: {
+      insert: 'a/b/c',
+      replace: 'c/t',
+    },
+    ca: {
+      insert: 'a/b/c',
+      replace: 'c/t',
+      delete: '.a'
+    },
+    ct: {
+      insert: 'a/b/c',
+      replace: 'c/a',
+      delete: 'c.'
     }
   };
 
+  // Set up a test double for the data file fetcher
+  const routeMappings: [string, string][] = [
+    ['/data/wordlists/default-words-graph.json', '/tests/data/wordlists/default-words-graph.json'],
+    ['/data/wordlists/default-words.txt', '/tests/data/wordlists/default-words.txt'],
+  ];
+  
+  let dataFileFetcher: DataFileFetcherTestDouble;
+  let wordLoader: WordLoader;
+  
   beforeEach(() => {
-    // Reset mocks
-    jest.resetAllMocks();
+    jest.clearAllMocks();
     
-    // Mock fetch implementation for successful responses
-    (global.fetch as jest.Mock).mockImplementation((url: string) => {
+    dataFileFetcher = new DataFileFetcherTestDouble(routeMappings);
+    wordLoader = new WordLoader(dataFileFetcher);
+    
+    // Mock the fetch method
+    jest.spyOn(dataFileFetcher, 'fetch').mockImplementation(async (url: string) => {
       if (url.includes('default-words.txt')) {
-        return Promise.resolve({
-          ok: true,
-          text: () => Promise.resolve(mockWordListText)
-        });
+        return mockWordListText;
       } else if (url.includes('default-words-graph.json')) {
-        return Promise.resolve({
-          ok: true,
-          text: () => Promise.resolve(JSON.stringify(mockJsonGraph))
-        });
+        return JSON.stringify(mockJsonGraph);
       }
-      return Promise.resolve({
-        ok: false,
-        status: 404,
-        statusText: 'Not Found'
-      });
+      throw new Error(`File not found: ${url}`);
     });
   });
 
   it('should load a word list from text', () => {
-    const wordList = WordLoader.loadWordListFromText(mockWordListText);
+    const wordList = wordLoader.loadWordListFromText(mockWordListText);
     
     expect(wordList).toEqual(['cat', 'hat', 'rat', 'bat']);
   });
 
   it('should load a word graph from JSON', () => {
     const graph = new WordGraph();
-    WordLoader.loadWordGraphFromJson(JSON.stringify(mockJsonGraph), graph);
+    wordLoader.loadWordGraphFromJson(JSON.stringify(mockJsonGraph), graph);
     
-    // We can't easily test the internal state directly, but we can verify it didn't throw an error
-    expect(graph).toBeInstanceOf(WordGraph);
+    // We can verify that the graph has the words we expect
+    expect(graph.hasWord('cat')).toBe(true);
+    expect(graph.hasWord('hat')).toBe(true);
   });
 
   it('should load a data file', async () => {
-    const text = await WordLoader.loadDataFile('default-words.txt');
+    const text = await wordLoader.loadDataFile('default-words.txt');
     
     expect(text).toBe(mockWordListText);
-    expect(global.fetch).toHaveBeenCalledWith('/data/wordlists/default-words.txt');
+    expect(dataFileFetcher.fetch).toHaveBeenCalledWith('/data/wordlists/default-words.txt');
   });
 
   it('should create a sample word graph', () => {
-    const graph = WordLoader.createSampleWordGraph();
+    const graph = wordLoader.createSampleWordGraph();
     
+    // Verify that we get a non-empty graph
     expect(graph).toBeInstanceOf(WordGraph);
+    expect(graph.words.size).toBeGreaterThan(0);
   });
 
   it('should handle error when loading data file', async () => {
-    // Mock fetch to return an error
-    (global.fetch as jest.Mock).mockImplementationOnce(() => {
-      return Promise.resolve({
-        ok: false,
-        status: 404,
-        statusText: 'Not Found'
-      });
-    });
+    // Mock fetch to throw an error
+    jest.spyOn(dataFileFetcher, 'fetch').mockRejectedValueOnce(new Error('File not found'));
     
-    const text = await WordLoader.loadDataFile('nonexistent-file.txt');
+    const text = await wordLoader.loadDataFile('nonexistent-file.txt');
     expect(text).toBe('');
+  });
+  
+  it('should load default word graph', async () => {
+    // Mock populateChanges to prevent errors with references
+    const originalPopulateChanges = WordGraph.prototype.populateChanges;
+    WordGraph.prototype.populateChanges = jest.fn();
+    
+    try {
+      const graph = await wordLoader.loadDefaultWordGraph();
+      
+      expect(graph).toBeInstanceOf(WordGraph);
+      expect(dataFileFetcher.fetch).toHaveBeenCalledWith('/data/wordlists/default-words-graph.json');
+    } finally {
+      // Restore original method
+      WordGraph.prototype.populateChanges = originalPopulateChanges;
+    }
   });
 });
