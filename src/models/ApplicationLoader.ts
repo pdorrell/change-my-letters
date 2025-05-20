@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { AppState } from './AppState';
 import { WordLoader } from './WordLoader';
+import { WordSayer } from './WordSayer';
 
 /**
  * ApplicationLoader handles asynchronous loading of application data
@@ -47,8 +48,8 @@ export class ApplicationLoader {
           const words = Array.from(wordGraph.words);
           const randomWord = words[Math.floor(Math.random() * words.length)];
           
-          // Create the app state with the loaded data
-          this.appState = new AppState(randomWord, wordGraph, this.version);
+          // Create the app state with the loaded data and a new WordSayer
+          this.appState = new AppState(randomWord, wordGraph, this.version, new WordSayer());
           this.isLoading = false;
         } else {
           // If we couldn't load any words, display an error
