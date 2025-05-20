@@ -2,9 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { HistoryModel } from '../models/HistoryModel';
 
-interface HistoryViewProps {
-  history: HistoryModel;
-}
+interface HistoryViewProps { history: HistoryModel; }
 
 /**
  * View component for displaying the word history

@@ -4,9 +4,7 @@ import { PositionInteraction } from '../models/interaction/PositionInteraction';
 import { LetterChoiceMenu } from './CurrentWordView';
 import { Word } from '../models/Word';
 
-interface PositionViewProps {
-  positionInteraction: PositionInteraction;
-}
+interface PositionViewProps { positionInteraction: PositionInteraction; }
 
 /**
  * Placeholder component that maintains the same dimensions as a position
