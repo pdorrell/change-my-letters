@@ -13,14 +13,14 @@ export class WordGraph implements WordGetter {
 
   // All words in the graph
   words: Set<string> = new Set();
-  
+
   // All words sorted alphabetically for efficient filtering
   sortedWords: string[] = [];
 
   constructor() {
     makeAutoObservable(this);
   }
-  
+
   /**
    * Identifies all connected subgraphs in the word graph
    * @returns An array of connected subgraphs, each containing a set of connected words
@@ -28,7 +28,7 @@ export class WordGraph implements WordGetter {
   identifyConnectedSubgraphs(): Array<Set<string>> {
     const subgraphs: Array<Set<string>> = [];
     const visited = new Set<string>();
-    
+
     // For each word not yet visited, find its connected component
     for (const word of this.words) {
       if (!visited.has(word)) {
@@ -37,11 +37,11 @@ export class WordGraph implements WordGetter {
         subgraphs.push(subgraph);
       }
     }
-    
+
     // Sort subgraphs by size (largest first)
     return subgraphs.sort((a, b) => b.size - a.size);
   }
-  
+
   /**
    * Generates a text report of the connected subgraphs in the word graph
    * Lists subgraphs in descending order of size, showing up to 10 sample words for each
@@ -53,41 +53,41 @@ export class WordGraph implements WordGetter {
     report += `===========================\n\n`;
     report += `Total words: ${this.words.size}\n`;
     report += `Connected subgraphs: ${subgraphs.length}\n\n`;
-    
+
     for (let i = 0; i < subgraphs.length; i++) {
       const subgraph = subgraphs[i];
       const subgraphWords = Array.from(subgraph);
-      
+
       report += `Subgraph ${i + 1}: ${subgraph.size} words\n`;
-      
+
       // Show up to 10 sample words from this subgraph
       const samplesToShow = Math.min(10, subgraph.size);
       const samples = subgraphWords.slice(0, samplesToShow);
-      
+
       report += `Sample words: ${samples.join(', ')}`;
-      
+
       if (samplesToShow < subgraph.size) {
         report += ` (and ${subgraph.size - samplesToShow} more)`;
       }
-      
+
       report += `\n\n`;
     }
-    
+
     // Add statistics about isolated words if there are many small subgraphs
     const isolatedWords = subgraphs.filter(g => g.size === 1);
     if (isolatedWords.length > 0) {
       report += `Isolated words: ${isolatedWords.length}\n`;
-      
+
       if (isolatedWords.length <= 20) {
         report += `Words: ${isolatedWords.map(g => Array.from(g)[0]).join(', ')}\n`;
       } else {
         report += `First 20: ${isolatedWords.slice(0, 20).map(g => Array.from(g)[0]).join(', ')}, ...\n`;
       }
     }
-    
+
     return report;
   }
-  
+
   /**
    * Performs a depth-first search from a starting word to find all connected words
    * @param word The starting word
@@ -97,28 +97,28 @@ export class WordGraph implements WordGetter {
   private depthFirstSearch(word: string, visited: Set<string>, component: Set<string>): void {
     visited.add(word);
     component.add(word);
-    
+
     // Find all words that can be reached from this word
     const neighbors = this.getConnectedWords(word);
-    
+
     for (const neighbor of neighbors) {
       if (!visited.has(neighbor)) {
         this.depthFirstSearch(neighbor, visited, component);
       }
     }
   }
-  
+
   /**
    * Get all words connected to the given word (by any single-letter operation)
    */
   getConnectedWords(word: string): string[] {
     const connected: Set<string> = new Set();
     const wordObj = this.getWordObj(word);
-    
+
     if (!wordObj) {
       return [];
     }
-    
+
     // Check for deletions
     for (let i = 0; i < word.length; i++) {
       if (wordObj.canDelete(i)) {
@@ -128,7 +128,7 @@ export class WordGraph implements WordGetter {
         }
       }
     }
-    
+
     // Check for insertions
     for (let i = 0; i <= word.length; i++) {
       const insertions = wordObj.getInsertions(i);
@@ -141,7 +141,7 @@ export class WordGraph implements WordGetter {
         }
       }
     }
-    
+
     // Check for replacements
     for (let i = 0; i < word.length; i++) {
       const replacements = wordObj.getReplacements(i);
@@ -154,12 +154,12 @@ export class WordGraph implements WordGetter {
         }
       }
     }
-    
+
     // Case-change logic has been removed
-    
+
     return Array.from(connected);
   }
-  
+
   /**
    * Compute the word graph from a list of words
    */
@@ -167,41 +167,41 @@ export class WordGraph implements WordGetter {
     this.wordMap.clear();
     this.words.clear();
     this.sortedWords = [];
-    
+
     // Add all words to the set
     for (const word of wordList) {
       this.words.add(word);
     }
-    
+
     // Create the sorted array of words
     this.sortedWords = Array.from(this.words).sort();
-    
+
     // Generate the graph using the builder
     const builder = new WordGraphBuilder(wordList);
     const jsonGraph = builder.build();
-    
+
     // Load the generated graph
     this.loadFromJson(jsonGraph);
   }
-  
+
   /**
    * Convert the graph to its JSON representation
    */
   toJson(): Record<string, Record<string, unknown>> {
     const jsonGraph: Record<string, Record<string, unknown>> = {};
-    
+
     // Convert each Word to its JSON representation
     for (const [wordStr, wordObj] of this.wordMap.entries()) {
       jsonGraph[wordStr] = wordObj.toJson();
     }
-    
+
     // Ensure all words are included in the graph, even if they have no connections
     for (const word of this.words) {
       if (!jsonGraph[word]) {
         jsonGraph[word] = {};
       }
     }
-    
+
     return jsonGraph;
   }
 
@@ -218,7 +218,7 @@ export class WordGraph implements WordGetter {
       const wordObj = Word.fromJson(wordStr, wordData);
       this.wordMap.set(wordStr, wordObj);
     }
-    
+
     // Create the sorted array of words
     this.sortedWords = Array.from(this.words).sort();
   }
@@ -245,7 +245,7 @@ export class WordGraph implements WordGetter {
   getNode(word: string): Word | null {
     return this.wordMap.get(word) || null;
   }
-  
+
   /**
    * Get a Word object by its string value (implements WordGetter interface)
    * @param word The word string to look up
@@ -254,7 +254,15 @@ export class WordGraph implements WordGetter {
   getWord(word: string): Word | null {
     return this.getNode(word);
   }
-  
+
+  getRequiredWord(word: string): Word {
+    const wordObj = this.getNode(word);
+    if (!wordObj) {
+      throw new Error(`Word ${word} not found`);
+    }
+    return wordObj;
+  }
+
   /**
    * Populate the changes for all words in the graph
    * This creates direct object references between words via the changes attributes
@@ -264,7 +272,7 @@ export class WordGraph implements WordGetter {
     for (const [, wordObj] of this.wordMap.entries()) {
       wordObj.populateChanges(this);
     }
-    
+
     console.log('Populated direct object references for all word changes');
   }
 }

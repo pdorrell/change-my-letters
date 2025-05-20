@@ -42,7 +42,7 @@ export class Word {
 
   // Cache the letters array to maintain object identity
   private _letters: Letter[] | null = null;
-  
+
   /**
    * Get the letters for this word
    * We manually cache this to maintain object identity
@@ -257,10 +257,6 @@ export class Word {
     const insertChanges: InsertChange[][] = [];
     const replaceChanges: ReplaceChange[][] = [];
 
-    const getWordOrNull = (word: string): Word | null => {
-      return wordGetter.getWord(word);
-    }
-
     // Initialize arrays - create a proper initialization for all arrays
     for (let i = 0; i < currentWord.length; i++) {
       deleteChanges[i] = null; // Initialize with null for letters that can't be deleted
@@ -273,15 +269,12 @@ export class Word {
 
     // Populate deletion changes
     for (let i = 0; i < currentWord.length; i++) {
-      
+
       if (this.canDelete(i)) {
         const newWordStr = currentWord.substring(0, i) + currentWord.substring(i + 1);
-        const resultWord = getWordOrNull(newWordStr);
-
-        if (resultWord) {
-          const change = new DeleteChange(resultWord);
-          deleteChanges[i] = change;
-        }
+        const resultWord = wordGetter.getRequiredWord(newWordStr);
+        const change = new DeleteChange(resultWord);
+        deleteChanges[i] = change;
       }
     }
 
@@ -291,12 +284,9 @@ export class Word {
 
       for (const letter of replacements) {
         const newWordStr = currentWord.substring(0, i) + letter + currentWord.substring(i + 1);
-        const resultWord = getWordOrNull(newWordStr);
-
-        if (resultWord) {
-          const change = new ReplaceChange(resultWord, letter);
-          replaceChanges[i].push(change);
-        }
+        const resultWord = wordGetter.getRequiredWord(newWordStr);
+        const change = new ReplaceChange(resultWord, letter);
+        replaceChanges[i].push(change);
       }
     }
 
@@ -306,12 +296,9 @@ export class Word {
 
       for (const letter of insertions) {
         const newWordStr = currentWord.substring(0, i) + letter + currentWord.substring(i);
-        const resultWord = getWordOrNull(newWordStr);
-
-        if (resultWord) {
-          const change = new InsertChange(resultWord, letter);
-          insertChanges[i].push(change);
-        }
+        const resultWord = wordGetter.getRequiredWord(newWordStr);
+        const change = new InsertChange(resultWord, letter);
+        insertChanges[i].push(change);
       }
     }
 
@@ -331,24 +318,14 @@ export class Word {
    * Populate the changes for all letters in this word
    */
   private populateLetterChanges(): void {
-    console.log(`Populating letter changes for word "${this.word}":`, {
-      deleteChanges: this.changes.deleteChanges.map(dc => dc ? true : false),
-      replaceChanges: this.changes.replaceChanges.map(arr => arr.length)
-    });
-    
     // Iterate over letters to set their changes
     this.letters.forEach((letter, index) => {
-      
-      const deleteChange = this.changes.deleteChanges && index < this.changes.deleteChanges.length ? 
-                           this.changes.deleteChanges[index] : null;
-                           
-      const replaceChanges = this.changes.replaceChanges && index < this.changes.replaceChanges.length ? 
-                            this.changes.replaceChanges[index] : [];
 
-      console.log(`Setting changes for letter "${letter.value}" at position ${letter.position}:`, {
-        deleteChange: deleteChange ? true : false,
-        replaceChanges: replaceChanges.length
-      });
+      const deleteChange = this.changes.deleteChanges && index < this.changes.deleteChanges.length ?
+                           this.changes.deleteChanges[index] : null;
+
+      const replaceChanges = this.changes.replaceChanges && index < this.changes.replaceChanges.length ?
+                            this.changes.replaceChanges[index] : [];
 
       // Set the letter changes
       letter.setChanges(deleteChange, replaceChanges);
@@ -361,8 +338,8 @@ export class Word {
   private populatePositionChanges(): void {
     // Iterate over positions to set their changes
     this.positions.forEach((position, index) => {
-      
-      const insertChanges = this.changes.insertChanges && index < this.changes.insertChanges.length ? 
+
+      const insertChanges = this.changes.insertChanges && index < this.changes.insertChanges.length ?
                            this.changes.insertChanges[index] : [];
 
       // Set the position changes
