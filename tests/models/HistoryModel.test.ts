@@ -1,21 +1,31 @@
 import { HistoryModel, WordChange } from '../../src/models/HistoryModel';
 import { AppState } from '../../src/models/AppState';
 import { Word } from '../../src/models/Word';
-import { createMockWordGraph } from '../mocks/MockWordGraph';
+import { WordGraph } from '../../src/models/WordGraph';
+import { WordGraphBuilder } from '../../src/models/WordGraphBuilder';
 
 describe('HistoryModel', () => {
   let historyModel: HistoryModel;
   let appState: AppState;
+  let wordGraph: WordGraph;
 
   beforeEach(() => {
-    // Create a mock WordGraph
-    const mockWordGraph = createMockWordGraph();
+    // Create a list of words needed for the tests
+    const wordList = ['cat', 'bat', 'rat', 'fat', 'dog', 'cot', 'car'];
     
-    // Create an AppState instance with the mock WordGraph
-    appState = new AppState('cat', mockWordGraph, 'test-version');
+    // Use WordGraphBuilder to build a proper word graph
+    const builder = new WordGraphBuilder(wordList);
+    const graphJson = builder.build();
+    
+    // Create a WordGraph instance with the built data
+    wordGraph = new WordGraph();
+    wordGraph.loadFromJson(graphJson);
+    
+    // Create an AppState instance with the word graph
+    appState = new AppState('cat', wordGraph, 'test-version');
     
     // Get the Word object
-    const catWord = mockWordGraph.getNode('cat');
+    const catWord = wordGraph.getNode('cat');
     
     // Initialize the history model with AppState and the initial word
     historyModel = new HistoryModel(appState, catWord!);
