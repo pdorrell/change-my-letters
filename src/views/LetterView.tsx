@@ -4,8 +4,6 @@ import { LetterInteraction } from '../models/interaction/LetterInteraction';
 import { LetterChoiceMenu } from './CurrentWordView';
 import { Word } from '../models/Word';
 
-interface LetterViewProps { letterInteraction: LetterInteraction; }
-
 /**
  * Placeholder component that maintains the same dimensions as a letter
  * but is invisible to the user
@@ -27,6 +25,8 @@ export const LetterPlaceholder: React.FC = () => {
 /**
  * View component for displaying a single letter
  */
+interface LetterViewProps { letterInteraction: LetterInteraction; }
+
 export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteraction }) => {
   const letter = letterInteraction.letter;
   const appState = letterInteraction.wordInteraction.appState;
