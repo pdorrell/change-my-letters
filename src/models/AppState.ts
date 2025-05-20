@@ -4,6 +4,7 @@ import { WordGraph } from './WordGraph';
 import { WordInteraction } from './interaction/WordInteraction';
 import { WordSayerInterface } from './WordSayerInterface';
 import { ResetInteraction } from './ResetInteraction';
+import { MenuManager } from './MenuManager';
 import { Word } from './Word';
 
 // Type for the main application pages
@@ -27,8 +28,8 @@ export class AppState {
   // Reset word interaction model
   resetInteraction: ResetInteraction;
 
-  // For floating menu positioning
-  activeButtonElement: HTMLElement | null = null;
+  // Menu state management
+  menuManager: MenuManager;
 
   // Audio settings
   sayImmediately: boolean = true;
@@ -59,6 +60,13 @@ export class AppState {
     this.history = new HistoryModel(this, wordNode);
 
     this.currentWord = new WordInteraction(wordNode, this, false);
+
+    // Initialize menu manager with a function to close all menus
+    this.menuManager = new MenuManager(() => {
+      if (this.currentWord) {
+        this.currentWord.closeAllMenus();
+      }
+    });
 
     // Preload the initial word's audio
     this.wordSayer.preload(initialWord);
@@ -146,34 +154,19 @@ export class AppState {
   }
 
   /**
-   * Toggle a menu open/closed
+   * Toggle a menu open/closed (delegated to MenuManager)
    * @param currentlyOpen Current open state of the menu
    * @param setMenuOpen Function to open the menu
    * @param buttonElement Reference to the button element that triggered the menu
    */
   toggleMenu(currentlyOpen: boolean, setMenuOpen: () => void, buttonElement: HTMLElement): void {
-    if (!this.currentWord) return;
-
-    // Close all menus first
-    this.closeAllMenus();
-
-    // If the menu was previously closed, open it now
-    if (!currentlyOpen) {
-      this.activeButtonElement = buttonElement;
-      setMenuOpen();
-    }
+    this.menuManager.toggleMenu(currentlyOpen, setMenuOpen, buttonElement);
   }
 
   /**
-   * Close all menus
+   * Close all menus (delegated to MenuManager)
    */
   closeAllMenus(): void {
-    if (!this.currentWord) return;
-
-    // Use the WordInteraction's closeAllMenus method
-    this.currentWord.closeAllMenus();
-
-    // Reset menu state in AppState
-    this.activeButtonElement = null;
+    this.menuManager.closeMenus();
   }
 }
