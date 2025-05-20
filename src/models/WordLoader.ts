@@ -2,16 +2,29 @@ import { WordGraph } from './WordGraph';
 import { WordGraphBuilder } from './WordGraphBuilder';
 import { ParseWordGraphJsonException } from './Word';
 import { ErrorHandler } from '../utils/ErrorHandler';
+import { DataFileFetcherInterface } from './DataFileFetcherInterface';
 
 /**
  * Utility for loading word lists and example graphs
  */
 export class WordLoader {
   /**
+   * The fetcher used to load data files
+   */
+  private readonly dataFileFetcher: DataFileFetcherInterface;
+  
+  /**
+   * Constructor
+   * @param dataFileFetcher The fetcher to use for loading data files
+   */
+  constructor(dataFileFetcher: DataFileFetcherInterface) {
+    this.dataFileFetcher = dataFileFetcher;
+  }
+  /**
    * Load a word list from text
    * Each word should be on a separate line
    */
-  static loadWordListFromText(text: string): string[] {
+  loadWordListFromText(text: string): string[] {
     return text
       .split('\n')
       .map(line => line.trim())
@@ -21,7 +34,7 @@ export class WordLoader {
   /**
    * Load a pre-computed word graph from JSON text
    */
-  static loadWordGraphFromJson(json: string, wordGraph: WordGraph): void {
+  loadWordGraphFromJson(json: string, wordGraph: WordGraph): void {
     try {
       const data = JSON.parse(json);
       wordGraph.loadFromJson(data);
@@ -39,7 +52,7 @@ export class WordLoader {
   /**
    * Create a sample word graph for initial testing
    */
-  static createSampleWordGraph(): WordGraph {
+  createSampleWordGraph(): WordGraph {
     const wordGraph = new WordGraph();
     const wordList = [
       'cat', 'bat', 'hat', 'mat', 'rat',
@@ -73,14 +86,10 @@ export class WordLoader {
   /**
    * Load a file from the data directory
    */
-  static async loadDataFile(filename: string): Promise<string> {
+  async loadDataFile(filename: string): Promise<string> {
     try {
-      // In webpack dev server, the files will be in the /data directory
-      const response = await fetch(`/data/wordlists/${filename}`);
-      if (!response.ok) {
-        throw new Error(`HTTP error ${response.status}: ${response.statusText}`);
-      }
-      return await response.text();
+      // Use the dataFileFetcher to load the file
+      return await this.dataFileFetcher.fetch(`/data/wordlists/${filename}`);
     } catch (error) {
       ErrorHandler.reportError(`Error loading data file ${filename}: ${error}`, 'Word Loader');
       return '';
@@ -90,29 +99,29 @@ export class WordLoader {
   /**
    * Load the default word list and graph
    */
-  static async loadDefaultWordGraph(): Promise<WordGraph> {
+  async loadDefaultWordGraph(): Promise<WordGraph> {
     const wordGraph = new WordGraph();
 
     try {
       // Load the pre-computed graph
-      const graphJson = await WordLoader.loadDataFile('default-words-graph.json');
+      const graphJson = await this.loadDataFile('default-words-graph.json');
 
       if (graphJson) {
         // Load the JSON graph - no fallback, if this fails we let the exception propagate
-        WordLoader.loadWordGraphFromJson(graphJson, wordGraph);
+        this.loadWordGraphFromJson(graphJson, wordGraph);
         console.log('Loaded default word graph from JSON');
       } else {
         // Only if the JSON file wasn't found, try building from word list
-        const wordListText = await WordLoader.loadDataFile('default-words.txt');
+        const wordListText = await this.loadDataFile('default-words.txt');
         if (wordListText) {
-          const wordList = WordLoader.loadWordListFromText(wordListText);
+          const wordList = this.loadWordListFromText(wordListText);
           const builder = new WordGraphBuilder(wordList);
           const jsonGraph = builder.build();
           wordGraph.loadFromJson(jsonGraph);
           console.log('Computed default word graph from word list');
         } else {
           // If neither file exists, use sample graph
-          return WordLoader.createSampleWordGraph();
+          return this.createSampleWordGraph();
         }
       }
       

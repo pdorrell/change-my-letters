@@ -2,6 +2,8 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { AppState } from './AppState';
 import { WordLoader } from './WordLoader';
 import { WordSayer } from './WordSayer';
+import { DataFileFetcherInterface } from './DataFileFetcherInterface';
+import { DataFileFetcher } from './DataFileFetcher';
 
 /**
  * ApplicationLoader handles asynchronous loading of application data
@@ -21,9 +23,21 @@ export class ApplicationLoader {
   // Application version from environment
   version: string;
   
-  constructor() {
+  // Data file fetcher
+  private readonly dataFileFetcher: DataFileFetcherInterface;
+  
+  // Word loader
+  private readonly wordLoader: WordLoader;
+  
+  constructor(dataFileFetcher?: DataFileFetcherInterface) {
     // Set version from environment or fallback
     this.version = process.env.APP_VERSION || 'development';
+    
+    // Initialize the data file fetcher
+    this.dataFileFetcher = dataFileFetcher || new DataFileFetcher();
+    
+    // Initialize the word loader
+    this.wordLoader = new WordLoader(this.dataFileFetcher);
     
     makeAutoObservable(this);
     
@@ -40,7 +54,7 @@ export class ApplicationLoader {
     
     try {
       // Load the word graph
-      const wordGraph = await WordLoader.loadDefaultWordGraph();
+      const wordGraph = await this.wordLoader.loadDefaultWordGraph();
       
       runInAction(() => {
         // Initialize with a random word from the graph
