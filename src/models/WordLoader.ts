@@ -11,7 +11,7 @@ export class WordLoader {
    * The fetcher used to load data files
    */
   private readonly dataFileFetcher: DataFileFetcherInterface;
-  
+
   /**
    * Constructor
    * @param dataFileFetcher The fetcher to use for loading data files
@@ -64,13 +64,13 @@ export class WordLoader {
 
     const builder = new WordGraphBuilder(wordList);
     const jsonGraph = builder.build();
-    
+
     try {
       wordGraph.loadFromJson(jsonGraph);
-      
+
       // Populate the changes with direct object references
       wordGraph.populateChanges();
-      
+
       return wordGraph;
     } catch (error) {
       // Even the sample graph could theoretically have an error
@@ -101,36 +101,34 @@ export class WordLoader {
       let graphJson;
       try {
         graphJson = await this.loadDataFile('default-words-graph.json');
-        
+
         // Load the JSON graph
         this.loadWordGraphFromJson(graphJson, wordGraph);
-        console.log('Loaded default word graph from JSON');
       } catch (graphError) {
         // If loading the graph JSON fails, try building from word list
         try {
           const wordListText = await this.loadDataFile('default-words.txt');
-          
+
           const wordList = this.loadWordListFromText(wordListText);
           const builder = new WordGraphBuilder(wordList);
           const jsonGraph = builder.build();
-          
+
           wordGraph.loadFromJson(jsonGraph);
-          console.log('Computed default word graph from word list');
         } catch (wordListError) {
           // If that also fails, try the sample graph
           try {
             return this.createSampleWordGraph();
           } catch (sampleGraphError) {
             // If all methods fail, throw a comprehensive error
-            throw new Error('Failed to load or create any word graph', { 
-              cause: new Error('Multiple errors', { 
-                cause: { graphError, wordListError, sampleGraphError } 
+            throw new Error('Failed to load or create any word graph', {
+              cause: new Error('Multiple errors', {
+                cause: { graphError, wordListError, sampleGraphError }
               })
             });
           }
         }
       }
-      
+
       // Populate the changes with direct object references
       wordGraph.populateChanges();
 

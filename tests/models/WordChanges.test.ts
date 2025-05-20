@@ -24,8 +24,6 @@ describe('Word Changes', () => {
     wordGraph.loadFromJson(jsonGraph);
     wordGraph.populateChanges();
 
-    // Print out all words in the graph for debugging
-    console.log("Words in test graph:", Array.from(wordGraph.words));
   });
 
   describe('Word.changes', () => {
@@ -251,13 +249,6 @@ describe('Word Changes', () => {
     it('should use the same Word object instances for references', () => {
       const catWord = wordGraph.getNode('cat');
       const batWord = wordGraph.getNode('bat');
-
-      // Find the 'b' replacement for "c" in "cat"
-      // First, log to see if the changes are populated
-      console.log("Cat word letter 0 changes:", {
-        value: catWord!.letters[0].value,
-        replaceChanges: catWord!.letters[0].changes.replaceChanges.map(c => c.letter)
-      });
 
       const cLetter = catWord!.letters[0];
       const batReplacement = cLetter.changes.replaceChanges.find(change => change.letter === 'b');
