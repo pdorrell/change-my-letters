@@ -1,5 +1,3 @@
-import { ErrorReport } from './ErrorReport';
-
 /**
  * Utility for global error handling
  */
@@ -65,11 +63,9 @@ export class ErrorHandler {
    */
   static captureError(message: string, error?: Error | unknown): void {
     const errorMsg = error ? `${message}\n${error instanceof Error ? error.stack : String(error)}` : message;
-
-    // If this is an ErrorReport already, don't wrap it again
-    const errorObject = error instanceof ErrorReport 
-      ? error 
-      : new ErrorReport(message, error);
+    
+    // No need to create standardized error object if we're not using it
+    // Just using the text message for display purposes
 
     // Add to our list of errors (in development mode)
     if (process.env.NODE_ENV === 'development') {

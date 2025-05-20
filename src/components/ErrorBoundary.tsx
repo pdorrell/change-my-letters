@@ -1,5 +1,4 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { ErrorReport } from '../utils/ErrorReport';
 
 // Helper function to safely convert unknown to string
 function safeToString(value: unknown): string {
@@ -12,6 +11,19 @@ function safeToString(value: unknown): string {
   } catch (e) {
     return 'Unknown value (could not convert to string)';
   }
+}
+
+// Helper function to get all causes in an error chain
+function getErrorCauses(error: Error): Error[] {
+  const causes: Error[] = [];
+  let currentError: Error | null = error;
+  
+  while (currentError && 'cause' in currentError && currentError.cause instanceof Error) {
+    causes.push(currentError.cause);
+    currentError = currentError.cause;
+  }
+  
+  return causes;
 }
 
 interface Props {
@@ -102,11 +114,33 @@ export class ErrorBoundary extends Component<Props, State> {
                   {error && error.toString()}
                 </div>
                 
-                {/* If it's an ErrorReport, show additional cause details */}
-                {error instanceof ErrorReport && (
+                {/* Show error cause chain if available */}
+                {error && 'cause' in error && error.cause !== null && error.cause !== undefined && (
                   <details>
-                    <summary>Error Cause</summary>
-                    <pre>{error.cause ? safeToString(error.cause) : 'No cause information'}</pre>
+                    <summary>Error Causes</summary>
+                    {error.cause instanceof Error ? (
+                      <>
+                        <div>
+                          <strong>Immediate cause:</strong>
+                          <pre>{error.cause.stack || error.cause.toString()}</pre>
+                        </div>
+                        
+                        {/* Show nested causes if any */}
+                        {getErrorCauses(error.cause).length > 0 && (
+                          <div>
+                            <strong>Nested causes:</strong>
+                            {getErrorCauses(error.cause).map((cause, index) => (
+                              <div key={index} style={{ marginLeft: '20px', marginTop: '10px' }}>
+                                <div><strong>Cause {index + 1}:</strong></div>
+                                <pre>{cause.stack || cause.toString()}</pre>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <pre>{safeToString(error.cause)}</pre>
+                    )}
                   </details>
                 )}
                 
