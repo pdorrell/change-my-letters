@@ -4,9 +4,6 @@ import { WordSayerTestDouble } from '../test_doubles/WordSayerTestDouble';
 import { WordGraph } from '../../src/models/WordGraph';
 import { WordSayer } from '../../src/models/WordSayer';
 
-// Import ErrorReport
-import { ErrorReport } from '../../src/utils/ErrorReport';
-
 describe('ApplicationLoader', () => {
   // Sample data for testing
   const mockJsonGraph = {

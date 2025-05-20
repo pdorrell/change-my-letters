@@ -1,7 +1,6 @@
 import { WordGraph } from './WordGraph';
 import { WordGraphBuilder } from './WordGraphBuilder';
 import { ParseWordGraphJsonException } from './Word';
-import { ErrorReport } from '../utils/ErrorReport';
 import { DataFileFetcherInterface } from './DataFileFetcherInterface';
 
 /**
@@ -39,11 +38,11 @@ export class WordLoader {
       const data = JSON.parse(json);
       wordGraph.loadFromJson(data);
     } catch (error) {
-      // Create an ErrorReport with a context-specific message and the original error
+      // Create an Error with a context-specific message and the original error as cause
       if (error instanceof ParseWordGraphJsonException) {
-        throw new ErrorReport(`[Word Graph Parser] ${error.message}`, error);
+        throw new Error(`[Word Graph Parser] ${error.message}`, { cause: error });
       } else {
-        throw new ErrorReport(`Error loading word graph from JSON`, error);
+        throw new Error(`Error loading word graph from JSON`, { cause: error });
       }
     }
   }
@@ -75,7 +74,7 @@ export class WordLoader {
       return wordGraph;
     } catch (error) {
       // Even the sample graph could theoretically have an error
-      throw new ErrorReport('Error creating sample word graph', error);
+      throw new Error('Error creating sample word graph', { cause: error });
     }
   }
 
@@ -87,7 +86,7 @@ export class WordLoader {
       // Use the dataFileFetcher to load the file
       return await this.dataFileFetcher.fetch(`/data/wordlists/${filename}`);
     } catch (error) {
-      throw new ErrorReport(`Error loading data file ${filename}`, error);
+      throw new Error(`Error loading data file ${filename}`, { cause: error });
     }
   }
 
@@ -123,10 +122,10 @@ export class WordLoader {
             return this.createSampleWordGraph();
           } catch (sampleGraphError) {
             // If all methods fail, throw a comprehensive error
-            throw new ErrorReport('Failed to load or create any word graph', {
-              graphError,
-              wordListError,
-              sampleGraphError
+            throw new Error('Failed to load or create any word graph', { 
+              cause: new Error('Multiple errors', { 
+                cause: { graphError, wordListError, sampleGraphError } 
+              })
             });
           }
         }
@@ -137,13 +136,8 @@ export class WordLoader {
 
       return wordGraph;
     } catch (error) {
-      // If the error is already an ErrorReport, rethrow it
-      if (error instanceof ErrorReport) {
-        throw error;
-      }
-      
-      // Otherwise, wrap it in an ErrorReport
-      throw new ErrorReport('Error loading default word graph', error);
+      // Wrap any error in a standardized Error with cause
+      throw new Error('Error loading default word graph', { cause: error });
     }
   }
 }
