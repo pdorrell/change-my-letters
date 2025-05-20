@@ -4,6 +4,18 @@ import { WordGraphBuilder } from './WordGraphBuilder';
 import { WordGetter } from './WordGetter';
 
 /**
+ * Exception thrown when a requested word is not found in the graph
+ */
+export class MissingWordException extends Error {
+  constructor(
+    public readonly word: string
+  ) {
+    super(`Word ${word} not found`);
+    this.name = 'MissingWordException';
+  }
+}
+
+/**
  * Represents a graph of words where each word is mapped to a Word object
  * that contains all possible operations (delete, insert, replace)
  */
@@ -258,7 +270,7 @@ export class WordGraph implements WordGetter {
   getRequiredWord(word: string): Word {
     const wordObj = this.getNode(word);
     if (!wordObj) {
-      throw new Error(`Word ${word} not found`);
+      throw new MissingWordException(word);
     }
     return wordObj;
   }

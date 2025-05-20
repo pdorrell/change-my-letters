@@ -2,67 +2,35 @@ import { WordGraph } from '../../src/models/WordGraph';
 import { Word } from '../../src/models/Word';
 import { Letter } from '../../src/models/Letter';
 import { DeleteChange, InsertChange, ReplaceChange } from '../../src/models/WordChange';
+import { WordGraphBuilder } from '../../src/models/WordGraphBuilder';
 
 describe('Word Changes Manual Test', () => {
   let wordGraph: WordGraph;
 
   beforeEach(() => {
-    // Create a simple word graph manually for testing
+    // Create a simple word graph for testing
     wordGraph = new WordGraph();
     
-    // Create a simple JSON representation with all the words that need to be interconnected
-    const graphJson = {
-      "cat": {
-        "delete": "cat",
-        "replace": "brs/ou/r"
-      },
-      "bat": {
-        "delete": "bat",
-        "replace": "chr/ou/r"
-      },
-      "hat": {
-        "delete": "hat",
-        "replace": "bcr/ou/r"
-      },
-      "rat": {
-        "delete": "rat",
-        "replace": "bch/ou/r"
-      },
-      "car": {
-        "delete": "car",
-        "replace": "bhr/ou/t"
-      },
-      "at": {
-        "delete": "at",
-        "replace": "bchr/ou"
-      },
-      "ct": {
-        "delete": "ct",
-        "replace": "a/u"
-      },
-      "ca": {
-        "delete": "ca",
-        "replace": "r/t"
-      },
-      "sat": {
-        "delete": "sat",
-        "replace": "c/e/"
-      },
-      "cot": {
-        "delete": "cot",
-        "replace": "a//"
-      },
-      "cut": {
-        "delete": "cut",
-        "replace": "a//"
-      }
-    };
+    // Create a list of simple words that can be properly interconnected
+    const wordList = [
+      'cat', 'bat', 'hat', 'rat', 'car', 'sat',
+      'at', 'ct', 'ca', 'cot', 'cut', 'bar', 'mat',
+      'bt', 'ba', 'ha', 'ra', 'ar', 'bot', 'rot',
+      'hot', 'cot', 'hat', 'rat', 'mat', 'pat'
+    ];
+    
+    // Use the WordGraphBuilder to construct a proper word graph from the word list
+    const builder = new WordGraphBuilder(wordList);
+    const graphJson = builder.build();
     
     // Load the word graph from JSON
     wordGraph.loadFromJson(graphJson);
     
     // Populate the changes
     wordGraph.populateChanges();
+    
+    // Log the words in the graph for debugging
+    console.log("Words in test graph:", Array.from(wordGraph.words).sort());
   });
 
   it('should populate the word graph correctly', () => {

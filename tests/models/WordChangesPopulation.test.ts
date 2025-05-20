@@ -1,6 +1,7 @@
 import { Word } from '../../src/models/Word';
 import { WordGetter } from '../../src/models/WordGetter';
 import { InsertChange } from '../../src/models/WordChange';
+import { MissingWordException } from '../../src/models/WordGraph';
 
 class MockWordGetter implements WordGetter {
   private words: Map<string, Word> = new Map();
@@ -18,6 +19,12 @@ class MockWordGetter implements WordGetter {
     const chatWord = new Word('chat', [true, true, true, true], ['', '', '', '', ''], ['', 'o', 'a', 'r']);
     const carWord = new Word('car', [true, true, true], ['', '', '', ''], ['h', 'o', 't']);
     const coatWord = new Word('coat', [true, true, true, true], ['', '', '', '', ''], ['b', 'a', 'r', 's']);
+    // Add the missing words from the test errors
+    const ctWord = new Word('ct', [true, true], ['', '', ''], ['a', 'u']);
+    const caWord = new Word('ca', [true, true], ['', '', ''], ['r', 't']);
+    const cotWord = new Word('cot', [true, true, true], ['', '', '', ''], ['a', 'u', '']);
+    // Add the word that's used in the insertion test
+    const bcatWord = new Word('bcat', [true, true, true, true], ['', '', '', '', ''], ['', 'o', 'a', 'r']);
 
     // Add to the map
     this.words.set('cat', catWord);
@@ -26,11 +33,15 @@ class MockWordGetter implements WordGetter {
     this.words.set('chat', chatWord);
     this.words.set('car', carWord);
     this.words.set('coat', coatWord);
+    this.words.set('ct', ctWord);
+    this.words.set('ca', caWord);
+    this.words.set('cot', cotWord);
+    this.words.set('bcat', bcatWord);
   }
 
   getRequiredWord(word: string): Word {
     const wordObj = this.words.get(word);
-    if (!wordObj) { throw new Error(`Word ${word} missing`); };
+    if (!wordObj) { throw new MissingWordException(word); };
     return wordObj;
   }
 }
