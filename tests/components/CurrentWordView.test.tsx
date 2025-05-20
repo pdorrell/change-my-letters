@@ -2,16 +2,11 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import { CurrentWordView } from '../../src/views/CurrentWordView';
 import { WordInteraction } from '../../src/models/interaction/WordInteraction';
-import { WordGraph } from '../../src/models/WordGraph';
-import { Letter } from '../../src/models/Letter';
-import { Position } from '../../src/models/Position';
+import { AppState } from '../../src/models/AppState';
+import { createTestWordGraph, testWordLists } from '../utils/TestWordGraphBuilder';
+import { WordSayer } from '../../src/models/WordSayer';
 
-// Mock MobX's observer
-jest.mock('mobx-react-lite', () => ({
-  observer: (component: React.FC) => component,
-}));
-
-// Mock child components
+// Mock child components for simpler testing
 jest.mock('../../src/views/LetterView', () => ({
   LetterView: ({ letterInteraction }: any) => (
     <div data-testid="letter-view" data-letter={letterInteraction.letter?.value} className="letter-container">
@@ -43,15 +38,15 @@ jest.mock('../../src/views/CurrentWordView', () => {
   return {
     ...original,
     CurrentWordView: original.CurrentWordView,
-    LetterChoiceMenu: ({ options, previouslyVisited, wordInteraction }: { options: string[], previouslyVisited: string[], wordInteraction?: any }) => (
+    LetterChoiceMenu: ({ options, previouslyVisited, wordInteraction }: { options: any[], previouslyVisited: string[], wordInteraction?: any }) => (
       <div data-testid="letter-choice-menu">
-        {options.map((letter, index) => (
+        {options.map((option, index) => (
           <div 
             key={index} 
             data-testid="letter-choice-option" 
-            className={`letter-choice-option ${previouslyVisited.includes(letter) ? 'previously-visited' : ''}`}
+            className={`letter-choice-option ${previouslyVisited.includes(option.result?.word) ? 'previously-visited' : ''}`}
           >
-            {letter}
+            {option.letter}
           </div>
         ))}
       </div>
@@ -59,53 +54,94 @@ jest.mock('../../src/views/CurrentWordView', () => {
   };
 });
 
-// Mock the actual Letter and Position classes
-jest.mock('../../src/models/Letter');
-jest.mock('../../src/models/Position');
-
-// Mock the WordGraph 
-const mockWordGraph = {
-  words: new Set(['cat', 'bat', 'rat', 'slate']),
-  hasWord: jest.fn((word) => ['cat', 'bat', 'rat', 'slate'].includes(word))
-};
-
-// Mock appState
-const mockAppState = {
-  closeAllMenus: jest.fn(),
-  activeMenuType: 'none',
-  activeButtonElement: null,
-  wordGraph: mockWordGraph
-};
-
-// Ensure the mocked WordInteraction will have access to our mock appState
-jest.mock('../../src/models/interaction/WordInteraction', () => {
-  return {
-    WordInteraction: jest.fn().mockImplementation(() => ({
-      value: 'cat',
-      node: { word: 'cat' },
-      previouslyVisited: false,
-      letterInteractions: [
-        { letter: { value: 'c', position: 0 } },
-        { letter: { value: 'a', position: 1 } },
-        { letter: { value: 't', position: 2 } }
-      ],
-      positionInteractions: [
-        { position: { index: 0 } },
-        { position: { index: 1 } },
-        { position: { index: 2 } },
-        { position: { index: 3 } }
-      ],
-      appState: mockAppState
-    }))
-  };
-});
+// Mock WordSayer to avoid audio issues in tests
+jest.mock('../../src/models/WordSayer', () => ({
+  WordSayer: jest.fn().mockImplementation(() => ({
+    preload: jest.fn(),
+    say: jest.fn()
+  }))
+}));
 
 describe('CurrentWordView', () => {
+  let wordGraph: any;
+  let appState: any;
   let currentWord: WordInteraction;
   
   beforeEach(() => {
-    // Create a WordInteraction with our mocks
-    currentWord = new WordInteraction();
+    // Create a real test WordGraph with a limited set of words
+    wordGraph = createTestWordGraph(testWordLists.minimal);
+    
+    // Create a mock AppState (this is still mocked because it's complex)
+    appState = {
+      closeAllMenus: jest.fn(),
+      openMenu: jest.fn(),
+      setNewWord: jest.fn(),
+      activeMenuType: 'none',
+      activeButtonElement: null,
+      wordGraph: wordGraph,
+      navigateTo: jest.fn(),
+      history: {
+        hasVisited: jest.fn().mockReturnValue(false),
+        currentIndex: 0,
+        canUndo: false,
+        canRedo: false,
+        words: []
+      }
+    };
+    
+    // Mock the letterInteractions and positionInteractions directly
+    currentWord = {
+      value: 'cat',
+      previouslyVisited: false,
+      appState: appState,
+      
+      // Mock letterInteractions with direct values
+      letterInteractions: [
+        { 
+          letter: { value: 'c', position: 0, canDelete: true, canReplace: true },
+          wordInteraction: { /* circular reference */ },
+          isReplaceMenuOpen: false,
+        },
+        { 
+          letter: { value: 'a', position: 1, canDelete: true, canReplace: true },
+          wordInteraction: { /* circular reference */ },
+          isReplaceMenuOpen: false,
+        },
+        { 
+          letter: { value: 't', position: 2, canDelete: true, canReplace: true },
+          wordInteraction: { /* circular reference */ },
+          isReplaceMenuOpen: false,
+        }
+      ],
+      
+      // Mock positionInteractions with direct values
+      positionInteractions: [
+        { 
+          position: { index: 0, canInsert: true },
+          wordInteraction: { /* circular reference */ },
+          isInsertMenuOpen: false,
+        },
+        { 
+          position: { index: 1, canInsert: true },
+          wordInteraction: { /* circular reference */ },
+          isInsertMenuOpen: false,
+        },
+        { 
+          position: { index: 2, canInsert: true },
+          wordInteraction: { /* circular reference */ },
+          isInsertMenuOpen: false,
+        },
+        { 
+          position: { index: 3, canInsert: true },
+          wordInteraction: { /* circular reference */ },
+          isInsertMenuOpen: false,
+        }
+      ]
+    } as unknown as WordInteraction;
+    
+    // Fix circular references
+    currentWord.letterInteractions.forEach(li => li.wordInteraction = currentWord);
+    currentWord.positionInteractions.forEach(pi => pi.wordInteraction = currentWord);
   });
   
   it('renders the current word with letters and positions', () => {
@@ -114,7 +150,7 @@ describe('CurrentWordView', () => {
     // Get all letter views
     const letterViews = getAllByTestId('letter-view');
     
-    // It should render at least 3 letters for 'cat', plus placeholders for longer words
+    // It should render 3 letters for 'cat', plus placeholders for longer words
     expect(letterViews.length).toBeGreaterThanOrEqual(3);
     
     // Check that position views are rendered
@@ -122,23 +158,30 @@ describe('CurrentWordView', () => {
     expect(positionViews.length).toBeGreaterThanOrEqual(4);
   });
   
-  it('sets previouslyVisited property', () => {
-    currentWord.previouslyVisited = true;
-    expect(currentWord.previouslyVisited).toBe(true);
+  it('shows previously visited status when applicable', () => {
+    // Create a visited word directly with mock properties
+    const visitedWord = {
+      ...currentWord,
+      previouslyVisited: true
+    };
     
-    const { container } = render(<CurrentWordView currentWord={currentWord} />);
+    const { container } = render(<CurrentWordView currentWord={visitedWord as WordInteraction} />);
     
-    // The test has passed if the property was set correctly,
-    // even if the class may not be applied directly as expected
+    // Check that the previously-visited class is applied
+    expect(container.querySelector('.previously-visited')).not.toBeNull();
   });
   
   it('handles non-previously-visited words', () => {
-    currentWord.previouslyVisited = false;
-    expect(currentWord.previouslyVisited).toBe(false);
+    // Create a non-visited word directly with mock properties
+    const newWord = {
+      ...currentWord,
+      previouslyVisited: false
+    };
     
-    render(<CurrentWordView currentWord={currentWord} />);
+    const { container } = render(<CurrentWordView currentWord={newWord as WordInteraction} />);
     
-    // The test has passed if the property was set correctly
+    // Check that the previously-visited class is not applied
+    expect(container.querySelector('.previously-visited')).toBeNull();
   });
   
   it('alternates positions and letters correctly', () => {
@@ -170,5 +213,49 @@ describe('CurrentWordView', () => {
     expect(letterViews[0].getAttribute('data-letter')).toBe('c');
     expect(letterViews[1].getAttribute('data-letter')).toBe('a');
     expect(letterViews[2].getAttribute('data-letter')).toBe('t');
+  });
+  
+  it('handles different word lengths', () => {
+    // Create a longer word directly with mock properties
+    const longWord = {
+      value: 'longer',
+      previouslyVisited: false,
+      appState: appState,
+      
+      // Mock letterInteractions with direct values for a longer word
+      letterInteractions: [
+        { letter: { value: 'l', position: 0, canDelete: true, canReplace: true }, wordInteraction: {} },
+        { letter: { value: 'o', position: 1, canDelete: true, canReplace: true }, wordInteraction: {} },
+        { letter: { value: 'n', position: 2, canDelete: true, canReplace: true }, wordInteraction: {} },
+        { letter: { value: 'g', position: 3, canDelete: true, canReplace: true }, wordInteraction: {} },
+        { letter: { value: 'e', position: 4, canDelete: true, canReplace: true }, wordInteraction: {} },
+        { letter: { value: 'r', position: 5, canDelete: true, canReplace: true }, wordInteraction: {} }
+      ],
+      
+      // Mock positionInteractions with direct values for a longer word
+      positionInteractions: [
+        { position: { index: 0, canInsert: true }, wordInteraction: {} },
+        { position: { index: 1, canInsert: true }, wordInteraction: {} },
+        { position: { index: 2, canInsert: true }, wordInteraction: {} },
+        { position: { index: 3, canInsert: true }, wordInteraction: {} },
+        { position: { index: 4, canInsert: true }, wordInteraction: {} },
+        { position: { index: 5, canInsert: true }, wordInteraction: {} },
+        { position: { index: 6, canInsert: true }, wordInteraction: {} }
+      ]
+    } as unknown as WordInteraction;
+    
+    // Fix circular references
+    longWord.letterInteractions.forEach(li => li.wordInteraction = longWord);
+    longWord.positionInteractions.forEach(pi => pi.wordInteraction = longWord);
+    
+    const { getAllByTestId } = render(<CurrentWordView currentWord={longWord} />);
+    
+    // Check that it renders all 6 letters of 'longer'
+    const letterViews = getAllByTestId('letter-view');
+    expect(letterViews.length).toBeGreaterThanOrEqual(6);
+    
+    // And 7 position views (one before, between each letter, and after)
+    const positionViews = getAllByTestId('position-view');
+    expect(positionViews.length).toBeGreaterThanOrEqual(7);
   });
 });
