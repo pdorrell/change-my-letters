@@ -43,7 +43,11 @@ describe('LetterChoiceMenu', () => {
       toggleMenu: jest.fn(),
       closeAllMenus: jest.fn(),
       setNewWord: jest.fn(),
-      activeButtonElement: document.createElement('button'),
+      menuManager: {
+        activeButtonElement: document.createElement('button'),
+        toggleMenu: jest.fn(),
+        closeMenus: jest.fn()
+      },
       navigateTo: jest.fn(),
       history: {
         hasVisited: jest.fn(word => ['bat', 'rat'].includes(word)),

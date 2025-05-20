@@ -84,6 +84,11 @@ describe('Position', () => {
       navigateTo: jest.fn(),
       toggleMenu: jest.fn(),
       closeAllMenus: jest.fn(),
+      menuManager: {
+        activeButtonElement: null,
+        toggleMenu: jest.fn(),
+        closeMenus: jest.fn()
+      },
     } as unknown as AppState;
     
     const node = new MockWord('test') as unknown as Word;

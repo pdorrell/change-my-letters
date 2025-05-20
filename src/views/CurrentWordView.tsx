@@ -133,7 +133,7 @@ export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ options, onS
   const {refs, floatingStyles, context} = useFloating({
     // Set the reference to the active button element
     elements: {
-      reference: appState.activeButtonElement ?? undefined
+      reference: appState.menuManager.activeButtonElement ?? undefined
     },
     // Keep the position updated when elements resize/scroll/etc
     whileElementsMounted: autoUpdate,

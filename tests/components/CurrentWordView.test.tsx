@@ -89,7 +89,11 @@ describe('CurrentWordView', () => {
       closeAllMenus: jest.fn(),
       toggleMenu: jest.fn(),
       setNewWord: jest.fn(),
-      activeButtonElement: null,
+      menuManager: {
+        activeButtonElement: null,
+        toggleMenu: jest.fn(),
+        closeMenus: jest.fn()
+      },
       wordGraph: wordGraph,
       navigateTo: jest.fn(),
       history: {

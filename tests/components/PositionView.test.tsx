@@ -40,7 +40,11 @@ describe('PositionView', () => {
       toggleMenu: jest.fn(),
       closeAllMenus: jest.fn(),
       setNewWord: jest.fn(),
-      activeButtonElement: null,
+      menuManager: {
+        activeButtonElement: null,
+        toggleMenu: jest.fn(),
+        closeMenus: jest.fn()
+      },
       navigateTo: jest.fn(),
       history: {
         hasVisited: jest.fn().mockReturnValue(false),
