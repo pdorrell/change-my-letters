@@ -82,7 +82,7 @@ describe('Position', () => {
   beforeEach(() => {
     appState = {
       navigateTo: jest.fn(),
-      openMenu: jest.fn(),
+      toggleMenu: jest.fn(),
       closeAllMenus: jest.fn(),
     } as unknown as AppState;
     
