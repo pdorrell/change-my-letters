@@ -4,12 +4,8 @@ import { WordSayerTestDouble } from '../test_doubles/WordSayerTestDouble';
 import { WordGraph } from '../../src/models/WordGraph';
 import { WordSayer } from '../../src/models/WordSayer';
 
-// Mock process.env
-jest.mock('../../src/utils/ErrorHandler', () => ({
-  ErrorHandler: {
-    reportError: jest.fn()
-  }
-}));
+// Import ErrorReport
+import { ErrorReport } from '../../src/utils/ErrorReport';
 
 describe('ApplicationLoader', () => {
   // Sample data for testing

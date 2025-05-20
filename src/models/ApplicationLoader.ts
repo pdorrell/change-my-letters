@@ -4,6 +4,7 @@ import { WordLoader } from './WordLoader';
 import { WordSayer } from './WordSayer';
 import { DataFileFetcherInterface } from './DataFileFetcherInterface';
 import { DataFileFetcher } from './DataFileFetcher';
+import { ErrorReport } from '../utils/ErrorReport';
 
 /**
  * ApplicationLoader handles asynchronous loading of application data
@@ -75,8 +76,19 @@ export class ApplicationLoader {
     } catch (error) {
       runInAction(() => {
         this.hasError = true;
-        this.errorMessage = error instanceof Error ? error.message : 'Unknown error loading application';
         this.isLoading = false;
+        
+        // Use error message directly if it's already an ErrorReport
+        if (error instanceof ErrorReport) {
+          this.errorMessage = error.message;
+        } else if (error instanceof Error) {
+          // For other errors, create an ErrorReport and use its message
+          const errorReport = new ErrorReport('Error loading application', error);
+          this.errorMessage = errorReport.message;
+        } else {
+          // Fallback for unknown error types
+          this.errorMessage = 'Unknown error loading application';
+        }
       });
     }
   }

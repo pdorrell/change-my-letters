@@ -1,3 +1,5 @@
+import { ErrorReport } from './ErrorReport';
+
 /**
  * Utility for global error handling
  */
@@ -10,26 +12,29 @@ export class ErrorHandler {
    * Initialize the global error handler
    */
   static initialize(): void {
-    // Create error display container if it doesn't exist
-    if (!ErrorHandler.errorDisplayEl) {
-      const errorEl = document.createElement('div');
-      errorEl.className = 'global-error-container';
-      errorEl.style.position = 'fixed';
-      errorEl.style.top = '0';
-      errorEl.style.left = '0';
-      errorEl.style.right = '0';
-      errorEl.style.backgroundColor = 'rgba(255, 0, 0, 0.9)';
-      errorEl.style.color = 'white';
-      errorEl.style.padding = '10px';
-      errorEl.style.fontFamily = 'monospace';
-      errorEl.style.fontSize = '14px';
-      errorEl.style.zIndex = '9999';
-      errorEl.style.maxHeight = '50vh';
-      errorEl.style.overflowY = 'auto';
-      errorEl.style.display = 'none';
+    // Only create the error display in development mode
+    if (process.env.NODE_ENV === 'development') {
+      // Create error display container if it doesn't exist
+      if (!ErrorHandler.errorDisplayEl) {
+        const errorEl = document.createElement('div');
+        errorEl.className = 'global-error-container';
+        errorEl.style.position = 'fixed';
+        errorEl.style.top = '0';
+        errorEl.style.left = '0';
+        errorEl.style.right = '0';
+        errorEl.style.backgroundColor = 'rgba(255, 0, 0, 0.9)';
+        errorEl.style.color = 'white';
+        errorEl.style.padding = '10px';
+        errorEl.style.fontFamily = 'monospace';
+        errorEl.style.fontSize = '14px';
+        errorEl.style.zIndex = '9999';
+        errorEl.style.maxHeight = '50vh';
+        errorEl.style.overflowY = 'auto';
+        errorEl.style.display = 'none';
 
-      document.body.appendChild(errorEl);
-      ErrorHandler.errorDisplayEl = errorEl;
+        document.body.appendChild(errorEl);
+        ErrorHandler.errorDisplayEl = errorEl;
+      }
     }
 
     // Set up global error handlers
@@ -61,25 +66,36 @@ export class ErrorHandler {
   static captureError(message: string, error?: Error | unknown): void {
     const errorMsg = error ? `${message}\n${error instanceof Error ? error.stack : String(error)}` : message;
 
-    // Add to our list of errors
-    ErrorHandler.errors.push(errorMsg);
+    // If this is an ErrorReport already, don't wrap it again
+    const errorObject = error instanceof ErrorReport 
+      ? error 
+      : new ErrorReport(message, error);
 
-    // Display in the UI
-    ErrorHandler.updateErrorDisplay();
+    // Add to our list of errors (in development mode)
+    if (process.env.NODE_ENV === 'development') {
+      ErrorHandler.errors.push(errorMsg);
+      
+      // Display in the UI
+      ErrorHandler.updateErrorDisplay();
+      
+      // Send details to server in development
+      ErrorHandler.sendErrorToServer(message, error);
+    }
 
     // Notify any listeners
     if (ErrorHandler.errorListener) {
       ErrorHandler.errorListener(errorMsg);
     }
 
-    // Send to server in development
-    if (process.env.NODE_ENV === 'development') {
-      ErrorHandler.sendErrorToServer(message, error);
+    // If we're in a test environment, just log to console
+    if (process.env.NODE_ENV === 'test') {
+      console.error(errorMsg);
     }
   }
 
   /**
    * Update the error display with all captured errors
+   * Only used in development mode
    */
   private static updateErrorDisplay(): void {
     const errorDisplayEl = ErrorHandler.errorDisplayEl;
@@ -161,7 +177,7 @@ export class ErrorHandler {
   /**
    * Send error to the webpack server
    */
-  static sendErrorToServer(message: string, error?: Error | unknown): void {
+  private static sendErrorToServer(message: string, error?: Error | unknown): void {
     try {
       const errorData = {
         message,
@@ -189,20 +205,5 @@ export class ErrorHandler {
    */
   static onError(callback: (error: string) => void): void {
     ErrorHandler.errorListener = callback;
-  }
-
-  /**
-   * Manually report an error
-   */
-  static reportError(error: Error | string, context?: string): void {
-    const message = typeof error === 'string'
-      ? error
-      : error.message;
-
-    const fullMessage = context
-      ? `[${context}] ${message}`
-      : message;
-
-    ErrorHandler.captureError(fullMessage, typeof error === 'string' ? undefined : error);
   }
 }

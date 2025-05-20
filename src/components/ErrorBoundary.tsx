@@ -1,4 +1,18 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
+import { ErrorReport } from '../utils/ErrorReport';
+
+// Helper function to safely convert unknown to string
+function safeToString(value: unknown): string {
+  if (value === null) return 'null';
+  if (value === undefined) return 'undefined';
+  if (typeof value === 'string') return value;
+  if (value instanceof Error) return value.stack || value.toString();
+  try {
+    return String(value);
+  } catch (e) {
+    return 'Unknown value (could not convert to string)';
+  }
+}
 
 interface Props {
   children: ReactNode;
@@ -42,58 +56,88 @@ export class ErrorBoundary extends Component<Props, State> {
     console.error('Error caught by ErrorBoundary:', error, errorInfo);
 
     // Send error to the webpack server console (if in development)
-    this.logErrorToServer(error, errorInfo);
+    if (process.env.NODE_ENV === 'development') {
+      this.logErrorToServer(error, errorInfo);
+    }
   }
 
   // Function to send error to the webpack server
   logErrorToServer(error: Error, errorInfo: ErrorInfo): void {
-    // Only attempt in development mode when webpack server is running
-    if (process.env.NODE_ENV === 'development') {
-      try {
-        const errorData = {
-          message: error.message,
-          stack: error.stack,
-          componentStack: errorInfo.componentStack,
-          timestamp: new Date().toISOString()
-        };
+    try {
+      const errorData = {
+        message: error.message,
+        stack: error.stack,
+        componentStack: errorInfo.componentStack,
+        timestamp: new Date().toISOString()
+      };
 
-        // Send error to a custom endpoint
-        fetch('/api/log-error', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(errorData)
-        }).catch(err => {
-          // Silently ignore failed logging - don't add more errors
-          console.debug('Failed to send error to server:', err);
-        });
-      } catch (e) {
-        // Ignore any errors in the error logging itself
-      }
+      // Send error to a custom endpoint
+      fetch('/api/log-error', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(errorData)
+      }).catch(err => {
+        // Silently ignore failed logging - don't add more errors
+        console.debug('Failed to send error to server:', err);
+      });
+    } catch (e) {
+      // Ignore any errors in the error logging itself
     }
   }
 
   render(): ReactNode {
     if (this.state.hasError) {
-      // Render error UI
+      const error = this.state.error;
+      
+      // For development mode, show full error details
+      if (process.env.NODE_ENV === 'development') {
+        return (
+          <div className="error-boundary">
+            <div className="error-container">
+              <h2>Something went wrong</h2>
+              <div className="error-details">
+                <div className="error-message">
+                  {error && error.toString()}
+                </div>
+                
+                {/* If it's an ErrorReport, show additional cause details */}
+                {error instanceof ErrorReport && (
+                  <details>
+                    <summary>Error Cause</summary>
+                    <pre>{error.cause ? safeToString(error.cause) : 'No cause information'}</pre>
+                  </details>
+                )}
+                
+                <details>
+                  <summary>Component Stack</summary>
+                  <pre>{this.state.errorInfo?.componentStack || 'No stack trace available'}</pre>
+                </details>
+                
+                <div className="error-actions">
+                  <button onClick={() => window.location.reload()}>
+                    Reload Application
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      } 
+      
+      // For production mode, show minimal error message
       return (
         <div className="error-boundary">
           <div className="error-container">
             <h2>Something went wrong</h2>
-            <div className="error-details">
-              <div className="error-message">
-                {this.state.error && this.state.error.toString()}
-              </div>
-              <details>
-                <summary>Component Stack</summary>
-                <pre>{this.state.errorInfo?.componentStack || 'No stack trace available'}</pre>
-              </details>
-              <div className="error-actions">
-                <button onClick={() => window.location.reload()}>
-                  Reload Application
-                </button>
-              </div>
+            <div className="error-message">
+              {error ? error.message : 'An error occurred while rendering the application.'}
+            </div>
+            <div className="error-actions">
+              <button onClick={() => window.location.reload()}>
+                Reload Application
+              </button>
             </div>
           </div>
         </div>
