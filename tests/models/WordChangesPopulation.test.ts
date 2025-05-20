@@ -62,7 +62,6 @@ describe('Word Changes Population', () => {
 
     // Get the first letter (c)
     const letters = catWord.letters;
-    console.log('Letters count:', letters.length);
     const firstLetter = letters[0];
 
     // Check that it has the correct changes

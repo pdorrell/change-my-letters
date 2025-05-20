@@ -33,7 +33,7 @@ describe('LetterView', () => {
   let appState: any;
   let currentWord: WordInteraction;
   let letterInteraction: any;
-  
+
   beforeEach(() => {
     // Create a mock AppState (this is still mocked because it's complex)
     appState = {
@@ -51,14 +51,14 @@ describe('LetterView', () => {
         words: []
       }
     };
-    
+
     // Create a mock word interaction
     currentWord = {
       value: 'cat',
       previouslyVisited: false,
       appState: appState
     } as any;
-    
+
     // Create a mock letter interaction for the first letter 'c'
     letterInteraction = {
       letter: {
@@ -79,7 +79,7 @@ describe('LetterView', () => {
       wordInteraction: currentWord,
       isReplaceMenuOpen: false
     };
-    
+
     // Add the letterInteraction to the currentWord for circular reference
     currentWord.letterInteractions = [letterInteraction];
   });
@@ -88,73 +88,73 @@ describe('LetterView', () => {
     const { container } = render(<LetterView letterInteraction={letterInteraction} />);
     expect(container.textContent).toContain('c'); // First letter of 'cat'
   });
-  
+
   it('shows delete icon when letter can be deleted', () => {
     // Use the first letter of 'cat', which should be deletable to get 'at'
     const { container } = render(<LetterView letterInteraction={letterInteraction} />);
-    
+
     const deleteButton = container.querySelector('.delete-icon:not(.hidden)');
     expect(deleteButton).toBeInTheDocument();
   });
-  
+
   it('shows replace icon when letter has replacements', () => {
     // First letter of 'cat' should be replaceable with 'b', 'h', 'r', etc.
     const { container } = render(<LetterView letterInteraction={letterInteraction} />);
-    
+
     const replaceButton = container.querySelector('.replace-icon:not(.hidden)');
     expect(replaceButton).toBeInTheDocument();
   });
-  
+
   it('calls openMenu when replace icon is clicked', () => {
     const { container } = render(<LetterView letterInteraction={letterInteraction} />);
-    
+
     const replaceButton = container.querySelector('.replace-icon:not(.hidden)');
     if (replaceButton) fireEvent.click(replaceButton);
-    
+
     expect(appState.openMenu).toHaveBeenCalledWith('replace', 0, expect.anything());
   });
-  
+
   it('calls setNewWord when delete icon is clicked', () => {
     const { container } = render(<LetterView letterInteraction={letterInteraction} />);
-    
+
     const deleteButton = container.querySelector('.delete-icon:not(.hidden)');
     if (deleteButton) fireEvent.click(deleteButton);
-    
+
     // Should call setNewWord with a Word object, but we can only check if it was called
     expect(appState.setNewWord).toHaveBeenCalled();
   });
-  
+
   it('handles a letter interaction with an open replace menu', () => {
     // Create a letter interaction with an open menu
     letterInteraction.isReplaceMenuOpen = true;
-  
+
     // Force the letter to have some replace changes for the menu
     if (!letterInteraction.letter.changes || !letterInteraction.letter.changes.replaceChanges) {
       // This is a safety check, but in reality the letter should have replace changes
-      console.log('Warning: Letter does not have expected replace changes');
+      throw new Error('Test Letter does not have expected replace changes');
     }
-    
+
     const { getByTestId } = render(<LetterView letterInteraction={letterInteraction} />);
-    
+
     // The letter choice menu should be rendered
     expect(getByTestId('letter-choice-menu')).toBeInTheDocument();
   });
-  
+
   it('calls setNewWord when a letter choice is selected', () => {
     // Open the replace menu
     letterInteraction.isReplaceMenuOpen = true;
-    
+
     const { getAllByTestId } = render(<LetterView letterInteraction={letterInteraction} />);
-    
+
     // Get the letter choice options
     const letterOptions = getAllByTestId('letter-choice-option');
-    
+
     // Should be at least one letter option (like 'b' to change 'cat' to 'bat')
     expect(letterOptions.length).toBeGreaterThan(0);
-    
+
     // Click the first option
     fireEvent.click(letterOptions[0]);
-    
+
     // Should call setNewWord with a Word object
     expect(appState.setNewWord).toHaveBeenCalled();
   });

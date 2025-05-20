@@ -284,7 +284,5 @@ export class WordGraph implements WordGetter {
     for (const [, wordObj] of this.wordMap.entries()) {
       wordObj.populateChanges(this);
     }
-
-    console.log('Populated direct object references for all word changes');
   }
 }
