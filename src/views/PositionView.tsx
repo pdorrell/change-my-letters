@@ -27,7 +27,11 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ positionInt
   const insertButtonRef = React.useRef<HTMLButtonElement>(null);
 
   const handleInsertClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    appState.openMenu('insert', position.index, event.currentTarget);
+    appState.toggleMenu(
+      positionInteraction.isInsertMenuOpen,
+      () => { positionInteraction.isInsertMenuOpen = true; },
+      event.currentTarget
+    );
   };
 
   const handleWordChoice = (newWord: Word) => {
