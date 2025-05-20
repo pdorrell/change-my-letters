@@ -119,7 +119,9 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
 /**
  * View component for the letter choice menu
  */
-export const LetterChoiceMenu: React.FC<{ options: LetterChange[], onSelect: (wordObj: Word) => void, previouslyVisited: string[], wordInteraction: WordInteraction }> = ({ options, onSelect, previouslyVisited, wordInteraction }) => {
+interface LetterChoiceMenuProps { options: LetterChange[]; onSelect: (wordObj: Word) => void; previouslyVisited: string[]; wordInteraction: WordInteraction; }
+
+export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ options, onSelect, previouslyVisited, wordInteraction }) => {
   // Get appState directly from the wordInteraction prop
   const appState = wordInteraction.appState;
   
