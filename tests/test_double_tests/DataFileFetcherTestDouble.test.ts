@@ -1,83 +1,75 @@
 import { DataFileFetcherTestDouble } from '../test_doubles/DataFileFetcherTestDouble';
-import fs from 'fs/promises';
 import path from 'path';
 
-// Mock fs.readFile
-jest.mock('fs/promises', () => ({
-  readFile: jest.fn(),
-}));
-
 describe('DataFileFetcherTestDouble', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
+  // Define test route mappings
+  const routeMappings: [string, string][] = [
+    ['/assets/', 'deploy/assets/'],
+    ['/data/', 'tests/data/'],
+    ['/api/test', 'tests/data/test-files/'],
+    ['/exact-test-file.txt', 'tests/data/test-files/test-content.txt']
+  ];
+  
+  // Create fetcher instance for tests
+  const fetcher = new DataFileFetcherTestDouble(routeMappings);
+  
+  describe('route method', () => {
+    it('should correctly map URLs to relative file paths', () => {
+      // Test prefix mapping
+      expect(fetcher.route('/assets/images/logo.png')).toBe('deploy/assets/images/logo.png');
+      expect(fetcher.route('/data/config.json')).toBe('tests/data/config.json');
+      
+      // Test exact file mapping
+      expect(fetcher.route('/exact-test-file.txt')).toBe('tests/data/test-files/test-content.txt');
+    });
+    
+    it('should throw an error if no mapping is found', () => {
+      expect(() => fetcher.route('/unknown/path.txt')).toThrow('No mapping found for URL: /unknown/path.txt');
+    });
   });
   
-  it('should map URLs to local files based on route mappings', async () => {
-    // Mock fs.readFile to return test content
-    (fs.readFile as jest.Mock).mockResolvedValue('test file content');
-    
-    const routeMappings: [string, string][] = [
-      ['/assets/', 'deploy/assets/'],
-      ['/data/', 'tests/data/'],
-    ];
-    
-    const fetcher = new DataFileFetcherTestDouble(routeMappings);
-    
-    // Test asset mapping
-    const assetContent = await fetcher.fetch('/assets/image.png');
-    expect(assetContent).toBe('test file content');
-    expect(fs.readFile).toHaveBeenCalledWith(
-      expect.stringContaining(path.join('deploy/assets/image.png')),
-      'utf-8'
-    );
-    
-    // Test data mapping
-    const dataContent = await fetcher.fetch('/data/file.json');
-    expect(dataContent).toBe('test file content');
-    expect(fs.readFile).toHaveBeenCalledWith(
-      expect.stringContaining(path.join('tests/data/file.json')),
-      'utf-8'
-    );
+  describe('getAbsolutePath method', () => {
+    it('should return full absolute paths', () => {
+      const rootPath = 'PROJECT_ROOT_DIR';
+      
+      // Test asset path
+      const assetPath = fetcher.getAbsolutePath('/assets/images/logo.png');
+      expect(assetPath).toBe(path.join(rootPath, 'deploy/assets/images/logo.png'));
+      
+      // Test data path
+      const dataPath = fetcher.getAbsolutePath('/data/config.json');
+      expect(dataPath).toBe(path.join(rootPath, 'tests/data/config.json'));
+    });
   });
   
-  it('should support exact URL to file path mappings', async () => {
-    // Mock fs.readFile to return test content
-    (fs.readFile as jest.Mock).mockResolvedValue('specific test content');
+  describe('fetch method', () => {
+    it('should read and return the content of an actual file', async () => {
+      // Test reading the test content file we created
+      const content = await fetcher.fetch('/api/test/test-content.txt');
+      
+      // Verify the content matches what we wrote to the file
+      expect(content).toContain('This is a test file for DataFileFetcherTestDouble');
+      expect(content).toContain('It contains some text content that can be verified in tests');
+    });
     
-    const specificMappings: [string, string][] = [
-      ['/data/wordlists/default-words.txt', 'tests/data/wordlists/default-words-for-some-test.txt'],
-    ];
+    it('should also work with exact file mappings', async () => {
+      // Test reading via the exact file mapping
+      const content = await fetcher.fetch('/exact-test-file.txt');
+      
+      // Verify it's the same content
+      expect(content).toContain('This is a test file for DataFileFetcherTestDouble');
+    });
     
-    const fetcher = new DataFileFetcherTestDouble(specificMappings);
+    it('should throw an error if no mapping is found', async () => {
+      await expect(fetcher.fetch('/unknown/path.txt'))
+        .rejects
+        .toThrow('No mapping found for URL: /unknown/path.txt');
+    });
     
-    const content = await fetcher.fetch('/data/wordlists/default-words.txt');
-    expect(content).toBe('specific test content');
-    expect(fs.readFile).toHaveBeenCalledWith(
-      expect.stringContaining(path.join('tests/data/wordlists/default-words-for-some-test.txt')),
-      'utf-8'
-    );
-  });
-  
-  it('should throw an error if no mapping is found', async () => {
-    const routeMappings: [string, string][] = [
-      ['/assets/', 'deploy/assets/'],
-    ];
-    
-    const fetcher = new DataFileFetcherTestDouble(routeMappings);
-    
-    await expect(fetcher.fetch('/unknown/path.txt')).rejects.toThrow('No mapping found for URL: /unknown/path.txt');
-  });
-  
-  it('should throw an error if file reading fails', async () => {
-    // Mock fs.readFile to throw an error
-    (fs.readFile as jest.Mock).mockRejectedValue(new Error('File not found'));
-    
-    const routeMappings: [string, string][] = [
-      ['/data/', 'tests/data/'],
-    ];
-    
-    const fetcher = new DataFileFetcherTestDouble(routeMappings);
-    
-    await expect(fetcher.fetch('/data/missing.txt')).rejects.toThrow('Failed to read file');
+    it('should throw an error if file does not exist', async () => {
+      await expect(fetcher.fetch('/api/test/non-existent-file.txt'))
+        .rejects
+        .toThrow('Failed to read file at');
+    });
   });
 });

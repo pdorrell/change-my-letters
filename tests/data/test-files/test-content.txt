@@ -1,0 +1,2 @@
+This is a test file for DataFileFetcherTestDouble.
+It contains some text content that can be verified in tests.
