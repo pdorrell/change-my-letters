@@ -27,9 +27,8 @@ export class AppState {
   // Reset word interaction model
   resetInteraction: ResetInteraction;
 
-  // Menu state management
-  activeMenuType: 'none' | 'replace' | 'insert' = 'none';
-  activeMenuPosition: number = -1;
+  // For floating menu positioning
+  activeButtonElement: HTMLElement | null = null;
 
   // Audio settings
   sayImmediately: boolean = true;
@@ -146,34 +145,22 @@ export class AppState {
     }
   }
 
-  // Store the button element that triggered the menu
-  activeButtonElement: HTMLElement | null = null;
-
   /**
-   * Open a menu
+   * Toggle a menu open/closed
+   * @param currentlyOpen Current open state of the menu
+   * @param setMenuOpen Function to open the menu
+   * @param buttonElement Reference to the button element that triggered the menu
    */
-  openMenu(menuType: 'replace' | 'insert', position: number, buttonElement: HTMLElement): void {
+  toggleMenu(currentlyOpen: boolean, setMenuOpen: () => void, buttonElement: HTMLElement): void {
     if (!this.currentWord) return;
 
-    // If same menu, close it (toggle behavior)
-    if (this.activeMenuType === menuType && this.activeMenuPosition === position) {
-      this.closeAllMenus();
-      return;
-    }
-
-    // Close any open menu first
+    // Close all menus first
     this.closeAllMenus();
 
-    // Open the new menu
-    this.activeMenuType = menuType;
-    this.activeMenuPosition = position;
-    this.activeButtonElement = buttonElement;
-
-    // Set the corresponding menu state in the model
-    if (menuType === 'replace' && position >= 0 && position < this.currentWord.letterInteractions.length) {
-      this.currentWord.letterInteractions[position].isReplaceMenuOpen = true;
-    } else if (menuType === 'insert' && position >= 0 && position <= this.currentWord.positionInteractions.length) {
-      this.currentWord.positionInteractions[position].isInsertMenuOpen = true;
+    // If the menu was previously closed, open it now
+    if (!currentlyOpen) {
+      this.activeButtonElement = buttonElement;
+      setMenuOpen();
     }
   }
 
@@ -187,8 +174,6 @@ export class AppState {
     this.currentWord.closeAllMenus();
 
     // Reset menu state in AppState
-    this.activeMenuType = 'none';
-    this.activeMenuPosition = -1;
     this.activeButtonElement = null;
   }
 }

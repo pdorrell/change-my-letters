@@ -28,8 +28,12 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
   // Add a document-wide click handler to close menus when clicking outside
   React.useEffect(() => {
     const handleGlobalClick = (e: MouseEvent) => {
+      // Check if there are any open menus by examining the interactions
+      const hasOpenMenus = currentWord.letterInteractions.some(li => li.isReplaceMenuOpen) || 
+                          currentWord.positionInteractions.some(pi => pi.isInsertMenuOpen);
+      
       // If there's an active menu
-      if (appState.activeMenuType !== 'none') {
+      if (hasOpenMenus) {
         // Check if click is outside of menus
         // We don't close if clicked on letter-choice-menu, letter-choice-option,
         // or replace-icon/insert-icon buttons which handle their own clicks

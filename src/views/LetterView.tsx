@@ -33,7 +33,11 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
   const replaceButtonRef = React.useRef<HTMLButtonElement>(null);
 
   const handleReplaceClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    appState.openMenu('replace', letter.position, event.currentTarget);
+    appState.toggleMenu(
+      letterInteraction.isReplaceMenuOpen,
+      () => { letterInteraction.isReplaceMenuOpen = true; },
+      event.currentTarget
+    );
   };
 
   const handleDeleteClick = () => {
