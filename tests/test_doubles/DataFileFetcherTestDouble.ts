@@ -28,14 +28,16 @@ export class DataFileFetcherTestDouble implements DataFileFetcherInterface {
   }
   
   /**
-   * Fetch data by mapping the URL to a local file
-   * @param url The URL to map and fetch
-   * @returns The content of the mapped file
-   * @throws Error if no mapping matches or file cannot be read
+   * Maps a URL to a file path relative to the project root
+   * @param url The URL to route
+   * @returns The file path relative to the project root
+   * @throws Error if no mapping is found for the URL
    */
-  async fetch(url: string): Promise<string> {
+  route(url: string): string {
     // Find a matching route
-    const matchedRoute = this.routeMappings.find(([urlPattern]) => url.startsWith(urlPattern) || url === urlPattern);
+    const matchedRoute = this.routeMappings.find(([urlPattern]) => 
+      url.startsWith(urlPattern) || url === urlPattern
+    );
     
     if (!matchedRoute) {
       throw new Error(`No mapping found for URL: ${url}`);
@@ -44,10 +46,28 @@ export class DataFileFetcherTestDouble implements DataFileFetcherInterface {
     const [urlPattern, filePathPattern] = matchedRoute;
     
     // Replace the URL pattern with the file path pattern
-    const localPath = url.replace(urlPattern, filePathPattern);
-    
-    // Resolve the full path
-    const fullPath = path.join(this.rootPath, localPath);
+    return url.replace(urlPattern, filePathPattern);
+  }
+  
+  /**
+   * Gets the absolute file path for a given URL
+   * @param url The URL to get the absolute path for
+   * @returns The absolute file path
+   * @throws Error if no mapping is found for the URL
+   */
+  getAbsolutePath(url: string): string {
+    const localPath = this.route(url);
+    return path.join(this.rootPath, localPath);
+  }
+  
+  /**
+   * Fetch data by mapping the URL to a local file
+   * @param url The URL to map and fetch
+   * @returns The content of the mapped file
+   * @throws Error if no mapping matches or file cannot be read
+   */
+  async fetch(url: string): Promise<string> {
+    const fullPath = this.getAbsolutePath(url);
     
     try {
       // Read the file
