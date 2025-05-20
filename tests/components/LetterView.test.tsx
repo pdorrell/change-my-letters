@@ -37,10 +37,9 @@ describe('LetterView', () => {
   beforeEach(() => {
     // Create a mock AppState (this is still mocked because it's complex)
     appState = {
-      openMenu: jest.fn(),
+      toggleMenu: jest.fn(),
       closeAllMenus: jest.fn(),
       setNewWord: jest.fn(),
-      activeMenuType: 'none',
       activeButtonElement: null,
       navigateTo: jest.fn(),
       history: {
@@ -105,13 +104,13 @@ describe('LetterView', () => {
     expect(replaceButton).toBeInTheDocument();
   });
 
-  it('calls openMenu when replace icon is clicked', () => {
+  it('calls toggleMenu when replace icon is clicked', () => {
     const { container } = render(<LetterView letterInteraction={letterInteraction} />);
 
     const replaceButton = container.querySelector('.replace-icon:not(.hidden)');
     if (replaceButton) fireEvent.click(replaceButton);
 
-    expect(appState.openMenu).toHaveBeenCalledWith('replace', 0, expect.anything());
+    expect(appState.toggleMenu).toHaveBeenCalledWith(false, expect.any(Function), expect.anything());
   });
 
   it('calls setNewWord when delete icon is clicked', () => {

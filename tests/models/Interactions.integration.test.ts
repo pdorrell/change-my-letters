@@ -85,7 +85,7 @@ describe('Interaction Classes Integration', () => {
           wordInteraction.closeAllMenus();
         }
       }),
-      openMenu: jest.fn(),
+      toggleMenu: jest.fn(),
       currentPage: 'wordView',
       history: { hasVisited: () => false },
       wordGraph: { getNode: (word: string) => new MockWord(word) as unknown as Word },
