@@ -4,8 +4,6 @@ import { PositionInteraction } from '../models/interaction/PositionInteraction';
 import { LetterChoiceMenu } from './CurrentWordView';
 import { Word } from '../models/Word';
 
-interface PositionViewProps { positionInteraction: PositionInteraction; }
-
 /**
  * Placeholder component that maintains the same dimensions as a position
  * but is invisible to the user
@@ -21,6 +19,8 @@ export const PositionPlaceholder: React.FC = () => {
 /**
  * View component for displaying a position where letters can be inserted
  */
+interface PositionViewProps { positionInteraction: PositionInteraction; }
+
 export const PositionView: React.FC<PositionViewProps> = observer(({ positionInteraction }) => {
   const position = positionInteraction.position;
   const appState = positionInteraction.wordInteraction.appState;

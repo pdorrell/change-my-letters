@@ -17,11 +17,11 @@ import {
   FloatingPortal
 } from '@floating-ui/react';
 
-interface CurrentWordViewProps { currentWord: WordInteraction; }
-
 /**
  * View component for displaying the current word
  */
+interface CurrentWordViewProps { currentWord: WordInteraction; }
+
 export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ currentWord }) => {
   const appState = currentWord.appState;
 
@@ -124,7 +124,7 @@ interface LetterChoiceMenuProps { options: LetterChange[]; onSelect: (wordObj: W
 export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ options, onSelect, previouslyVisited, wordInteraction }) => {
   // Get appState directly from the wordInteraction prop
   const appState = wordInteraction.appState;
-  
+
   // Using floating-ui for positioning
   const {refs, floatingStyles, context} = useFloating({
     // Set the reference to the active button element
@@ -155,16 +155,16 @@ export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ options, onS
       }) // Shift to keep within viewport
     ],
   });
-  
+
   // Handle interactions for dismissal, accessibility, etc.
   const dismiss = useDismiss(context);
   const role = useRole(context, { role: 'menu' });
-  
+
   const {getFloatingProps} = useInteractions([
     dismiss,
     role
   ]);
-  
+
   // Stop propagation of clicks within the menu to prevent the global handler from closing it
   const handleMenuClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -185,7 +185,7 @@ export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ options, onS
         {options.map((change, index) => {
           const letter = change.letter;
           const resultWord = change.result;
-          
+
           // Check if this letter would lead to a previously visited word
           const isPreviouslyVisited = previouslyVisited.includes(resultWord.word);
 
