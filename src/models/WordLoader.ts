@@ -1,7 +1,7 @@
 import { WordGraph } from './WordGraph';
 import { WordGraphBuilder } from './WordGraphBuilder';
 import { ParseWordGraphJsonException } from './Word';
-import { ErrorHandler } from '../utils/ErrorHandler';
+import { ErrorReport } from '../utils/ErrorReport';
 import { DataFileFetcherInterface } from './DataFileFetcherInterface';
 
 /**
@@ -39,13 +39,12 @@ export class WordLoader {
       const data = JSON.parse(json);
       wordGraph.loadFromJson(data);
     } catch (error) {
-      // Explicitly capture and display the error
+      // Create an ErrorReport with a context-specific message and the original error
       if (error instanceof ParseWordGraphJsonException) {
-        ErrorHandler.reportError(error, 'Word Graph Parser');
+        throw new ErrorReport(`[Word Graph Parser] ${error.message}`, error);
       } else {
-        ErrorHandler.reportError(`Error loading word graph from JSON: ${error}`, 'Word Loader');
+        throw new ErrorReport(`Error loading word graph from JSON`, error);
       }
-      throw error; // Re-throw to be handled by the caller
     }
   }
 
@@ -76,10 +75,7 @@ export class WordLoader {
       return wordGraph;
     } catch (error) {
       // Even the sample graph could theoretically have an error
-      ErrorHandler.reportError(`Error creating sample word graph: ${error}`, 'Word Loader');
-      
-      // Return an empty graph in this case
-      return new WordGraph();
+      throw new ErrorReport('Error creating sample word graph', error);
     }
   }
 
@@ -91,8 +87,7 @@ export class WordLoader {
       // Use the dataFileFetcher to load the file
       return await this.dataFileFetcher.fetch(`/data/wordlists/${filename}`);
     } catch (error) {
-      ErrorHandler.reportError(`Error loading data file ${filename}: ${error}`, 'Word Loader');
-      return '';
+      throw new ErrorReport(`Error loading data file ${filename}`, error);
     }
   }
 
@@ -104,24 +99,36 @@ export class WordLoader {
 
     try {
       // Load the pre-computed graph
-      const graphJson = await this.loadDataFile('default-words-graph.json');
-
-      if (graphJson) {
-        // Load the JSON graph - no fallback, if this fails we let the exception propagate
+      let graphJson;
+      try {
+        graphJson = await this.loadDataFile('default-words-graph.json');
+        
+        // Load the JSON graph
         this.loadWordGraphFromJson(graphJson, wordGraph);
         console.log('Loaded default word graph from JSON');
-      } else {
-        // Only if the JSON file wasn't found, try building from word list
-        const wordListText = await this.loadDataFile('default-words.txt');
-        if (wordListText) {
+      } catch (graphError) {
+        // If loading the graph JSON fails, try building from word list
+        try {
+          const wordListText = await this.loadDataFile('default-words.txt');
+          
           const wordList = this.loadWordListFromText(wordListText);
           const builder = new WordGraphBuilder(wordList);
           const jsonGraph = builder.build();
+          
           wordGraph.loadFromJson(jsonGraph);
           console.log('Computed default word graph from word list');
-        } else {
-          // If neither file exists, use sample graph
-          return this.createSampleWordGraph();
+        } catch (wordListError) {
+          // If that also fails, try the sample graph
+          try {
+            return this.createSampleWordGraph();
+          } catch (sampleGraphError) {
+            // If all methods fail, throw a comprehensive error
+            throw new ErrorReport('Failed to load or create any word graph', {
+              graphError,
+              wordListError,
+              sampleGraphError
+            });
+          }
         }
       }
       
@@ -130,11 +137,13 @@ export class WordLoader {
 
       return wordGraph;
     } catch (error) {
-      // Display error to the user
-      ErrorHandler.reportError(`Error loading default word graph: ${error}`, 'Word Loader');
+      // If the error is already an ErrorReport, rethrow it
+      if (error instanceof ErrorReport) {
+        throw error;
+      }
       
-      // Re-throw the error to prevent fallback - as requested
-      throw error;
+      // Otherwise, wrap it in an ErrorReport
+      throw new ErrorReport('Error loading default word graph', error);
     }
   }
 }

@@ -2,12 +2,8 @@ import { WordLoader } from '../../src/models/WordLoader';
 import { DataFileFetcherTestDouble } from '../test_doubles/DataFileFetcherTestDouble';
 import { WordGraph } from '../../src/models/WordGraph';
 
-// Mock the ErrorHandler
-jest.mock('../../src/utils/ErrorHandler', () => ({
-  ErrorHandler: {
-    reportError: jest.fn()
-  }
-}));
+// Import ErrorReport
+import { ErrorReport } from '../../src/utils/ErrorReport';
 
 describe('WordLoader', () => {
   const mockWordListText = 'cat\nhat\nrat\nbat\n';
@@ -99,12 +95,12 @@ describe('WordLoader', () => {
     expect(graph.words.size).toBeGreaterThan(0);
   });
 
-  it('should handle error when loading data file', async () => {
+  it('should throw ErrorReport when loading data file fails', async () => {
     // Mock fetch to throw an error
     jest.spyOn(dataFileFetcher, 'fetch').mockRejectedValueOnce(new Error('File not found'));
     
-    const text = await wordLoader.loadDataFile('nonexistent-file.txt');
-    expect(text).toBe('');
+    await expect(wordLoader.loadDataFile('nonexistent-file.txt')).rejects.toThrow(ErrorReport);
+    await expect(wordLoader.loadDataFile('nonexistent-file.txt')).rejects.toThrow('Error loading data file nonexistent-file.txt');
   });
   
   it('should load default word graph', async () => {
