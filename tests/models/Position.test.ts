@@ -1,11 +1,11 @@
 import { Position } from '../../src/models/Position';
 import { WordInteraction } from '../../src/models/interaction/WordInteraction';
 import { AppState } from '../../src/models/AppState';
-import { WordGraphNode } from '../../src/models/WordGraphNode';
+import { Word } from '../../src/models/Word';
 import { Letter } from '../../src/models/Letter';
 
-// Mock WordGraphNode for testing
-class MockWordGraphNode {
+// Mock Word for testing
+class MockWord {
   word: string;
   deletes: boolean[];
   inserts: string[];
@@ -27,7 +27,7 @@ class MockWordGraphNode {
   get letters(): Letter[] {
     if (!this._letters) {
       this._letters = Array.from(this.word).map(
-        (letter, index) => new Letter(this as unknown as WordGraphNode, letter, index)
+        (letter, index) => new Letter(this as unknown as Word, letter, index)
       );
     }
     return this._letters;
@@ -37,7 +37,7 @@ class MockWordGraphNode {
     if (!this._positions) {
       this._positions = Array(this.word.length + 1)
         .fill(0)
-        .map((_, index) => new Position(this as unknown as WordGraphNode, index));
+        .map((_, index) => new Position(this as unknown as Word, index));
     }
     return this._positions;
   }
@@ -86,7 +86,7 @@ describe('Position', () => {
       closeAllMenus: jest.fn(),
     } as unknown as AppState;
     
-    const node = new MockWordGraphNode('test') as unknown as WordGraphNode;
+    const node = new MockWord('test') as unknown as Word;
     currentWord = new WordInteraction(node, appState, false);
   });
 

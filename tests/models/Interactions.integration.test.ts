@@ -3,11 +3,11 @@ import { LetterInteraction } from '../../src/models/interaction/LetterInteractio
 import { PositionInteraction } from '../../src/models/interaction/PositionInteraction';
 import { Letter } from '../../src/models/Letter';
 import { Position } from '../../src/models/Position';
-import { WordGraphNode } from '../../src/models/WordGraphNode';
+import { Word } from '../../src/models/Word';
 import { AppState } from '../../src/models/AppState';
 
-// Create a mock for WordGraphNode
-class MockWordGraphNode {
+// Create a mock for Word
+class MockWord {
   word: string;
   deletes: boolean[];
   inserts: string[];
@@ -29,7 +29,7 @@ class MockWordGraphNode {
   get letters(): Letter[] {
     if (!this._letters) {
       this._letters = Array.from(this.word).map(
-        (letter, index) => new Letter(this as unknown as WordGraphNode, letter, index)
+        (letter, index) => new Letter(this as unknown as Word, letter, index)
       );
     }
     return this._letters;
@@ -39,7 +39,7 @@ class MockWordGraphNode {
     if (!this._positions) {
       this._positions = Array(this.word.length + 1)
         .fill(0)
-        .map((_, index) => new Position(this as unknown as WordGraphNode, index));
+        .map((_, index) => new Position(this as unknown as Word, index));
     }
     return this._positions;
   }
@@ -88,12 +88,12 @@ describe('Interaction Classes Integration', () => {
       openMenu: jest.fn(),
       currentPage: 'wordView',
       history: { hasVisited: () => false },
-      wordGraph: { getNode: (word: string) => new MockWordGraphNode(word) as unknown as WordGraphNode },
+      wordGraph: { getNode: (word: string) => new MockWord(word) as unknown as Word },
       isLoading: false,
     } as unknown as AppState;
     
     // Create a new word interaction for testing
-    const node = new MockWordGraphNode('test') as unknown as WordGraphNode;
+    const node = new MockWord('test') as unknown as Word;
     wordInteraction = new WordInteraction(node, appState, false);
   });
   
@@ -199,7 +199,7 @@ describe('Interaction Classes Integration', () => {
     const oldPositionInteractions = [...wordInteraction.positionInteractions];
     
     // Update the word
-    const newNode = new MockWordGraphNode('hello') as unknown as WordGraphNode;
+    const newNode = new MockWord('hello') as unknown as Word;
     wordInteraction.updateWord(newNode, false);
     
     // Verify the interactions are new objects

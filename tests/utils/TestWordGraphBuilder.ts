@@ -80,7 +80,15 @@ export function createTestWordGraph(words: string[] = testWordLists.minimal): Wo
     if (wordObj) return wordObj;
     
     // For test purposes, if the word doesn't exist, return a fake Word object
-    return this.getNode(this.words.values().next().value);
+    const firstWordValue = this.words.values().next().value;
+    if (typeof firstWordValue !== 'string') {
+      throw new Error("Failed to find any word string in the word graph");
+    }
+    const fallbackWord = this.getNode(firstWordValue);
+    if (!fallbackWord) {
+      throw new Error("Failed to find any word in the word graph");
+    }
+    return fallbackWord;
   };
   
   return wordGraph;
