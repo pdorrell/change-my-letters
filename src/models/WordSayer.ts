@@ -1,5 +1,3 @@
-import { makeAutoObservable } from 'mobx';
-
 /**
  * Class responsible for pre-loading and playing word audio
  */
@@ -8,7 +6,7 @@ export class WordSayer {
   private loadedWords: Map<string, HTMLAudioElement> = new Map();
 
   constructor() {
-    makeAutoObservable(this);
+    // No need for makeAutoObservable as this class doesn't contain observable state
   }
 
   /**
