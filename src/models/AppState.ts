@@ -2,7 +2,6 @@ import { makeAutoObservable } from 'mobx';
 import { HistoryModel } from './HistoryModel';
 import { WordGraph } from './WordGraph';
 import { WordInteraction } from './interaction/WordInteraction';
-import { WordSayer } from './WordSayer';
 import { WordSayerInterface } from './WordSayerInterface';
 import { ResetInteraction } from './ResetInteraction';
 import { Word } from './Word';
