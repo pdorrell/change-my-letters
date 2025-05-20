@@ -1,64 +1,138 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
+import { LetterChoiceMenu } from '../../src/views/CurrentWordView';
+import { createTestWordGraph, testWordLists } from '../utils/TestWordGraphBuilder';
+import { WordInteraction } from '../../src/models/interaction/WordInteraction';
+import { WordSayer } from '../../src/models/WordSayer';
 
-// Mock the LetterChoiceMenu component directly instead of importing it
-// This avoids the real component's useEffect and useRef that cause issues
-const LetterChoiceMenu = ({ options, previouslyVisited }: { options: string[], previouslyVisited: string[], onSelect: (letter: string) => void }) => (
-  <div className="letter-choice-menu">
-    {options.map((letter, i) => (
-      <div 
-        key={i} 
-        className={`letter-choice-option ${previouslyVisited.includes(letter) ? 'previously-visited' : ''}`}
-      >
-        {letter}
-      </div>
-    ))}
-  </div>
-);
+// Mock floating-ui for menus since we don't need real positioning in tests
+jest.mock('@floating-ui/react', () => ({
+  useFloating: () => ({
+    refs: { setFloating: jest.fn() },
+    floatingStyles: {},
+    context: {},
+  }),
+  offset: jest.fn(() => ({ name: 'offset' })),
+  flip: jest.fn(() => ({ name: 'flip' })),
+  shift: jest.fn(() => ({ name: 'shift' })),
+  autoUpdate: jest.fn(),
+  useDismiss: jest.fn(() => ({ name: 'dismiss' })),
+  useRole: jest.fn(() => ({ name: 'role' })),
+  useInteractions: jest.fn(() => ({ getFloatingProps: jest.fn() })),
+  FloatingPortal: ({ children }: { children: React.ReactNode }) => <div data-testid="letter-choice-menu">{children}</div>,
+}));
+
+// Mock WordSayer to avoid audio issues in tests
+jest.mock('../../src/models/WordSayer', () => ({
+  WordSayer: jest.fn().mockImplementation(() => ({
+    preload: jest.fn(),
+    say: jest.fn()
+  }))
+}));
 
 describe('LetterChoiceMenu', () => {
-  it('renders letter options correctly', () => {
-    const options = ['a', 'b', 'c'];
-    const onSelect = jest.fn();
-    const previouslyVisited: string[] = [];
+  let wordGraph: any;
+  let appState: any;
+  let wordInteraction: WordInteraction;
+  let options: any[]; // Letter change options
+  let onSelect: jest.Mock;
+  
+  beforeEach(() => {
+    // Create a mock AppState
+    appState = {
+      openMenu: jest.fn(),
+      closeAllMenus: jest.fn(),
+      setNewWord: jest.fn(),
+      activeMenuType: 'replace',
+      activeButtonElement: document.createElement('button'),
+      navigateTo: jest.fn(),
+      history: {
+        hasVisited: jest.fn(word => ['bat', 'rat'].includes(word)),
+        currentIndex: 0,
+        canUndo: false,
+        canRedo: false,
+        words: []
+      }
+    };
     
-    const { container } = render(
-      <LetterChoiceMenu 
-        options={options} 
-        onSelect={onSelect} 
-        previouslyVisited={previouslyVisited}
-      />
-    );
+    // Create a mock WordInteraction
+    wordInteraction = {
+      value: 'cat',
+      previouslyVisited: false,
+      appState: appState
+    } as any;
     
-    // Should render one div per option
-    const optionElements = container.querySelectorAll('.letter-choice-option');
-    expect(optionElements).toHaveLength(3);
+    // Create sample letter change options
+    options = [
+      { letter: 'b', result: { word: 'bat' } },
+      { letter: 'h', result: { word: 'hat' } },
+      { letter: 'r', result: { word: 'rat' } }
+    ];
     
-    // Should render the correct text for each option
-    expect(optionElements[0].textContent).toBe('a');
-    expect(optionElements[1].textContent).toBe('b');
-    expect(optionElements[2].textContent).toBe('c');
+    // Mock select handler
+    onSelect = jest.fn();
   });
   
-  it('adds previously-visited class to options that have been visited', () => {
-    const options = ['a', 'b', 'c'];
-    const onSelect = jest.fn();
-    const previouslyVisited = ['a', 'c']; // 'a' and 'c' have been visited
-    
+  it('renders letter options correctly', () => {
     const { container } = render(
       <LetterChoiceMenu 
         options={options} 
         onSelect={onSelect} 
-        previouslyVisited={previouslyVisited}
+        previouslyVisited={['bat', 'rat']} 
+        wordInteraction={wordInteraction} 
       />
     );
     
-    // Get all letter options
-    const optionElements = container.querySelectorAll('.letter-choice-option');
+    // Should render the letter options
+    const letterOption1 = container.querySelector('.letter-choice-option:nth-child(1)');
+    const letterOption2 = container.querySelector('.letter-choice-option:nth-child(2)');
+    const letterOption3 = container.querySelector('.letter-choice-option:nth-child(3)');
     
-    // Check that 'a' and 'c' have the previously-visited class
-    expect(optionElements[0]).toHaveClass('previously-visited');
-    expect(optionElements[1]).not.toHaveClass('previously-visited');
-    expect(optionElements[2]).toHaveClass('previously-visited');
+    expect(letterOption1?.textContent).toBe('b');
+    expect(letterOption2?.textContent).toBe('h');
+    expect(letterOption3?.textContent).toBe('r');
+  });
+  
+  it('marks previously visited options correctly', () => {
+    const { container } = render(
+      <LetterChoiceMenu 
+        options={options} 
+        onSelect={onSelect} 
+        previouslyVisited={['bat', 'rat']} 
+        wordInteraction={wordInteraction} 
+      />
+    );
+    
+    // Get the letter option elements
+    const letterOption1 = container.querySelector('.letter-choice-option:nth-child(1)');
+    const letterOption2 = container.querySelector('.letter-choice-option:nth-child(2)');
+    const letterOption3 = container.querySelector('.letter-choice-option:nth-child(3)');
+    
+    // First option (b -> bat) should be previously visited
+    expect(letterOption1?.classList.contains('previously-visited')).toBe(true);
+    
+    // Second option (h -> hat) should not be previously visited
+    expect(letterOption2?.classList.contains('previously-visited')).toBe(false);
+    
+    // Third option (r -> rat) should be previously visited
+    expect(letterOption3?.classList.contains('previously-visited')).toBe(true);
+  });
+  
+  it('calls onSelect when a letter choice is clicked', () => {
+    const { container } = render(
+      <LetterChoiceMenu 
+        options={options} 
+        onSelect={onSelect} 
+        previouslyVisited={['bat', 'rat']} 
+        wordInteraction={wordInteraction} 
+      />
+    );
+    
+    // Get the first letter option and click it
+    const letterOption1 = container.querySelector('.letter-choice-option:nth-child(1)');
+    if (letterOption1) fireEvent.click(letterOption1);
+    
+    // onSelect should have been called with the result of the first option
+    expect(onSelect).toHaveBeenCalledWith({ word: 'bat' });
   });
 });
