@@ -1,7 +1,9 @@
+import { WordSayerInterface } from './WordSayerInterface';
+
 /**
  * Class responsible for pre-loading and playing word audio
  */
-export class WordSayer {
+export class WordSayer implements WordSayerInterface {
   // Maps words to their Audio objects
   private loadedWords: Map<string, HTMLAudioElement> = new Map();
 

@@ -3,6 +3,7 @@ import { AppState } from '../../src/models/AppState';
 import { Word } from '../../src/models/Word';
 import { WordGraph } from '../../src/models/WordGraph';
 import { WordGraphBuilder } from '../../src/models/WordGraphBuilder';
+import { WordSayerTestDouble } from '../test_doubles/WordSayerTestDouble';
 
 describe('HistoryModel', () => {
   let historyModel: HistoryModel;
@@ -21,8 +22,11 @@ describe('HistoryModel', () => {
     wordGraph = new WordGraph();
     wordGraph.loadFromJson(graphJson);
     
-    // Create an AppState instance with the word graph
-    appState = new AppState('cat', wordGraph, 'test-version');
+    // Create a WordSayerTestDouble
+    const wordSayerTestDouble = new WordSayerTestDouble();
+    
+    // Create an AppState instance with the word graph and test double
+    appState = new AppState('cat', wordGraph, 'test-version', wordSayerTestDouble);
     
     // Get the Word object
     const catWord = wordGraph.getNode('cat');

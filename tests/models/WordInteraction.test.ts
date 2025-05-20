@@ -5,6 +5,7 @@ import { Letter } from '../../src/models/Letter';
 import { Position } from '../../src/models/Position';
 import { Word } from '../../src/models/Word';
 import { AppState } from '../../src/models/AppState';
+import { WordSayerTestDouble } from '../test_doubles/WordSayerTestDouble';
 
 // Create a mock for Word
 class MockWord {
@@ -77,11 +78,13 @@ describe('WordInteraction', () => {
   let appState: AppState;
   
   beforeEach(() => {
+    const wordSayerTestDouble = new WordSayerTestDouble();
     appState = {
       currentPage: 'wordView',
       history: { hasVisited: () => false },
       wordGraph: { getNode: (word: string) => new MockWord(word) as unknown as Word },
       isLoading: false,
+      wordSayer: wordSayerTestDouble,
     } as unknown as AppState;
   });
   
@@ -234,5 +237,16 @@ describe('WordInteraction', () => {
     expect(wordInteraction.value).toBe('cat');
     expect(wordInteraction.letterInteractions.length).toBe(3);
     expect(wordInteraction.positionInteractions.length).toBe(4);
+  });
+  
+  it('should call the wordSayer.say method with the current word', () => {
+    const wordObj = new MockWord('cat') as unknown as Word;
+    const wordInteraction = new WordInteraction(wordObj, appState, false);
+    
+    // Call the say method
+    wordInteraction.say();
+    
+    // Verify that the test double's say method was called with 'cat'
+    expect((appState.wordSayer as WordSayerTestDouble).playedWords).toEqual(['cat']);
   });
 });

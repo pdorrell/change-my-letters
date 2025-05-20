@@ -3,6 +3,7 @@ import { HistoryModel } from './HistoryModel';
 import { WordGraph } from './WordGraph';
 import { WordInteraction } from './interaction/WordInteraction';
 import { WordSayer } from './WordSayer';
+import { WordSayerInterface } from './WordSayerInterface';
 import { ResetInteraction } from './ResetInteraction';
 import { Word } from './Word';
 
@@ -23,7 +24,7 @@ export class AppState {
   history: HistoryModel;
 
   // Audio player for word pronunciation
-  wordSayer: WordSayer;
+  public readonly wordSayer: WordSayerInterface;
   
   // Reset word interaction model
   resetInteraction: ResetInteraction;
@@ -42,11 +43,14 @@ export class AppState {
     public readonly wordGraph: WordGraph,
     
     // Application version
-    public readonly version: string
+    public readonly version: string,
+    
+    // Audio player for word pronunciation
+    wordSayer?: WordSayerInterface
   ) {
 
-    // Initialize the word sayer
-    this.wordSayer = new WordSayer();
+    // Initialize the word sayer or use the provided one
+    this.wordSayer = wordSayer || new WordSayer();
     
     // Initialize reset interaction
     this.resetInteraction = new ResetInteraction(this);
@@ -137,11 +141,11 @@ export class AppState {
   /**
    * Creates a new game state with the current word graph but a new starting word
    */
-  static createNewGame(wordGraph: WordGraph, version: string): AppState {
+  static createNewGame(wordGraph: WordGraph, version: string, wordSayer?: WordSayerInterface): AppState {
     if (wordGraph.words.size > 0) {
       const words = Array.from(wordGraph.words);
       const randomWord = words[Math.floor(Math.random() * words.length)];
-      return new AppState(randomWord, wordGraph, version);
+      return new AppState(randomWord, wordGraph, version, wordSayer);
     }
     throw new Error("Cannot create a new game with an empty word graph");
   }
