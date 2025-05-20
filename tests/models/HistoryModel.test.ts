@@ -125,7 +125,8 @@ describe('HistoryModel', () => {
       letter: 'b'
     };
     
-    historyModel.addWord('bat', change);
+    const batWord = appState.wordGraph.getNode('bat')!;
+    historyModel.addWord(batWord, change);
     
     // First makes 'cat' visited
     // Then the current word 'bat' isn't yet visited
@@ -254,7 +255,8 @@ describe('HistoryModel', () => {
       letter: 'b'
     };
     
-    historyModel.addWord('bat', change);
+    const batWord = appState.wordGraph.getNode('bat')!;
+    historyModel.addWord(batWord, change);
     
     // After adding a word, can undo but can't redo
     expect(historyModel.canUndo).toBe(true);

@@ -6,6 +6,19 @@ import { AppState } from '../../src/models/AppState';
 import { createTestWordGraph, testWordLists } from '../utils/TestWordGraphBuilder';
 import { WordSayer } from '../../src/models/WordSayer';
 
+// Define test-specific interfaces to avoid readonly issue
+interface TestLetterInteraction {
+  letter: { value: string, position: number, canDelete: boolean, canReplace: boolean };
+  wordInteraction: any;
+  isReplaceMenuOpen: boolean;
+}
+
+interface TestPositionInteraction {
+  position: { index: number, canInsert: boolean };
+  wordInteraction: any;
+  isInsertMenuOpen: boolean;
+}
+
 // Mock child components for simpler testing
 jest.mock('../../src/views/LetterView', () => ({
   LetterView: ({ letterInteraction }: any) => (
@@ -101,17 +114,17 @@ describe('CurrentWordView', () => {
           letter: { value: 'c', position: 0, canDelete: true, canReplace: true },
           wordInteraction: { /* circular reference */ },
           isReplaceMenuOpen: false,
-        },
+        } as TestLetterInteraction,
         { 
           letter: { value: 'a', position: 1, canDelete: true, canReplace: true },
           wordInteraction: { /* circular reference */ },
           isReplaceMenuOpen: false,
-        },
+        } as TestLetterInteraction,
         { 
           letter: { value: 't', position: 2, canDelete: true, canReplace: true },
           wordInteraction: { /* circular reference */ },
           isReplaceMenuOpen: false,
-        }
+        } as TestLetterInteraction
       ],
       
       // Mock positionInteractions with direct values
@@ -120,28 +133,79 @@ describe('CurrentWordView', () => {
           position: { index: 0, canInsert: true },
           wordInteraction: { /* circular reference */ },
           isInsertMenuOpen: false,
-        },
+        } as TestPositionInteraction,
         { 
           position: { index: 1, canInsert: true },
           wordInteraction: { /* circular reference */ },
           isInsertMenuOpen: false,
-        },
+        } as TestPositionInteraction,
         { 
           position: { index: 2, canInsert: true },
           wordInteraction: { /* circular reference */ },
           isInsertMenuOpen: false,
-        },
+        } as TestPositionInteraction,
         { 
           position: { index: 3, canInsert: true },
           wordInteraction: { /* circular reference */ },
           isInsertMenuOpen: false,
-        }
+        } as TestPositionInteraction
       ]
     } as unknown as WordInteraction;
     
-    // Fix circular references
-    currentWord.letterInteractions.forEach(li => li.wordInteraction = currentWord);
-    currentWord.positionInteractions.forEach(pi => pi.wordInteraction = currentWord);
+    // Create with circular references set upfront
+    const letterInteractions = [
+      { 
+        letter: { value: 'c', position: 0, canDelete: true, canReplace: true },
+        wordInteraction: null as any,
+        isReplaceMenuOpen: false,
+      } as TestLetterInteraction,
+      { 
+        letter: { value: 'a', position: 1, canDelete: true, canReplace: true },
+        wordInteraction: null as any,
+        isReplaceMenuOpen: false,
+      } as TestLetterInteraction,
+      { 
+        letter: { value: 't', position: 2, canDelete: true, canReplace: true },
+        wordInteraction: null as any,
+        isReplaceMenuOpen: false,
+      } as TestLetterInteraction
+    ];
+    
+    const positionInteractions = [
+      { 
+        position: { index: 0, canInsert: true },
+        wordInteraction: null as any,
+        isInsertMenuOpen: false,
+      } as TestPositionInteraction,
+      { 
+        position: { index: 1, canInsert: true },
+        wordInteraction: null as any,
+        isInsertMenuOpen: false,
+      } as TestPositionInteraction,
+      { 
+        position: { index: 2, canInsert: true },
+        wordInteraction: null as any,
+        isInsertMenuOpen: false,
+      } as TestPositionInteraction,
+      { 
+        position: { index: 3, canInsert: true },
+        wordInteraction: null as any,
+        isInsertMenuOpen: false,
+      } as TestPositionInteraction
+    ];
+    
+    // Create the object first
+    currentWord = {
+      value: 'cat',
+      previouslyVisited: false,
+      appState: appState,
+      letterInteractions,
+      positionInteractions
+    } as unknown as WordInteraction;
+    
+    // Now fix circular references
+    letterInteractions.forEach(li => (li as any).wordInteraction = currentWord);
+    positionInteractions.forEach(pi => (pi as any).wordInteraction = currentWord);
   });
   
   it('renders the current word with letters and positions', () => {
@@ -216,37 +280,40 @@ describe('CurrentWordView', () => {
   });
   
   it('handles different word lengths', () => {
-    // Create a longer word directly with mock properties
+    // Not needed anymore - we'll use the longWord created below
+    
+    // Create with circular references set upfront
+    const longLetterInteractions = [
+      { letter: { value: 'l', position: 0, canDelete: true, canReplace: true }, wordInteraction: null as any, isReplaceMenuOpen: false } as TestLetterInteraction,
+      { letter: { value: 'o', position: 1, canDelete: true, canReplace: true }, wordInteraction: null as any, isReplaceMenuOpen: false } as TestLetterInteraction,
+      { letter: { value: 'n', position: 2, canDelete: true, canReplace: true }, wordInteraction: null as any, isReplaceMenuOpen: false } as TestLetterInteraction,
+      { letter: { value: 'g', position: 3, canDelete: true, canReplace: true }, wordInteraction: null as any, isReplaceMenuOpen: false } as TestLetterInteraction,
+      { letter: { value: 'e', position: 4, canDelete: true, canReplace: true }, wordInteraction: null as any, isReplaceMenuOpen: false } as TestLetterInteraction,
+      { letter: { value: 'r', position: 5, canDelete: true, canReplace: true }, wordInteraction: null as any, isReplaceMenuOpen: false } as TestLetterInteraction
+    ];
+    
+    const longPositionInteractions = [
+      { position: { index: 0, canInsert: true }, wordInteraction: null as any, isInsertMenuOpen: false } as TestPositionInteraction,
+      { position: { index: 1, canInsert: true }, wordInteraction: null as any, isInsertMenuOpen: false } as TestPositionInteraction,
+      { position: { index: 2, canInsert: true }, wordInteraction: null as any, isInsertMenuOpen: false } as TestPositionInteraction,
+      { position: { index: 3, canInsert: true }, wordInteraction: null as any, isInsertMenuOpen: false } as TestPositionInteraction,
+      { position: { index: 4, canInsert: true }, wordInteraction: null as any, isInsertMenuOpen: false } as TestPositionInteraction,
+      { position: { index: 5, canInsert: true }, wordInteraction: null as any, isInsertMenuOpen: false } as TestPositionInteraction,
+      { position: { index: 6, canInsert: true }, wordInteraction: null as any, isInsertMenuOpen: false } as TestPositionInteraction
+    ];
+    
+    // Create the object first
     const longWord = {
       value: 'longer',
       previouslyVisited: false,
       appState: appState,
-      
-      // Mock letterInteractions with direct values for a longer word
-      letterInteractions: [
-        { letter: { value: 'l', position: 0, canDelete: true, canReplace: true }, wordInteraction: {} },
-        { letter: { value: 'o', position: 1, canDelete: true, canReplace: true }, wordInteraction: {} },
-        { letter: { value: 'n', position: 2, canDelete: true, canReplace: true }, wordInteraction: {} },
-        { letter: { value: 'g', position: 3, canDelete: true, canReplace: true }, wordInteraction: {} },
-        { letter: { value: 'e', position: 4, canDelete: true, canReplace: true }, wordInteraction: {} },
-        { letter: { value: 'r', position: 5, canDelete: true, canReplace: true }, wordInteraction: {} }
-      ],
-      
-      // Mock positionInteractions with direct values for a longer word
-      positionInteractions: [
-        { position: { index: 0, canInsert: true }, wordInteraction: {} },
-        { position: { index: 1, canInsert: true }, wordInteraction: {} },
-        { position: { index: 2, canInsert: true }, wordInteraction: {} },
-        { position: { index: 3, canInsert: true }, wordInteraction: {} },
-        { position: { index: 4, canInsert: true }, wordInteraction: {} },
-        { position: { index: 5, canInsert: true }, wordInteraction: {} },
-        { position: { index: 6, canInsert: true }, wordInteraction: {} }
-      ]
+      letterInteractions: longLetterInteractions,
+      positionInteractions: longPositionInteractions
     } as unknown as WordInteraction;
     
-    // Fix circular references
-    longWord.letterInteractions.forEach(li => li.wordInteraction = longWord);
-    longWord.positionInteractions.forEach(pi => pi.wordInteraction = longWord);
+    // Now fix circular references
+    longLetterInteractions.forEach(li => (li as any).wordInteraction = longWord);
+    longPositionInteractions.forEach(pi => (pi as any).wordInteraction = longWord);
     
     const { getAllByTestId } = render(<CurrentWordView currentWord={longWord} />);
     
