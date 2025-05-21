@@ -242,8 +242,9 @@ describe('WordInteraction', () => {
     expect(wordInteraction.previouslyVisited).toBe(true);
   });
 
-  it('should initialize with a string and get the word from the graph', () => {
-    const wordInteraction = new WordInteraction('cat', appState, menuManager, false);
+  it('should initialize with a Word object', () => {
+    const catWord = new MockWord('cat') as unknown as Word;
+    const wordInteraction = new WordInteraction(catWord, appState, menuManager, false);
     
     expect(wordInteraction.value).toBe('cat');
     expect(wordInteraction.letterInteractions.length).toBe(3);
