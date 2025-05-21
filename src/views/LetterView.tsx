@@ -2,7 +2,6 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { LetterInteraction } from '../models/interaction/LetterInteraction';
 import { LetterChoiceMenu } from './CurrentWordView';
-import { Word } from '../models/Word';
 
 /**
  * Placeholder component that maintains the same dimensions as a letter
@@ -47,10 +46,6 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
 
   // Case change handler has been removed
 
-  const handleWordChoice = (newWord: Word) => {
-    letterInteraction.setNewWord(newWord);
-  };
-
   return (
     <div className="letter-container">
       <div className="letter">
@@ -83,7 +78,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
       {letterInteraction.isReplaceMenuOpen && (
         <LetterChoiceMenu
           options={letter.changes.replaceChanges}
-          onSelect={handleWordChoice}
+          onSelect={(word) => letterInteraction.setNewWord(word)}
           previouslyVisited={[]} // We'll add this functionality later
           menuManager={letterInteraction.menuManager}
         />

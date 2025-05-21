@@ -2,7 +2,6 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { PositionInteraction } from '../models/interaction/PositionInteraction';
 import { LetterChoiceMenu } from './CurrentWordView';
-import { Word } from '../models/Word';
 
 /**
  * Placeholder component that maintains the same dimensions as a position
@@ -33,10 +32,6 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ positionInt
     );
   };
 
-  const handleWordChoice = (newWord: Word) => {
-    positionInteraction.setNewWord(newWord);
-  };
-
   return (
     <div className="position-container">
       <button
@@ -53,7 +48,7 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ positionInt
       {positionInteraction.isInsertMenuOpen && (
         <LetterChoiceMenu
           options={position.changes.insertChanges}
-          onSelect={handleWordChoice}
+          onSelect={(word) => positionInteraction.setNewWord(word)}
           previouslyVisited={[]} // We'll add this functionality later
           menuManager={positionInteraction.menuManager}
         />
