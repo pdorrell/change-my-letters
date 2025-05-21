@@ -128,11 +128,10 @@ import { WordSelectionByLetter } from '../models/WordSelectionByLetter';
 
 interface LetterChoiceMenuProps { 
   wordSelectionByLetter: WordSelectionByLetter; 
-  previouslyVisited: Set<string>; 
   menuManager: MenuManager; 
 }
 
-export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ wordSelectionByLetter, previouslyVisited, menuManager }) => {
+export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ wordSelectionByLetter, menuManager }) => {
   const { options, onSelect } = wordSelectionByLetter;
   // Using floating-ui for positioning
   const {refs, floatingStyles, context} = useFloating({
@@ -196,7 +195,7 @@ export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ wordSelectio
           const resultWord = change.result;
 
           // Check if this letter would lead to a previously visited word
-          const isPreviouslyVisited = previouslyVisited.has(resultWord.word);
+          const isPreviouslyVisited = resultWord.previouslyVisited;
 
           return (
             <div

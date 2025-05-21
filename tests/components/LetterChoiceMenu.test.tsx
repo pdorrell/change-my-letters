@@ -81,12 +81,15 @@ describe('LetterChoiceMenu', () => {
   });
   
   it('renders letter options correctly', () => {
+    // Set previouslyVisited on the result objects
+    options[0].result.previouslyVisited = true; // 'bat' was visited
+    options[2].result.previouslyVisited = true; // 'rat' was visited
+    
     const wordSelectionByLetter = new WordSelectionByLetter(options, onSelect);
     
     const { container } = render(
       <LetterChoiceMenu 
         wordSelectionByLetter={wordSelectionByLetter}
-        previouslyVisited={new Set(['bat', 'rat'])} 
         menuManager={menuManager} 
       />
     );
@@ -102,12 +105,15 @@ describe('LetterChoiceMenu', () => {
   });
   
   it('marks previously visited options correctly', () => {
+    // Set previouslyVisited on the result objects
+    options[0].result.previouslyVisited = true; // 'bat' was visited
+    options[2].result.previouslyVisited = true; // 'rat' was visited
+    
     const wordSelectionByLetter = new WordSelectionByLetter(options, onSelect);
     
     const { container } = render(
       <LetterChoiceMenu 
         wordSelectionByLetter={wordSelectionByLetter}
-        previouslyVisited={new Set(['bat', 'rat'])} 
         menuManager={menuManager} 
       />
     );
@@ -128,12 +134,15 @@ describe('LetterChoiceMenu', () => {
   });
   
   it('calls onSelect when a letter choice is clicked', () => {
+    // Set previouslyVisited on the result objects
+    options[0].result.previouslyVisited = true; // 'bat' was visited
+    options[2].result.previouslyVisited = true; // 'rat' was visited
+    
     const wordSelectionByLetter = new WordSelectionByLetter(options, onSelect);
     
     const { container } = render(
       <LetterChoiceMenu 
         wordSelectionByLetter={wordSelectionByLetter}
-        previouslyVisited={new Set(['bat', 'rat'])} 
         menuManager={menuManager} 
       />
     );
@@ -143,6 +152,6 @@ describe('LetterChoiceMenu', () => {
     if (letterOption1) fireEvent.click(letterOption1);
     
     // onSelect should have been called with the result of the first option
-    expect(onSelect).toHaveBeenCalledWith({ word: 'bat' });
+    expect(onSelect).toHaveBeenCalledWith({ word: 'bat', previouslyVisited: true });
   });
 });
