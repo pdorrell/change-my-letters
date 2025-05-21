@@ -29,7 +29,7 @@ export class LetterInteraction {
     makeAutoObservable(this, {
       setNewWord: action,
       deleteAction: computed,
-      replaceAction: computed,
+      openReplaceMenuAction: computed,
       replaceButtonRef: false // Don't make the ref observable
     });
   }
@@ -52,9 +52,9 @@ export class LetterInteraction {
   }
   
   /**
-   * Get the replace action for this letter
+   * Get the action that opens the replace menu for this letter
    */
-  get replaceAction(): ButtonAction {
+  get openReplaceMenuAction(): ButtonAction {
     // If the letter can't be replaced, return a disabled action
     if (!this.letter.canReplace) {
       return new ButtonAction(null);

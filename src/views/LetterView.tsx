@@ -31,7 +31,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
   const letter = letterInteraction.letter;
   
   // Delete action is now handled by letterInteraction.deleteAction
-  // Replace action is now handled by letterInteraction.replaceAction
+  // Replace action is now handled by letterInteraction.openReplaceMenuAction
   
   // Case change handler has been removed
 
@@ -52,8 +52,8 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
 
         <ActionButton
           ref={letterInteraction.replaceButtonRef}
-          action={letterInteraction.replaceAction}
-          className={`replace-icon ${!letterInteraction.replaceAction.enabled ? 'hidden' : ''}`}
+          action={letterInteraction.openReplaceMenuAction}
+          className={`replace-icon ${!letterInteraction.openReplaceMenuAction.enabled ? 'hidden' : ''}`}
           title="Replace this letter"
         >
           🔄

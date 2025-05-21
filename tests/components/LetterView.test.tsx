@@ -90,7 +90,7 @@ describe('LetterView', () => {
           appState.setNewWord({ word: 'at' });
         })
       },
-      replaceAction: {
+      openReplaceMenuAction: {
         enabled: true,
         doAction: jest.fn().mockImplementation(() => {
           appState.menuManager.toggleMenu(false, jest.fn(), null);

@@ -28,7 +28,7 @@ export class PositionInteraction {
   ) {
     makeAutoObservable(this, {
       setNewWord: action,
-      insertAction: computed,
+      openInsertMenuAction: computed,
       insertButtonRef: false // Don't make the ref observable
     });
   }
@@ -38,9 +38,9 @@ export class PositionInteraction {
   }
   
   /**
-   * Get the insert action for this position
+   * Get the action that opens the insert menu for this position
    */
-  get insertAction(): ButtonAction {
+  get openInsertMenuAction(): ButtonAction {
     // If insertion is not possible at this position, return a disabled action
     if (!this.position.canInsert) {
       return new ButtonAction(null);
