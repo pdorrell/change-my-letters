@@ -135,13 +135,7 @@ export class AppState {
     // Get previous word from history
     const prevWordObj = this.history.undo();
     if (prevWordObj) {
-      // Mark current word as visited
-      if (this.visitingWord) {
-        this.visitingWord.previouslyVisited = true;
-        this.previouslyVisitedWords.add(this.visitingWord.word);
-      }
-      
-      // Set the new current word
+      // Set the new current word (which will handle marking the current word as visited)
       this.setNewWord(prevWordObj);
     }
   }
@@ -153,13 +147,7 @@ export class AppState {
     // Get next word from history
     const nextWordObj = this.history.redo();
     if (nextWordObj) {
-      // Mark current word as visited
-      if (this.visitingWord) {
-        this.visitingWord.previouslyVisited = true;
-        this.previouslyVisitedWords.add(this.visitingWord.word);
-      }
-      
-      // Set the new current word
+      // Set the new current word (which will handle marking the current word as visited)
       this.setNewWord(nextWordObj);
     }
   }
