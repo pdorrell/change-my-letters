@@ -26,8 +26,8 @@ export class WordGraph implements WordGetter {
   // All words in the graph
   words: Set<string> = new Set();
 
-  // All words sorted alphabetically for efficient filtering
-  sortedWords: string[] = [];
+  // All words as Word objects sorted alphabetically by their word strings
+  sortedWords: Word[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -185,14 +185,11 @@ export class WordGraph implements WordGetter {
       this.words.add(word);
     }
 
-    // Create the sorted array of words
-    this.sortedWords = Array.from(this.words).sort();
-
     // Generate the graph using the builder
     const builder = new WordGraphBuilder(wordList);
     const jsonGraph = builder.build();
 
-    // Load the generated graph
+    // Load the generated graph - this will also populate sortedWords
     this.loadFromJson(jsonGraph);
   }
 
@@ -231,8 +228,8 @@ export class WordGraph implements WordGetter {
       this.wordMap.set(wordStr, wordObj);
     }
 
-    // Create the sorted array of words
-    this.sortedWords = Array.from(this.words).sort();
+    // Update the sorted array of Word objects
+    this.updateSortedWords();
   }
 
   /**
@@ -284,5 +281,17 @@ export class WordGraph implements WordGetter {
     for (const [, wordObj] of this.wordMap.entries()) {
       wordObj.populateChanges(this);
     }
+    
+    // Create the sorted array of Word objects sorted by their word strings
+    this.updateSortedWords();
+  }
+  
+  /**
+   * Update the sortedWords array with Word objects sorted by their word strings
+   */
+  private updateSortedWords(): void {
+    // Get all Word objects from the map and sort them by their word strings
+    this.sortedWords = Array.from(this.wordMap.values())
+      .sort((a, b) => a.word.localeCompare(b.word));
   }
 }
