@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, computed } from 'mobx';
 import { HistoryModel } from './HistoryModel';
 import { WordGraph } from './WordGraph';
 import { WordInteraction } from './interaction/WordInteraction';
@@ -6,6 +6,7 @@ import { WordSayerInterface } from './WordSayerInterface';
 import { ResetInteraction } from './ResetInteraction';
 import { MenuManager } from './MenuManager';
 import { Word } from './Word';
+import { ButtonAction } from '../lib/ui/actions';
 
 // Type for the main application pages
 type AppPage = 'wordView' | 'historyView' | 'resetView';
@@ -37,6 +38,10 @@ export class AppState {
 
   // Audio settings
   sayImmediately: boolean = true;
+
+  // Button actions
+  resetAction: ButtonAction;
+  sayAction: ButtonAction;
 
   constructor(
     initialWord: string, 
@@ -76,10 +81,18 @@ export class AppState {
     // Initialize the current word with the menu manager
     this.currentWord = new WordInteraction(wordNode, this, this.menuManager, false);
 
+    // Initialize button actions
+    this.resetAction = new ButtonAction(() => this.resetGame(), "Choose a new word");
+    this.sayAction = new ButtonAction(() => this.currentWord.say(), "Say the current word");
+
     // Preload the initial word's audio
     this.wordSayer.preload(initialWord);
 
-    makeAutoObservable(this);
+    makeAutoObservable(this, {
+      undoAction: computed,
+      redoAction: computed,
+      toggleViewAction: computed
+    });
   }
 
   /**
@@ -197,4 +210,34 @@ export class AppState {
     }
   }
 
+  /**
+   * Toggle between word view and history view
+   */
+  toggleView(): void {
+    this.navigateTo(this.currentPage === 'wordView' ? 'historyView' : 'wordView');
+  }
+
+  /**
+   * Get the undo action - updating the handler based on history state
+   */
+  get undoAction(): ButtonAction {
+    const handler = this.history.canUndo ? () => this.undo() : null;
+    return new ButtonAction(handler, "Undo last change");
+  }
+
+  /**
+   * Get the redo action - updating the handler based on history state
+   */
+  get redoAction(): ButtonAction {
+    const handler = this.history.canRedo ? () => this.redo() : null;
+    return new ButtonAction(handler, "Redo last undone change");
+  }
+
+  /**
+   * Get the toggle view action with appropriate tooltip based on current page
+   */
+  get toggleViewAction(): ButtonAction {
+    const tooltip = this.currentPage === 'wordView' ? "View history" : "Back to word";
+    return new ButtonAction(() => this.toggleView(), tooltip);
+  }
 }

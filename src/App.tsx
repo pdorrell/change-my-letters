@@ -4,6 +4,7 @@ import { CurrentWordView } from './views/CurrentWordView';
 import { HistoryView } from './views/HistoryView';
 import { ResetView } from './views/ResetView';
 import { AppState } from './models/AppState';
+import { ActionButton } from './lib/ui/ActionButton';
 
 interface AppProps {
   appState: AppState;
@@ -18,41 +19,24 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
         </div>
         <h1>Change My Letters</h1>
         <div className="app-controls">
-          <button
-            onClick={() => appState.resetGame()}
-            title="Choose a new word"
-          >
+          <ActionButton action={appState.resetAction}>
             Reset...
-          </button>
-          <button
-            onClick={() => appState.undo()}
-            disabled={!appState.history.canUndo}
-            title="Undo last change"
-          >
+          </ActionButton>
+          <ActionButton action={appState.undoAction}>
             Undo
-          </button>
-          <button
-            onClick={() => appState.redo()}
-            disabled={!appState.history.canRedo}
-            title="Redo last undone change"
-          >
+          </ActionButton>
+          <ActionButton action={appState.redoAction}>
             Redo
-          </button>
-          <button
-            onClick={() => appState.navigateTo(appState.currentPage === 'wordView' ? 'historyView' : 'wordView')}
-            title={appState.currentPage === 'wordView' ? 'View history' : 'Back to word'}
-          >
+          </ActionButton>
+          <ActionButton action={appState.toggleViewAction}>
             {appState.currentPage === 'wordView' ? '→ History' : '→ Current Word'}
-          </button>
+          </ActionButton>
           
           {appState.currentPage === 'wordView' && (
             <>
-              <button
-                onClick={() => appState.currentWord.say()}
-                title="Say the current word"
-              >
+              <ActionButton action={appState.sayAction}>
                 Say
-              </button>
+              </ActionButton>
               <label className="say-immediately-container">
                 <input
                   type="checkbox"
