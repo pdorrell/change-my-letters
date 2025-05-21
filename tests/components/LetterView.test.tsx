@@ -79,7 +79,10 @@ describe('LetterView', () => {
       },
       wordInteraction: currentWord,
       menuManager: appState.menuManager,
-      isReplaceMenuOpen: false
+      isReplaceMenuOpen: false,
+      setNewWord: jest.fn().mockImplementation((word) => {
+        appState.setNewWord(word);
+      })
     };
 
     // Add the letterInteraction to the currentWord for circular reference

@@ -42,14 +42,14 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
 
   const handleDeleteClick = () => {
     if (letter.changes.deleteChange) {
-      appState.setNewWord(letter.changes.deleteChange.result);
+      letterInteraction.setNewWord(letter.changes.deleteChange.result);
     }
   };
 
   // Case change handler has been removed
 
   const handleWordChoice = (newWord: Word) => {
-    appState.setNewWord(newWord);
+    letterInteraction.setNewWord(newWord);
   };
 
   return (

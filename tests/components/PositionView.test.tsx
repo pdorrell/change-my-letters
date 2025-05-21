@@ -76,7 +76,10 @@ describe('PositionView', () => {
       },
       wordInteraction: currentWord,
       menuManager: appState.menuManager,
-      isInsertMenuOpen: false
+      isInsertMenuOpen: false,
+      setNewWord: jest.fn().mockImplementation((word) => {
+        appState.setNewWord(word);
+      })
     };
     
     // Add the positionInteraction to the currentWord for circular reference
@@ -140,7 +143,10 @@ describe('PositionView', () => {
       position: cannotInsertPosition,
       wordInteraction: currentWord,
       menuManager: appState.menuManager,
-      isInsertMenuOpen: false
+      isInsertMenuOpen: false,
+      setNewWord: jest.fn().mockImplementation((word) => {
+        appState.setNewWord(word);
+      })
     };
     
     const { container } = render(<PositionView positionInteraction={mockPositionInteraction as any} />);

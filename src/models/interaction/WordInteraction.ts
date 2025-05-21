@@ -72,7 +72,8 @@ export class WordInteraction {
       value: computed,
       updateWord: action,
       closeAllMenus: action,
-      say: action
+      say: action,
+      setNewWord: action
     });
   }
 
@@ -131,5 +132,14 @@ export class WordInteraction {
   say(): void {
     // Use the wordSayer to play the audio for this word
     this.appState.wordSayer.say(this.word.word);
+  }
+  
+  /**
+   * Set a new word for the application
+   * @param wordObj The Word object to set as the new word
+   */
+  setNewWord(wordObj: Word): void {
+    // Use the appState to set the new word
+    this.appState.setNewWord(wordObj);
   }
 }
