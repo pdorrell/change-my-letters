@@ -92,7 +92,7 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
 
   return (
     <div
-      className={`word-outer-container ${currentWord.previouslyVisited ? 'previously-visited' : ''}`}
+      className={`word-outer-container ${currentWord.word.previouslyVisited ? 'previously-visited' : ''}`}
     >
       <div className="current-word-container">
         <div className="word-display">

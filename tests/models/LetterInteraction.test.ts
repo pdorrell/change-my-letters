@@ -98,7 +98,7 @@ describe('LetterInteraction', () => {
     letter = node.letters[0]; // 'c'
     
     // Create a word interaction
-    wordInteraction = new WordInteraction(node, appState, menuManager, false);
+    wordInteraction = new WordInteraction(node, appState, menuManager);
     
     // Create the letter interaction to test
     letterInteraction = new LetterInteraction(letter, wordInteraction, menuManager);

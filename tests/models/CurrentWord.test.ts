@@ -93,11 +93,9 @@ describe('WordInteraction', () => {
   
   it('should initialize correctly with a word', () => {
     const wordObj = new MockWord('cat') as unknown as Word;
-    const hasBeenVisited = false;
-    const currentWord = new WordInteraction(wordObj, appState, menuManager, hasBeenVisited);
+    const currentWord = new WordInteraction(wordObj, appState, menuManager);
 
     expect(currentWord.value).toBe('cat');
-    expect(currentWord.previouslyVisited).toBe(false);
     expect(currentWord.word).toBe(wordObj);
 
     // Should have 3 letterInteractions for 'cat'
@@ -111,8 +109,8 @@ describe('WordInteraction', () => {
   it('should update word value and related properties', () => {
     const catWord = new MockWord('cat') as unknown as Word;
     const batWord = new MockWord('bat') as unknown as Word;
-    const currentWord = new WordInteraction(catWord, appState, menuManager, false);
-    currentWord.updateWord(batWord, false);
+    const currentWord = new WordInteraction(catWord, appState, menuManager);
+    currentWord.updateWord(batWord);
 
     expect(currentWord.value).toBe('bat');
     expect(currentWord.word).toBe(batWord);
@@ -126,7 +124,7 @@ describe('WordInteraction', () => {
 
   it('should access letters and positions via getters', () => {
     const word = new MockWord('cat') as unknown as Word;
-    const currentWord = new WordInteraction(word, appState, menuManager, false);
+    const currentWord = new WordInteraction(word, appState, menuManager);
 
     // letters and positions are getters that map from interactions
     expect(currentWord.letters.length).toBe(3);
@@ -138,15 +136,15 @@ describe('WordInteraction', () => {
     const catsWord = new MockWord('cats') as unknown as Word;
     const atWord = new MockWord('at') as unknown as Word;
     
-    const currentWord = new WordInteraction(catWord, appState, menuManager, false);
+    const currentWord = new WordInteraction(catWord, appState, menuManager);
 
     // Update to longer word
-    currentWord.updateWord(catsWord, false);
+    currentWord.updateWord(catsWord);
     expect(currentWord.letterInteractions.length).toBe(4);
     expect(currentWord.positionInteractions.length).toBe(5);
 
     // Update to shorter word
-    currentWord.updateWord(atWord, false);
+    currentWord.updateWord(atWord);
     expect(currentWord.letterInteractions.length).toBe(2);
     expect(currentWord.positionInteractions.length).toBe(3);
   });

@@ -98,7 +98,7 @@ describe('PositionInteraction', () => {
     position = node.positions[0]; // Position at index 0 (before 'c')
     
     // Create a word interaction
-    wordInteraction = new WordInteraction(node, appState, menuManager, false);
+    wordInteraction = new WordInteraction(node, appState, menuManager);
     
     // Create the position interaction to test
     positionInteraction = new PositionInteraction(position, wordInteraction, menuManager);
