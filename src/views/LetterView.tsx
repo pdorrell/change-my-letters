@@ -86,7 +86,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
           options={letter.changes.replaceChanges}
           onSelect={handleWordChoice}
           previouslyVisited={[]} // We'll add this functionality later
-          wordInteraction={letterInteraction.wordInteraction}
+          menuManager={letterInteraction.wordInteraction.appState.menuManager}
         />
       )}
     </div>
