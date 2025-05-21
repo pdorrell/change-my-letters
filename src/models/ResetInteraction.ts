@@ -47,23 +47,27 @@ export class ResetInteraction {
    * Get the filtered list of words based on current filter settings
    */
   get filteredWords(): string[] {
+    // Get the Word objects from the graph
+    const wordObjects = this.appState.wordGraph.sortedWords;
+    
+    // If no filter is set, return all word strings
     if (!this.filter) {
-      // Return all words if no filter is set
-      return this.appState.wordGraph.sortedWords;
+      return wordObjects.map(wordObj => wordObj.word);
     }
     
     const lowerFilter = this.filter.toLowerCase();
     
+    // Apply the filter to the word strings
     if (this.matchStartOnly) {
       // Filter words that start with the filter text
-      return this.appState.wordGraph.sortedWords.filter(word => 
-        word.toLowerCase().startsWith(lowerFilter)
-      );
+      return wordObjects
+        .filter(wordObj => wordObj.word.toLowerCase().startsWith(lowerFilter))
+        .map(wordObj => wordObj.word);
     } else {
       // Filter words that contain the filter text
-      return this.appState.wordGraph.sortedWords.filter(word => 
-        word.toLowerCase().includes(lowerFilter)
-      );
+      return wordObjects
+        .filter(wordObj => wordObj.word.toLowerCase().includes(lowerFilter))
+        .map(wordObj => wordObj.word);
     }
   }
   
@@ -93,10 +97,11 @@ export class ResetInteraction {
    * Choose a random word from the full word list, ignoring current filtering
    */
   chooseRandom(): void {
-    const allWords = this.appState.wordGraph.sortedWords;
-    if (allWords.length > 0) {
-      const randomIndex = Math.floor(Math.random() * allWords.length);
-      this.setNewWord(allWords[randomIndex]);
+    const allWordObjects = this.appState.wordGraph.sortedWords;
+    if (allWordObjects.length > 0) {
+      const randomIndex = Math.floor(Math.random() * allWordObjects.length);
+      const randomWordObj = allWordObjects[randomIndex];
+      this.setNewWord(randomWordObj.word);
     }
   }
   
