@@ -1,8 +1,10 @@
-import { makeAutoObservable, action } from 'mobx';
+import { makeAutoObservable, action, computed } from 'mobx';
+import React from 'react';
 import { Position } from '../Position';
 import { WordInteraction } from './WordInteraction';
 import { MenuManager } from '../MenuManager';
 import { Word } from '../Word';
+import { ButtonAction } from '../../lib/ui/actions';
 
 /**
  * Model representing the interaction state for a position
@@ -10,6 +12,9 @@ import { Word } from '../Word';
 export class PositionInteraction {
   // Whether the insert menu is currently open
   isInsertMenuOpen: boolean = false;
+  
+  // Reference to the insert button element
+  insertButtonRef: React.RefObject<HTMLButtonElement> = React.createRef<HTMLButtonElement>();
 
   constructor(
     // The position this interaction is for
@@ -22,12 +27,33 @@ export class PositionInteraction {
     public readonly menuManager: MenuManager
   ) {
     makeAutoObservable(this, {
-      setNewWord: action
+      setNewWord: action,
+      insertAction: computed,
+      insertButtonRef: false // Don't make the ref observable
     });
   }
 
   toggleInsertMenu(): void {
     this.isInsertMenuOpen = !this.isInsertMenuOpen;
+  }
+  
+  /**
+   * Get the insert action for this position
+   */
+  get insertAction(): ButtonAction {
+    // If insertion is not possible at this position, return a disabled action
+    if (!this.position.canInsert) {
+      return new ButtonAction(null);
+    }
+    
+    // Otherwise, return an action that toggles the insert menu
+    return new ButtonAction(() => {
+      this.menuManager.toggleMenu(
+        this.isInsertMenuOpen,
+        () => { this.isInsertMenuOpen = true; },
+        this.insertButtonRef
+      );
+    });
   }
   
   /**

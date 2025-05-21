@@ -49,7 +49,8 @@ describe('LetterView', () => {
         currentIndex: 0,
         canUndo: false,
         canRedo: false,
-        words: []
+        words: [],
+        previouslyVisitedWords: new Set()
       }
     };
 
@@ -88,7 +89,14 @@ describe('LetterView', () => {
         do_action: jest.fn().mockImplementation(() => {
           appState.setNewWord({ word: 'at' });
         })
-      }
+      },
+      replaceAction: {
+        enabled: true,
+        do_action: jest.fn().mockImplementation(() => {
+          appState.menuManager.toggleMenu(false, jest.fn(), null);
+        })
+      },
+      replaceButtonRef: React.createRef()
     };
 
     // Add the letterInteraction to the currentWord for circular reference
@@ -122,7 +130,7 @@ describe('LetterView', () => {
     const replaceButton = container.querySelector('.replace-icon:not(.hidden)');
     if (replaceButton) fireEvent.click(replaceButton);
 
-    expect(letterInteraction.menuManager.toggleMenu).toHaveBeenCalledWith(false, expect.any(Function), expect.anything());
+    expect(letterInteraction.menuManager.toggleMenu).toHaveBeenCalledWith(false, expect.any(Function), null);
   });
 
   it('calls deleteAction.do_action when delete icon is clicked', () => {

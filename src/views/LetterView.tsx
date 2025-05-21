@@ -29,17 +29,9 @@ interface LetterViewProps { letterInteraction: LetterInteraction; }
 
 export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteraction }) => {
   const letter = letterInteraction.letter;
-  const replaceButtonRef = React.useRef<HTMLButtonElement>(null);
-
-  const handleReplaceClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    letterInteraction.menuManager.toggleMenu(
-      letterInteraction.isReplaceMenuOpen,
-      () => { letterInteraction.isReplaceMenuOpen = true; },
-      event.currentTarget
-    );
-  };
-
+  
   // Delete action is now handled by letterInteraction.deleteAction
+  // Replace action is now handled by letterInteraction.replaceAction
   
   // Case change handler has been removed
 
@@ -58,15 +50,14 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
           🗑️
         </ActionButton>
 
-        <button
-          ref={replaceButtonRef}
-          onClick={(e) => handleReplaceClick(e)}
-          disabled={!letter.canReplace}
-          className={`replace-icon ${!letter.canReplace ? 'hidden' : ''}`}
+        <ActionButton
+          ref={letterInteraction.replaceButtonRef}
+          action={letterInteraction.replaceAction}
+          className={`replace-icon ${!letterInteraction.replaceAction.enabled ? 'hidden' : ''}`}
           title="Replace this letter"
         >
           🔄
-        </button>
+        </ActionButton>
 
         {/* Case change buttons have been removed */}
       </div>
@@ -74,8 +65,8 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
       {letterInteraction.isReplaceMenuOpen && (
         <LetterChoiceMenu
           options={letter.changes.replaceChanges}
-         onSelect={(word) => letterInteraction.setNewWord(word)}
-          previouslyVisited={[]} // We'll add this functionality later
+          onSelect={(word) => letterInteraction.setNewWord(word)}
+          previouslyVisited={Array.from(letterInteraction.wordInteraction.appState.history.previouslyVisitedWords)}
           menuManager={letterInteraction.menuManager}
         />
       )}

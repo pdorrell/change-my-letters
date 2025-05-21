@@ -1,9 +1,10 @@
 import { makeAutoObservable, action, computed } from 'mobx';
+import React from 'react';
 import { Letter } from '../Letter';
 import { WordInteraction } from './WordInteraction';
 import { MenuManager } from '../MenuManager';
 import { Word } from '../Word';
-import { ButtonAction } from '../../lib/ui/actions';
+import { ButtonAction, EventedButtonAction } from '../../lib/ui/actions';
 
 /**
  * Model representing the interaction state for a letter
@@ -11,6 +12,9 @@ import { ButtonAction } from '../../lib/ui/actions';
 export class LetterInteraction {
   // Whether the replacement menu is currently open
   isReplaceMenuOpen: boolean = false;
+  
+  // Reference to the replace button element
+  replaceButtonRef: React.RefObject<HTMLButtonElement> = React.createRef<HTMLButtonElement>();
 
   constructor(
     // The letter this interaction is for
@@ -24,7 +28,9 @@ export class LetterInteraction {
   ) {
     makeAutoObservable(this, {
       setNewWord: action,
-      deleteAction: computed
+      deleteAction: computed,
+      replaceAction: computed,
+      replaceButtonRef: false // Don't make the ref observable
     });
   }
   
@@ -42,6 +48,25 @@ export class LetterInteraction {
       if (this.letter.changes.deleteChange) {
         this.setNewWord(this.letter.changes.deleteChange.result);
       }
+    });
+  }
+  
+  /**
+   * Get the replace action for this letter
+   */
+  get replaceAction(): ButtonAction {
+    // If the letter can't be replaced, return a disabled action
+    if (!this.letter.canReplace) {
+      return new ButtonAction(null);
+    }
+    
+    // Otherwise, return an action that toggles the replace menu
+    return new ButtonAction(() => {
+      this.menuManager.toggleMenu(
+        this.isReplaceMenuOpen,
+        () => { this.isReplaceMenuOpen = true; },
+        this.replaceButtonRef
+      );
     });
   }
 
