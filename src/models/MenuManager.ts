@@ -1,4 +1,5 @@
 import { makeAutoObservable } from 'mobx';
+import React from 'react';
 
 /**
  * MenuManager - Handles menu state and control across the application
@@ -19,15 +20,19 @@ export class MenuManager {
    * Toggle a menu open/closed
    * @param currentlyOpen Current open state of the menu
    * @param setMenuOpen Function to open the menu
-   * @param buttonElement Reference to the button element that triggered the menu
+   * @param buttonRef Reference to the button element that triggered the menu
    */
-  toggleMenu(currentlyOpen: boolean, setMenuOpen: () => void, buttonElement: HTMLElement): void {
+  toggleMenu(
+    currentlyOpen: boolean, 
+    setMenuOpen: () => void, 
+    buttonRef: React.RefObject<HTMLButtonElement>
+  ): void {
     // Close all menus first
     this.closeMenus();
 
     // If the menu was previously closed, open it now
-    if (!currentlyOpen) {
-      this.activeButtonElement = buttonElement;
+    if (!currentlyOpen && buttonRef.current) {
+      this.activeButtonElement = buttonRef.current;
       setMenuOpen();
     }
   }

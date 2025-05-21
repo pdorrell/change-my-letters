@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { PositionInteraction } from '../models/interaction/PositionInteraction';
 import { LetterChoiceMenu } from './CurrentWordView';
+import { ActionButton } from '../lib/ui/ActionButton';
 
 /**
  * Placeholder component that maintains the same dimensions as a position
@@ -22,34 +23,24 @@ interface PositionViewProps { positionInteraction: PositionInteraction; }
 
 export const PositionView: React.FC<PositionViewProps> = observer(({ positionInteraction }) => {
   const position = positionInteraction.position;
-  const insertButtonRef = React.useRef<HTMLButtonElement>(null);
-
-  const handleInsertClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    positionInteraction.menuManager.toggleMenu(
-      positionInteraction.isInsertMenuOpen,
-      () => { positionInteraction.isInsertMenuOpen = true; },
-      event.currentTarget
-    );
-  };
 
   return (
     <div className="position-container">
-      <button
-        ref={insertButtonRef}
-        onClick={(e) => handleInsertClick(e)}
-        disabled={!position.canInsert}
-        className={`insert-icon ${!position.canInsert ? 'hidden' : ''}`}
+      <ActionButton
+        ref={positionInteraction.insertButtonRef}
+        action={positionInteraction.insertAction}
+        className={`insert-icon ${!positionInteraction.insertAction.enabled ? 'hidden' : ''}`}
         title="Insert a letter here"
         data-testid="position-view"
       >
         ➕
-      </button>
+      </ActionButton>
 
       {positionInteraction.isInsertMenuOpen && (
         <LetterChoiceMenu
           options={position.changes.insertChanges}
           onSelect={(word) => positionInteraction.setNewWord(word)}
-          previouslyVisited={[]} // We'll add this functionality later
+          previouslyVisited={Array.from(positionInteraction.wordInteraction.appState.history.previouslyVisitedWords)}
           menuManager={positionInteraction.menuManager}
         />
       )}

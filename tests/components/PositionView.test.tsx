@@ -49,7 +49,8 @@ describe('PositionView', () => {
         currentIndex: 0,
         canUndo: false,
         canRedo: false,
-        words: []
+        words: [],
+        previouslyVisitedWords: new Set()
       }
     };
     
@@ -79,7 +80,14 @@ describe('PositionView', () => {
       isInsertMenuOpen: false,
       setNewWord: jest.fn().mockImplementation((word) => {
         appState.setNewWord(word);
-      })
+      }),
+      insertAction: {
+        enabled: true,
+        do_action: jest.fn().mockImplementation(() => {
+          appState.menuManager.toggleMenu(false, jest.fn(), null);
+        })
+      },
+      insertButtonRef: React.createRef()
     };
     
     // Add the positionInteraction to the currentWord for circular reference
@@ -100,7 +108,7 @@ describe('PositionView', () => {
     const insertButton = container.querySelector('.insert-icon:not(.hidden)');
     if (insertButton) fireEvent.click(insertButton);
     
-    expect(positionInteraction.menuManager.toggleMenu).toHaveBeenCalledWith(false, expect.any(Function), expect.anything());
+    expect(positionInteraction.menuManager.toggleMenu).toHaveBeenCalledWith(false, expect.any(Function), null);
   });
   
   it('shows letter choice menu when insert menu is open', () => {
@@ -146,7 +154,12 @@ describe('PositionView', () => {
       isInsertMenuOpen: false,
       setNewWord: jest.fn().mockImplementation((word) => {
         appState.setNewWord(word);
-      })
+      }),
+      insertAction: {
+        enabled: false,
+        do_action: jest.fn()
+      },
+      insertButtonRef: React.createRef()
     };
     
     const { container } = render(<PositionView positionInteraction={mockPositionInteraction as any} />);
