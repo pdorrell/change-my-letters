@@ -1,5 +1,5 @@
 import React from 'react';
-import { ButtonActionInterface } from './actions';
+import { ButtonAction } from './actions';
 
 /**
  * Props for the ActionButton component
@@ -8,7 +8,7 @@ export interface ActionButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLB
   /**
    * The action to perform when the button is clicked
    */
-  action: ButtonActionInterface;
+  action: ButtonAction;
 }
 
 /**
