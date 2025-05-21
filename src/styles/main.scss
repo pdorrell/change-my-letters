@@ -211,16 +211,14 @@ body {
   margin: 5px;
   padding: 0;
   
-  // Action pending state when button is pressed
-  &:has(button:active) {
+  // Apply action-pending to the letter element when a button is pressed
+  &:has(button:active) .letter {
     background-color: #ffd580; // Orangey-yellow
-    border-radius: 8px;
   }
   
-  // Action pending state from model
-  &.action-pending {
+  // Apply action-pending to the letter element from model state
+  &.action-pending .letter {
     background-color: #ffd580; // Orangey-yellow
-    border-radius: 8px;
   }
   
   .letter {
