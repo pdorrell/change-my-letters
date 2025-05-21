@@ -5,6 +5,7 @@ import { Letter } from '../../src/models/Letter';
 import { Position } from '../../src/models/Position';
 import { Word } from '../../src/models/Word';
 import { AppState } from '../../src/models/AppState';
+import { MenuManager } from '../../src/models/MenuManager';
 import { WordSayerTestDouble } from '../test_doubles/WordSayerTestDouble';
 
 // Create a mock for Word
@@ -76,22 +77,32 @@ class MockWord {
 
 describe('WordInteraction', () => {
   let appState: AppState;
+  let menuManager: MenuManager;
   
   beforeEach(() => {
     const wordSayerTestDouble = new WordSayerTestDouble();
+    
+    // Create a mock MenuManager
+    menuManager = {
+      activeButtonElement: null,
+      toggleMenu: jest.fn(),
+      closeMenus: jest.fn()
+    } as unknown as MenuManager;
+    
     appState = {
       currentPage: 'wordView',
       history: { hasVisited: () => false },
       wordGraph: { getNode: (word: string) => new MockWord(word) as unknown as Word },
       isLoading: false,
       wordSayer: wordSayerTestDouble,
+      menuManager: menuManager,
     } as unknown as AppState;
   });
   
   it('should initialize correctly with a word', () => {
     const wordObj = new MockWord('cat') as unknown as Word;
     const hasBeenVisited = false;
-    const wordInteraction = new WordInteraction(wordObj, appState, hasBeenVisited);
+    const wordInteraction = new WordInteraction(wordObj, appState, menuManager, hasBeenVisited);
 
     expect(wordInteraction.value).toBe('cat');
     expect(wordInteraction.previouslyVisited).toBe(false);
@@ -111,7 +122,7 @@ describe('WordInteraction', () => {
   it('should update word value and related properties', () => {
     const catWord = new MockWord('cat') as unknown as Word;
     const batWord = new MockWord('bat') as unknown as Word;
-    const wordInteraction = new WordInteraction(catWord, appState, false);
+    const wordInteraction = new WordInteraction(catWord, appState, menuManager, false);
     wordInteraction.updateWord(batWord, false);
 
     expect(wordInteraction.value).toBe('bat');
@@ -126,7 +137,7 @@ describe('WordInteraction', () => {
 
   it('should create letterInteractions for each character', () => {
     const wordObj = new MockWord('cat') as unknown as Word;
-    const wordInteraction = new WordInteraction(wordObj, appState, false);
+    const wordInteraction = new WordInteraction(wordObj, appState, menuManager, false);
 
     // Verify that the letterInteractions have been created correctly
     expect(wordInteraction.letterInteractions.length).toBe(3);
@@ -147,7 +158,7 @@ describe('WordInteraction', () => {
 
   it('should create positionInteractions for before, between, and after characters', () => {
     const wordObj = new MockWord('cat') as unknown as Word;
-    const wordInteraction = new WordInteraction(wordObj, appState, false);
+    const wordInteraction = new WordInteraction(wordObj, appState, menuManager, false);
 
     // Verify that the positionInteractions have been created correctly
     expect(wordInteraction.positionInteractions.length).toBe(4);
@@ -167,7 +178,7 @@ describe('WordInteraction', () => {
     const catsWord = new MockWord('cats') as unknown as Word;
     const atWord = new MockWord('at') as unknown as Word;
     
-    const wordInteraction = new WordInteraction(catWord, appState, false);
+    const wordInteraction = new WordInteraction(catWord, appState, menuManager, false);
 
     // Update to longer word
     wordInteraction.updateWord(catsWord, false);
@@ -184,7 +195,7 @@ describe('WordInteraction', () => {
 
   it('should close all menus', () => {
     const wordObj = new MockWord('cat') as unknown as Word;
-    const wordInteraction = new WordInteraction(wordObj, appState, false);
+    const wordInteraction = new WordInteraction(wordObj, appState, menuManager, false);
     
     // Open some menus
     wordInteraction.letterInteractions[0].isReplaceMenuOpen = true;
@@ -209,7 +220,7 @@ describe('WordInteraction', () => {
 
   it('should have a computed value property that returns the word string', () => {
     const wordObj = new MockWord('hello') as unknown as Word;
-    const wordInteraction = new WordInteraction(wordObj, appState, false);
+    const wordInteraction = new WordInteraction(wordObj, appState, menuManager, false);
     
     expect(wordInteraction.value).toBe('hello');
     
@@ -222,7 +233,7 @@ describe('WordInteraction', () => {
   
   it('should update previouslyVisited when word changes', () => {
     const wordObj = new MockWord('cat') as unknown as Word;
-    const wordInteraction = new WordInteraction(wordObj, appState, false);
+    const wordInteraction = new WordInteraction(wordObj, appState, menuManager, false);
     
     expect(wordInteraction.previouslyVisited).toBe(false);
     
@@ -232,7 +243,7 @@ describe('WordInteraction', () => {
   });
 
   it('should initialize with a string and get the word from the graph', () => {
-    const wordInteraction = new WordInteraction('cat', appState, false);
+    const wordInteraction = new WordInteraction('cat', appState, menuManager, false);
     
     expect(wordInteraction.value).toBe('cat');
     expect(wordInteraction.letterInteractions.length).toBe(3);
@@ -241,7 +252,7 @@ describe('WordInteraction', () => {
   
   it('should call the wordSayer.say method with the current word', () => {
     const wordObj = new MockWord('cat') as unknown as Word;
-    const wordInteraction = new WordInteraction(wordObj, appState, false);
+    const wordInteraction = new WordInteraction(wordObj, appState, menuManager, false);
     
     // Call the say method
     wordInteraction.say();

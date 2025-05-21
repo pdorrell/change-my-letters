@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { Position } from '../Position';
 import { WordInteraction } from './WordInteraction';
+import { MenuManager } from '../MenuManager';
 
 /**
  * Model representing the interaction state for a position
@@ -14,7 +15,10 @@ export class PositionInteraction {
     public readonly position: Position,
 
     // Reference to the parent word interaction
-    public readonly wordInteraction: WordInteraction
+    public readonly wordInteraction: WordInteraction,
+    
+    // Reference to the menu manager
+    public readonly menuManager: MenuManager
   ) {
     makeAutoObservable(this);
   }

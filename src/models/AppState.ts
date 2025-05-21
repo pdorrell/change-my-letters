@@ -56,17 +56,18 @@ export class AppState {
       throw new Error(`Word "${initialWord}" doesn't exist in the word graph`);
     }
 
-    // Initialize history with the initial word object
-    this.history = new HistoryModel(this, wordNode);
-
-    this.currentWord = new WordInteraction(wordNode, this, false);
-
-    // Initialize menu manager with a function to close all menus
+    // Initialize menu manager first
     this.menuManager = new MenuManager(() => {
       if (this.currentWord) {
         this.currentWord.closeAllMenus();
       }
     });
+
+    // Initialize history with the initial word object
+    this.history = new HistoryModel(this, wordNode);
+
+    // Initialize the current word with the menu manager
+    this.currentWord = new WordInteraction(wordNode, this, this.menuManager, false);
 
     // Preload the initial word's audio
     this.wordSayer.preload(initialWord);

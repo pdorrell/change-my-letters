@@ -5,6 +5,7 @@ import { Letter } from '../../src/models/Letter';
 import { Position } from '../../src/models/Position';
 import { Word } from '../../src/models/Word';
 import { AppState } from '../../src/models/AppState';
+import { MenuManager } from '../../src/models/MenuManager';
 
 // Create a mock for Word
 class MockWord {
@@ -97,7 +98,7 @@ describe('Interaction Classes Integration', () => {
 
     // Create a new word interaction for testing
     const node = new MockWord('test') as unknown as Word;
-    wordInteraction = new WordInteraction(node, appState, false);
+    wordInteraction = new WordInteraction(node, appState, appState.menuManager, false);
   });
 
   it('should initialize with all menus closed', () => {

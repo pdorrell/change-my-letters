@@ -5,6 +5,7 @@ import { PositionInteraction } from './PositionInteraction';
 import { Word } from '../Word';
 import { Letter } from '../Letter';
 import { Position } from '../Position';
+import { MenuManager } from '../MenuManager';
 
 /**
  * Model representing the user's current interaction with a word
@@ -37,6 +38,9 @@ export class WordInteraction {
     
     // Reference to the app state
     public readonly appState: AppState,
+    
+    // Reference to the menu manager
+    public readonly menuManager: MenuManager,
     
     hasBeenVisited: boolean = false
   ) {
@@ -82,11 +86,11 @@ export class WordInteraction {
 
     // Create interaction wrappers for each
     this.letterInteractions = letters.map(
-      letter => new LetterInteraction(letter, this)
+      letter => new LetterInteraction(letter, this, this.menuManager)
     );
 
     this.positionInteractions = positions.map(
-      position => new PositionInteraction(position, this)
+      position => new PositionInteraction(position, this, this.menuManager)
     );
   }
 

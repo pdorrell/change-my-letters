@@ -158,16 +158,19 @@ describe('CurrentWordView', () => {
       { 
         letter: { value: 'c', position: 0, canDelete: true, canReplace: true },
         wordInteraction: null as any,
+        menuManager: appState.menuManager,
         isReplaceMenuOpen: false,
       } as TestLetterInteraction,
       { 
         letter: { value: 'a', position: 1, canDelete: true, canReplace: true },
         wordInteraction: null as any,
+        menuManager: appState.menuManager,
         isReplaceMenuOpen: false,
       } as TestLetterInteraction,
       { 
         letter: { value: 't', position: 2, canDelete: true, canReplace: true },
         wordInteraction: null as any,
+        menuManager: appState.menuManager,
         isReplaceMenuOpen: false,
       } as TestLetterInteraction
     ];
@@ -176,21 +179,25 @@ describe('CurrentWordView', () => {
       { 
         position: { index: 0, canInsert: true },
         wordInteraction: null as any,
+        menuManager: appState.menuManager,
         isInsertMenuOpen: false,
       } as TestPositionInteraction,
       { 
         position: { index: 1, canInsert: true },
         wordInteraction: null as any,
+        menuManager: appState.menuManager,
         isInsertMenuOpen: false,
       } as TestPositionInteraction,
       { 
         position: { index: 2, canInsert: true },
         wordInteraction: null as any,
+        menuManager: appState.menuManager,
         isInsertMenuOpen: false,
       } as TestPositionInteraction,
       { 
         position: { index: 3, canInsert: true },
         wordInteraction: null as any,
+        menuManager: appState.menuManager,
         isInsertMenuOpen: false,
       } as TestPositionInteraction
     ];
@@ -200,6 +207,7 @@ describe('CurrentWordView', () => {
       value: 'cat',
       previouslyVisited: false,
       appState: appState,
+      menuManager: appState.menuManager,
       letterInteractions,
       positionInteractions
     } as unknown as WordInteraction;
@@ -285,22 +293,22 @@ describe('CurrentWordView', () => {
     
     // Create with circular references set upfront
     const longLetterInteractions = [
-      { letter: { value: 'l', position: 0, canDelete: true, canReplace: true }, wordInteraction: null as any, isReplaceMenuOpen: false } as TestLetterInteraction,
-      { letter: { value: 'o', position: 1, canDelete: true, canReplace: true }, wordInteraction: null as any, isReplaceMenuOpen: false } as TestLetterInteraction,
-      { letter: { value: 'n', position: 2, canDelete: true, canReplace: true }, wordInteraction: null as any, isReplaceMenuOpen: false } as TestLetterInteraction,
-      { letter: { value: 'g', position: 3, canDelete: true, canReplace: true }, wordInteraction: null as any, isReplaceMenuOpen: false } as TestLetterInteraction,
-      { letter: { value: 'e', position: 4, canDelete: true, canReplace: true }, wordInteraction: null as any, isReplaceMenuOpen: false } as TestLetterInteraction,
-      { letter: { value: 'r', position: 5, canDelete: true, canReplace: true }, wordInteraction: null as any, isReplaceMenuOpen: false } as TestLetterInteraction
+      { letter: { value: 'l', position: 0, canDelete: true, canReplace: true }, wordInteraction: null as any, menuManager: appState.menuManager, isReplaceMenuOpen: false } as TestLetterInteraction,
+      { letter: { value: 'o', position: 1, canDelete: true, canReplace: true }, wordInteraction: null as any, menuManager: appState.menuManager, isReplaceMenuOpen: false } as TestLetterInteraction,
+      { letter: { value: 'n', position: 2, canDelete: true, canReplace: true }, wordInteraction: null as any, menuManager: appState.menuManager, isReplaceMenuOpen: false } as TestLetterInteraction,
+      { letter: { value: 'g', position: 3, canDelete: true, canReplace: true }, wordInteraction: null as any, menuManager: appState.menuManager, isReplaceMenuOpen: false } as TestLetterInteraction,
+      { letter: { value: 'e', position: 4, canDelete: true, canReplace: true }, wordInteraction: null as any, menuManager: appState.menuManager, isReplaceMenuOpen: false } as TestLetterInteraction,
+      { letter: { value: 'r', position: 5, canDelete: true, canReplace: true }, wordInteraction: null as any, menuManager: appState.menuManager, isReplaceMenuOpen: false } as TestLetterInteraction
     ];
     
     const longPositionInteractions = [
-      { position: { index: 0, canInsert: true }, wordInteraction: null as any, isInsertMenuOpen: false } as TestPositionInteraction,
-      { position: { index: 1, canInsert: true }, wordInteraction: null as any, isInsertMenuOpen: false } as TestPositionInteraction,
-      { position: { index: 2, canInsert: true }, wordInteraction: null as any, isInsertMenuOpen: false } as TestPositionInteraction,
-      { position: { index: 3, canInsert: true }, wordInteraction: null as any, isInsertMenuOpen: false } as TestPositionInteraction,
-      { position: { index: 4, canInsert: true }, wordInteraction: null as any, isInsertMenuOpen: false } as TestPositionInteraction,
-      { position: { index: 5, canInsert: true }, wordInteraction: null as any, isInsertMenuOpen: false } as TestPositionInteraction,
-      { position: { index: 6, canInsert: true }, wordInteraction: null as any, isInsertMenuOpen: false } as TestPositionInteraction
+      { position: { index: 0, canInsert: true }, wordInteraction: null as any, menuManager: appState.menuManager, isInsertMenuOpen: false } as TestPositionInteraction,
+      { position: { index: 1, canInsert: true }, wordInteraction: null as any, menuManager: appState.menuManager, isInsertMenuOpen: false } as TestPositionInteraction,
+      { position: { index: 2, canInsert: true }, wordInteraction: null as any, menuManager: appState.menuManager, isInsertMenuOpen: false } as TestPositionInteraction,
+      { position: { index: 3, canInsert: true }, wordInteraction: null as any, menuManager: appState.menuManager, isInsertMenuOpen: false } as TestPositionInteraction,
+      { position: { index: 4, canInsert: true }, wordInteraction: null as any, menuManager: appState.menuManager, isInsertMenuOpen: false } as TestPositionInteraction,
+      { position: { index: 5, canInsert: true }, wordInteraction: null as any, menuManager: appState.menuManager, isInsertMenuOpen: false } as TestPositionInteraction,
+      { position: { index: 6, canInsert: true }, wordInteraction: null as any, menuManager: appState.menuManager, isInsertMenuOpen: false } as TestPositionInteraction
     ];
     
     // Create the object first
@@ -308,6 +316,7 @@ describe('CurrentWordView', () => {
       value: 'longer',
       previouslyVisited: false,
       appState: appState,
+      menuManager: appState.menuManager,
       letterInteractions: longLetterInteractions,
       positionInteractions: longPositionInteractions
     } as unknown as WordInteraction;

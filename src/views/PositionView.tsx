@@ -27,7 +27,7 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ positionInt
   const insertButtonRef = React.useRef<HTMLButtonElement>(null);
 
   const handleInsertClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    appState.menuManager.toggleMenu(
+    positionInteraction.menuManager.toggleMenu(
       positionInteraction.isInsertMenuOpen,
       () => { positionInteraction.isInsertMenuOpen = true; },
       event.currentTarget
@@ -56,7 +56,7 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ positionInt
           options={position.changes.insertChanges}
           onSelect={handleWordChoice}
           previouslyVisited={[]} // We'll add this functionality later
-          menuManager={positionInteraction.wordInteraction.appState.menuManager}
+          menuManager={positionInteraction.menuManager}
         />
       )}
     </div>
