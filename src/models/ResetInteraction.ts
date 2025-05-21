@@ -1,5 +1,6 @@
 import { makeAutoObservable, computed } from 'mobx';
 import { AppState } from './AppState';
+import { ButtonAction } from '../lib/ui/actions';
 
 /**
  * Model for the Reset page interaction
@@ -11,13 +12,24 @@ export class ResetInteraction {
   // Whether to match only words that start with the filter
   matchStartOnly: boolean = true;
   
+  // Button actions
+  cancelAction: ButtonAction;
+  randomAction: ButtonAction;
+  
   // Reference to the app state
   appState: AppState;
   
   constructor(appState: AppState) {
     this.appState = appState;
+    
+    // Initialize button actions
+    this.cancelAction = new ButtonAction(() => this.cancel());
+    this.randomAction = new ButtonAction(() => this.chooseRandom());
+    
     makeAutoObservable(this, {
-      filteredWords: computed
+      filteredWords: computed,
+      cancelAction: false,
+      randomAction: false
     });
   }
   
@@ -96,5 +108,16 @@ export class ResetInteraction {
     
     // Navigate back to the word view
     this.appState.navigateTo('wordView');
+  }
+
+  /**
+   * Cancel the reset operation and return to the word view
+   */
+  cancel(): void {
+    // Navigate back to the word view without changing the current word
+    this.appState.navigateTo('wordView');
+    
+    // Reset the filter state for next time
+    this.reset();
   }
 }

@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { ResetInteraction } from '../models/ResetInteraction';
+import { ActionButton } from '../lib/ui/ActionButton';
 
 interface ResetViewProps { resetInteraction: ResetInteraction; }
 
@@ -23,14 +24,7 @@ export const ResetView: React.FC<ResetViewProps> = observer(({ resetInteraction 
     resetInteraction.toggleMatchStartOnly();
   };
 
-  const handleRandomClick = () => {
-    resetInteraction.chooseRandom();
-  };
-
-  const handleCancelClick = () => {
-    // Navigate back to word view without changing the word
-    resetInteraction.appState.navigateTo('wordView');
-  };
+  // These handlers are now replaced by ButtonAction objects in resetInteraction
 
   const handleWordClick = (word: string) => {
     resetInteraction.setNewWord(word);
@@ -61,19 +55,18 @@ export const ResetView: React.FC<ResetViewProps> = observer(({ resetInteraction 
           </label>
         </div>
         <div className="reset-controls-right">
-          <button
-            onClick={handleRandomClick}
-            disabled={resetInteraction.appState.wordGraph.sortedWords.length === 0}
+          <ActionButton
+            action={resetInteraction.randomAction}
             title="Choose a random word from the full list (ignores filter)"
           >
             Choose Random
-          </button>
-          <button
-            onClick={handleCancelClick}
+          </ActionButton>
+          <ActionButton
+            action={resetInteraction.cancelAction}
             title="Return to the current word without changing"
           >
             Cancel
-          </button>
+          </ActionButton>
         </div>
       </div>
 
