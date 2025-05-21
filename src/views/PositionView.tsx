@@ -27,7 +27,7 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ positionInt
   const insertButtonRef = React.useRef<HTMLButtonElement>(null);
 
   const handleInsertClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    appState.toggleMenu(
+    appState.menuManager.toggleMenu(
       positionInteraction.isInsertMenuOpen,
       () => { positionInteraction.isInsertMenuOpen = true; },
       event.currentTarget

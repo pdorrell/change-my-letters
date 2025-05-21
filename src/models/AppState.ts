@@ -89,7 +89,7 @@ export class AppState {
     this.currentWord.updateWord(wordObj, hasBeenVisited);
 
     // Close any open menus when the word changes
-    this.closeAllMenus();
+    this.menuManager.closeMenus();
 
     // Preload the current word (in case it's not already loaded)
     this.wordSayer.preload(word);
@@ -153,20 +153,4 @@ export class AppState {
     }
   }
 
-  /**
-   * Toggle a menu open/closed (delegated to MenuManager)
-   * @param currentlyOpen Current open state of the menu
-   * @param setMenuOpen Function to open the menu
-   * @param buttonElement Reference to the button element that triggered the menu
-   */
-  toggleMenu(currentlyOpen: boolean, setMenuOpen: () => void, buttonElement: HTMLElement): void {
-    this.menuManager.toggleMenu(currentlyOpen, setMenuOpen, buttonElement);
-  }
-
-  /**
-   * Close all menus (delegated to MenuManager)
-   */
-  closeAllMenus(): void {
-    this.menuManager.closeMenus();
-  }
 }

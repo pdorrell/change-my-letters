@@ -37,8 +37,6 @@ describe('PositionView', () => {
   beforeEach(() => {
     // Create a mock AppState (this is still mocked because it's complex)
     appState = {
-      toggleMenu: jest.fn(),
-      closeAllMenus: jest.fn(),
       setNewWord: jest.fn(),
       menuManager: {
         activeButtonElement: null,
@@ -98,7 +96,7 @@ describe('PositionView', () => {
     const insertButton = container.querySelector('.insert-icon:not(.hidden)');
     if (insertButton) fireEvent.click(insertButton);
     
-    expect(appState.toggleMenu).toHaveBeenCalledWith(false, expect.any(Function), expect.anything());
+    expect(appState.menuManager.toggleMenu).toHaveBeenCalledWith(false, expect.any(Function), expect.anything());
   });
   
   it('shows letter choice menu when insert menu is open', () => {

@@ -42,8 +42,6 @@ describe('LetterChoiceMenu', () => {
   beforeEach(() => {
     // Create a mock AppState
     appState = {
-      toggleMenu: jest.fn(),
-      closeAllMenus: jest.fn(),
       setNewWord: jest.fn(),
       menuManager: {
         activeButtonElement: document.createElement('button'),
