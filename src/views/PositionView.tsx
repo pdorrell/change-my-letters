@@ -39,7 +39,7 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ positionInt
       {positionInteraction.isInsertMenuOpen && (
         <LetterChoiceMenu
           wordSelectionByLetter={positionInteraction.selectionOfLetterToInsert}
-          previouslyVisited={Array.from(positionInteraction.wordInteraction.appState.history.previouslyVisitedWords)}
+          previouslyVisited={positionInteraction.wordInteraction.appState.history.previouslyVisitedWords}
           menuManager={positionInteraction.menuManager}
         />
       )}

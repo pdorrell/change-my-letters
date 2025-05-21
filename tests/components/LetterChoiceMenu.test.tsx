@@ -86,7 +86,7 @@ describe('LetterChoiceMenu', () => {
     const { container } = render(
       <LetterChoiceMenu 
         wordSelectionByLetter={wordSelectionByLetter}
-        previouslyVisited={['bat', 'rat']} 
+        previouslyVisited={new Set(['bat', 'rat'])} 
         menuManager={menuManager} 
       />
     );
@@ -107,7 +107,7 @@ describe('LetterChoiceMenu', () => {
     const { container } = render(
       <LetterChoiceMenu 
         wordSelectionByLetter={wordSelectionByLetter}
-        previouslyVisited={['bat', 'rat']} 
+        previouslyVisited={new Set(['bat', 'rat'])} 
         menuManager={menuManager} 
       />
     );
@@ -133,7 +133,7 @@ describe('LetterChoiceMenu', () => {
     const { container } = render(
       <LetterChoiceMenu 
         wordSelectionByLetter={wordSelectionByLetter}
-        previouslyVisited={['bat', 'rat']} 
+        previouslyVisited={new Set(['bat', 'rat'])} 
         menuManager={menuManager} 
       />
     );
