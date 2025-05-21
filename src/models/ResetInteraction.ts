@@ -116,10 +116,11 @@ export class ResetInteraction {
     }
     
     // Reset the app state with the new word object
+    // This already sets the word as the current visiting word and resets history
     this.appState.reset(wordObj);
     
-    // Set the new word as current using the Word object
-    this.appState.setNewWord(wordObj);
+    // Initialize the current word with the new Word object
+    this.appState.currentWord.updateWord(wordObj, false);
     
     // Navigate back to the word view
     this.appState.navigateTo('wordView');
