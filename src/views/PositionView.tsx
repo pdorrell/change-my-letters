@@ -25,7 +25,7 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ positionInt
   const position = positionInteraction.position;
 
   return (
-    <div className="position-container">
+    <div className={`position-container ${positionInteraction.actionPending ? 'action-pending' : ''}`}>
       <ActionButton
         ref={positionInteraction.insertButtonRef}
         action={positionInteraction.openInsertMenuAction}

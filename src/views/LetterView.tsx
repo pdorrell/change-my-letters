@@ -36,7 +36,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
   // Case change handler has been removed
 
   return (
-    <div className="letter-container">
+    <div className={`letter-container ${letterInteraction.actionPending ? 'action-pending' : ''}`}>
       <div className="letter">
         {letter.value}
       </div>

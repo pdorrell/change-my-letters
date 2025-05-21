@@ -32,8 +32,16 @@ export class LetterInteraction {
       deleteAction: computed,
       openReplaceMenuAction: computed,
       selectionOfReplacementLetter: computed,
+      actionPending: computed,
       replaceButtonRef: false // Don't make the ref observable
     });
+  }
+  
+  /**
+   * Whether there is a pending action on this letter
+   */
+  get actionPending(): boolean {
+    return this.isReplaceMenuOpen;
   }
   
   /**
