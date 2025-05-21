@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * Interface for button actions
  */
@@ -11,43 +9,12 @@ export interface ButtonActionInterface {
 
   /**
    * Perform the action
-   * @param event The mouse event from the button click
    */
-  do_action(event: React.MouseEvent<HTMLButtonElement>): void;
+  doAction(): void;
 }
 
 /**
- * Button action that handles the event
- */
-export class EventedButtonAction implements ButtonActionInterface {
-  /**
-   * Create a new evented button action
-   * @param handler The handler function for the event, or null if the action is disabled
-   */
-  constructor(
-    private handler: ((event: React.MouseEvent<HTMLButtonElement>) => void) | null
-  ) {}
-
-  /**
-   * Whether the action is enabled
-   */
-  get enabled(): boolean {
-    return this.handler !== null;
-  }
-
-  /**
-   * Perform the action
-   * @param event The mouse event from the button click
-   */
-  do_action(event: React.MouseEvent<HTMLButtonElement>): void {
-    if (this.handler) {
-      this.handler(event);
-    }
-  }
-}
-
-/**
- * Button action that ignores the event
+ * Implementation of ButtonActionInterface
  */
 export class ButtonAction implements ButtonActionInterface {
   /**
@@ -67,9 +34,8 @@ export class ButtonAction implements ButtonActionInterface {
 
   /**
    * Perform the action
-   * @param event The mouse event from the button click (ignored)
    */
-  do_action(_event: React.MouseEvent<HTMLButtonElement>): void {
+  doAction(): void {
     if (this.handler) {
       this.handler();
     }

@@ -18,8 +18,8 @@ export const ActionButton = React.forwardRef<
   HTMLButtonElement,
   ActionButtonProps
 >(({ action, ...props }, ref) => {
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    action.do_action(event);
+  const handleClick = () => {
+    action.doAction();
   };
   
   return (

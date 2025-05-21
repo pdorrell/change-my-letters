@@ -83,7 +83,7 @@ describe('PositionView', () => {
       }),
       insertAction: {
         enabled: true,
-        do_action: jest.fn().mockImplementation(() => {
+        doAction: jest.fn().mockImplementation(() => {
           appState.menuManager.toggleMenu(false, jest.fn(), null);
         })
       },
@@ -157,7 +157,7 @@ describe('PositionView', () => {
       }),
       insertAction: {
         enabled: false,
-        do_action: jest.fn()
+        doAction: jest.fn()
       },
       insertButtonRef: React.createRef()
     };
