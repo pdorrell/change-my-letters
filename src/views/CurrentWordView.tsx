@@ -3,8 +3,6 @@ import { observer } from 'mobx-react-lite';
 import { WordInteraction } from '../models/interaction/WordInteraction';
 import { LetterView, LetterPlaceholder } from './LetterView';
 import { PositionView, PositionPlaceholder } from './PositionView';
-import { LetterChange } from '../models/WordChange';
-import { Word } from '../models/Word';
 import { MenuManager } from '../models/MenuManager';
 import {
   useFloating,
@@ -30,9 +28,9 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
   React.useEffect(() => {
     const handleGlobalClick = (e: MouseEvent) => {
       // Check if there are any open menus by examining the interactions
-      const hasOpenMenus = currentWord.letterInteractions.some(li => li.isReplaceMenuOpen) || 
+      const hasOpenMenus = currentWord.letterInteractions.some(li => li.isReplaceMenuOpen) ||
                           currentWord.positionInteractions.some(pi => pi.isInsertMenuOpen);
-      
+
       // If there's an active menu
       if (hasOpenMenus) {
         // Check if click is outside of menus
@@ -126,9 +124,9 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
  */
 import { WordSelectionByLetter } from '../models/WordSelectionByLetter';
 
-interface LetterChoiceMenuProps { 
-  wordSelectionByLetter: WordSelectionByLetter; 
-  menuManager: MenuManager; 
+interface LetterChoiceMenuProps {
+  wordSelectionByLetter: WordSelectionByLetter;
+  menuManager: MenuManager;
 }
 
 export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ wordSelectionByLetter, menuManager }) => {

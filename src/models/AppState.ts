@@ -82,8 +82,8 @@ export class AppState {
     this.currentWord = new WordInteraction(wordNode, this, this.menuManager, false);
 
     // Initialize button actions
-    this.resetAction = new ButtonAction(() => this.resetGame(), "Choose a new word");
-    this.sayAction = new ButtonAction(() => this.currentWord.say(), "Say the current word");
+    this.resetAction = new ButtonAction(() => this.resetGame(), { tooltip: "Choose a new word" });
+    this.sayAction = new ButtonAction(() => this.currentWord.say(), { tooltip: "Say the current word" });
 
     // Preload the initial word's audio
     this.wordSayer.preload(initialWord);
@@ -222,7 +222,7 @@ export class AppState {
    */
   get undoAction(): ButtonAction {
     const handler = this.history.canUndo ? () => this.undo() : null;
-    return new ButtonAction(handler, "Undo last change");
+    return new ButtonAction(handler, { tooltip: "Undo last change" });
   }
 
   /**
@@ -230,7 +230,7 @@ export class AppState {
    */
   get redoAction(): ButtonAction {
     const handler = this.history.canRedo ? () => this.redo() : null;
-    return new ButtonAction(handler, "Redo last undone change");
+    return new ButtonAction(handler, { tooltip: "Redo last undone change" });
   }
 
   /**
@@ -238,6 +238,6 @@ export class AppState {
    */
   get toggleViewAction(): ButtonAction {
     const tooltip = this.currentPage === 'wordView' ? "View history" : "Back to word";
-    return new ButtonAction(() => this.toggleView(), tooltip);
+    return new ButtonAction(() => this.toggleView(), { tooltip });
   }
 }

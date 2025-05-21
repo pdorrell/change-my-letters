@@ -50,7 +50,7 @@ export class LetterInteraction {
   get deleteAction(): ButtonAction {
     // If the letter can't be deleted, return a disabled action
     if (!this.letter.canDelete || !this.letter.changes.deleteChange) {
-      return new ButtonAction(null, "Delete this letter");
+      return new ButtonAction(null, { tooltip: "Delete this letter" });
     }
     
     // Otherwise, return an action that performs the delete
@@ -58,7 +58,10 @@ export class LetterInteraction {
       if (this.letter.changes.deleteChange) {
         this.setNewWord(this.letter.changes.deleteChange.result);
       }
-    }, "Delete this letter");
+    }, { 
+      tooltip: "Delete this letter",
+      onPress: () => this.menuManager.closeMenus()
+    });
   }
   
   /**
@@ -67,7 +70,7 @@ export class LetterInteraction {
   get openReplaceMenuAction(): ButtonAction {
     // If the letter can't be replaced, return a disabled action
     if (!this.letter.canReplace) {
-      return new ButtonAction(null, "Replace this letter");
+      return new ButtonAction(null, { tooltip: "Replace this letter" });
     }
     
     // Otherwise, return an action that toggles the replace menu
@@ -77,7 +80,10 @@ export class LetterInteraction {
         () => { this.isReplaceMenuOpen = true; },
         this.replaceButtonRef
       );
-    }, "Replace this letter");
+    }, { 
+      tooltip: "Replace this letter",
+      onPress: () => this.menuManager.closeMenus()
+    });
   }
   
   /**
