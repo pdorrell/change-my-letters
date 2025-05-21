@@ -11,8 +11,7 @@ import { MenuManager } from '../MenuManager';
  * Model representing the user's current interaction with a word
  */
 export class WordInteraction {
-  // The word being interacted with
-  public word: Word;
+  // The word property is now defined in the constructor
 
   // Whether this word has been visited before
   public previouslyVisited: boolean;
@@ -34,7 +33,8 @@ export class WordInteraction {
   }
 
   constructor(
-    wordOrString: Word | string,
+    // The Word object this interaction is for
+    public word: Word,
     
     // Reference to the app state
     public readonly appState: AppState,
@@ -44,18 +44,6 @@ export class WordInteraction {
     
     hasBeenVisited: boolean = false
   ) {
-    if (typeof wordOrString === 'string') {
-      // If a string was passed, get the word from the wordGraph
-      const word = appState.wordGraph.getNode(wordOrString);
-      if (!word) {
-        throw new Error(`Word "${wordOrString}" doesn't exist in the word graph`);
-      }
-      this.word = word;
-    } else {
-      // If a Word object was passed, use it directly
-      this.word = wordOrString;
-    }
-
     this.previouslyVisited = hasBeenVisited;
 
     // Initialize letter and position interactions
