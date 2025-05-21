@@ -45,7 +45,6 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
         <ActionButton
           action={letterInteraction.deleteAction}
           className={`delete-icon ${!letterInteraction.deleteAction.enabled ? 'hidden' : ''}`}
-          title="Delete this letter"
         >
           🗑️
         </ActionButton>
@@ -54,7 +53,6 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
           ref={letterInteraction.replaceButtonRef}
           action={letterInteraction.openReplaceMenuAction}
           className={`replace-icon ${!letterInteraction.openReplaceMenuAction.enabled ? 'hidden' : ''}`}
-          title="Replace this letter"
         >
           🔄
         </ActionButton>

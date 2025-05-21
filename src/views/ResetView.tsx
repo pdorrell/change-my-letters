@@ -57,13 +57,11 @@ export const ResetView: React.FC<ResetViewProps> = observer(({ resetInteraction 
         <div className="reset-controls-right">
           <ActionButton
             action={resetInteraction.randomAction}
-            title="Choose a random word from the full list (ignores filter)"
           >
             Choose Random
           </ActionButton>
           <ActionButton
             action={resetInteraction.cancelAction}
-            title="Return to the current word without changing"
           >
             Cancel
           </ActionButton>
