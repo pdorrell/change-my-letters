@@ -56,7 +56,7 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ positionInt
           options={position.changes.insertChanges}
           onSelect={handleWordChoice}
           previouslyVisited={[]} // We'll add this functionality later
-          wordInteraction={positionInteraction.wordInteraction}
+          menuManager={positionInteraction.wordInteraction.appState.menuManager}
         />
       )}
     </div>

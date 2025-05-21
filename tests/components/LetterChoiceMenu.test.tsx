@@ -4,6 +4,7 @@ import { LetterChoiceMenu } from '../../src/views/CurrentWordView';
 import { createTestWordGraph, testWordLists } from '../utils/TestWordGraphBuilder';
 import { WordInteraction } from '../../src/models/interaction/WordInteraction';
 import { WordSayer } from '../../src/models/WordSayer';
+import { MenuManager } from '../../src/models/MenuManager';
 
 // Mock floating-ui for menus since we don't need real positioning in tests
 jest.mock('@floating-ui/react', () => ({
@@ -34,6 +35,7 @@ describe('LetterChoiceMenu', () => {
   let wordGraph: any;
   let appState: any;
   let wordInteraction: WordInteraction;
+  let menuManager: MenuManager;
   let options: any[]; // Letter change options
   let onSelect: jest.Mock;
   
@@ -57,6 +59,9 @@ describe('LetterChoiceMenu', () => {
         words: []
       }
     };
+    
+    // Assign the menuManager for direct use
+    menuManager = appState.menuManager;
     
     // Create a mock WordInteraction
     wordInteraction = {
@@ -82,7 +87,7 @@ describe('LetterChoiceMenu', () => {
         options={options} 
         onSelect={onSelect} 
         previouslyVisited={['bat', 'rat']} 
-        wordInteraction={wordInteraction} 
+        menuManager={menuManager} 
       />
     );
     
@@ -102,7 +107,7 @@ describe('LetterChoiceMenu', () => {
         options={options} 
         onSelect={onSelect} 
         previouslyVisited={['bat', 'rat']} 
-        wordInteraction={wordInteraction} 
+        menuManager={menuManager} 
       />
     );
     
@@ -127,7 +132,7 @@ describe('LetterChoiceMenu', () => {
         options={options} 
         onSelect={onSelect} 
         previouslyVisited={['bat', 'rat']} 
-        wordInteraction={wordInteraction} 
+        menuManager={menuManager} 
       />
     );
     

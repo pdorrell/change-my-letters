@@ -5,6 +5,7 @@ import { LetterView, LetterPlaceholder } from './LetterView';
 import { PositionView, PositionPlaceholder } from './PositionView';
 import { LetterChange } from '../models/WordChange';
 import { Word } from '../models/Word';
+import { MenuManager } from '../models/MenuManager';
 import {
   useFloating,
   autoUpdate,
@@ -123,17 +124,14 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
 /**
  * View component for the letter choice menu
  */
-interface LetterChoiceMenuProps { options: LetterChange[]; onSelect: (wordObj: Word) => void; previouslyVisited: string[]; wordInteraction: WordInteraction; }
+interface LetterChoiceMenuProps { options: LetterChange[]; onSelect: (wordObj: Word) => void; previouslyVisited: string[]; menuManager: MenuManager; }
 
-export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ options, onSelect, previouslyVisited, wordInteraction }) => {
-  // Get appState directly from the wordInteraction prop
-  const appState = wordInteraction.appState;
-
+export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ options, onSelect, previouslyVisited, menuManager }) => {
   // Using floating-ui for positioning
   const {refs, floatingStyles, context} = useFloating({
     // Set the reference to the active button element
     elements: {
-      reference: appState.menuManager.activeButtonElement ?? undefined
+      reference: menuManager.activeButtonElement ?? undefined
     },
     // Keep the position updated when elements resize/scroll/etc
     whileElementsMounted: autoUpdate,
