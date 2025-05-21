@@ -29,7 +29,6 @@ interface LetterViewProps { letterInteraction: LetterInteraction; }
 
 export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteraction }) => {
   const letter = letterInteraction.letter;
-  const appState = letterInteraction.wordInteraction.appState;
   const replaceButtonRef = React.useRef<HTMLButtonElement>(null);
 
   const handleReplaceClick = (event: React.MouseEvent<HTMLButtonElement>) => {
