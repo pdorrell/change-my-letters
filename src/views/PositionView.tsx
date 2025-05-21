@@ -22,8 +22,6 @@ export const PositionPlaceholder: React.FC = () => {
 interface PositionViewProps { positionInteraction: PositionInteraction; }
 
 export const PositionView: React.FC<PositionViewProps> = observer(({ positionInteraction }) => {
-  const position = positionInteraction.position;
-
   return (
     <div className={`position-container ${positionInteraction.actionPending ? 'action-pending' : ''}`}>
       <ActionButton

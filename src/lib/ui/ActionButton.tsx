@@ -22,10 +22,18 @@ export const ActionButton = React.forwardRef<
     action.doAction();
   };
   
+  const handleMouseDown = () => {
+    // Execute onPress handler if it exists
+    if (action.onPress) {
+      action.onPress();
+    }
+  };
+  
   return (
     <button
       ref={ref}
       onClick={handleClick}
+      onMouseDown={handleMouseDown}
       disabled={!action.enabled}
       title={action.tooltip}
       {...props}

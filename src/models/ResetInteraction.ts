@@ -25,11 +25,15 @@ export class ResetInteraction {
     // Initialize button actions with tooltips
     this.cancelAction = new ButtonAction(
       () => this.cancel(),
-      "Return to the current word without changing"
+      {
+        tooltip: "Return to the current word without changing"
+      }
     );
     this.randomAction = new ButtonAction(
       () => this.chooseRandom(),
-      "Choose a random word from the full list (ignores filter)"
+      {
+        tooltip: "Choose a random word from the full list (ignores filter)"
+      }
     );
     
     makeAutoObservable(this, {
