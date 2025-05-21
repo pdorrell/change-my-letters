@@ -78,6 +78,7 @@ describe('LetterView', () => {
         }
       },
       wordInteraction: currentWord,
+      menuManager: appState.menuManager,
       isReplaceMenuOpen: false
     };
 
@@ -112,7 +113,7 @@ describe('LetterView', () => {
     const replaceButton = container.querySelector('.replace-icon:not(.hidden)');
     if (replaceButton) fireEvent.click(replaceButton);
 
-    expect(appState.menuManager.toggleMenu).toHaveBeenCalledWith(false, expect.any(Function), expect.anything());
+    expect(letterInteraction.menuManager.toggleMenu).toHaveBeenCalledWith(false, expect.any(Function), expect.anything());
   });
 
   it('calls setNewWord when delete icon is clicked', () => {

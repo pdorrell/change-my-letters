@@ -1,6 +1,7 @@
 import { WordInteraction } from '../../src/models/interaction/WordInteraction';
 import { AppState } from '../../src/models/AppState';
 import { Word } from '../../src/models/Word';
+import { MenuManager } from '../../src/models/MenuManager';
 
 // Create a mock for Word
 class MockWord {
@@ -71,20 +72,29 @@ class MockWord {
 
 describe('WordInteraction', () => {
   let appState: AppState;
+  let menuManager: MenuManager;
   
   beforeEach(() => {
+    // Create a mock MenuManager
+    menuManager = {
+      activeButtonElement: null,
+      toggleMenu: jest.fn(),
+      closeMenus: jest.fn()
+    } as unknown as MenuManager;
+    
     appState = {
       currentPage: 'wordView',
       history: { hasVisited: () => false },
       wordGraph: { getNode: (word: string) => new MockWord(word) as unknown as Word },
       isLoading: false,
+      menuManager
     } as unknown as AppState;
   });
   
   it('should initialize correctly with a word', () => {
     const wordObj = new MockWord('cat') as unknown as Word;
     const hasBeenVisited = false;
-    const currentWord = new WordInteraction(wordObj, appState, hasBeenVisited);
+    const currentWord = new WordInteraction(wordObj, appState, menuManager, hasBeenVisited);
 
     expect(currentWord.value).toBe('cat');
     expect(currentWord.previouslyVisited).toBe(false);
@@ -101,7 +111,7 @@ describe('WordInteraction', () => {
   it('should update word value and related properties', () => {
     const catWord = new MockWord('cat') as unknown as Word;
     const batWord = new MockWord('bat') as unknown as Word;
-    const currentWord = new WordInteraction(catWord, appState, false);
+    const currentWord = new WordInteraction(catWord, appState, menuManager, false);
     currentWord.updateWord(batWord, false);
 
     expect(currentWord.value).toBe('bat');
@@ -116,7 +126,7 @@ describe('WordInteraction', () => {
 
   it('should access letters and positions via getters', () => {
     const word = new MockWord('cat') as unknown as Word;
-    const currentWord = new WordInteraction(word, appState, false);
+    const currentWord = new WordInteraction(word, appState, menuManager, false);
 
     // letters and positions are getters that map from interactions
     expect(currentWord.letters.length).toBe(3);
@@ -128,7 +138,7 @@ describe('WordInteraction', () => {
     const catsWord = new MockWord('cats') as unknown as Word;
     const atWord = new MockWord('at') as unknown as Word;
     
-    const currentWord = new WordInteraction(catWord, appState, false);
+    const currentWord = new WordInteraction(catWord, appState, menuManager, false);
 
     // Update to longer word
     currentWord.updateWord(catsWord, false);

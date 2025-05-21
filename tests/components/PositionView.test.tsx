@@ -75,6 +75,7 @@ describe('PositionView', () => {
         }
       },
       wordInteraction: currentWord,
+      menuManager: appState.menuManager,
       isInsertMenuOpen: false
     };
     
@@ -96,7 +97,7 @@ describe('PositionView', () => {
     const insertButton = container.querySelector('.insert-icon:not(.hidden)');
     if (insertButton) fireEvent.click(insertButton);
     
-    expect(appState.menuManager.toggleMenu).toHaveBeenCalledWith(false, expect.any(Function), expect.anything());
+    expect(positionInteraction.menuManager.toggleMenu).toHaveBeenCalledWith(false, expect.any(Function), expect.anything());
   });
   
   it('shows letter choice menu when insert menu is open', () => {
@@ -138,6 +139,7 @@ describe('PositionView', () => {
     const mockPositionInteraction = {
       position: cannotInsertPosition,
       wordInteraction: currentWord,
+      menuManager: appState.menuManager,
       isInsertMenuOpen: false
     };
     

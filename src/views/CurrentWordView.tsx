@@ -46,7 +46,7 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
           target.classList.contains('insert-icon');
 
         if (!menuClick) {
-          appState.menuManager.closeMenus();
+          currentWord.menuManager.closeMenus();
         }
       }
     };

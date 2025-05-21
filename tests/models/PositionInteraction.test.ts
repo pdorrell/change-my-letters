@@ -4,6 +4,7 @@ import { WordInteraction } from '../../src/models/interaction/WordInteraction';
 import { Word } from '../../src/models/Word';
 import { Letter } from '../../src/models/Letter';
 import { AppState } from '../../src/models/AppState';
+import { MenuManager } from '../../src/models/MenuManager';
 
 // Create a mock for Word
 class MockWord {
@@ -72,15 +73,24 @@ describe('PositionInteraction', () => {
   let position: Position;
   let wordInteraction: WordInteraction;
   let appState: AppState;
+  let menuManager: MenuManager;
   let positionInteraction: PositionInteraction;
   
   beforeEach(() => {
+    // Create a mock MenuManager
+    menuManager = {
+      activeButtonElement: null,
+      toggleMenu: jest.fn(),
+      closeMenus: jest.fn()
+    } as unknown as MenuManager;
+    
     // Set up mocks
     appState = {
       currentPage: 'wordView',
       history: { hasVisited: () => false },
       wordGraph: { getNode: (word: string) => new MockWord(word) as unknown as Word },
       isLoading: false,
+      menuManager: menuManager,
     } as unknown as AppState;
     
     // Create a node and position
@@ -88,10 +98,10 @@ describe('PositionInteraction', () => {
     position = node.positions[0]; // Position at index 0 (before 'c')
     
     // Create a word interaction
-    wordInteraction = new WordInteraction(node, appState, false);
+    wordInteraction = new WordInteraction(node, appState, menuManager, false);
     
     // Create the position interaction to test
-    positionInteraction = new PositionInteraction(position, wordInteraction);
+    positionInteraction = new PositionInteraction(position, wordInteraction, menuManager);
   });
   
   it('should initialize with correct position and word interaction references', () => {

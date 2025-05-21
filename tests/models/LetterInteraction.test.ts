@@ -4,6 +4,7 @@ import { WordInteraction } from '../../src/models/interaction/WordInteraction';
 import { Word } from '../../src/models/Word';
 import { Position } from '../../src/models/Position';
 import { AppState } from '../../src/models/AppState';
+import { MenuManager } from '../../src/models/MenuManager';
 
 // Create a mock for Word
 class MockWord {
@@ -72,15 +73,24 @@ describe('LetterInteraction', () => {
   let letter: Letter;
   let wordInteraction: WordInteraction;
   let appState: AppState;
+  let menuManager: MenuManager;
   let letterInteraction: LetterInteraction;
   
   beforeEach(() => {
+    // Create a mock MenuManager
+    menuManager = {
+      activeButtonElement: null,
+      toggleMenu: jest.fn(),
+      closeMenus: jest.fn()
+    } as unknown as MenuManager;
+    
     // Set up mocks
     appState = {
       currentPage: 'wordView',
       history: { hasVisited: () => false },
       wordGraph: { getNode: (word: string) => new MockWord(word) as unknown as Word },
       isLoading: false,
+      menuManager: menuManager,
     } as unknown as AppState;
     
     // Create a node and letter
@@ -88,10 +98,10 @@ describe('LetterInteraction', () => {
     letter = node.letters[0]; // 'c'
     
     // Create a word interaction
-    wordInteraction = new WordInteraction(node, appState, false);
+    wordInteraction = new WordInteraction(node, appState, menuManager, false);
     
     // Create the letter interaction to test
-    letterInteraction = new LetterInteraction(letter, wordInteraction);
+    letterInteraction = new LetterInteraction(letter, wordInteraction, menuManager);
   });
   
   it('should initialize with correct letter and word interaction references', () => {
