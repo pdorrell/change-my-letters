@@ -4,7 +4,7 @@ import { ButtonAction } from './actions';
 /**
  * Props for the ActionButton component
  */
-export interface ActionButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'disabled' | 'onClick'> {
+export interface ActionButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'disabled' | 'onClick' | 'title'> {
   /**
    * The action to perform when the button is clicked
    */
@@ -27,6 +27,7 @@ export const ActionButton = React.forwardRef<
       ref={ref}
       onClick={handleClick}
       disabled={!action.enabled}
+      title={action.tooltip}
       {...props}
     />
   );

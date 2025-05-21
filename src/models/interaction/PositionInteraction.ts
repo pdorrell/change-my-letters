@@ -41,7 +41,7 @@ export class PositionInteraction {
   get openInsertMenuAction(): ButtonAction {
     // If insertion is not possible at this position, return a disabled action
     if (!this.position.canInsert) {
-      return new ButtonAction(null);
+      return new ButtonAction(null, "Insert a letter here");
     }
     
     // Otherwise, return an action that toggles the insert menu
@@ -51,7 +51,7 @@ export class PositionInteraction {
         () => { this.isInsertMenuOpen = true; },
         this.insertButtonRef
       );
-    });
+    }, "Insert a letter here");
   }
   
   /**

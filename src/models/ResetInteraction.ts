@@ -22,9 +22,15 @@ export class ResetInteraction {
   constructor(appState: AppState) {
     this.appState = appState;
     
-    // Initialize button actions
-    this.cancelAction = new ButtonAction(() => this.cancel());
-    this.randomAction = new ButtonAction(() => this.chooseRandom());
+    // Initialize button actions with tooltips
+    this.cancelAction = new ButtonAction(
+      () => this.cancel(),
+      "Return to the current word without changing"
+    );
+    this.randomAction = new ButtonAction(
+      () => this.chooseRandom(),
+      "Choose a random word from the full list (ignores filter)"
+    );
     
     makeAutoObservable(this, {
       filteredWords: computed,
