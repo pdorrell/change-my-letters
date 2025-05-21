@@ -135,3 +135,32 @@ All changes to the application should pass:
 * `npm test` - Run the Jest test suite
 * `npm run typecheck` - Verify TypeScript type correctness
 * `npm run lint` - Check code quality with ESLint
+
+
+## Use Test Doubles not Mocks
+
+If at all possible, do not use mocks for testing.
+
+Instead, use *Test Doubles* where a Test Double is an object `tx` of type `X` that _substitutes_ for
+an object `x` of type `X` passed as a parameter to some method or constructor. `tx` may or may not
+be a partial simulation of `x`, or it may be a dummy replacement that does nothing, or it might just
+record method calls made (a bit like what mocks do, but the important thing is that it is a test double
+and it's not a mock).
+
+Where there is some global object of service that an application depends on that we do not
+want to invoke in a test, create a wrapper object that uses the global object to perform the functions
+required by the application, and then in the tests create a test double for the wrapper object.
+
+There can exist tests for test doubles, for example to make sure they behave in a reasonable manner
+compared to the thing they are a double of.
+
+In this project, test doubles are in directory `tests/test_doubles` and tests for test doubles are
+in `tests/test_double_tests`.
+
+Current test doubles are -
+
+* `DataFileFetcherTestDouble` which is a test double for `DataFileFetcher` which wraps use of global `fetch` to
+  get the contents of application data files.
+* `WordSayerTestDouble` which is a test double for `WordSayer` which wraps use of the global `Audio` class to
+  generate audio of words from MP3 files.
+
