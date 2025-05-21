@@ -120,7 +120,7 @@ export class ResetInteraction {
     this.appState.reset(wordObj);
     
     // Initialize the current word with the new Word object
-    this.appState.currentWord.updateWord(wordObj, false);
+    this.appState.currentWord.updateWord(wordObj);
     
     // Navigate back to the word view
     this.appState.navigateTo('wordView');

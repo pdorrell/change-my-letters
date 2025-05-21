@@ -13,9 +13,6 @@ import { MenuManager } from '../MenuManager';
 export class WordInteraction {
   // The word property is now defined in the constructor
 
-  // Whether this word has been visited before
-  public previouslyVisited: boolean;
-
   // Array of letter interactions
   letterInteractions: LetterInteraction[] = [];
 
@@ -40,19 +37,14 @@ export class WordInteraction {
     public readonly appState: AppState,
     
     // Reference to the menu manager
-    public readonly menuManager: MenuManager,
-    
-    hasBeenVisited: boolean = false
+    public readonly menuManager: MenuManager
   ) {
-    this.previouslyVisited = hasBeenVisited;
-
     // Initialize letter and position interactions
     this.initializeInteractions();
 
     // Use makeObservable instead of makeAutoObservable for classes with inheritance
     makeObservable(this, {
       word: observable,
-      previouslyVisited: observable,
       letterInteractions: observable,
       positionInteractions: observable,
       letters: computed,
@@ -86,9 +78,8 @@ export class WordInteraction {
   /**
    * Update to a new word
    */
-  updateWord(word: Word, hasBeenVisited: boolean): void {
+  updateWord(word: Word): void {
     this.word = word;
-    this.previouslyVisited = hasBeenVisited;
 
     // Reinitialize interactions for the new word
     this.initializeInteractions();

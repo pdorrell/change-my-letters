@@ -106,7 +106,6 @@ describe('CurrentWordView', () => {
     // Mock the letterInteractions and positionInteractions directly
     currentWord = {
       value: 'cat',
-      previouslyVisited: false,
       appState: appState,
       
       // Mock letterInteractions with direct values
@@ -205,7 +204,6 @@ describe('CurrentWordView', () => {
     // Create the object first
     currentWord = {
       value: 'cat',
-      previouslyVisited: false,
       appState: appState,
       menuManager: appState.menuManager,
       letterInteractions,
@@ -231,31 +229,8 @@ describe('CurrentWordView', () => {
     expect(positionViews.length).toBeGreaterThanOrEqual(4);
   });
   
-  it('shows previously visited status when applicable', () => {
-    // Create a visited word directly with mock properties
-    const visitedWord = {
-      ...currentWord,
-      previouslyVisited: true
-    };
-    
-    const { container } = render(<CurrentWordView currentWord={visitedWord as WordInteraction} />);
-    
-    // Check that the previously-visited class is applied
-    expect(container.querySelector('.previously-visited')).not.toBeNull();
-  });
-  
-  it('handles non-previously-visited words', () => {
-    // Create a non-visited word directly with mock properties
-    const newWord = {
-      ...currentWord,
-      previouslyVisited: false
-    };
-    
-    const { container } = render(<CurrentWordView currentWord={newWord as WordInteraction} />);
-    
-    // Check that the previously-visited class is not applied
-    expect(container.querySelector('.previously-visited')).toBeNull();
-  });
+  // Tests for previously visited status have been removed since 
+  // previouslyVisited has been removed from WordInteraction
   
   it('alternates positions and letters correctly', () => {
     const { container } = render(<CurrentWordView currentWord={currentWord} />);
@@ -314,7 +289,6 @@ describe('CurrentWordView', () => {
     // Create the object first
     const longWord = {
       value: 'longer',
-      previouslyVisited: false,
       appState: appState,
       menuManager: appState.menuManager,
       letterInteractions: longLetterInteractions,

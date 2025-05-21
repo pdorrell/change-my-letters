@@ -79,7 +79,7 @@ export class AppState {
     this.history = new HistoryModel(this, wordNode);
 
     // Initialize the current word with the menu manager
-    this.currentWord = new WordInteraction(wordNode, this, this.menuManager, false);
+    this.currentWord = new WordInteraction(wordNode, this, this.menuManager);
 
     // Initialize button actions
     this.resetAction = new ButtonAction(() => this.resetGame(), { tooltip: "Choose a new word" });
@@ -112,11 +112,8 @@ export class AppState {
     // Update visitingWord to the new word
     this.visitingWord = wordObj;
 
-    // Check if the word has been previously visited
-    const hasBeenVisited = wordObj.previouslyVisited;
-
     // Update the current word
-    this.currentWord.updateWord(wordObj, hasBeenVisited);
+    this.currentWord.updateWord(wordObj);
 
     // Close any open menus when the word changes
     this.menuManager.closeMenus();

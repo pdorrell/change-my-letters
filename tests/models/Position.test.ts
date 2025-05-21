@@ -92,7 +92,7 @@ describe('Position', () => {
     } as unknown as AppState;
     
     const node = new MockWord('test') as unknown as Word;
-    currentWord = new WordInteraction(node, appState, appState.menuManager, false);
+    currentWord = new WordInteraction(node, appState, appState.menuManager);
   });
 
   it('should initialize with the correct properties', () => {

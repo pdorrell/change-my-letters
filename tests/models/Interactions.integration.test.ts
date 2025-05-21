@@ -98,7 +98,7 @@ describe('Interaction Classes Integration', () => {
 
     // Create a new word interaction for testing
     const node = new MockWord('test') as unknown as Word;
-    wordInteraction = new WordInteraction(node, appState, appState.menuManager, false);
+    wordInteraction = new WordInteraction(node, appState, appState.menuManager);
   });
 
   it('should initialize with all menus closed', () => {
@@ -204,7 +204,7 @@ describe('Interaction Classes Integration', () => {
 
     // Update the word
     const newNode = new MockWord('hello') as unknown as Word;
-    wordInteraction.updateWord(newNode, false);
+    wordInteraction.updateWord(newNode);
 
     // Verify the interactions are new objects
     for (let i = 0; i < wordInteraction.letterInteractions.length; i++) {
