@@ -86,13 +86,13 @@ describe('LetterView', () => {
       }),
       deleteAction: {
         enabled: true,
-        do_action: jest.fn().mockImplementation(() => {
+        doAction: jest.fn().mockImplementation(() => {
           appState.setNewWord({ word: 'at' });
         })
       },
       replaceAction: {
         enabled: true,
-        do_action: jest.fn().mockImplementation(() => {
+        doAction: jest.fn().mockImplementation(() => {
           appState.menuManager.toggleMenu(false, jest.fn(), null);
         })
       },
@@ -139,8 +139,8 @@ describe('LetterView', () => {
     const deleteButton = container.querySelector('.delete-icon:not(.hidden)');
     if (deleteButton) fireEvent.click(deleteButton);
 
-    // Should call deleteAction.do_action
-    expect(letterInteraction.deleteAction.do_action).toHaveBeenCalled();
+    // Should call deleteAction.doAction
+    expect(letterInteraction.deleteAction.doAction).toHaveBeenCalled();
   });
 
   it('handles a letter interaction with an open replace menu', () => {

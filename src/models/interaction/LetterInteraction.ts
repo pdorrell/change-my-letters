@@ -4,7 +4,7 @@ import { Letter } from '../Letter';
 import { WordInteraction } from './WordInteraction';
 import { MenuManager } from '../MenuManager';
 import { Word } from '../Word';
-import { ButtonAction, EventedButtonAction } from '../../lib/ui/actions';
+import { ButtonAction } from '../../lib/ui/actions';
 
 /**
  * Model representing the interaction state for a letter
