@@ -31,8 +31,16 @@ export class PositionInteraction {
       setNewWord: action,
       openInsertMenuAction: computed,
       selectionOfLetterToInsert: computed,
+      actionPending: computed,
       insertButtonRef: false // Don't make the ref observable
     });
+  }
+  
+  /**
+   * Whether there is a pending action on this position
+   */
+  get actionPending(): boolean {
+    return this.isInsertMenuOpen;
   }
   
   /**

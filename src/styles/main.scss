@@ -211,6 +211,18 @@ body {
   margin: 5px;
   padding: 0;
   
+  // Action pending state when button is pressed
+  &:has(button:active) {
+    background-color: #ffd580; // Orangey-yellow
+    border-radius: 8px;
+  }
+  
+  // Action pending state from model
+  &.action-pending {
+    background-color: #ffd580; // Orangey-yellow
+    border-radius: 8px;
+  }
+  
   .letter {
     display: flex;
     align-items: flex-start; // Align to the top instead of center
@@ -257,6 +269,18 @@ body {
   position: relative;
   margin: 0;
   padding: 0 8px; // Add horizontal padding
+  
+  // Action pending state when button is pressed
+  &:has(button:active) {
+    background-color: #ffd580; // Orangey-yellow
+    border-radius: 8px;
+  }
+  
+  // Action pending state from model
+  &.action-pending {
+    background-color: #ffd580; // Orangey-yellow
+    border-radius: 8px;
+  }
   
   .insert-icon {
     background: none;
