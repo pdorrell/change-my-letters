@@ -88,8 +88,8 @@ export class ResetInteraction {
       throw new Error(`Word "${word}" doesn't exist in the word graph`);
     }
     
-    // Reset the history with the new word object
-    this.appState.history.reset(wordObj);
+    // Reset the app state with the new word object
+    this.appState.reset(wordObj);
     
     // Set the new word as current using the Word object
     this.appState.setNewWord(wordObj);
