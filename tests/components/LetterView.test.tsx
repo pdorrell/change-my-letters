@@ -9,10 +9,10 @@ import { WordSayer } from '../../src/models/WordSayer';
 
 // Mock the LetterChoiceMenu component only (not the model classes)
 jest.mock('../../src/views/CurrentWordView', () => ({
-  LetterChoiceMenu: ({ options, onSelect }: { options: any[], onSelect: (word: any) => void }) => (
+  LetterChoiceMenu: ({ wordSelectionByLetter }: { wordSelectionByLetter: any }) => (
     <div data-testid="letter-choice-menu">
-      {options.map((option, index) => (
-        <div key={index} data-testid="letter-choice-option" onClick={() => onSelect(option.result)}>
+      {wordSelectionByLetter.options.map((option: any, index: number) => (
+        <div key={index} data-testid="letter-choice-option" onClick={() => wordSelectionByLetter.onSelect(option.result)}>
           {option.letter}
         </div>
       ))}
@@ -96,7 +96,13 @@ describe('LetterView', () => {
           appState.menuManager.toggleMenu(false, jest.fn(), null);
         })
       },
-      replaceButtonRef: React.createRef()
+      replaceButtonRef: React.createRef(),
+      get selectionOfReplacementLetter() {
+        return {
+          options: this.letter.changes.replaceChanges,
+          onSelect: this.setNewWord
+        };
+      }
     };
 
     // Add the letterInteraction to the currentWord for circular reference

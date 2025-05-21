@@ -104,11 +104,11 @@ describe('Letter', () => {
     expect(letterInteraction.isReplaceMenuOpen).toBe(false);
     
     // Open it
-    letterInteraction.toggleReplaceMenu();
+    letterInteraction.isReplaceMenuOpen = true;
     expect(letterInteraction.isReplaceMenuOpen).toBe(true);
     
     // Close it
-    letterInteraction.toggleReplaceMenu();
+    letterInteraction.isReplaceMenuOpen = false;
     expect(letterInteraction.isReplaceMenuOpen).toBe(false);
   });
 

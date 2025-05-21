@@ -5,6 +5,7 @@ import { WordInteraction } from './WordInteraction';
 import { MenuManager } from '../MenuManager';
 import { Word } from '../Word';
 import { ButtonAction } from '../../lib/ui/actions';
+import { WordSelectionByLetter } from '../WordSelectionByLetter';
 
 /**
  * Model representing the interaction state for a position
@@ -29,12 +30,9 @@ export class PositionInteraction {
     makeAutoObservable(this, {
       setNewWord: action,
       openInsertMenuAction: computed,
+      selectionOfLetterToInsert: computed,
       insertButtonRef: false // Don't make the ref observable
     });
-  }
-
-  toggleInsertMenu(): void {
-    this.isInsertMenuOpen = !this.isInsertMenuOpen;
   }
   
   /**
@@ -54,6 +52,16 @@ export class PositionInteraction {
         this.insertButtonRef
       );
     });
+  }
+  
+  /**
+   * Get the selection of letters to insert at this position
+   */
+  get selectionOfLetterToInsert(): WordSelectionByLetter {
+    return new WordSelectionByLetter(
+      this.position.changes.insertChanges,
+      (wordObj: Word) => this.setNewWord(wordObj)
+    );
   }
   
   /**

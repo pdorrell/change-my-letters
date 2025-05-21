@@ -110,16 +110,16 @@ describe('LetterInteraction', () => {
     expect(letterInteraction.isReplaceMenuOpen).toBe(false);
   });
   
-  it('should toggle replace menu state', () => {
+  it('should be able to control replace menu state', () => {
     // Initially closed
     expect(letterInteraction.isReplaceMenuOpen).toBe(false);
     
-    // Toggle to open
-    letterInteraction.toggleReplaceMenu();
+    // Set to open
+    letterInteraction.isReplaceMenuOpen = true;
     expect(letterInteraction.isReplaceMenuOpen).toBe(true);
     
-    // Toggle back to closed
-    letterInteraction.toggleReplaceMenu();
+    // Set back to closed
+    letterInteraction.isReplaceMenuOpen = false;
     expect(letterInteraction.isReplaceMenuOpen).toBe(false);
   });
   
