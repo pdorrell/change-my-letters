@@ -1,7 +1,8 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, action } from 'mobx';
 import { Letter } from '../Letter';
 import { WordInteraction } from './WordInteraction';
 import { MenuManager } from '../MenuManager';
+import { Word } from '../Word';
 
 /**
  * Model representing the interaction state for a letter
@@ -20,10 +21,24 @@ export class LetterInteraction {
     // Reference to the menu manager
     public readonly menuManager: MenuManager
   ) {
-    makeAutoObservable(this);
+    makeAutoObservable(this, {
+      setNewWord: action
+    });
   }
 
   toggleReplaceMenu(): void {
     this.isReplaceMenuOpen = !this.isReplaceMenuOpen;
+  }
+  
+  /**
+   * Set a new word for the application
+   * @param wordObj The Word object to set as the new word
+   */
+  setNewWord(wordObj: Word): void {
+    // Close the menu
+    this.isReplaceMenuOpen = false;
+    
+    // Use the wordInteraction's appState to set the new word
+    this.wordInteraction.setNewWord(wordObj);
   }
 }

@@ -35,7 +35,7 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ positionInt
   };
 
   const handleWordChoice = (newWord: Word) => {
-    appState.setNewWord(newWord);
+    positionInteraction.setNewWord(newWord);
   };
 
   return (
