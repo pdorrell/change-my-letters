@@ -104,7 +104,7 @@ describe('Position', () => {
     expect(position.insertOptions).toEqual(['a', 'e', 'i', 'o', 'u']);
   });
 
-  it('should toggle insert menu state', () => {
+  it('should control insert menu state', () => {
     // Get a PositionInteraction instead and test that
     const positionInteraction = currentWord.positionInteractions[1];
     
@@ -112,11 +112,11 @@ describe('Position', () => {
     expect(positionInteraction.isInsertMenuOpen).toBe(false);
     
     // Open it
-    positionInteraction.toggleInsertMenu();
+    positionInteraction.isInsertMenuOpen = true;
     expect(positionInteraction.isInsertMenuOpen).toBe(true);
     
     // Close it
-    positionInteraction.toggleInsertMenu();
+    positionInteraction.isInsertMenuOpen = false;
     expect(positionInteraction.isInsertMenuOpen).toBe(false);
   });
 

@@ -124,9 +124,16 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
 /**
  * View component for the letter choice menu
  */
-interface LetterChoiceMenuProps { options: LetterChange[]; onSelect: (wordObj: Word) => void; previouslyVisited: string[]; menuManager: MenuManager; }
+import { WordSelectionByLetter } from '../models/WordSelectionByLetter';
 
-export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ options, onSelect, previouslyVisited, menuManager }) => {
+interface LetterChoiceMenuProps { 
+  wordSelectionByLetter: WordSelectionByLetter; 
+  previouslyVisited: string[]; 
+  menuManager: MenuManager; 
+}
+
+export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ wordSelectionByLetter, previouslyVisited, menuManager }) => {
+  const { options, onSelect } = wordSelectionByLetter;
   // Using floating-ui for positioning
   const {refs, floatingStyles, context} = useFloating({
     // Set the reference to the active button element

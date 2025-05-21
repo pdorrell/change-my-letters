@@ -5,6 +5,7 @@ import { createTestWordGraph, testWordLists } from '../utils/TestWordGraphBuilde
 import { WordInteraction } from '../../src/models/interaction/WordInteraction';
 import { WordSayer } from '../../src/models/WordSayer';
 import { MenuManager } from '../../src/models/MenuManager';
+import { WordSelectionByLetter } from '../../src/models/WordSelectionByLetter';
 
 // Mock floating-ui for menus since we don't need real positioning in tests
 jest.mock('@floating-ui/react', () => ({
@@ -80,10 +81,11 @@ describe('LetterChoiceMenu', () => {
   });
   
   it('renders letter options correctly', () => {
+    const wordSelectionByLetter = new WordSelectionByLetter(options, onSelect);
+    
     const { container } = render(
       <LetterChoiceMenu 
-        options={options} 
-        onSelect={onSelect} 
+        wordSelectionByLetter={wordSelectionByLetter}
         previouslyVisited={['bat', 'rat']} 
         menuManager={menuManager} 
       />
@@ -100,10 +102,11 @@ describe('LetterChoiceMenu', () => {
   });
   
   it('marks previously visited options correctly', () => {
+    const wordSelectionByLetter = new WordSelectionByLetter(options, onSelect);
+    
     const { container } = render(
       <LetterChoiceMenu 
-        options={options} 
-        onSelect={onSelect} 
+        wordSelectionByLetter={wordSelectionByLetter}
         previouslyVisited={['bat', 'rat']} 
         menuManager={menuManager} 
       />
@@ -125,10 +128,11 @@ describe('LetterChoiceMenu', () => {
   });
   
   it('calls onSelect when a letter choice is clicked', () => {
+    const wordSelectionByLetter = new WordSelectionByLetter(options, onSelect);
+    
     const { container } = render(
       <LetterChoiceMenu 
-        options={options} 
-        onSelect={onSelect} 
+        wordSelectionByLetter={wordSelectionByLetter}
         previouslyVisited={['bat', 'rat']} 
         menuManager={menuManager} 
       />

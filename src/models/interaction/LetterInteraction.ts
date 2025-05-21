@@ -5,6 +5,7 @@ import { WordInteraction } from './WordInteraction';
 import { MenuManager } from '../MenuManager';
 import { Word } from '../Word';
 import { ButtonAction } from '../../lib/ui/actions';
+import { WordSelectionByLetter } from '../WordSelectionByLetter';
 
 /**
  * Model representing the interaction state for a letter
@@ -30,6 +31,7 @@ export class LetterInteraction {
       setNewWord: action,
       deleteAction: computed,
       openReplaceMenuAction: computed,
+      selectionOfReplacementLetter: computed,
       replaceButtonRef: false // Don't make the ref observable
     });
   }
@@ -69,9 +71,15 @@ export class LetterInteraction {
       );
     });
   }
-
-  toggleReplaceMenu(): void {
-    this.isReplaceMenuOpen = !this.isReplaceMenuOpen;
+  
+  /**
+   * Get the selection of replacement letters for this letter
+   */
+  get selectionOfReplacementLetter(): WordSelectionByLetter {
+    return new WordSelectionByLetter(
+      this.letter.changes.replaceChanges,
+      (wordObj: Word) => this.setNewWord(wordObj)
+    );
   }
   
   /**

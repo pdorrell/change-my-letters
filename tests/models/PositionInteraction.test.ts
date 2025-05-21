@@ -110,16 +110,16 @@ describe('PositionInteraction', () => {
     expect(positionInteraction.isInsertMenuOpen).toBe(false);
   });
   
-  it('should toggle insert menu state', () => {
+  it('should be able to control insert menu state', () => {
     // Initially closed
     expect(positionInteraction.isInsertMenuOpen).toBe(false);
     
-    // Toggle to open
-    positionInteraction.toggleInsertMenu();
+    // Set to open
+    positionInteraction.isInsertMenuOpen = true;
     expect(positionInteraction.isInsertMenuOpen).toBe(true);
     
-    // Toggle back to closed
-    positionInteraction.toggleInsertMenu();
+    // Set back to closed
+    positionInteraction.isInsertMenuOpen = false;
     expect(positionInteraction.isInsertMenuOpen).toBe(false);
   });
   

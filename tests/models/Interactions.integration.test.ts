@@ -114,8 +114,8 @@ describe('Interaction Classes Integration', () => {
   });
 
   it('should allow opening a letter replace menu', () => {
-    // Open the first letter's replace menu
-    wordInteraction.letterInteractions[0].toggleReplaceMenu();
+    // Open the first letter's replace menu directly
+    wordInteraction.letterInteractions[0].isReplaceMenuOpen = true;
 
     expect(wordInteraction.letterInteractions[0].isReplaceMenuOpen).toBe(true);
 
@@ -130,8 +130,8 @@ describe('Interaction Classes Integration', () => {
   });
 
   it('should allow opening a position insert menu', () => {
-    // Open the first position's insert menu
-    wordInteraction.positionInteractions[0].toggleInsertMenu();
+    // Open the first position's insert menu directly
+    wordInteraction.positionInteractions[0].isInsertMenuOpen = true;
 
     expect(wordInteraction.positionInteractions[0].isInsertMenuOpen).toBe(true);
 
@@ -147,9 +147,9 @@ describe('Interaction Classes Integration', () => {
   });
 
   it('should close all menus when wordInteraction.closeAllMenus is called', () => {
-    // Open some menus
-    wordInteraction.letterInteractions[0].toggleReplaceMenu();
-    wordInteraction.positionInteractions[0].toggleInsertMenu();
+    // Open some menus directly
+    wordInteraction.letterInteractions[0].isReplaceMenuOpen = true;
+    wordInteraction.positionInteractions[0].isInsertMenuOpen = true;
 
     // Verify they're open
     expect(wordInteraction.letterInteractions[0].isReplaceMenuOpen).toBe(true);
@@ -169,9 +169,9 @@ describe('Interaction Classes Integration', () => {
   });
 
   it('should close all menus when appState.closeAllMenus is called', () => {
-    // Open some menus
-    wordInteraction.letterInteractions[0].toggleReplaceMenu();
-    wordInteraction.positionInteractions[0].toggleInsertMenu();
+    // Open some menus directly
+    wordInteraction.letterInteractions[0].isReplaceMenuOpen = true;
+    wordInteraction.positionInteractions[0].isInsertMenuOpen = true;
 
     // Verify they're open
     expect(wordInteraction.letterInteractions[0].isReplaceMenuOpen).toBe(true);
@@ -194,8 +194,8 @@ describe('Interaction Classes Integration', () => {
   });
 
   it('should recreate interactions when the word changes', () => {
-    // Open a menu on the current word
-    wordInteraction.letterInteractions[0].toggleReplaceMenu();
+    // Open a menu on the current word directly
+    wordInteraction.letterInteractions[0].isReplaceMenuOpen = true;
     expect(wordInteraction.letterInteractions[0].isReplaceMenuOpen).toBe(true);
 
     // Store references to the current interaction objects
