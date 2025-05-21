@@ -86,8 +86,6 @@ describe('CurrentWordView', () => {
     
     // Create a mock AppState (this is still mocked because it's complex)
     appState = {
-      closeAllMenus: jest.fn(),
-      toggleMenu: jest.fn(),
       setNewWord: jest.fn(),
       menuManager: {
         activeButtonElement: null,
