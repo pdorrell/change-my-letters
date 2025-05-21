@@ -81,7 +81,7 @@ describe('PositionView', () => {
       setNewWord: jest.fn().mockImplementation((word) => {
         appState.setNewWord(word);
       }),
-      insertAction: {
+      openInsertMenuAction: {
         enabled: true,
         doAction: jest.fn().mockImplementation(() => {
           appState.menuManager.toggleMenu(false, jest.fn(), null);
@@ -155,7 +155,7 @@ describe('PositionView', () => {
       setNewWord: jest.fn().mockImplementation((word) => {
         appState.setNewWord(word);
       }),
-      insertAction: {
+      openInsertMenuAction: {
         enabled: false,
         doAction: jest.fn()
       },
