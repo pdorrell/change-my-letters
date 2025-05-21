@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { LetterInteraction } from '../models/interaction/LetterInteraction';
 import { LetterChoiceMenu } from './CurrentWordView';
+import { ActionButton } from '../lib/ui/ActionButton';
 
 /**
  * Placeholder component that maintains the same dimensions as a letter
@@ -38,12 +39,8 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
     );
   };
 
-  const handleDeleteClick = () => {
-    if (letter.changes.deleteChange) {
-      letterInteraction.setNewWord(letter.changes.deleteChange.result);
-    }
-  };
-
+  // Delete action is now handled by letterInteraction.deleteAction
+  
   // Case change handler has been removed
 
   return (
@@ -53,14 +50,13 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
       </div>
 
       <div className="letter-actions">
-        <button
-          onClick={handleDeleteClick}
-          disabled={!letter.canDelete}
-          className={`delete-icon ${!letter.canDelete ? 'hidden' : ''}`}
+        <ActionButton
+          action={letterInteraction.deleteAction}
+          className={`delete-icon ${!letterInteraction.deleteAction.enabled ? 'hidden' : ''}`}
           title="Delete this letter"
         >
           🗑️
-        </button>
+        </ActionButton>
 
         <button
           ref={replaceButtonRef}
@@ -78,7 +74,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
       {letterInteraction.isReplaceMenuOpen && (
         <LetterChoiceMenu
           options={letter.changes.replaceChanges}
-          onSelect={(word) => letterInteraction.setNewWord(word)}
+         onSelect={(word) => letterInteraction.setNewWord(word)}
           previouslyVisited={[]} // We'll add this functionality later
           menuManager={letterInteraction.menuManager}
         />

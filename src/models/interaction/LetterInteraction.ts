@@ -1,8 +1,9 @@
-import { makeAutoObservable, action } from 'mobx';
+import { makeAutoObservable, action, computed } from 'mobx';
 import { Letter } from '../Letter';
 import { WordInteraction } from './WordInteraction';
 import { MenuManager } from '../MenuManager';
 import { Word } from '../Word';
+import { ButtonAction } from '../../lib/ui/actions';
 
 /**
  * Model representing the interaction state for a letter
@@ -22,7 +23,25 @@ export class LetterInteraction {
     public readonly menuManager: MenuManager
   ) {
     makeAutoObservable(this, {
-      setNewWord: action
+      setNewWord: action,
+      deleteAction: computed
+    });
+  }
+  
+  /**
+   * Get the delete action for this letter
+   */
+  get deleteAction(): ButtonAction {
+    // If the letter can't be deleted, return a disabled action
+    if (!this.letter.canDelete || !this.letter.changes.deleteChange) {
+      return new ButtonAction(null);
+    }
+    
+    // Otherwise, return an action that performs the delete
+    return new ButtonAction(() => {
+      if (this.letter.changes.deleteChange) {
+        this.setNewWord(this.letter.changes.deleteChange.result);
+      }
     });
   }
 

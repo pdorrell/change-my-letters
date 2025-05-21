@@ -82,7 +82,13 @@ describe('LetterView', () => {
       isReplaceMenuOpen: false,
       setNewWord: jest.fn().mockImplementation((word) => {
         appState.setNewWord(word);
-      })
+      }),
+      deleteAction: {
+        enabled: true,
+        do_action: jest.fn().mockImplementation(() => {
+          appState.setNewWord({ word: 'at' });
+        })
+      }
     };
 
     // Add the letterInteraction to the currentWord for circular reference
@@ -119,14 +125,14 @@ describe('LetterView', () => {
     expect(letterInteraction.menuManager.toggleMenu).toHaveBeenCalledWith(false, expect.any(Function), expect.anything());
   });
 
-  it('calls setNewWord when delete icon is clicked', () => {
+  it('calls deleteAction.do_action when delete icon is clicked', () => {
     const { container } = render(<LetterView letterInteraction={letterInteraction} />);
 
     const deleteButton = container.querySelector('.delete-icon:not(.hidden)');
     if (deleteButton) fireEvent.click(deleteButton);
 
-    // Should call setNewWord with a Word object, but we can only check if it was called
-    expect(appState.setNewWord).toHaveBeenCalled();
+    // Should call deleteAction.do_action
+    expect(letterInteraction.deleteAction.do_action).toHaveBeenCalled();
   });
 
   it('handles a letter interaction with an open replace menu', () => {
