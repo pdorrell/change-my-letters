@@ -30,11 +30,6 @@ export class HistoryModel {
   // Current pointer in the history (for undo/redo)
   currentIndex: number = 0;
 
-  // Set of previously visited words
-  previouslyVisitedWords: Set<string> = new Set();
-
-  // Current word being visited
-  visitingWord: Word;
 
   // Reference to app state
   appState: AppState;
@@ -44,7 +39,6 @@ export class HistoryModel {
 
     // Initialize with the starting word
     this.entries = [{ word: initialWord, wordString: initialWord.word }];
-    this.visitingWord = initialWord;
 
     makeAutoObservable(this);
   }
@@ -58,14 +52,10 @@ export class HistoryModel {
       this.entries = this.entries.slice(0, this.currentIndex + 1);
     }
     
-    // Add the current visiting word to previously visited
-    this.previouslyVisitedWords.add(this.visitingWord.word);
-    
     // Add the new word to history
     this.entries.push({ word, wordString: word.word, change });
     
-    // Update the current word and index
-    this.visitingWord = word;
+    // Update the index
     this.currentIndex = this.entries.length - 1;
   }
   
@@ -73,8 +63,11 @@ export class HistoryModel {
    * Check if a word has been visited before
    */
   hasVisited(word: Word | string): boolean {
-    const wordString = typeof word === 'string' ? word : word.word;
-    return this.previouslyVisitedWords.has(wordString);
+    if (typeof word === 'string') {
+      return this.appState.previouslyVisitedWords.has(word);
+    } else {
+      return word.previouslyVisited;
+    }
   }
   
   /**
@@ -82,10 +75,8 @@ export class HistoryModel {
    */
   undo(): Word | null {
     if (this.currentIndex > 0) {
-      this.previouslyVisitedWords.add(this.visitingWord.word);
       this.currentIndex--;
-      this.visitingWord = this.entries[this.currentIndex].word;
-      return this.visitingWord;
+      return this.entries[this.currentIndex].word;
     }
     return null;
   }
@@ -95,10 +86,8 @@ export class HistoryModel {
    */
   redo(): Word | null {
     if (this.currentIndex < this.entries.length - 1) {
-      this.previouslyVisitedWords.add(this.visitingWord.word);
       this.currentIndex++;
-      this.visitingWord = this.entries[this.currentIndex].word;
-      return this.visitingWord;
+      return this.entries[this.currentIndex].word;
     }
     return null;
   }
@@ -129,10 +118,8 @@ export class HistoryModel {
    */
   jumpToIndex(index: number): Word | null {
     if (index >= 0 && index < this.entries.length) {
-      this.previouslyVisitedWords.add(this.visitingWord.word);
       this.currentIndex = index;
-      this.visitingWord = this.entries[index].word;
-      return this.visitingWord;
+      return this.entries[index].word;
     }
     return null;
   }
@@ -143,7 +130,5 @@ export class HistoryModel {
   reset(initialWord: Word): void {
     this.entries = [{ word: initialWord, wordString: initialWord.word }];
     this.currentIndex = 0;
-    this.previouslyVisitedWords.clear();
-    this.visitingWord = initialWord;
   }
 }

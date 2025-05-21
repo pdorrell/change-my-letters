@@ -23,7 +23,11 @@ export class AppState {
   // The word history model
   history: HistoryModel;
 
-  // Audio player for word pronunciation
+  // Current word being visited
+  visitingWord: Word;
+
+  // Set of previously visited words
+  previouslyVisitedWords: Set<string> = new Set();
   
   // Reset word interaction model
   resetInteraction: ResetInteraction;
@@ -63,6 +67,9 @@ export class AppState {
       }
     });
 
+    // Initialize visitingWord
+    this.visitingWord = wordNode;
+
     // Initialize history with the initial word object
     this.history = new HistoryModel(this, wordNode);
 
@@ -83,8 +90,17 @@ export class AppState {
     // Get the word string value
     const word = wordObj.word;
 
-    // Check if the word has been visited before
-    const hasBeenVisited = this.history.hasVisited(word);
+    // Mark current visiting word as visited and add to the set
+    if (this.visitingWord) {
+      this.visitingWord.previouslyVisited = true;
+      this.previouslyVisitedWords.add(this.visitingWord.word);
+    }
+
+    // Update visitingWord to the new word
+    this.visitingWord = wordObj;
+
+    // Check if the word has been previously visited
+    const hasBeenVisited = wordObj.previouslyVisited;
 
     // Update the current word
     this.currentWord.updateWord(wordObj, hasBeenVisited);
@@ -116,8 +132,16 @@ export class AppState {
    * Undo the last word change
    */
   undo(): void {
+    // Get previous word from history
     const prevWordObj = this.history.undo();
     if (prevWordObj) {
+      // Mark current word as visited
+      if (this.visitingWord) {
+        this.visitingWord.previouslyVisited = true;
+        this.previouslyVisitedWords.add(this.visitingWord.word);
+      }
+      
+      // Set the new current word
       this.setNewWord(prevWordObj);
     }
   }
@@ -126,8 +150,16 @@ export class AppState {
    * Redo a previously undone word change
    */
   redo(): void {
+    // Get next word from history
     const nextWordObj = this.history.redo();
     if (nextWordObj) {
+      // Mark current word as visited
+      if (this.visitingWord) {
+        this.visitingWord.previouslyVisited = true;
+        this.previouslyVisitedWords.add(this.visitingWord.word);
+      }
+      
+      // Set the new current word
       this.setNewWord(nextWordObj);
     }
   }
@@ -139,6 +171,29 @@ export class AppState {
     // Navigate to the reset view
     // (The filter reset happens in navigateTo)
     this.navigateTo('resetView');
+  }
+  
+  /**
+   * Reset the game with a new initial word
+   * @param initialWord The new starting word
+   */
+  reset(initialWord: Word): void {
+    // For all previouslyVisitedWords, set previouslyVisited = false
+    this.previouslyVisitedWords.forEach(wordString => {
+      const wordNode = this.wordGraph.getNode(wordString);
+      if (wordNode) {
+        wordNode.previouslyVisited = false;
+      }
+    });
+    
+    // Clear previouslyVisitedWords set
+    this.previouslyVisitedWords.clear();
+    
+    // Set visitingWord to the new initial word
+    this.visitingWord = initialWord;
+    
+    // Also update the history model
+    this.history.reset(initialWord);
   }
 
 

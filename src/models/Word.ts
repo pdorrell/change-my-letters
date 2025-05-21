@@ -24,6 +24,9 @@ export class Word {
   // Object references to possible word changes
   public readonly changes: WordChanges = new WordChanges();
 
+  // Whether this word has been previously visited
+  public previouslyVisited: boolean = false;
+
   constructor(
     // The word string this represents
     public readonly word: string,
