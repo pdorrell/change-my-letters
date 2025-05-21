@@ -23,7 +23,6 @@ interface PositionViewProps { positionInteraction: PositionInteraction; }
 
 export const PositionView: React.FC<PositionViewProps> = observer(({ positionInteraction }) => {
   const position = positionInteraction.position;
-  const appState = positionInteraction.wordInteraction.appState;
   const insertButtonRef = React.useRef<HTMLButtonElement>(null);
 
   const handleInsertClick = (event: React.MouseEvent<HTMLButtonElement>) => {
