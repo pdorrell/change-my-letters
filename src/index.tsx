@@ -5,6 +5,7 @@ import AppLoader from './AppLoader';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { ErrorHandler } from './utils/ErrorHandler';
 import { ApplicationLoader } from './models/ApplicationLoader';
+import { WordSayer } from './models/WordSayer';
 import './styles/main.scss';
 
 // Configure MobX with less strict settings for development
@@ -87,8 +88,9 @@ if (!container) {
   throw new Error("Root element not found");
 }
 const root = createRoot(container);
-// Create a singleton ApplicationLoader instance
-const applicationLoader = new ApplicationLoader();
+// Create a singleton WordSayer and ApplicationLoader instance
+const wordSayer = new WordSayer();
+const applicationLoader = new ApplicationLoader(wordSayer);
 
 root.render(
   <React.StrictMode>
