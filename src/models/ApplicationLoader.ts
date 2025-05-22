@@ -3,7 +3,6 @@ import { AppState } from './AppState';
 import { WordLoader } from './WordLoader';
 import { WordSayerInterface } from './WordSayerInterface';
 import { DataFileFetcherInterface } from './DataFileFetcherInterface';
-import { DataFileFetcher } from './DataFileFetcher';
 
 /**
  * ApplicationLoader handles asynchronous loading of application data
@@ -24,7 +23,7 @@ export class ApplicationLoader {
   version: string;
   
   // Data file fetcher
-  private readonly dataFileFetcher: DataFileFetcherInterface;
+  public readonly dataFileFetcher: DataFileFetcherInterface;
   
   // Word loader
   private readonly wordLoader: WordLoader;
@@ -32,15 +31,15 @@ export class ApplicationLoader {
   // Word sayer for audio functionality
   public readonly wordSayer: WordSayerInterface;
   
-  constructor(wordSayer: WordSayerInterface, dataFileFetcher?: DataFileFetcherInterface) {
+  constructor(wordSayer: WordSayerInterface, dataFileFetcher: DataFileFetcherInterface) {
     // Set version from environment or fallback
     this.version = process.env.APP_VERSION || 'development';
     
     // Store the required word sayer
     this.wordSayer = wordSayer;
     
-    // Initialize the data file fetcher
-    this.dataFileFetcher = dataFileFetcher || new DataFileFetcher();
+    // Store the required data file fetcher
+    this.dataFileFetcher = dataFileFetcher;
     
     // Initialize the word loader
     this.wordLoader = new WordLoader(this.dataFileFetcher);
