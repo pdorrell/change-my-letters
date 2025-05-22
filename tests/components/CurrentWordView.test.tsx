@@ -180,7 +180,8 @@ describe('CurrentWordView', () => {
       appState: appState,
       menuManager: appState.menuManager,
       letterInteractions,
-      positionInteractions
+      positionInteractions,
+      word: { previouslyVisited: false }
     } as unknown as WordInteraction;
     
     // Now fix circular references
@@ -265,7 +266,8 @@ describe('CurrentWordView', () => {
       appState: appState,
       menuManager: appState.menuManager,
       letterInteractions: longLetterInteractions,
-      positionInteractions: longPositionInteractions
+      positionInteractions: longPositionInteractions,
+      word: { previouslyVisited: false }
     } as unknown as WordInteraction;
     
     // Now fix circular references
