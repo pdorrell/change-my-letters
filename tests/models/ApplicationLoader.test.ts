@@ -1,125 +1,99 @@
 import { ApplicationLoader } from '../../src/models/ApplicationLoader';
 import { DataFileFetcherTestDouble } from '../test_doubles/DataFileFetcherTestDouble';
 import { WordSayerTestDouble } from '../test_doubles/WordSayerTestDouble';
-import { WordGraph } from '../../src/models/WordGraph';
-import { WordSayer } from '../../src/models/WordSayer';
 
 describe('ApplicationLoader', () => {
-  // Sample data for testing
-  const mockJsonGraph = {
-    cat: {
-      delete: 'c.t',
-      insert: 'a/b/c/d',
-      replace: 'b/a/t',
-    },
-    hat: {
-      delete: 'h.t',
-      insert: 'a/b/c/d',
-      replace: 'c/a/t',
-    },
-    bat: {
-      delete: 'b.t',
-      insert: 'a/b/c/d',
-      replace: 'c/a/t',
-    },
-    at: {
-      insert: 'a/b/c',
-      replace: 'c/t',
-    },
-    ca: {
-      insert: 'a/b/c',
-      replace: 'c/t',
-      delete: '.a'
-    },
-    ct: {
-      insert: 'a/b/c',
-      replace: 'c/a',
-      delete: 'c.'
-    }
-  };
-
   let dataFileFetcher: DataFileFetcherTestDouble;
-  
-  // Mock WordSayer to avoid audio loading issues
-  beforeAll(() => {
-    jest.spyOn(WordSayer.prototype, 'preload').mockImplementation(() => {});
-    jest.spyOn(WordSayer.prototype, 'say').mockImplementation(() => {});
-  });
+  let wordSayer: WordSayerTestDouble;
   
   beforeEach(() => {
-    jest.clearAllMocks();
-    
-    // Set up the data fetcher test double
+    // Set up the data fetcher test double to serve test files
     const routeMappings: [string, string][] = [
-      ['/data/wordlists/default-words-graph.json', '/tests/data/wordlists/default-words-graph.json'],
+      ['/data/wordlists/default-words-graph.json', '/tests/data/word_loader_test/wordlists/default-words-graph.json'],
     ];
     
     dataFileFetcher = new DataFileFetcherTestDouble(routeMappings);
-    
-    // Mock the fetch method to return a valid graph
-    jest.spyOn(dataFileFetcher, 'fetch').mockResolvedValue(JSON.stringify(mockJsonGraph));
+    wordSayer = new WordSayerTestDouble();
   });
   
-  afterAll(() => {
-    jest.restoreAllMocks();
+  it('should load the application with real test data files', async () => {
+    const loader = new ApplicationLoader(dataFileFetcher, wordSayer);
+    
+    // Wait for the loading to complete
+    await new Promise(resolve => setTimeout(resolve, 200));
+    
+    // Verify that the app state was created successfully
+    expect(loader.appState).not.toBeNull();
+    expect(loader.isLoading).toBe(false);
+    expect(loader.hasError).toBe(false);
+    expect(loader.errorMessage).toBe('');
+    
+    // Verify that the data was actually loaded from test files
+    expect(loader.appState?.wordGraph).toBeDefined();
+    expect(loader.appState?.wordGraph.words.size).toBeGreaterThan(0);
+    
+    // Verify that we can get a word from the loaded graph
+    const catWord = loader.appState?.wordGraph.getNode('cat');
+    expect(catWord).toBeDefined();
+    expect(catWord?.word).toBe('cat');
+    
+    // Verify that the WordSayer test double was used
+    expect(loader.appState?.wordSayer).toBe(wordSayer);
   });
   
-  it('should load the application with a data file fetcher', async () => {
-    // Mock populateChanges to prevent errors with references
-    const originalPopulateChanges = WordGraph.prototype.populateChanges;
-    WordGraph.prototype.populateChanges = jest.fn();
+  it('should fall back to sample graph when data files are missing', async () => {
+    // Create a data fetcher that maps to non-existent files for both JSON and TXT
+    const badRouteMappings: [string, string][] = [
+      ['/data/wordlists/default-words-graph.json', '/tests/data/nonexistent.json'],
+      ['/data/wordlists/default-words.txt', '/tests/data/nonexistent.txt'],
+    ];
     
-    try {
-      const loader = new ApplicationLoader(dataFileFetcher);
-      
-      // Wait for the loading to complete
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
-      // Verify that the app state was created
-      expect(loader.appState).not.toBeNull();
-      expect(loader.isLoading).toBe(false);
-      expect(loader.hasError).toBe(false);
-      
-      // Verify that the data fetcher was called with the correct URL
-      expect(dataFileFetcher.fetch).toHaveBeenCalledWith('/data/wordlists/default-words-graph.json');
-    } finally {
-      // Restore original method
-      WordGraph.prototype.populateChanges = originalPopulateChanges;
-    }
+    const badDataFileFetcher = new DataFileFetcherTestDouble(badRouteMappings);
+    const loader = new ApplicationLoader(badDataFileFetcher, wordSayer);
+    
+    // Wait for the loading to complete
+    await new Promise(resolve => setTimeout(resolve, 200));
+    
+    // The WordLoader should fall back to sample graph, so app should still load
+    expect(loader.appState).not.toBeNull();
+    expect(loader.isLoading).toBe(false);
+    expect(loader.hasError).toBe(false);
+    
+    // Should have created a sample word graph with words like 'cat', 'bat', etc.
+    expect(loader.appState?.wordGraph.words.size).toBeGreaterThan(0);
+    const catWord = loader.appState?.wordGraph.getNode('cat');
+    expect(catWord).toBeDefined();
   });
   
-  it('should handle errors when loading the word graph', async () => {
-    // Mock the fetch method to throw an error
-    jest.spyOn(dataFileFetcher, 'fetch').mockRejectedValue(new Error('Failed to load graph'));
+  it('should handle malformed JSON data by falling back to sample graph', async () => {
+    // Create a data fetcher that serves malformed data for both JSON and TXT files
+    const badRouteMappings: [string, string][] = [
+      ['/data/wordlists/default-words-graph.json', '/tests/data/test-files/test-content.txt'],
+      ['/data/wordlists/default-words.txt', '/tests/data/test-files/test-content.txt'],
+    ];
     
-    // Mock populateChanges to prevent errors with references
-    const originalPopulateChanges = WordGraph.prototype.populateChanges;
-    WordGraph.prototype.populateChanges = jest.fn();
+    const badDataFileFetcher = new DataFileFetcherTestDouble(badRouteMappings);
+    const loader = new ApplicationLoader(badDataFileFetcher, wordSayer);
     
-    // Mock AppState creation to return null when wordGraph loading fails
-    const originalCreate = ApplicationLoader.prototype.loadApplication;
-    ApplicationLoader.prototype.loadApplication = async function() {
-      this.isLoading = false;
-      this.hasError = true;
-      this.errorMessage = 'Failed to load graph';
-      this.appState = null;
-    };
+    // Wait for the loading to complete
+    await new Promise(resolve => setTimeout(resolve, 200));
     
-    try {
-      const loader = new ApplicationLoader(dataFileFetcher);
-      
-      // Wait for the loading to complete
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
-      // Verify that the error state was set correctly
-      expect(loader.appState).toBeNull();
-      expect(loader.isLoading).toBe(false);
-      expect(loader.hasError).toBe(true);
-      expect(loader.errorMessage).toContain('Failed to load graph');
-    } finally {
-      // Restore original methods
-      WordGraph.prototype.populateChanges = originalPopulateChanges;
-      ApplicationLoader.prototype.loadApplication = originalCreate;
-    }
+    // The WordLoader should fall back to sample graph when JSON parsing fails
+    expect(loader.appState).not.toBeNull();
+    expect(loader.isLoading).toBe(false);
+    expect(loader.hasError).toBe(false);
+    
+    // Should have created a sample word graph
+    expect(loader.appState?.wordGraph.words.size).toBeGreaterThan(0);
+  });
+  
+  it('should initialize with correct loading state', () => {
+    const loader = new ApplicationLoader(dataFileFetcher, wordSayer);
+    
+    // Initially should be loading
+    expect(loader.isLoading).toBe(true);
+    expect(loader.hasError).toBe(false);
+    expect(loader.appState).toBeNull();
+    expect(loader.errorMessage).toBe('');
   });
 });
