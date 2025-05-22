@@ -77,12 +77,8 @@ describe('LetterInteraction', () => {
   let letterInteraction: LetterInteraction;
   
   beforeEach(() => {
-    // Create a mock MenuManager
-    menuManager = {
-      activeButtonElement: null,
-      toggleMenu: jest.fn(),
-      closeMenus: jest.fn()
-    } as unknown as MenuManager;
+    // Create a real MenuManager
+    menuManager = new MenuManager(() => {});
     
     // Set up mocks
     appState = {

@@ -18,7 +18,7 @@ class MockWord {
   lowercase: boolean[];
   _letters: Letter[] | null = null;
   _positions: Position[] | null = null;
-  
+
   constructor(word: string) {
     this.word = word;
     this.deletes = Array(word.length).fill(true);
@@ -27,7 +27,7 @@ class MockWord {
     this.uppercase = Array(word.length).fill(true);
     this.lowercase = Array(word.length).fill(true);
   }
-  
+
   get letters(): Letter[] {
     if (!this._letters) {
       this._letters = Array.from(this.word).map(
@@ -36,7 +36,7 @@ class MockWord {
     }
     return this._letters;
   }
-  
+
   get positions(): Position[] {
     if (!this._positions) {
       this._positions = Array(this.word.length + 1)
@@ -45,31 +45,31 @@ class MockWord {
     }
     return this._positions;
   }
-  
+
   canDelete(position: number): boolean {
     return this.deletes[position];
   }
-  
+
   getPossibleInsertions(position: number): string[] {
     return this.inserts[position]?.split('') || [];
   }
-  
+
   getPossibleReplacements(position: number): string[] {
     return this.replaces[position]?.split('') || [];
   }
-  
+
   canUppercase(position: number): boolean {
     return this.uppercase[position];
   }
-  
+
   canLowercase(position: number): boolean {
     return this.lowercase[position];
   }
-  
+
   canChangeCaseAt(position: number): boolean {
     return this.uppercase[position] || this.lowercase[position];
   }
-  
+
   get possibleNextWords(): string[] {
     return ['bat', 'cat', 'dat', 'fat', 'rat', 'mat'];
   }
@@ -78,17 +78,13 @@ class MockWord {
 describe('WordInteraction', () => {
   let appState: AppState;
   let menuManager: MenuManager;
-  
+
   beforeEach(() => {
     const wordSayerTestDouble = new WordSayerTestDouble();
-    
-    // Create a mock MenuManager
-    menuManager = {
-      activeButtonElement: null,
-      toggleMenu: jest.fn(),
-      closeMenus: jest.fn()
-    } as unknown as MenuManager;
-    
+
+    // Create a real MenuManager
+    menuManager = new MenuManager(() => {});
+
     appState = {
       currentPage: 'wordView',
       history: { hasVisited: () => false },
@@ -98,7 +94,7 @@ describe('WordInteraction', () => {
       menuManager: menuManager,
     } as unknown as AppState;
   });
-  
+
   it('should initialize correctly with a word', () => {
     const wordObj = new MockWord('cat') as unknown as Word;
     const wordInteraction = new WordInteraction(wordObj, appState, menuManager);
@@ -108,7 +104,7 @@ describe('WordInteraction', () => {
 
     // Should have letterInteractions for each letter in 'cat'
     expect(wordInteraction.letterInteractions.length).toBe(3);
-    
+
     // Should have positionInteractions for before, between, and after all letters
     expect(wordInteraction.positionInteractions.length).toBe(4);
     expect(wordInteraction.positionInteractions[0].position.index).toBe(0);
@@ -128,7 +124,7 @@ describe('WordInteraction', () => {
 
     // Should still have 3 letterInteractions
     expect(wordInteraction.letterInteractions.length).toBe(3);
-    
+
     // Should still have 4 positionInteractions
     expect(wordInteraction.positionInteractions.length).toBe(4);
   });
@@ -141,13 +137,13 @@ describe('WordInteraction', () => {
     expect(wordInteraction.letterInteractions.length).toBe(3);
     expect(wordInteraction.letterInteractions[0].letter.value).toBe('c');
     expect(wordInteraction.letterInteractions[0].letter.position).toBe(0);
-    
+
     expect(wordInteraction.letterInteractions[1].letter.value).toBe('a');
     expect(wordInteraction.letterInteractions[1].letter.position).toBe(1);
-    
+
     expect(wordInteraction.letterInteractions[2].letter.value).toBe('t');
     expect(wordInteraction.letterInteractions[2].letter.position).toBe(2);
-    
+
     // Verify that each letterInteraction has a reference to the wordInteraction
     for (const interaction of wordInteraction.letterInteractions) {
       expect(interaction.wordInteraction).toBe(wordInteraction);
@@ -164,7 +160,7 @@ describe('WordInteraction', () => {
     expect(wordInteraction.positionInteractions[1].position.index).toBe(1);
     expect(wordInteraction.positionInteractions[2].position.index).toBe(2);
     expect(wordInteraction.positionInteractions[3].position.index).toBe(3);
-    
+
     // Verify that each positionInteraction has a reference to the wordInteraction
     for (const interaction of wordInteraction.positionInteractions) {
       expect(interaction.wordInteraction).toBe(wordInteraction);
@@ -175,7 +171,7 @@ describe('WordInteraction', () => {
     const catWord = new MockWord('cat') as unknown as Word;
     const catsWord = new MockWord('cats') as unknown as Word;
     const atWord = new MockWord('at') as unknown as Word;
-    
+
     const wordInteraction = new WordInteraction(catWord, appState, menuManager);
 
     // Update to longer word
@@ -194,23 +190,23 @@ describe('WordInteraction', () => {
   it('should close all menus', () => {
     const wordObj = new MockWord('cat') as unknown as Word;
     const wordInteraction = new WordInteraction(wordObj, appState, menuManager);
-    
+
     // Open some menus
     wordInteraction.letterInteractions[0].isReplaceMenuOpen = true;
     wordInteraction.positionInteractions[0].isInsertMenuOpen = true;
-    
+
     // Verify they're open
     expect(wordInteraction.letterInteractions[0].isReplaceMenuOpen).toBe(true);
     expect(wordInteraction.positionInteractions[0].isInsertMenuOpen).toBe(true);
-    
+
     // Close all menus
     wordInteraction.closeAllMenus();
-    
+
     // Verify all menus are closed
     for (const letterInteraction of wordInteraction.letterInteractions) {
       expect(letterInteraction.isReplaceMenuOpen).toBe(false);
     }
-    
+
     for (const positionInteraction of wordInteraction.positionInteractions) {
       expect(positionInteraction.isInsertMenuOpen).toBe(false);
     }
@@ -219,34 +215,34 @@ describe('WordInteraction', () => {
   it('should have a computed value property that returns the word string', () => {
     const wordObj = new MockWord('hello') as unknown as Word;
     const wordInteraction = new WordInteraction(wordObj, appState, menuManager);
-    
+
     expect(wordInteraction.value).toBe('hello');
-    
+
     // Update the word and check that value updates
     const newWord = new MockWord('world') as unknown as Word;
     wordInteraction.updateWord(newWord);
-    
+
     expect(wordInteraction.value).toBe('world');
   });
-  
+
   /* The previouslyVisited test has been removed since this property was removed */
 
   it('should initialize with a Word object', () => {
     const catWord = new MockWord('cat') as unknown as Word;
     const wordInteraction = new WordInteraction(catWord, appState, menuManager);
-    
+
     expect(wordInteraction.value).toBe('cat');
     expect(wordInteraction.letterInteractions.length).toBe(3);
     expect(wordInteraction.positionInteractions.length).toBe(4);
   });
-  
+
   it('should call the wordSayer.say method with the current word', () => {
     const wordObj = new MockWord('cat') as unknown as Word;
     const wordInteraction = new WordInteraction(wordObj, appState, menuManager);
-    
+
     // Call the say method
     wordInteraction.say();
-    
+
     // Verify that the test double's say method was called with 'cat'
     expect((appState.wordSayer as WordSayerTestDouble).playedWords).toEqual(['cat']);
   });
