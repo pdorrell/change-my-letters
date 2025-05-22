@@ -3,8 +3,8 @@ import { DataFileFetcherTestDouble } from '../test_doubles/DataFileFetcherTestDo
 import { WordGraph } from '../../src/models/WordGraph';
 
 describe('WordLoader', () => {
-  const mockWordListText = 'cat\nhat\nrat\nbat\n';
-  const mockJsonGraph = {
+  const expectedWordListText = 'cat\nhat\nrat\nbat';
+  const expectedJsonGraph = {
     cat: {
       delete: 'c.t',
       insert: 'a/b/c/d',
@@ -36,41 +36,29 @@ describe('WordLoader', () => {
     }
   };
 
-  // Set up a test double for the data file fetcher
+  // Set up a test double for the data file fetcher using real test files
   const routeMappings: [string, string][] = [
-    ['/data/wordlists/default-words-graph.json', '/tests/data/wordlists/default-words-graph.json'],
-    ['/data/wordlists/default-words.txt', '/tests/data/wordlists/default-words.txt'],
+    ['/data/wordlists/default-words-graph.json', '/tests/data/word_loader_test/wordlists/default-words-graph.json'],
+    ['/data/wordlists/default-words.txt', '/tests/data/word_loader_test/wordlists/default-words.txt'],
   ];
   
   let dataFileFetcher: DataFileFetcherTestDouble;
   let wordLoader: WordLoader;
   
   beforeEach(() => {
-    jest.clearAllMocks();
-    
     dataFileFetcher = new DataFileFetcherTestDouble(routeMappings);
     wordLoader = new WordLoader(dataFileFetcher);
-    
-    // Mock the fetch method
-    jest.spyOn(dataFileFetcher, 'fetch').mockImplementation(async (url: string) => {
-      if (url.includes('default-words.txt')) {
-        return mockWordListText;
-      } else if (url.includes('default-words-graph.json')) {
-        return JSON.stringify(mockJsonGraph);
-      }
-      throw new Error(`File not found: ${url}`);
-    });
   });
 
   it('should load a word list from text', () => {
-    const wordList = wordLoader.loadWordListFromText(mockWordListText);
+    const wordList = wordLoader.loadWordListFromText(expectedWordListText);
     
     expect(wordList).toEqual(['cat', 'hat', 'rat', 'bat']);
   });
 
   it('should load a word graph from JSON', () => {
     const graph = new WordGraph();
-    wordLoader.loadWordGraphFromJson(JSON.stringify(mockJsonGraph), graph);
+    wordLoader.loadWordGraphFromJson(JSON.stringify(expectedJsonGraph), graph);
     
     // We can verify that the graph has the words we expect
     expect(graph.hasWord('cat')).toBe(true);
@@ -80,8 +68,7 @@ describe('WordLoader', () => {
   it('should load a data file', async () => {
     const text = await wordLoader.loadDataFile('default-words.txt');
     
-    expect(text).toBe(mockWordListText);
-    expect(dataFileFetcher.fetch).toHaveBeenCalledWith('/data/wordlists/default-words.txt');
+    expect(text).toBe(expectedWordListText);
   });
 
   it('should create a sample word graph', () => {
@@ -93,15 +80,12 @@ describe('WordLoader', () => {
   });
 
   it('should throw Error when loading data file fails', async () => {
-    // Mock fetch to throw an error
-    jest.spyOn(dataFileFetcher, 'fetch').mockRejectedValueOnce(new Error('File not found'));
-    
     await expect(wordLoader.loadDataFile('nonexistent-file.txt')).rejects.toThrow(Error);
     await expect(wordLoader.loadDataFile('nonexistent-file.txt')).rejects.toThrow('Error loading data file nonexistent-file.txt');
   });
   
   it('should load default word graph', async () => {
-    // Mock populateChanges to prevent errors with references
+    // Mock populateChanges to prevent errors with references since we have a minimal test graph
     const originalPopulateChanges = WordGraph.prototype.populateChanges;
     WordGraph.prototype.populateChanges = jest.fn();
     
@@ -109,7 +93,8 @@ describe('WordLoader', () => {
       const graph = await wordLoader.loadDefaultWordGraph();
       
       expect(graph).toBeInstanceOf(WordGraph);
-      expect(dataFileFetcher.fetch).toHaveBeenCalledWith('/data/wordlists/default-words-graph.json');
+      expect(graph.hasWord('cat')).toBe(true);
+      expect(graph.hasWord('hat')).toBe(true);
     } finally {
       // Restore original method
       WordGraph.prototype.populateChanges = originalPopulateChanges;
