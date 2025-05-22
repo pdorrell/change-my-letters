@@ -1,7 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { AppState } from './AppState';
 import { WordLoader } from './WordLoader';
-import { WordSayer } from './WordSayer';
 import { WordSayerInterface } from './WordSayerInterface';
 import { DataFileFetcherInterface } from './DataFileFetcherInterface';
 import { DataFileFetcher } from './DataFileFetcher';
@@ -30,21 +29,21 @@ export class ApplicationLoader {
   // Word loader
   private readonly wordLoader: WordLoader;
   
-  // Optional word sayer for testing
-  private readonly wordSayer?: WordSayerInterface;
+  // Word sayer for audio functionality
+  public readonly wordSayer: WordSayerInterface;
   
-  constructor(dataFileFetcher?: DataFileFetcherInterface, wordSayer?: WordSayerInterface) {
+  constructor(wordSayer: WordSayerInterface, dataFileFetcher?: DataFileFetcherInterface) {
     // Set version from environment or fallback
     this.version = process.env.APP_VERSION || 'development';
+    
+    // Store the required word sayer
+    this.wordSayer = wordSayer;
     
     // Initialize the data file fetcher
     this.dataFileFetcher = dataFileFetcher || new DataFileFetcher();
     
     // Initialize the word loader
     this.wordLoader = new WordLoader(this.dataFileFetcher);
-    
-    // Store the optional word sayer
-    this.wordSayer = wordSayer;
     
     makeAutoObservable(this);
     
@@ -69,8 +68,8 @@ export class ApplicationLoader {
           const words = Array.from(wordGraph.words);
           const randomWord = words[Math.floor(Math.random() * words.length)];
           
-          // Create the app state with the loaded data and a WordSayer (injected or new)
-          this.appState = new AppState(randomWord, wordGraph, this.version, this.wordSayer || new WordSayer());
+          // Create the app state with the loaded data and the injected WordSayer
+          this.appState = new AppState(randomWord, wordGraph, this.version, this.wordSayer);
           this.isLoading = false;
         } else {
           // If we couldn't load any words, display an error

@@ -17,7 +17,7 @@ describe('ApplicationLoader', () => {
   });
   
   it('should load the application with real test data files', async () => {
-    const loader = new ApplicationLoader(dataFileFetcher, wordSayer);
+    const loader = new ApplicationLoader(wordSayer, dataFileFetcher);
     
     // Wait for the loading to complete
     await new Promise(resolve => setTimeout(resolve, 200));
@@ -49,7 +49,7 @@ describe('ApplicationLoader', () => {
     ];
     
     const badDataFileFetcher = new DataFileFetcherTestDouble(badRouteMappings);
-    const loader = new ApplicationLoader(badDataFileFetcher, wordSayer);
+    const loader = new ApplicationLoader(wordSayer, badDataFileFetcher);
     
     // Wait for the loading to complete
     await new Promise(resolve => setTimeout(resolve, 200));
@@ -73,7 +73,7 @@ describe('ApplicationLoader', () => {
     ];
     
     const badDataFileFetcher = new DataFileFetcherTestDouble(badRouteMappings);
-    const loader = new ApplicationLoader(badDataFileFetcher, wordSayer);
+    const loader = new ApplicationLoader(wordSayer, badDataFileFetcher);
     
     // Wait for the loading to complete
     await new Promise(resolve => setTimeout(resolve, 200));
@@ -88,7 +88,7 @@ describe('ApplicationLoader', () => {
   });
   
   it('should initialize with correct loading state', () => {
-    const loader = new ApplicationLoader(dataFileFetcher, wordSayer);
+    const loader = new ApplicationLoader(wordSayer, dataFileFetcher);
     
     // Initially should be loading
     expect(loader.isLoading).toBe(true);
