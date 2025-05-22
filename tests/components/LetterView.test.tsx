@@ -5,7 +5,7 @@ import { Letter } from '../../src/models/Letter';
 import { WordInteraction } from '../../src/models/interaction/WordInteraction';
 import { AppState } from '../../src/models/AppState';
 import { createTestWordGraph, testWordLists } from '../utils/TestWordGraphBuilder';
-import { WordSayer } from '../../src/models/WordSayer';
+import { createTestAppState } from '../utils/TestAppBuilder';
 
 // Mock the LetterChoiceMenu component only (not the model classes)
 jest.mock('../../src/views/CurrentWordView', () => ({
@@ -20,39 +20,16 @@ jest.mock('../../src/views/CurrentWordView', () => ({
   ),
 }));
 
-// Mock WordSayer to avoid audio issues in tests
-jest.mock('../../src/models/WordSayer', () => ({
-  WordSayer: jest.fn().mockImplementation(() => ({
-    preload: jest.fn(),
-    say: jest.fn()
-  }))
-}));
 
 describe('LetterView', () => {
-  let wordGraph: any;
   let appState: any;
   let currentWord: WordInteraction;
   let letterInteraction: any;
 
   beforeEach(() => {
-    // Create a mock AppState (this is still mocked because it's complex)
-    appState = {
-      setNewWord: jest.fn(),
-      menuManager: {
-        activeButtonElement: null,
-        toggleMenu: jest.fn(),
-        closeMenus: jest.fn()
-      },
-      navigateTo: jest.fn(),
-      history: {
-        hasVisited: jest.fn().mockReturnValue(false),
-        currentIndex: 0,
-        canUndo: false,
-        canRedo: false,
-        words: [],
-        previouslyVisitedWords: new Set()
-      }
-    };
+    // Create AppState with WordSayerTestDouble
+    appState = createTestAppState();
+    appState.history.previouslyVisitedWords = new Set();
 
     // Create a mock word interaction
     currentWord = {

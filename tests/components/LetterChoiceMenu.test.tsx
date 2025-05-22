@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/react';
 import { LetterChoiceMenu } from '../../src/views/CurrentWordView';
 import { createTestWordGraph, testWordLists } from '../utils/TestWordGraphBuilder';
 import { WordInteraction } from '../../src/models/interaction/WordInteraction';
-import { WordSayer } from '../../src/models/WordSayer';
+import { createTestAppState } from '../utils/TestAppBuilder';
 import { MenuManager } from '../../src/models/MenuManager';
 import { WordSelectionByLetter } from '../../src/models/WordSelectionByLetter';
 
@@ -24,16 +24,8 @@ jest.mock('@floating-ui/react', () => ({
   FloatingPortal: ({ children }: { children: React.ReactNode }) => <div data-testid="letter-choice-menu">{children}</div>,
 }));
 
-// Mock WordSayer to avoid audio issues in tests
-jest.mock('../../src/models/WordSayer', () => ({
-  WordSayer: jest.fn().mockImplementation(() => ({
-    preload: jest.fn(),
-    say: jest.fn()
-  }))
-}));
 
 describe('LetterChoiceMenu', () => {
-  let wordGraph: any;
   let appState: any;
   let wordInteraction: WordInteraction;
   let menuManager: MenuManager;
@@ -41,23 +33,10 @@ describe('LetterChoiceMenu', () => {
   let onSelect: jest.Mock;
   
   beforeEach(() => {
-    // Create a mock AppState
-    appState = {
-      setNewWord: jest.fn(),
-      menuManager: {
-        activeButtonElement: document.createElement('button'),
-        toggleMenu: jest.fn(),
-        closeMenus: jest.fn()
-      },
-      navigateTo: jest.fn(),
-      history: {
-        hasVisited: jest.fn(word => ['bat', 'rat'].includes(word)),
-        currentIndex: 0,
-        canUndo: false,
-        canRedo: false,
-        words: []
-      }
-    };
+    // Create AppState with WordSayerTestDouble
+    appState = createTestAppState();
+    appState.menuManager.activeButtonElement = document.createElement('button');
+    appState.history.hasVisited = jest.fn(word => ['bat', 'rat'].includes(word));
     
     // Assign the menuManager for direct use
     menuManager = appState.menuManager;
