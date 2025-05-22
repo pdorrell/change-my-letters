@@ -1,31 +1,18 @@
 {
   "cat": {
-    "delete": "c.t",
-    "insert": "a/b/c/d",
-    "replace": "b/a/t"
+    "insert": "///",
+    "replace": "bhr//"
   },
   "hat": {
-    "delete": "h.t",
-    "insert": "a/b/c/d",
-    "replace": "c/a/t"
+    "insert": "///", 
+    "replace": "bcr//"
+  },
+  "rat": {
+    "insert": "///",
+    "replace": "bch//"
   },
   "bat": {
-    "delete": "b.t",
-    "insert": "a/b/c/d",
-    "replace": "c/a/t"
-  },
-  "at": {
-    "insert": "a/b/c",
-    "replace": "c/t"
-  },
-  "ca": {
-    "insert": "a/b/c",
-    "replace": "c/t",
-    "delete": ".a"
-  },
-  "ct": {
-    "insert": "a/b/c",
-    "replace": "c/a",
-    "delete": "c."
+    "insert": "///",
+    "replace": "chr//"
   }
 }
