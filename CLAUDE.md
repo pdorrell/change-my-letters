@@ -139,7 +139,8 @@ All changes to the application should pass:
 
 ## Use Test Doubles not Mocks
 
-If at all possible, do not use mocks for testing.
+If at all possible, do not use mocks for testing. In particular, do not use `jest.mock` or `jest.fn` 
+(or any other attribute of `jest`).
 
 Instead, use *Test Doubles* where a Test Double is an object `tx` of type `X` that _substitutes_ for
 an object `x` of type `X` passed as a parameter to some method or constructor. `tx` may or may not
