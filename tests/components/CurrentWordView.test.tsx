@@ -4,7 +4,7 @@ import { CurrentWordView } from '../../src/views/CurrentWordView';
 import { WordInteraction } from '../../src/models/interaction/WordInteraction';
 import { AppState } from '../../src/models/AppState';
 import { createTestWordGraph, testWordLists } from '../utils/TestWordGraphBuilder';
-import { WordSayer } from '../../src/models/WordSayer';
+import { createTestAppState } from '../utils/TestAppBuilder';
 
 // Define test-specific interfaces to avoid readonly issue
 interface TestLetterInteraction {
@@ -67,41 +67,14 @@ jest.mock('../../src/views/CurrentWordView', () => {
   };
 });
 
-// Mock WordSayer to avoid audio issues in tests
-jest.mock('../../src/models/WordSayer', () => ({
-  WordSayer: jest.fn().mockImplementation(() => ({
-    preload: jest.fn(),
-    say: jest.fn()
-  }))
-}));
 
 describe('CurrentWordView', () => {
-  let wordGraph: any;
   let appState: any;
   let currentWord: WordInteraction;
   
   beforeEach(() => {
-    // Create a real test WordGraph with a limited set of words
-    wordGraph = createTestWordGraph(testWordLists.minimal);
-    
-    // Create a mock AppState (this is still mocked because it's complex)
-    appState = {
-      setNewWord: jest.fn(),
-      menuManager: {
-        activeButtonElement: null,
-        toggleMenu: jest.fn(),
-        closeMenus: jest.fn()
-      },
-      wordGraph: wordGraph,
-      navigateTo: jest.fn(),
-      history: {
-        hasVisited: jest.fn().mockReturnValue(false),
-        currentIndex: 0,
-        canUndo: false,
-        canRedo: false,
-        words: []
-      }
-    };
+    // Create AppState with WordSayerTestDouble
+    appState = createTestAppState();
     
     // Mock the letterInteractions and positionInteractions directly
     currentWord = {
