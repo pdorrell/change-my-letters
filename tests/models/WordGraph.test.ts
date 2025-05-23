@@ -41,38 +41,70 @@ describe('WordGraph', () => {
   it('can identify subgraphs in a disconnected graph', () => {
     const wordGraph = new WordGraph();
     
-    // Create a simple test graph with two disconnected components
-    // Group 1: cat, bat (connected)
-    // Group 2: dog, log (connected)
-    // These groups are not connected to each other
+    // Create a test graph with specific connection patterns
+    // Group 1: cat <-> bat (connected by replacing first letter c/b)
+    // Group 2: dog <-> cog (connected by replacing first letter d/c)  
+    // Group 3: fox (isolated word)
+    const jsonData = {
+      'cat': {
+        'delete': '...',      // No deletions
+        'insert': '///',     // No insertions (4 positions for 3-letter word)
+        'replace': 'b//'      // cat -> bat by replacing 'c' with 'b' at position 0
+      },
+      'bat': {
+        'delete': '...',      // No deletions
+        'insert': '///',     // No insertions
+        'replace': 'c//'      // bat -> cat by replacing 'b' with 'c' at position 0
+      },
+      'dog': {
+        'delete': '...',      // No deletions
+        'insert': '///',     // No insertions
+        'replace': 'c//'      // dog -> cog by replacing 'd' with 'c' at position 0
+      },
+      'cog': {
+        'delete': '...',      // No deletions
+        'insert': '///',     // No insertions
+        'replace': 'd//'      // cog -> dog by replacing 'c' with 'd' at position 0
+      },
+      'fox': {
+        'delete': '...',      // No deletions
+        'insert': '///',     // No insertions
+        'replace': '//'      // No replacements (3 positions for 3-letter word)
+      }
+    };
     
-    // Add words
-    wordGraph.words.add('cat');
-    wordGraph.words.add('bat');
-    wordGraph.words.add('dog');
-    wordGraph.words.add('log');
-    
-    // Mock getConnectedWords to return connections
-    wordGraph.getConnectedWords = jest.fn((word) => {
-      if (word === 'cat') return ['bat'];
-      if (word === 'bat') return ['cat'];
-      if (word === 'dog') return ['log'];
-      if (word === 'log') return ['dog'];
-      return [];
-    });
+    // Load the graph from JSON data
+    wordGraph.loadFromJson(jsonData);
+    wordGraph.populateChanges();
     
     const subgraphs = wordGraph.identifyConnectedSubgraphs();
     
-    // Should have 2 subgraphs
-    expect(subgraphs.length).toBe(2);
+    // Should have 3 subgraphs (sorted by size, largest first)
+    expect(subgraphs.length).toBe(3);
     
-    // Each should have 2 words
+    // The largest subgraphs should have 2 words each
     expect(subgraphs[0].size).toBe(2);
     expect(subgraphs[1].size).toBe(2);
     
+    // The smallest should have 1 word (isolated)
+    expect(subgraphs[2].size).toBe(1);
+    
+    // Check the content of subgraphs
+    const subgraph1 = Array.from(subgraphs[0]).sort();
+    const subgraph2 = Array.from(subgraphs[1]).sort();
+    const subgraph3 = Array.from(subgraphs[2]);
+    
+    // One subgraph should contain cat and bat
+    // Another should contain dog and cog
+    // The third should contain fox
+    const allSubgraphs = [subgraph1, subgraph2];
+    expect(allSubgraphs).toContainEqual(['bat', 'cat']);
+    expect(allSubgraphs).toContainEqual(['cog', 'dog']);
+    expect(subgraph3).toEqual(['fox']);
+    
     // Total words should match the original graph
     const totalWords = subgraphs.reduce((count, graph) => count + graph.size, 0);
-    expect(totalWords).toBe(4);
+    expect(totalWords).toBe(5);
   });
   
   it('generates a report for connected subgraphs', () => {
