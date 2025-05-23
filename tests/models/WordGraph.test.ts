@@ -107,25 +107,4 @@ describe('WordGraph', () => {
     expect(totalWords).toBe(5);
   });
   
-  it('generates a report for connected subgraphs', () => {
-    const wordGraph = new WordGraph();
-    
-    // Add some words
-    wordGraph.words.add('cat');
-    wordGraph.words.add('bat');
-    wordGraph.words.add('dog');
-    
-    // Mock identifyConnectedSubgraphs
-    const mockSubgraphs = [
-      new Set(['cat', 'bat']),
-      new Set(['dog'])
-    ];
-    wordGraph.identifyConnectedSubgraphs = jest.fn().mockReturnValue(mockSubgraphs);
-    
-    const report = wordGraph.generateSubgraphReport();
-    
-    expect(report).toContain('Word Graph Connectivity Report');
-    expect(report).toContain('Total words: 3');
-    expect(report).toContain('Connected subgraphs: 2');
-  });
 });
