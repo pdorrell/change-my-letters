@@ -7,13 +7,14 @@ import { createTestAppState } from '../utils/TestAppBuilder';
 import { MenuManager } from '../../src/models/MenuManager';
 import { WordSelectionByLetter } from '../../src/models/WordSelectionByLetter';
 import { AppState } from '../../src/models/AppState';
+import { TestChoiceHandler } from '../utils/TestChoiceHandler';
 
 describe('LetterChoiceMenu', () => {
   let appState: AppState;
   let wordInteraction: WordInteraction;
   let menuManager: MenuManager;
   let options: any[]; // Letter change options
-  let onSelect: jest.Mock;
+  let choiceHandler: TestChoiceHandler<any>;
 
   beforeEach(() => {
     // Create AppState with WordSayerTestDouble
@@ -40,8 +41,8 @@ describe('LetterChoiceMenu', () => {
       { letter: 'r', result: { word: 'rat' } }
     ];
 
-    // Mock select handler
-    onSelect = jest.fn();
+    // Create choice handler
+    choiceHandler = new TestChoiceHandler<any>();
   });
 
 
@@ -50,7 +51,7 @@ describe('LetterChoiceMenu', () => {
     options[0].result.previouslyVisited = true; // 'bat' was visited
     options[2].result.previouslyVisited = true; // 'rat' was visited
 
-    const wordSelectionByLetter = new WordSelectionByLetter(options, onSelect);
+    const wordSelectionByLetter = new WordSelectionByLetter(options, choiceHandler.chooser);
 
     const { container } = render(
       <LetterChoiceMenuTestDouble
@@ -74,7 +75,7 @@ describe('LetterChoiceMenu', () => {
     options[0].result.previouslyVisited = true; // 'bat' was visited
     options[2].result.previouslyVisited = true; // 'rat' was visited
 
-    const wordSelectionByLetter = new WordSelectionByLetter(options, onSelect);
+    const wordSelectionByLetter = new WordSelectionByLetter(options, choiceHandler.chooser);
 
     const { container } = render(
       <LetterChoiceMenuTestDouble
@@ -103,7 +104,7 @@ describe('LetterChoiceMenu', () => {
     options[0].result.previouslyVisited = true; // 'bat' was visited
     options[2].result.previouslyVisited = true; // 'rat' was visited
 
-    const wordSelectionByLetter = new WordSelectionByLetter(options, onSelect);
+    const wordSelectionByLetter = new WordSelectionByLetter(options, choiceHandler.chooser);
 
     const { container } = render(
       <LetterChoiceMenuTestDouble
@@ -116,7 +117,7 @@ describe('LetterChoiceMenu', () => {
     const letterOption1 = container.querySelector('.letter-choice-option:nth-child(1)');
     if (letterOption1) fireEvent.click(letterOption1);
 
-    // onSelect should have been called with the result of the first option
-    expect(onSelect).toHaveBeenCalledWith({ word: 'bat', previouslyVisited: true });
+    // choiceHandler should have received the result of the first option
+    expect(choiceHandler.choice).toEqual({ word: 'bat', previouslyVisited: true });
   });
 });

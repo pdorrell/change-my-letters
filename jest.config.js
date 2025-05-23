@@ -2,7 +2,7 @@ export default {
   preset: 'ts-jest/presets/default-esm',
   testEnvironment: 'jsdom',
   testMatch: ['**/tests/**/*.ts?(x)', '**/?(*.)+(spec|test).ts?(x)'],
-  testPathIgnorePatterns: ['/node_modules/', '/tests/setup.ts', '/tests/mocks/', '/tests/test_doubles/', '/tests/data/'],
+  testPathIgnorePatterns: ['/node_modules/', '/tests/setup.ts', '/tests/mocks/', '/tests/test_doubles/', '/tests/utils/', '/tests/data/'],
   transform: {
     '^.+\\.tsx?$': ['ts-jest', {
       tsconfig: 'tsconfig.json',
