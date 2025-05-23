@@ -127,9 +127,10 @@ import { WordSelectionByLetter } from '../models/WordSelectionByLetter';
 interface LetterChoiceMenuProps {
   wordSelectionByLetter: WordSelectionByLetter;
   menuManager: MenuManager;
+  menuRef?: React.RefObject<HTMLDivElement>;
 }
 
-export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ wordSelectionByLetter, menuManager }) => {
+export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ wordSelectionByLetter, menuManager, menuRef }) => {
   const { options, onSelect } = wordSelectionByLetter;
   // Using floating-ui for positioning
   const {refs, floatingStyles, context} = useFloating({
@@ -180,34 +181,38 @@ export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ wordSelectio
     <FloatingPortal>
       <div
         ref={refs.setFloating}
-        className="letter-choice-menu"
-        onClick={handleMenuClick}
         style={{
           ...floatingStyles,
           zIndex: 9999, // Ensure it's on top of everything
         }}
         {...getFloatingProps()}
       >
-        {options.map((change, index) => {
-          const letter = change.letter;
-          const resultWord = change.result;
+        <div
+          ref={menuRef}
+          className="letter-choice-menu"
+          onClick={handleMenuClick}
+        >
+          {options.map((change, index) => {
+            const letter = change.letter;
+            const resultWord = change.result;
 
-          // Check if this letter would lead to a previously visited word
-          const isPreviouslyVisited = resultWord.previouslyVisited;
+            // Check if this letter would lead to a previously visited word
+            const isPreviouslyVisited = resultWord.previouslyVisited;
 
-          return (
-            <div
-              key={`option-${index}`}
-              className={`letter-choice-option ${isPreviouslyVisited ? 'previously-visited' : ''}`}
-              onClick={(e) => {
-                e.stopPropagation();
-                onSelect(resultWord);
-              }}
-            >
-              {letter}
-            </div>
-          );
-        })}
+            return (
+              <div
+                key={`option-${index}`}
+                className={`letter-choice-option ${isPreviouslyVisited ? 'previously-visited' : ''}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onSelect(resultWord);
+                }}
+              >
+                {letter}
+              </div>
+            );
+          })}
+        </div>
       </div>
     </FloatingPortal>
   );

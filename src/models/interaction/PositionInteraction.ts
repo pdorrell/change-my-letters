@@ -16,6 +16,9 @@ export class PositionInteraction {
   
   // Reference to the insert button element
   insertButtonRef: React.RefObject<HTMLButtonElement> = React.createRef<HTMLButtonElement>();
+  
+  // Reference to the insert menu element for testing
+  insertMenuRef: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
 
   constructor(
     // The position this interaction is for
@@ -32,7 +35,8 @@ export class PositionInteraction {
       openInsertMenuAction: computed,
       selectionOfLetterToInsert: computed,
       actionPending: computed,
-      insertButtonRef: false // Don't make the ref observable
+      insertButtonRef: false, // Don't make the ref observable
+      insertMenuRef: false // Don't make the ref observable
     });
   }
   
