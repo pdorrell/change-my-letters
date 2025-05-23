@@ -16,6 +16,9 @@ export class LetterInteraction {
   
   // Reference to the replace button element
   replaceButtonRef: React.RefObject<HTMLButtonElement> = React.createRef<HTMLButtonElement>();
+  
+  // Reference to the replace menu element for testing
+  replaceMenuRef: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
 
   constructor(
     // The letter this interaction is for
@@ -33,7 +36,8 @@ export class LetterInteraction {
       openReplaceMenuAction: computed,
       selectionOfReplacementLetter: computed,
       actionPending: computed,
-      replaceButtonRef: false // Don't make the ref observable
+      replaceButtonRef: false, // Don't make the ref observable
+      replaceMenuRef: false // Don't make the ref observable
     });
   }
   

@@ -64,6 +64,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
         <LetterChoiceMenu
           wordSelectionByLetter={letterInteraction.selectionOfReplacementLetter}
           menuManager={letterInteraction.menuManager}
+          menuRef={letterInteraction.replaceMenuRef}
         />
       )}
     </div>

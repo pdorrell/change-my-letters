@@ -37,6 +37,7 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ positionInt
         <LetterChoiceMenu
           wordSelectionByLetter={positionInteraction.selectionOfLetterToInsert}
           menuManager={positionInteraction.menuManager}
+          menuRef={positionInteraction.insertMenuRef}
         />
       )}
     </div>
