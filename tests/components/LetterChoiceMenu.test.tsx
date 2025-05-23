@@ -6,6 +6,7 @@ import { WordInteraction } from '../../src/models/interaction/WordInteraction';
 import { createTestAppState } from '../utils/TestAppBuilder';
 import { MenuManager } from '../../src/models/MenuManager';
 import { WordSelectionByLetter } from '../../src/models/WordSelectionByLetter';
+import { AppState } from '../../src/models/AppState';
 
 // Mock floating-ui for menus since we don't need real positioning in tests
 jest.mock('@floating-ui/react', () => ({
@@ -26,7 +27,7 @@ jest.mock('@floating-ui/react', () => ({
 
 
 describe('LetterChoiceMenu', () => {
-  let appState: any;
+  let appState: AppState;
   let wordInteraction: WordInteraction;
   let menuManager: MenuManager;
   let options: any[]; // Letter change options
@@ -36,7 +37,9 @@ describe('LetterChoiceMenu', () => {
     // Create AppState with WordSayerTestDouble
     appState = createTestAppState();
     appState.menuManager.activeButtonElement = document.createElement('button');
-    appState.history.hasVisited = jest.fn(word => ['bat', 'rat'].includes(word));
+    // Pre-populate visited words
+    appState.previouslyVisitedWords.add('bat');
+    appState.previouslyVisitedWords.add('rat');
     
     // Assign the menuManager for direct use
     menuManager = appState.menuManager;

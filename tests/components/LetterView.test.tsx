@@ -22,14 +22,14 @@ jest.mock('../../src/views/CurrentWordView', () => ({
 
 
 describe('LetterView', () => {
-  let appState: any;
+  let appState: AppState;
   let currentWord: WordInteraction;
   let letterInteraction: any;
 
   beforeEach(() => {
     // Create AppState with WordSayerTestDouble
     appState = createTestAppState();
-    appState.history.previouslyVisitedWords = new Set();
+    appState.previouslyVisitedWords = new Set();
 
     // Create a mock word interaction
     currentWord = {
