@@ -123,7 +123,7 @@ describe('Interaction Classes Integration', () => {
     const oldPositionInteractions = [...wordInteraction.positionInteractions];
 
     // Update the word to a different word from the graph
-    const newNode = appState.wordGraph.getNode('bat');
+    const newNode = appState.wordGraph.getRequiredWord('bat');
     wordInteraction.updateWord(newNode);
 
     // Verify the interactions are new objects
