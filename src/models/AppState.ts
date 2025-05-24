@@ -79,7 +79,7 @@ export class AppState {
     this.history = new HistoryModel(this, wordNode);
 
     // Initialize the current word with the menu manager
-    this.currentWord = new WordInteraction(wordNode, this, this.menuManager);
+    this.currentWord = new WordInteraction(wordNode, this.newWordHandler, this.wordSayer, this.menuManager);
 
     // Initialize button actions
     this.resetAction = new ButtonAction(() => this.resetGame(), { tooltip: "Choose a new word" });
@@ -91,8 +91,16 @@ export class AppState {
     makeAutoObservable(this, {
       undoAction: computed,
       redoAction: computed,
-      toggleViewAction: computed
+      toggleViewAction: computed,
+      newWordHandler: computed
     });
+  }
+
+  /**
+   * Get a handler function for setting new words
+   */
+  get newWordHandler(): (word: Word) => void {
+    return (word: Word) => this.setNewWord(word);
   }
 
   /**

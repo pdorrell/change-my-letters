@@ -1,7 +1,6 @@
 import { makeAutoObservable, action, computed } from 'mobx';
 import React from 'react';
 import { Letter } from '../Letter';
-import { WordInteraction } from './WordInteraction';
 import { MenuManager } from '../MenuManager';
 import { Word } from '../Word';
 import { ButtonAction } from '../../lib/ui/actions';
@@ -24,8 +23,8 @@ export class LetterInteraction {
     // The letter this interaction is for
     public readonly letter: Letter,
 
-    // Reference to the parent word interaction
-    public readonly wordInteraction: WordInteraction,
+    // Handler function for setting new words
+    public readonly newWordHandler: (word: Word) => void,
     
     // Reference to the menu manager
     public readonly menuManager: MenuManager
@@ -108,7 +107,7 @@ export class LetterInteraction {
     // Close the menu
     this.isReplaceMenuOpen = false;
     
-    // Use the wordInteraction's appState to set the new word
-    this.wordInteraction.setNewWord(wordObj);
+    // Use the newWordHandler to set the new word
+    this.newWordHandler(wordObj);
   }
 }
