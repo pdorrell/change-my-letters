@@ -34,6 +34,16 @@ export class WordGraph implements WordGetter {
   }
 
   /**
+   * Get the maximum word length in the graph
+   */
+  get maxWordLength(): number {
+    if (this.words.size === 0) {
+      return 0;
+    }
+    return Math.max(...Array.from(this.words).map(word => word.length));
+  }
+
+  /**
    * Identifies all connected subgraphs in the word graph
    * @returns An array of connected subgraphs, each containing a set of connected words
    */

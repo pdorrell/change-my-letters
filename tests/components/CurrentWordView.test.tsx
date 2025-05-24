@@ -22,7 +22,7 @@ describe('CurrentWordView', () => {
   });
   
   it('renders the current word with letters and positions', () => {
-    const { container } = render(<CurrentWordView currentWord={currentWord} wordGraph={appState.wordGraph} />);
+    const { container } = render(<CurrentWordView currentWord={currentWord} maxWordLength={10} />);
     
     // Get all letter containers (LetterView components)
     const letterViews = container.querySelectorAll('.letter-container');
@@ -39,7 +39,7 @@ describe('CurrentWordView', () => {
   // previouslyVisited has been removed from WordInteraction
   
   it('alternates positions and letters correctly', () => {
-    const { container } = render(<CurrentWordView currentWord={currentWord} wordGraph={appState.wordGraph} />);
+    const { container } = render(<CurrentWordView currentWord={currentWord} maxWordLength={10} />);
     
     // Get all children of the word display container
     const displayContainers = container.querySelectorAll('.word-display > *');
@@ -55,7 +55,7 @@ describe('CurrentWordView', () => {
   });
   
   it('renders the current word properly', () => {
-    const { container } = render(<CurrentWordView currentWord={currentWord} wordGraph={appState.wordGraph} />);
+    const { container } = render(<CurrentWordView currentWord={currentWord} maxWordLength={10} />);
     
     // Get all letter containers
     const letterViews = container.querySelectorAll('.letter-container');
@@ -75,7 +75,7 @@ describe('CurrentWordView', () => {
     const batWord = appState.wordGraph.getRequiredWord('bat');
     const batWordInteraction = new WordInteraction(batWord, appState.newWordHandler, appState.wordSayer, appState.menuManager);
     
-    const { container } = render(<CurrentWordView currentWord={batWordInteraction} wordGraph={appState.wordGraph} />);
+    const { container } = render(<CurrentWordView currentWord={batWordInteraction} maxWordLength={10} />);
     
     // Check that it renders all 3 letters of 'bat'
     const letterViews = container.querySelectorAll('.letter-container');
