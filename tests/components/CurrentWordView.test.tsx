@@ -16,7 +16,7 @@ describe('CurrentWordView', () => {
     // Create AppState with WordSayerTestDouble
     appState = createTestAppState();
     
-    // Create a real WordInteraction using actual Word from WordGraph
+    // Create WordInteraction using Word from WordGraph
     const catWord = appState.wordGraph.getRequiredWord('cat');
     currentWord = new WordInteraction(catWord, appState, appState.menuManager);
   });
@@ -24,7 +24,7 @@ describe('CurrentWordView', () => {
   it('renders the current word with letters and positions', () => {
     const { container } = render(<CurrentWordView currentWord={currentWord} />);
     
-    // Get all letter containers (real LetterView components)
+    // Get all letter containers (LetterView components)
     const letterViews = container.querySelectorAll('.letter-container');
     
     // It should render 3 letters for 'cat', plus placeholders for longer words

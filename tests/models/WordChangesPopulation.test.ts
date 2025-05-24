@@ -7,7 +7,7 @@ class TestWordGetter implements WordGetter {
   private words: Map<string, Word> = new Map();
 
   constructor() {
-    // Create real Word objects for testing change population
+    // Create Word objects for testing change population
         // needed to test the populateChanges functionality
 
     // Format: [word, [can delete positions], [inserts at positions], [replaces at positions]]

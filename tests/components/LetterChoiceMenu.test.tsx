@@ -65,7 +65,7 @@ describe('LetterChoiceMenu', () => {
       />
     );
 
-    // Should render the letter options - use menuRef to access the real DOM
+    // Should render the letter options - use menuRef to access the DOM
     const menu = menuRef.current;
     expect(menu).not.toBeNull();
     
@@ -93,7 +93,7 @@ describe('LetterChoiceMenu', () => {
       />
     );
 
-    // Should render the letter options - use menuRef to access the real DOM
+    // Should render the letter options - use menuRef to access the DOM
     const menu = menuRef.current;
     expect(menu).not.toBeNull();
     
@@ -126,7 +126,7 @@ describe('LetterChoiceMenu', () => {
       />
     );
 
-    // Get the first letter option and click it - use menuRef to access the real DOM
+    // Get the first letter option and click it - use menuRef to access the DOM
     const menu = menuRef.current;
     expect(menu).not.toBeNull();
     

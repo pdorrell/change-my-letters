@@ -15,7 +15,7 @@ describe('LetterInteraction', () => {
     // Create AppState with WordSayerTestDouble
     appState = createTestAppState();
     
-    // Create a real WordInteraction using actual Word from WordGraph
+    // Create WordInteraction using Word from WordGraph
     const catWord = appState.wordGraph.getRequiredWord('cat');
     wordInteraction = new WordInteraction(catWord, appState, appState.menuManager);
     
