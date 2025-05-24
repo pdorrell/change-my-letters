@@ -6,31 +6,7 @@ import { AppState } from '../../src/models/AppState';
 import { createTestAppState } from '../utils/TestAppBuilder';
 
 
-// Mock child components for simpler testing
-jest.mock('../../src/views/LetterView', () => ({
-  LetterView: ({ letterInteraction }: any) => (
-    <div data-testid="letter-view" data-letter={letterInteraction.letter?.value} className="letter-container">
-      {letterInteraction.letter?.value}
-    </div>
-  ),
-  LetterPlaceholder: () => (
-    <div data-testid="letter-view" className="letter-container letter-placeholder">
-      <div className="letter hidden">x</div>
-    </div>
-  )
-}));
-
-jest.mock('../../src/views/PositionView', () => ({
-  PositionView: ({ positionInteraction }: any) => (
-    <div data-testid="position-view" data-position={positionInteraction.position?.index}></div>
-  ),
-  PositionPlaceholder: () => (
-    <div data-testid="position-view" className="position-placeholder"></div>
-  )
-}));
-
-// LetterChoiceMenu is not mocked - using real component
-// Only child view components are mocked for layout testing
+// No mocking - using real child components
 
 
 describe('CurrentWordView', () => {
@@ -47,16 +23,16 @@ describe('CurrentWordView', () => {
   });
   
   it('renders the current word with letters and positions', () => {
-    const { getAllByTestId } = render(<CurrentWordView currentWord={currentWord} />);
+    const { container } = render(<CurrentWordView currentWord={currentWord} />);
     
-    // Get all letter views
-    const letterViews = getAllByTestId('letter-view');
+    // Get all letter containers (real LetterView components)
+    const letterViews = container.querySelectorAll('.letter-container');
     
     // It should render 3 letters for 'cat', plus placeholders for longer words
     expect(letterViews.length).toBeGreaterThanOrEqual(3);
     
     // Check that position views are rendered
-    const positionViews = getAllByTestId('position-view');
+    const positionViews = container.querySelectorAll('.position-container');
     expect(positionViews.length).toBeGreaterThanOrEqual(4);
   });
   
@@ -70,28 +46,29 @@ describe('CurrentWordView', () => {
     const displayContainers = container.querySelectorAll('.word-display > *');
     
     // Elements should alternate between positions and letters
-    expect(displayContainers[0].getAttribute('data-testid')).toBe('position-view');
-    expect(displayContainers[1].getAttribute('data-testid')).toBe('letter-view');
-    expect(displayContainers[2].getAttribute('data-testid')).toBe('position-view');
-    expect(displayContainers[3].getAttribute('data-testid')).toBe('letter-view');
-    expect(displayContainers[4].getAttribute('data-testid')).toBe('position-view');
-    expect(displayContainers[5].getAttribute('data-testid')).toBe('letter-view');
-    expect(displayContainers[6].getAttribute('data-testid')).toBe('position-view');
+    expect(displayContainers[0]).toHaveClass('position-container');
+    expect(displayContainers[1]).toHaveClass('letter-container');
+    expect(displayContainers[2]).toHaveClass('position-container');
+    expect(displayContainers[3]).toHaveClass('letter-container');
+    expect(displayContainers[4]).toHaveClass('position-container');
+    expect(displayContainers[5]).toHaveClass('letter-container');
+    expect(displayContainers[6]).toHaveClass('position-container');
   });
   
   it('renders the current word properly', () => {
-    const { getAllByTestId } = render(<CurrentWordView currentWord={currentWord} />);
+    const { container } = render(<CurrentWordView currentWord={currentWord} />);
     
-    // Get all letter views
-    const letterViews = getAllByTestId('letter-view');
+    // Get all letter containers
+    const letterViews = container.querySelectorAll('.letter-container');
     
     // Should have at least 3 letters for 'cat' (plus any placeholders)
     expect(letterViews.length).toBeGreaterThanOrEqual(3);
     
-    // Check the letter values
-    expect(letterViews[0].getAttribute('data-letter')).toBe('c');
-    expect(letterViews[1].getAttribute('data-letter')).toBe('a');
-    expect(letterViews[2].getAttribute('data-letter')).toBe('t');
+    // Check the letter values by looking at the .letter elements inside containers
+    const letters = container.querySelectorAll('.letter');
+    expect(letters[0]).toHaveTextContent('c');
+    expect(letters[1]).toHaveTextContent('a');
+    expect(letters[2]).toHaveTextContent('t');
   });
   
   it('handles different word lengths', () => {
@@ -99,14 +76,14 @@ describe('CurrentWordView', () => {
     const batWord = appState.wordGraph.getRequiredWord('bat');
     const batWordInteraction = new WordInteraction(batWord, appState, appState.menuManager);
     
-    const { getAllByTestId } = render(<CurrentWordView currentWord={batWordInteraction} />);
+    const { container } = render(<CurrentWordView currentWord={batWordInteraction} />);
     
     // Check that it renders all 3 letters of 'bat'
-    const letterViews = getAllByTestId('letter-view');
+    const letterViews = container.querySelectorAll('.letter-container');
     expect(letterViews.length).toBeGreaterThanOrEqual(3);
     
     // And 4 position views (one before, between each letter, and after)
-    const positionViews = getAllByTestId('position-view');
+    const positionViews = container.querySelectorAll('.position-container');
     expect(positionViews.length).toBeGreaterThanOrEqual(4);
   });
 });
