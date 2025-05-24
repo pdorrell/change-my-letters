@@ -4,7 +4,6 @@ import { WordInteraction } from '../models/interaction/WordInteraction';
 import { LetterView, LetterPlaceholder } from './LetterView';
 import { PositionView, PositionPlaceholder } from './PositionView';
 import { MenuManager } from '../models/MenuManager';
-import { WordGraph } from '../models/WordGraph';
 import {
   useFloating,
   autoUpdate,
@@ -20,9 +19,9 @@ import {
 /**
  * View component for displaying the current word
  */
-interface CurrentWordViewProps { currentWord: WordInteraction; wordGraph?: WordGraph; }
+interface CurrentWordViewProps { currentWord: WordInteraction; maxWordLength?: number; }
 
-export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ currentWord, wordGraph }) => {
+export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ currentWord, maxWordLength }) => {
 
   // Add a document-wide click handler to close menus when clicking outside
   React.useEffect(() => {
@@ -58,37 +57,19 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
     };
   }, [currentWord.menuManager]);
 
-  // Get maximum word length from the word graph
+  // Get maximum word length
   const getMaxWordLength = (): number => {
-    let maxWordLength = 0;
-
-    // Only try to get max word length from wordGraph if it exists
-    if (wordGraph?.words && wordGraph.words.size > 0) {
-      try {
-        maxWordLength = Math.max(
-          ...Array.from(wordGraph.words).map(word => word.length)
-        );
-      } catch (error) {
-        // In case of an error, use a reasonable default
-        console.debug('Could not calculate max word length from word graph, using default of 5');
-        maxWordLength = 5;
-      }
-    } else {
-      // Default to 5 if no words are loaded yet
-      maxWordLength = 5;
-    }
-
-    return maxWordLength;
+    return maxWordLength || 5; // Use provided maxWordLength or fallback to 5
   };
 
   // Get the current word length
   const currentWordLength = currentWord.value.length;
 
-  // Get the maximum word length from the word graph
-  const maxWordLength = getMaxWordLength();
+  // Get the maximum word length
+  const maxLength = getMaxWordLength();
 
   // Calculate placeholders needed
-  const placeholdersNeeded = Math.max(0, maxWordLength - currentWordLength);
+  const placeholdersNeeded = Math.max(0, maxLength - currentWordLength);
 
   return (
     <div

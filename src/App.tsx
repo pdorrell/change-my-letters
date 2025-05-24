@@ -53,7 +53,7 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
       </header>
       <main>
         {appState.currentPage === 'wordView' ? (
-          <CurrentWordView currentWord={appState.currentWord} wordGraph={appState.wordGraph} />
+          <CurrentWordView currentWord={appState.currentWord} maxWordLength={appState.wordGraph.maxWordLength} />
         ) : appState.currentPage === 'historyView' ? (
           <HistoryView history={appState.history} />
         ) : (

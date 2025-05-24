@@ -106,5 +106,25 @@ describe('WordGraph', () => {
     const totalWords = subgraphs.reduce((count, graph) => count + graph.size, 0);
     expect(totalWords).toBe(5);
   });
+
+  it('should return correct maxWordLength', () => {
+    const wordGraph = new WordGraph();
+    
+    // Empty graph should return 0
+    expect(wordGraph.maxWordLength).toBe(0);
+    
+    // Load a graph with words of different lengths using valid format
+    const testData = {
+      'cat': { delete: '...', insert: 'a/b/c/d', replace: 'a/b/c' },
+      'elephant': { delete: '........', insert: 'a/b/c/d/e/f/g/h/i', replace: 'a/b/c/d/e/f/g/h' },
+      'a': { delete: '.', insert: 'b/c', replace: 'b' },
+      'hello': { delete: '.....', insert: 'a/b/c/d/e/f', replace: 'a/b/c/d/e' }
+    };
+    
+    wordGraph.loadFromJson(testData);
+    
+    // Should return the length of the longest word ('elephant' = 8)
+    expect(wordGraph.maxWordLength).toBe(8);
+  });
   
 });
