@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import { WordInteraction } from '../models/interaction/WordInteraction';
 import { LetterView, LetterPlaceholder } from './LetterView';
 import { PositionView, PositionPlaceholder } from './PositionView';
-import { MenuManager } from '../models/MenuManager';
 import { MenuManagerInterface } from '../models/MenuManagerInterface';
 import {
   useFloating,
@@ -38,7 +37,7 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
         // or replace-icon/insert-icon buttons which handle their own clicks
         const target = e.target;
         let menuClick = false;
-        
+
         if (target && target instanceof Element) {
           menuClick =
             target.classList.contains('letter-choice-menu') ||
