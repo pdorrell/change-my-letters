@@ -70,26 +70,9 @@ export function createTestWordGraph(words: string[] = testWordLists.minimal): Wo
     wordGraph.loadFromJson(jsonGraph);
   }
   
-  // Skip populateChanges() for tests to avoid errors when the graph isn't fully connected
-  // Instead, we'll add a simple mock implementation of the getWord method
-  
-  // Mock the getRequiredWord method for testing
-  const originalGetRequiredWord = wordGraph.getRequiredWord;
-  wordGraph.getRequiredWord = function(word: string) {
-    const wordObj = this.getNode(word);
-    if (wordObj) return wordObj;
-    
-    // For test purposes, if the word doesn't exist, return a fake Word object
-    const firstWordValue = this.words.values().next().value;
-    if (typeof firstWordValue !== 'string') {
-      throw new Error("Failed to find any word string in the word graph");
-    }
-    const fallbackWord = this.getNode(firstWordValue);
-    if (!fallbackWord) {
-      throw new Error("Failed to find any word in the word graph");
-    }
-    return fallbackWord;
-  };
+  // Note: We don't call populateChanges() for test graphs because the sample data
+  // contains references to words that aren't in the test word list (like 'bcat' from inserting 'b' into 'cat')
+  // Tests that need populated changes should use createWordGraphFromJson() instead
   
   return wordGraph;
 }
