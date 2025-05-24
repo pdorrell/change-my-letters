@@ -227,14 +227,14 @@ ReviewPronunciationInteraction will have the following attributes & methods -
 * setReviewState(jsonData)
 * getReviewState() => json data (only include words reviewed or soundsWrong)
 * getWrongSoundingWords() => string[] (sorted in alphabetic order)
-* resetAllToUnreviewd()
+* resetAllToUnreviewed()
 * resetAllToOK()
 * reviewWrongWords() - 
 * markOK(word: str)
 * markSoundsWrong(word: str)
 * reviewWord(word: str) set word to be new current review word, and say that word
 
-A ReviewStateFilterOption is a class with attributes:
+ReviewStateFilterOption is a class with attributes:
 
 * label
 * include(word: Word) => bool
