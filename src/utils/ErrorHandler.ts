@@ -50,10 +50,12 @@ export class ErrorHandler {
     });
 
     // Listen for custom error events
-    document.addEventListener('app-error', ((event: CustomEvent) => {
-      const { error, message } = event.detail;
-      ErrorHandler.captureError(message || '[Custom Error]', error);
-    }) as EventListener);
+    document.addEventListener('app-error', (event: Event) => {
+      if (event instanceof CustomEvent && event.detail) {
+        const { error, message } = event.detail;
+        ErrorHandler.captureError(message || '[Custom Error]', error);
+      }
+    });
 
     console.log('Global error handler initialized');
   }
