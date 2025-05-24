@@ -7,6 +7,7 @@ import { createTestAppState } from '../utils/TestAppBuilder';
 import { MenuManager } from '../../src/models/MenuManager';
 import { WordSelectionByLetter } from '../../src/models/WordSelectionByLetter';
 import { AppState } from '../../src/models/AppState';
+import { Word } from '../../src/models/Word';
 import { TestChoiceHandler } from '../utils/TestChoiceHandler';
 
 describe('LetterChoiceMenu', () => {
@@ -14,7 +15,7 @@ describe('LetterChoiceMenu', () => {
   let wordInteraction: WordInteraction;
   let menuManager: MenuManager;
   let options: any[]; // Letter change options
-  let choiceHandler: TestChoiceHandler<any>;
+  let choiceHandler: TestChoiceHandler<Word>;
   let menuRef: React.RefObject<HTMLDivElement>;
 
   beforeEach(() => {
@@ -43,8 +44,8 @@ describe('LetterChoiceMenu', () => {
     ];
 
     // Create choice handler
-    choiceHandler = new TestChoiceHandler<any>();
-    
+    choiceHandler = new TestChoiceHandler<Word>();
+
     // Create menu ref for testing
     menuRef = React.createRef<HTMLDivElement>();
   });
@@ -68,7 +69,7 @@ describe('LetterChoiceMenu', () => {
     // Should render the letter options - use menuRef to access the DOM
     const menu = menuRef.current;
     expect(menu).not.toBeNull();
-    
+
     const letterOption1 = menu?.querySelector('.letter-choice-option:nth-child(1)');
     const letterOption2 = menu?.querySelector('.letter-choice-option:nth-child(2)');
     const letterOption3 = menu?.querySelector('.letter-choice-option:nth-child(3)');
@@ -96,7 +97,7 @@ describe('LetterChoiceMenu', () => {
     // Should render the letter options - use menuRef to access the DOM
     const menu = menuRef.current;
     expect(menu).not.toBeNull();
-    
+
     const letterOption1 = menu?.querySelector('.letter-choice-option:nth-child(1)');
     const letterOption2 = menu?.querySelector('.letter-choice-option:nth-child(2)');
     const letterOption3 = menu?.querySelector('.letter-choice-option:nth-child(3)');
@@ -129,7 +130,7 @@ describe('LetterChoiceMenu', () => {
     // Get the first letter option and click it - use menuRef to access the DOM
     const menu = menuRef.current;
     expect(menu).not.toBeNull();
-    
+
     const letterOption1 = menu?.querySelector('.letter-choice-option:nth-child(1)');
     if (letterOption1) fireEvent.click(letterOption1);
 
