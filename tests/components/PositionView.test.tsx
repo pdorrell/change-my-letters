@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
 import { PositionView } from '../../src/views/PositionView';
 import { PositionInteraction } from '../../src/models/interaction/PositionInteraction';
 import { Word } from '../../src/models/Word';
@@ -49,8 +49,10 @@ describe('PositionView', () => {
   });
   
   it('shows letter choice menu when insert menu is open', () => {
-    // Set the insert menu to open
-    positionInteraction.isInsertMenuOpen = true;
+    // Set the insert menu to open using act() to properly handle state updates
+    act(() => {
+      positionInteraction.isInsertMenuOpen = true;
+    });
     
     render(<PositionView positionInteraction={positionInteraction} />);
     
@@ -61,8 +63,10 @@ describe('PositionView', () => {
   });
   
   it('displays letter choices when insert menu is open', () => {
-    // Set the insert menu to open
-    positionInteraction.isInsertMenuOpen = true;
+    // Set the insert menu to open using act() to properly handle state updates
+    act(() => {
+      positionInteraction.isInsertMenuOpen = true;
+    });
     
     render(<PositionView positionInteraction={positionInteraction} />);
     
