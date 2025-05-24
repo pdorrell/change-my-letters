@@ -160,6 +160,11 @@ describe('WordInteraction', () => {
     wordInteraction.say();
 
     // Verify that the test double's say method was called with 'cat'
-    expect((appState.wordSayer as WordSayerTestDouble).playedWords).toEqual(['cat']);
+    const wordSayerTestDouble = appState.wordSayer;
+    if (wordSayerTestDouble instanceof WordSayerTestDouble) {
+      expect(wordSayerTestDouble.playedWords).toEqual(['cat']);
+    } else {
+      throw new Error('Expected WordSayerTestDouble in test');
+    }
   });
 });
