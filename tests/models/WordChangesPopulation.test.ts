@@ -3,14 +3,13 @@ import { WordGetter } from '../../src/models/WordGetter';
 import { InsertChange } from '../../src/models/WordChange';
 import { MissingWordException } from '../../src/models/WordGraph';
 
-class MockWordGetter implements WordGetter {
+class TestWordGetter implements WordGetter {
   private words: Map<string, Word> = new Map();
 
   constructor() {
-    // Create the initial word graph for testing
-    // inserts are the letters that can be inserted at each position (before, between, after)
-    // replaces are the letters that can replace the letter at each position
-    // deletes indicate which letters can be deleted
+    // Create real Word objects for testing change population
+    // These are not mocks - they are actual Word instances with specific configurations
+    // needed to test the populateChanges functionality
 
     // Format: [word, [can delete positions], [inserts at positions], [replaces at positions]]
     const catWord = new Word('cat', [true, true, true], ['b', '', '', ''], ['b', 'o', 'r']);
@@ -47,10 +46,10 @@ class MockWordGetter implements WordGetter {
 }
 
 describe('Word Changes Population', () => {
-  let wordGetter: MockWordGetter;
+  let wordGetter: TestWordGetter;
 
   beforeEach(() => {
-    wordGetter = new MockWordGetter();
+    wordGetter = new TestWordGetter();
   });
 
   it('should populate Letter changes correctly when Word.populateChanges is called', () => {
