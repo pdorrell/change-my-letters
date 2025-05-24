@@ -80,7 +80,7 @@ export class LetterInteraction {
     return new ButtonAction(() => {
       this.menuManager.toggleMenu(
         this.isReplaceMenuOpen,
-        () => { this.isReplaceMenuOpen = true; },
+        action(() => { this.isReplaceMenuOpen = true; }),
         this.replaceButtonRef
       );
     }, { 
@@ -104,8 +104,10 @@ export class LetterInteraction {
    * @param wordObj The Word object to set as the new word
    */
   setNewWord(wordObj: Word): void {
-    // Close the menu
-    this.isReplaceMenuOpen = false;
+    // Close the menu using an action
+    action(() => {
+      this.isReplaceMenuOpen = false;
+    })();
     
     // Use the newWordHandler to set the new word
     this.newWordHandler(wordObj);

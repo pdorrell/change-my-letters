@@ -59,7 +59,7 @@ export class PositionInteraction {
     return new ButtonAction(() => {
       this.menuManager.toggleMenu(
         this.isInsertMenuOpen,
-        () => { this.isInsertMenuOpen = true; },
+        action(() => { this.isInsertMenuOpen = true; }),
         this.insertButtonRef
       );
     }, { 
@@ -83,8 +83,10 @@ export class PositionInteraction {
    * @param wordObj The Word object to set as the new word
    */
   setNewWord(wordObj: Word): void {
-    // Close the menu
-    this.isInsertMenuOpen = false;
+    // Close the menu using an action
+    action(() => {
+      this.isInsertMenuOpen = false;
+    })();
     
     // Use the newWordHandler to set the new word
     this.newWordHandler(wordObj);
