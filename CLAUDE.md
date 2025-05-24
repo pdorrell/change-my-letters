@@ -136,16 +136,20 @@ files, in particular:
 * words-that-sound-wrong.txt - A text file where each line is a word that the user has marked 
   as sounding wrong.
   
+The review state file has a format like: 
+
+`{'reviewed': ['cat', 'dog', 'cow', 'hose', 'ache'], 'soundsWrong': ['hose', 'ache']}`
+  
 In local developer mode, and only in local developer mode, the initial review pronunciation state
-is loaded from src/data/local_dev/review-pronunciation-state.json. This makes it convenient for the
-developer to save an updated review pronunciation state as a new copy of that file.
+is loaded from src/data/local_dev/review-pronunciation-state.json when the application starts.
+This makes it convenient for the developer to save an updated review pronunciation state as a new copy of that file.
 
 ### Review Word State
 
 Review state is determined by three boolean attributes on each Word:
 
 * reviewed - has it been reviewed?
-* currentReview - is it the currently being reviewed (and the user may still be deciding
+* currentReview - is it the word currently being reviewed (and the user may still be deciding
   whether or not it sounds wrong)
 * soundsWrong - did it sound wrong?
 
@@ -157,18 +161,18 @@ The UI for the Review Pronuncation page contains a display of filtered words som
 to that of the Reset page.
 
 A button with "-> Review Pronunciation" is shown at the far right of the main "Current Word" panel.
-When in the Review Pronunciation page, where is a corresponding "-> Current Word" button to go
+When in the Review Pronunciation page, there is a corresponding "-> Current Word" button to go
 back to the current word.
 
-It has the following components -
+The page has the following components -
 
 * Action Buttons Panel -
-   * Load state - upload review-pronunciation-state.json, where the supplied file has to have
+   * "Load State" - upload review-pronunciation-state.json, where the supplied file has to have
      exactly that name. This button also acts as a drag-and-drop target to upload the same file.
-   * Save state - save review-pronunciation-state.json by allowing the user to download it
+   * "Save State" - save review-pronunciation-state.json by allowing the user to download it
    * Download wrong words - save words-that-sound-wrong.txt by allowing the user to download it
-   * "Reset all to Unreviewed"
-   * "Reset all to OK"
+   * "Reset All to Unreviewed"
+   * "Reset All to OK"
    * "Review Wrong Words" - set `reviewed = not soundsWrong` for all words, and clear currentReviewWord is it's not wrong
 * Just Reviewed word panel -
    * The word last reviewed (if any), shown in review state colour
@@ -187,13 +191,14 @@ It has the following components -
    * Show review state background colour -
       * Light blue if reviewed and OK
       * Light pink if wrong
-      * For the currentReview word - use a stronger blue & pink
+      * For the currentReview word - use a stronger blue & pink, and have a black border (also use
+        a transparent border if not black of the same size, to prevent layout jumping)
       
 When clicking on word span -
    * The current review word (if any) is marked as reviewed
    * The word clicked on becomes the current review word
    * The soundsWrong value for either of those words is _not_ changed. (That is, soundsWrong
-     is only updated by clicking on the "Sounds Wrong" or "Sounds OK" buttons.)
+     for the current review word is only updated by clicking on the "Sounds Wrong" or "Sounds OK" buttons)
      
 This supports a process where the user clicks on each word once to hear it said, and
 only needs to do an extra click if it sounds wrong (with "Sounds OK" to deal with the case
@@ -233,6 +238,8 @@ ReviewPronunciationInteraction will have the following attributes & methods -
 * markOK(word: str)
 * markSoundsWrong(word: str)
 * reviewWord(word: str) set word to be new current review word, and say that word
+
+Also, define ButtonAction's for all the buttons.
 
 ReviewStateFilterOption is a class with attributes:
 
