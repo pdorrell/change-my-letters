@@ -2,19 +2,19 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { LetterChoiceMenu } from '../../src/views/CurrentWordView';
 import { createTestWordGraph, testWordLists } from '../utils/TestWordGraphBuilder';
-import { WordInteraction } from '../../src/models/interaction/WordInteraction';
 import { createTestAppState } from '../utils/TestAppBuilder';
 import { MenuManager } from '../../src/models/MenuManager';
 import { WordSelectionByLetter } from '../../src/models/WordSelectionByLetter';
 import { AppState } from '../../src/models/AppState';
 import { Word } from '../../src/models/Word';
 import { TestChoiceHandler } from '../utils/TestChoiceHandler';
+import { FreeTestWordGetter } from '../utils/FreeTestWordGetter';
+import { ReplaceChange } from '../../src/models/WordChange';
 
 describe('LetterChoiceMenu', () => {
   let appState: AppState;
-  let wordInteraction: WordInteraction;
   let menuManager: MenuManager;
-  let options: any[]; // Letter change options
+  let options: ReplaceChange[];
   let choiceHandler: TestChoiceHandler<Word>;
   let menuRef: React.RefObject<HTMLDivElement>;
 
@@ -29,18 +29,17 @@ describe('LetterChoiceMenu', () => {
     // Assign the menuManager for direct use
     menuManager = appState.menuManager;
 
-    // Create a mock WordInteraction
-    wordInteraction = {
-      value: 'cat',
-      previouslyVisited: false,
-      appState: appState
-    } as any;
 
-    // Create sample letter change options
+    // Create sample letter change options using FreeTestWordGetter
+    const wordGetter = new FreeTestWordGetter();
+    const batWord = wordGetter.getRequiredWord('bat');
+    const hatWord = wordGetter.getRequiredWord('hat');
+    const ratWord = wordGetter.getRequiredWord('rat');
+    
     options = [
-      { letter: 'b', result: { word: 'bat' } },
-      { letter: 'h', result: { word: 'hat' } },
-      { letter: 'r', result: { word: 'rat' } }
+      new ReplaceChange(batWord, 'b'),
+      new ReplaceChange(hatWord, 'h'),
+      new ReplaceChange(ratWord, 'r')
     ];
 
     // Create choice handler
@@ -52,7 +51,7 @@ describe('LetterChoiceMenu', () => {
 
 
   it('renders letter options correctly', () => {
-    // Set previouslyVisited on the result objects
+    // Set previouslyVisited on the Word objects
     options[0].result.previouslyVisited = true; // 'bat' was visited
     options[2].result.previouslyVisited = true; // 'rat' was visited
 
@@ -80,7 +79,7 @@ describe('LetterChoiceMenu', () => {
   });
 
   it('marks previously visited options correctly', () => {
-    // Set previouslyVisited on the result objects
+    // Set previouslyVisited on the Word objects
     options[0].result.previouslyVisited = true; // 'bat' was visited
     options[2].result.previouslyVisited = true; // 'rat' was visited
 
@@ -113,7 +112,7 @@ describe('LetterChoiceMenu', () => {
   });
 
   it('calls onSelect when a letter choice is clicked', () => {
-    // Set previouslyVisited on the result objects
+    // Set previouslyVisited on the Word objects
     options[0].result.previouslyVisited = true; // 'bat' was visited
     options[2].result.previouslyVisited = true; // 'rat' was visited
 
@@ -134,7 +133,7 @@ describe('LetterChoiceMenu', () => {
     const letterOption1 = menu?.querySelector('.letter-choice-option:nth-child(1)');
     if (letterOption1) fireEvent.click(letterOption1);
 
-    // choiceHandler should have received the result of the first option
-    expect(choiceHandler.choice).toEqual({ word: 'bat', previouslyVisited: true });
+    // choiceHandler should have received the Word object from the first option
+    expect(choiceHandler.choice).toBe(options[0].result);
   });
 });
