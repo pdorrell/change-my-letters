@@ -115,6 +115,130 @@ The application contains these main view components:
 * `HistoryView` - Shows the session history
 * `ResetView` - Provides word filtering and selection for starting a new session
 
+
+## Review Pronunciation Page
+
+There is an additional "Review Pronunciation" page. This page allows the user to
+review the pronunciation of the word MP3s, so that the use can download a list
+of words that sound wrong, which can be passed to separate software to re-generate
+or re-record those words.
+
+The page is enabled by a global flag in the source code - it is only relevant when developing the
+application, so it will be disabled once all words are deemed satisfactory, 
+but it will need to be re-enabled when a new set of MP3s is being created.
+
+The state of the review pronunciation is managed by a process of uploading and downloading 
+files, in particular:
+
+* review-pronunciation-state.json - A JSON file that contains the review state of those words
+  that have been reviewed or marked as sounding wrong (ie any word not in the file is assumed to be not reviewed
+  yet, and an empty file is a valid file).
+* words-that-sound-wrong.txt - A text file where each line is a word that the user has marked 
+  as sounding wrong.
+  
+In local developer mode, and only in local developer mode, the initial review pronunciation state
+is loaded from src/data/local_dev/review-pronunciation-state.json. This makes it convenient for the
+developer to save an updated review pronunciation state as a new copy of that file.
+
+### Review Word State
+
+Review state is determined by three boolean attributes on each Word:
+
+* reviewed - has it been reviewed?
+* currentReview - is it the currently being reviewed (and the user may still be deciding
+  whether or not it sounds wrong)
+* soundsWrong - did it sound wrong?
+
+Only one word can have currentReview=true, but this constraint is managed by the ReviewPronunciationModel.
+
+### UI
+
+The UI for the Review Pronuncation page contains a display of filtered words somewhat similar
+to that of the Reset page.
+
+A button with "-> Review Pronunciation" is shown at the far right of the main "Current Word" panel.
+When in the Review Pronunciation page, where is a corresponding "-> Current Word" button to go
+back to the current word.
+
+It has the following components -
+
+* Action Buttons Panel -
+   * Load state - upload review-pronunciation-state.json, where the supplied file has to have
+     exactly that name. This button also acts as a drag-and-drop target to upload the same file.
+   * Save state - save review-pronunciation-state.json by allowing the user to download it
+   * Download wrong words - save words-that-sound-wrong.txt by allowing the user to download it
+   * "Reset all to Unreviewed"
+   * "Reset all to OK"
+   * "Review Wrong Words" - set `reviewed = not soundsWrong` for all words, and clear currentReviewWord is it's not wrong
+* Just Reviewed word panel -
+   * The word last reviewed (if any), shown in review state colour
+   * "Sounds Wrong" button to mark that word as sounding wrong (enabled if current word is currently marked OK)
+   * "Sounds OK" to mark word OK (enabled if current word is currently marked wrong)
+* Filter Panel
+   * Filter text
+   * Match start checkbox
+   * Selector to additionally filter on review state -
+      * All (default)
+      * Un-reviewed (not yet reviewed)
+      * Wrong (already marked wrong)
+      * Un-reviewed or Wrong
+* Filtered words
+   * For each word a span
+   * Show review state background colour -
+      * Light blue if reviewed and OK
+      * Light pink if wrong
+      * For the currentReview word - use a stronger blue & pink
+      
+When clicking on word span -
+   * The current review word (if any) is marked as reviewed
+   * The word clicked on becomes the current review word
+   * The soundsWrong value for either of those words is _not_ changed. (That is, soundsWrong
+     is only updated by clicking on the "Sounds Wrong" or "Sounds OK" buttons.)
+     
+This supports a process where the user clicks on each word once to hear it said, and
+only needs to do an extra click if it sounds wrong (with "Sounds OK" to deal with the case
+where they change their mind or they accidently clicked on Sounds Wrong unintentionally).
+   
+When initially navigating to the review pronunciation page, the following items are reset -
+
+* currentReviewWord is set to null (and currentReview attribute on the last word if any is set to false)
+* Filter text set to empty
+* Match start is set to true
+* Review state filter set to All
+
+Apart from that, the reviewed & soundsWrong attributes on individual words are _not_ updated
+when navigating to the Review Pronunciation page.
+
+### Implementation outline
+
+The view will be a `ReviewPronunciationView` based on a `ReviewPronunciationInteraction` model.
+
+ReviewPronunciationInteraction will have the following attributes & methods -
+
+* Public constructor params:
+  * sortedWords: Word[] - words already sorted, ie from WordGraph.sortedWords
+  * wordSayer: WordSayer
+* wordsMap: map from str->Word
+* filter: string
+* reviewStateFilter: ReviewStateFilterOption
+* reviewStateFilterOptions: ReviewStateFilterOption[] (a fixed list of 4 options)
+* matchStartOnly: boolean
+* currentReviewWord: Word | null
+* setReviewState(jsonData)
+* getReviewState() => json data (only include words reviewed or soundsWrong)
+* getWrongSoundingWords() => string[] (sorted in alphabetic order)
+* resetAllToUnreviewd()
+* resetAllToOK()
+* reviewWrongWords() - 
+* markOK(word: str)
+* markSoundsWrong(word: str)
+* reviewWord(word: str) set word to be new current review word, and say that word
+
+A ReviewStateFilterOption is a class with attributes:
+
+* label
+* include(word: Word) => bool
+
 ## Deployment
 
 The application is deployed to a static web server. The deployment process includes:
