@@ -206,12 +206,16 @@ export class Word {
       return Array.from(str).map(char => char !== '.');
     }
 
-    // Process string arrays (inserts, replaces)
-    const inserts = parseSlashSeparatedString(data.insert as string | undefined, wordLength + 1);
-    const replaces = parseSlashSeparatedString(data.replace as string | undefined, wordLength);
+    // Process string arrays (inserts, replaces) with runtime type checking
+    const insertData = (typeof data.insert === 'string') ? data.insert : undefined;
+    const replaceData = (typeof data.replace === 'string') ? data.replace : undefined;
+    const deleteData = (typeof data.delete === 'string') ? data.delete : undefined;
+    
+    const inserts = parseSlashSeparatedString(insertData, wordLength + 1);
+    const replaces = parseSlashSeparatedString(replaceData, wordLength);
 
     // Process boolean arrays (deletes)
-    const deletes = parseBooleanString(data.delete as string | undefined, wordLength);
+    const deletes = parseBooleanString(deleteData, wordLength);
 
     return new Word(
       word,

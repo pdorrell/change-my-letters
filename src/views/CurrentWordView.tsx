@@ -36,12 +36,16 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
         // Check if click is outside of menus
         // We don't close if clicked on letter-choice-menu, letter-choice-option,
         // or replace-icon/insert-icon buttons which handle their own clicks
-        const target = e.target as HTMLElement;
-        const menuClick =
-          target.classList.contains('letter-choice-menu') ||
-          target.classList.contains('letter-choice-option') ||
-          target.classList.contains('replace-icon') ||
-          target.classList.contains('insert-icon');
+        const target = e.target;
+        let menuClick = false;
+        
+        if (target && target instanceof Element) {
+          menuClick =
+            target.classList.contains('letter-choice-menu') ||
+            target.classList.contains('letter-choice-option') ||
+            target.classList.contains('replace-icon') ||
+            target.classList.contains('insert-icon');
+        }
 
         if (!menuClick) {
           currentWord.menuManager.closeMenus();
