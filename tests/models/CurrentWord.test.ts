@@ -4,7 +4,6 @@ import { Word } from '../../src/models/Word';
 import { MenuManager } from '../../src/models/MenuManager';
 import { createTestAppState } from '../utils/TestAppBuilder';
 
-// No mocking - using real Word objects from test word graph
 
 describe('WordInteraction', () => {
   let appState: AppState;

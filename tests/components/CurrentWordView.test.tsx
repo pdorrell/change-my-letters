@@ -6,7 +6,6 @@ import { AppState } from '../../src/models/AppState';
 import { createTestAppState } from '../utils/TestAppBuilder';
 
 
-// No mocking - using real child components
 
 
 describe('CurrentWordView', () => {

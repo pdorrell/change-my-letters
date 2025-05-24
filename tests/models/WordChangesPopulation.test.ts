@@ -8,8 +8,7 @@ class TestWordGetter implements WordGetter {
 
   constructor() {
     // Create real Word objects for testing change population
-    // These are not mocks - they are actual Word instances with specific configurations
-    // needed to test the populateChanges functionality
+        // needed to test the populateChanges functionality
 
     // Format: [word, [can delete positions], [inserts at positions], [replaces at positions]]
     const catWord = new Word('cat', [true, true, true], ['b', '', '', ''], ['b', 'o', 'r']);
