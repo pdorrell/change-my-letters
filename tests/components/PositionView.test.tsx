@@ -1,18 +1,14 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { PositionView } from '../../src/views/PositionView';
-import { Position } from '../../src/models/Position';
-import { WordInteraction } from '../../src/models/interaction/WordInteraction';
 import { PositionInteraction } from '../../src/models/interaction/PositionInteraction';
-import { AppState } from '../../src/models/AppState';
+import { Word } from '../../src/models/Word';
+import { MenuManager } from '../../src/models/MenuManager';
 import { FreeTestWordGetter } from '../utils/FreeTestWordGetter';
-import { WordSayerTestDouble } from '../test_doubles/WordSayerTestDouble';
 
 
 
 describe('PositionView', () => {
-  let appState: AppState;
-  let currentWord: WordInteraction;
   let positionInteraction: PositionInteraction;
   
   beforeEach(() => {
@@ -21,25 +17,19 @@ describe('PositionView', () => {
     const catWord = wordGetter.getRequiredWord('cat');
     catWord.populateChanges(wordGetter);
     
-    const wordSayerTestDouble = new WordSayerTestDouble();
-    
-    // Create a simple mock AppState for testing
-    appState = {
-      previouslyVisitedWords: new Set(),
-      newWordHandler: (word: any) => { /* mock handler */ },
-      wordSayer: wordSayerTestDouble,
-      menuManager: {
-        activeButtonElement: null,
-        closeMenus: () => {},
-        toggleMenu: () => {}
-      }
-    } as any;
+    // Create a simple mock MenuManager for testing
+    const mockMenuManager: Partial<MenuManager> = {
+      activeButtonElement: null,
+      closeMenus: () => {},
+      toggleMenu: () => {}
+    };
 
-    // Create WordInteraction using the populated Word
-    currentWord = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager);
-    
-    // Get the first position interaction (before 'c')
-    positionInteraction = currentWord.positionInteractions[0];
+    // Mock newWordHandler function
+    const newWordHandler = (word: Word) => { /* mock handler */ };
+
+    // Create PositionInteraction directly with just the required parameters
+    const firstPosition = catWord.positions[0];
+    positionInteraction = new PositionInteraction(firstPosition, newWordHandler, mockMenuManager as MenuManager);
   });
 
   it('renders with insert icon when insertion is possible', () => {
@@ -103,13 +93,23 @@ describe('PositionView', () => {
       insertOptions: []
     };
     
+    // Mock newWordHandler function
+    const newWordHandler = (word: Word) => { /* mock handler */ };
+    
+    // Create a simple mock MenuManager for testing
+    const mockMenuManager: Partial<MenuManager> = {
+      activeButtonElement: null,
+      closeMenus: () => {},
+      toggleMenu: () => {}
+    };
+    
     const mockPositionInteraction = {
       position: cannotInsertPosition,
-      wordInteraction: currentWord,
-      menuManager: appState.menuManager,
+      newWordHandler: newWordHandler,
+      menuManager: mockMenuManager,
       isInsertMenuOpen: false,
-      setNewWord: (word: any) => {
-        appState.setNewWord(word);
+      setNewWord: (word: Word) => {
+        newWordHandler(word);
       },
       openInsertMenuAction: {
         enabled: false,
@@ -117,15 +117,13 @@ describe('PositionView', () => {
       },
       insertButtonRef: { current: null },
       insertMenuRef: React.createRef<HTMLDivElement>(),
-      get selectionOfLetterToInsert() {
-        return {
-          options: [],
-          onSelect: this.setNewWord
-        };
+      selectionOfLetterToInsert: {
+        options: [],
+        onSelect: (word: Word) => { /* mock handler */ }
       }
-    };
+    } as unknown as PositionInteraction;
     
-    const { container } = render(<PositionView positionInteraction={mockPositionInteraction as any} />);
+    const { container } = render(<PositionView positionInteraction={mockPositionInteraction} />);
     
     const insertButton = container.querySelector('.insert-icon:not(.hidden)');
     expect(insertButton).not.toBeInTheDocument();
