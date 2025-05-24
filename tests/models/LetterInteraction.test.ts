@@ -17,18 +17,17 @@ describe('LetterInteraction', () => {
     
     // Create WordInteraction using Word from WordGraph
     const catWord = appState.wordGraph.getRequiredWord('cat');
-    wordInteraction = new WordInteraction(catWord, appState, appState.menuManager);
+    wordInteraction = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager);
     
     // Get the first letter ('c')
     letter = catWord.letters[0];
     
     // Create the letter interaction to test
-    letterInteraction = new LetterInteraction(letter, wordInteraction, appState.menuManager);
+    letterInteraction = new LetterInteraction(letter, appState.newWordHandler, appState.menuManager);
   });
   
-  it('should initialize with correct letter and word interaction references', () => {
+  it('should initialize with correct letter references', () => {
     expect(letterInteraction.letter).toBe(letter);
-    expect(letterInteraction.wordInteraction).toBe(wordInteraction);
     expect(letterInteraction.isReplaceMenuOpen).toBe(false);
   });
   

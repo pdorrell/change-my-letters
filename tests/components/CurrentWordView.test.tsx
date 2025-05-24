@@ -18,11 +18,11 @@ describe('CurrentWordView', () => {
     
     // Create WordInteraction using Word from WordGraph
     const catWord = appState.wordGraph.getRequiredWord('cat');
-    currentWord = new WordInteraction(catWord, appState, appState.menuManager);
+    currentWord = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager);
   });
   
   it('renders the current word with letters and positions', () => {
-    const { container } = render(<CurrentWordView currentWord={currentWord} />);
+    const { container } = render(<CurrentWordView currentWord={currentWord} wordGraph={appState.wordGraph} />);
     
     // Get all letter containers (LetterView components)
     const letterViews = container.querySelectorAll('.letter-container');
@@ -39,7 +39,7 @@ describe('CurrentWordView', () => {
   // previouslyVisited has been removed from WordInteraction
   
   it('alternates positions and letters correctly', () => {
-    const { container } = render(<CurrentWordView currentWord={currentWord} />);
+    const { container } = render(<CurrentWordView currentWord={currentWord} wordGraph={appState.wordGraph} />);
     
     // Get all children of the word display container
     const displayContainers = container.querySelectorAll('.word-display > *');
@@ -55,7 +55,7 @@ describe('CurrentWordView', () => {
   });
   
   it('renders the current word properly', () => {
-    const { container } = render(<CurrentWordView currentWord={currentWord} />);
+    const { container } = render(<CurrentWordView currentWord={currentWord} wordGraph={appState.wordGraph} />);
     
     // Get all letter containers
     const letterViews = container.querySelectorAll('.letter-container');
@@ -73,9 +73,9 @@ describe('CurrentWordView', () => {
   it('handles different word lengths', () => {
     // Test with a different word - we'll use "bat" which is also available in our test graph
     const batWord = appState.wordGraph.getRequiredWord('bat');
-    const batWordInteraction = new WordInteraction(batWord, appState, appState.menuManager);
+    const batWordInteraction = new WordInteraction(batWord, appState.newWordHandler, appState.wordSayer, appState.menuManager);
     
-    const { container } = render(<CurrentWordView currentWord={batWordInteraction} />);
+    const { container } = render(<CurrentWordView currentWord={batWordInteraction} wordGraph={appState.wordGraph} />);
     
     // Check that it renders all 3 letters of 'bat'
     const letterViews = container.querySelectorAll('.letter-container');

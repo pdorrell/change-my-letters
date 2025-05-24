@@ -13,7 +13,7 @@ describe('Position', () => {
     
     // Create WordInteraction using Word from WordGraph
     const catWord = appState.wordGraph.getRequiredWord('cat');
-    currentWord = new WordInteraction(catWord, appState, appState.menuManager);
+    currentWord = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager);
   });
 
   it('should initialize with the correct properties', () => {

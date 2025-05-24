@@ -16,18 +16,17 @@ describe('PositionInteraction', () => {
     
     // Create WordInteraction using Word from WordGraph
     const catWord = appState.wordGraph.getRequiredWord('cat');
-    wordInteraction = new WordInteraction(catWord, appState, appState.menuManager);
+    wordInteraction = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager);
     
     // Get the first position
     position = catWord.positions[0];
     
     // Create the position interaction to test
-    positionInteraction = new PositionInteraction(position, wordInteraction, appState.menuManager);
+    positionInteraction = new PositionInteraction(position, appState.newWordHandler, appState.menuManager);
   });
   
-  it('should initialize with correct position and word interaction references', () => {
+  it('should initialize with correct position references', () => {
     expect(positionInteraction.position).toBe(position);
-    expect(positionInteraction.wordInteraction).toBe(wordInteraction);
     expect(positionInteraction.isInsertMenuOpen).toBe(false);
   });
   

@@ -4,6 +4,7 @@ import { WordInteraction } from '../models/interaction/WordInteraction';
 import { LetterView, LetterPlaceholder } from './LetterView';
 import { PositionView, PositionPlaceholder } from './PositionView';
 import { MenuManager } from '../models/MenuManager';
+import { WordGraph } from '../models/WordGraph';
 import {
   useFloating,
   autoUpdate,
@@ -19,10 +20,9 @@ import {
 /**
  * View component for displaying the current word
  */
-interface CurrentWordViewProps { currentWord: WordInteraction; }
+interface CurrentWordViewProps { currentWord: WordInteraction; wordGraph?: WordGraph; }
 
-export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ currentWord }) => {
-  const appState = currentWord.appState;
+export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ currentWord, wordGraph }) => {
 
   // Add a document-wide click handler to close menus when clicking outside
   React.useEffect(() => {
@@ -56,17 +56,17 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
     return () => {
       document.removeEventListener('click', handleGlobalClick);
     };
-  }, [appState]);
+  }, [currentWord.menuManager]);
 
   // Get maximum word length from the word graph
   const getMaxWordLength = (): number => {
     let maxWordLength = 0;
 
     // Only try to get max word length from wordGraph if it exists
-    if (appState.wordGraph?.words && appState.wordGraph.words.size > 0) {
+    if (wordGraph?.words && wordGraph.words.size > 0) {
       try {
         maxWordLength = Math.max(
-          ...Array.from(appState.wordGraph.words).map(word => word.length)
+          ...Array.from(wordGraph.words).map(word => word.length)
         );
       } catch (error) {
         // In case of an error, use a reasonable default

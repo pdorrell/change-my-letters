@@ -1,11 +1,11 @@
 import { makeObservable, observable, computed, action } from 'mobx';
-import { AppState } from '../AppState';
 import { LetterInteraction } from './LetterInteraction';
 import { PositionInteraction } from './PositionInteraction';
 import { Word } from '../Word';
 import { Letter } from '../Letter';
 import { Position } from '../Position';
 import { MenuManager } from '../MenuManager';
+import { WordSayerInterface } from '../WordSayerInterface';
 
 /**
  * Model representing the user's current interaction with a word
@@ -33,8 +33,11 @@ export class WordInteraction {
     // The Word object this interaction is for
     public word: Word,
     
-    // Reference to the app state
-    public readonly appState: AppState,
+    // Handler function for setting new words
+    public readonly newWordHandler: (word: Word) => void,
+    
+    // Word sayer for audio pronunciation
+    public readonly wordSayer: WordSayerInterface,
     
     // Reference to the menu manager
     public readonly menuManager: MenuManager
@@ -67,11 +70,11 @@ export class WordInteraction {
 
     // Create interaction wrappers for each
     this.letterInteractions = letters.map(
-      letter => new LetterInteraction(letter, this, this.menuManager)
+      letter => new LetterInteraction(letter, this.newWordHandler, this.menuManager)
     );
 
     this.positionInteractions = positions.map(
-      position => new PositionInteraction(position, this, this.menuManager)
+      position => new PositionInteraction(position, this.newWordHandler, this.menuManager)
     );
   }
 
@@ -110,7 +113,7 @@ export class WordInteraction {
    */
   say(): void {
     // Use the wordSayer to play the audio for this word
-    this.appState.wordSayer.say(this.word.word);
+    this.wordSayer.say(this.word.word);
   }
   
   /**
@@ -118,7 +121,7 @@ export class WordInteraction {
    * @param wordObj The Word object to set as the new word
    */
   setNewWord(wordObj: Word): void {
-    // Use the appState to set the new word
-    this.appState.setNewWord(wordObj);
+    // Use the newWordHandler to set the new word
+    this.newWordHandler(wordObj);
   }
 }
