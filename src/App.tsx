@@ -3,8 +3,10 @@ import { observer } from 'mobx-react-lite';
 import { CurrentWordView } from './views/CurrentWordView';
 import { HistoryView } from './views/HistoryView';
 import { ResetView } from './views/ResetView';
+import { ReviewPronunciationView } from './views/ReviewPronunciationView';
 import { AppState } from './models/AppState';
 import { ActionButton } from './lib/ui/ActionButton';
+import { ButtonAction } from './lib/ui/actions';
 
 interface AppProps {
   appState: AppState;
@@ -33,6 +35,18 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
           </ActionButton>
           
           {appState.currentPage === 'wordView' && (
+            <ActionButton action={appState.reviewPronunciationAction}>
+              → Review Pronunciation
+            </ActionButton>
+          )}
+          
+          {appState.currentPage === 'reviewPronunciationView' && (
+            <ActionButton action={new ButtonAction(() => appState.navigateTo('wordView'), { tooltip: "Back to current word" })}>
+              → Current Word
+            </ActionButton>
+          )}
+          
+          {appState.currentPage === 'wordView' && (
             <>
               <ActionButton action={appState.sayAction}>
                 Say
@@ -56,6 +70,8 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
           <CurrentWordView currentWord={appState.currentWord} maxWordLength={appState.wordGraph.maxWordLength} />
         ) : appState.currentPage === 'historyView' ? (
           <HistoryView history={appState.history} />
+        ) : appState.currentPage === 'reviewPronunciationView' ? (
+          <ReviewPronunciationView reviewInteraction={appState.reviewPronunciationInteraction} />
         ) : (
           <ResetView resetInteraction={appState.resetInteraction} />
         )}
