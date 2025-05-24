@@ -69,6 +69,10 @@ export class ApplicationLoader {
           
           // Create the app state with the loaded data and the injected WordSayer
           this.appState = new AppState(randomWord, wordGraph, this.version, this.wordSayer);
+          
+          // In local dev mode, load the review pronunciation state
+          this.loadLocalDevReviewState();
+          
           this.isLoading = false;
         } else {
           // If we couldn't load any words, display an error
@@ -90,6 +94,30 @@ export class ApplicationLoader {
           this.errorMessage = 'Unknown error loading application';
         }
       });
+    }
+  }
+  
+  /**
+   * Load review pronunciation state in local development mode
+   */
+  private async loadLocalDevReviewState(): Promise<void> {
+    // Only load in local dev mode
+    if (this.version !== 'development' || !this.appState) {
+      return;
+    }
+    
+    try {
+      const text = await this.dataFileFetcher.fetch('src/data/local_dev/review-pronunciation-state.json');
+      const reviewState = JSON.parse(text);
+      
+      runInAction(() => {
+        if (this.appState) {
+          this.appState.reviewPronunciationInteraction.setReviewState(reviewState);
+        }
+      });
+    } catch (error) {
+      // Silently ignore errors loading local dev review state
+      console.log('Could not load local dev review state (this is normal if the file doesn\'t exist):', error);
     }
   }
   

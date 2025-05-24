@@ -4,12 +4,13 @@ import { WordGraph } from './WordGraph';
 import { WordInteraction } from './interaction/WordInteraction';
 import { WordSayerInterface } from './WordSayerInterface';
 import { ResetInteraction } from './ResetInteraction';
+import { ReviewPronunciationInteraction } from './ReviewPronunciationInteraction';
 import { MenuManager } from './MenuManager';
 import { Word } from './Word';
 import { ButtonAction } from '../lib/ui/actions';
 
 // Type for the main application pages
-type AppPage = 'wordView' | 'historyView' | 'resetView';
+type AppPage = 'wordView' | 'historyView' | 'resetView' | 'reviewPronunciationView';
 
 /**
  * Main application state that manages the current page and models
@@ -33,6 +34,9 @@ export class AppState {
   // Reset word interaction model
   resetInteraction: ResetInteraction;
 
+  // Review pronunciation interaction model
+  reviewPronunciationInteraction: ReviewPronunciationInteraction;
+
   // Menu state management
   menuManager: MenuManager;
 
@@ -42,6 +46,7 @@ export class AppState {
   // Button actions
   resetAction: ButtonAction;
   sayAction: ButtonAction;
+  reviewPronunciationAction: ButtonAction;
 
   constructor(
     initialWord: string, 
@@ -58,6 +63,12 @@ export class AppState {
     
     // Initialize reset interaction
     this.resetInteraction = new ResetInteraction(this);
+
+    // Initialize review pronunciation interaction
+    this.reviewPronunciationInteraction = new ReviewPronunciationInteraction(
+      this.wordGraph.sortedWords,
+      this.wordSayer
+    );
 
     // Initialize the current word
     const wordNode = this.wordGraph.getNode(initialWord);
@@ -84,6 +95,7 @@ export class AppState {
     // Initialize button actions
     this.resetAction = new ButtonAction(() => this.resetGame(), { tooltip: "Choose a new word" });
     this.sayAction = new ButtonAction(() => this.currentWord.say(), { tooltip: "Say the current word" });
+    this.reviewPronunciationAction = new ButtonAction(() => this.navigateTo('reviewPronunciationView'), { tooltip: "Review pronunciation" });
 
     // Preload the initial word's audio
     this.wordSayer.preload(initialWord);
@@ -212,6 +224,11 @@ export class AppState {
     // If navigating to the reset view, reset the interaction state
     if (page === 'resetView') {
       this.resetInteraction.reset();
+    }
+    
+    // If navigating to the review pronunciation view, reset the interaction state
+    if (page === 'reviewPronunciationView') {
+      this.reviewPronunciationInteraction.reset();
     }
   }
 

@@ -27,6 +27,11 @@ export class Word {
   // Whether this word has been previously visited
   public previouslyVisited: boolean = false;
 
+  // Review pronunciation properties
+  public reviewed: boolean = false;
+  public currentReview: boolean = false;
+  public soundsWrong: boolean = false;
+
   constructor(
     // The word string this represents
     public readonly word: string,
