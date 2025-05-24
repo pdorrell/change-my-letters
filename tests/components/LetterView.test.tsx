@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
 import { LetterView } from '../../src/views/LetterView';
 import { LetterInteraction } from '../../src/models/interaction/LetterInteraction';
 import { Word } from '../../src/models/Word';
@@ -70,8 +70,10 @@ describe('LetterView', () => {
   });
 
   it('handles a letter interaction with an open replace menu', () => {
-    // Create a letter interaction with an open menu
-    letterInteraction.isReplaceMenuOpen = true;
+    // Create a letter interaction with an open menu using act() to properly handle state updates
+    act(() => {
+      letterInteraction.isReplaceMenuOpen = true;
+    });
 
     // Force the letter to have some replace changes for the menu
     if (!letterInteraction.letter.changes || !letterInteraction.letter.changes.replaceChanges) {
@@ -88,8 +90,10 @@ describe('LetterView', () => {
   });
 
   it('selects letter choice when option is clicked', () => {
-    // Open the replace menu
-    letterInteraction.isReplaceMenuOpen = true;
+    // Open the replace menu using act() to properly handle state updates
+    act(() => {
+      letterInteraction.isReplaceMenuOpen = true;
+    });
 
     render(<LetterView letterInteraction={letterInteraction} />);
 
