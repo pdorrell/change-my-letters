@@ -136,6 +136,11 @@ All changes to the application should pass:
 * `npm run typecheck` - Verify TypeScript type correctness
 * `npm run lint` - Check code quality with ESLint
 
+Typescript typechecking is set to `strict`.
+
+The keywords `as` and `any` should not be used unless absolutely necessary, and if they are used
+this should be accompanied by a comment explaining why they have to be used.
+
 
 ## Use Test Doubles not Mocks
 
