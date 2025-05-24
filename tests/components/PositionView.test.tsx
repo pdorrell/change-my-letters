@@ -3,67 +3,43 @@ import { render, fireEvent } from '@testing-library/react';
 import { PositionView } from '../../src/views/PositionView';
 import { Position } from '../../src/models/Position';
 import { WordInteraction } from '../../src/models/interaction/WordInteraction';
+import { PositionInteraction } from '../../src/models/interaction/PositionInteraction';
 import { AppState } from '../../src/models/AppState';
-import { createTestWordGraph, testWordLists } from '../utils/TestWordGraphBuilder';
-import { createTestAppState } from '../utils/TestAppBuilder';
+import { FreeTestWordGetter } from '../utils/FreeTestWordGetter';
+import { WordSayerTestDouble } from '../test_doubles/WordSayerTestDouble';
 
 
 
 describe('PositionView', () => {
   let appState: AppState;
   let currentWord: WordInteraction;
-  let positionInteraction: any;
+  let positionInteraction: PositionInteraction;
   
   beforeEach(() => {
-    // Create AppState with WordSayerTestDouble
-    appState = createTestAppState();
-    appState.previouslyVisitedWords = new Set();
+    // Create a FreeTestWordGetter and populate it with changes
+    const wordGetter = new FreeTestWordGetter();
+    const catWord = wordGetter.getRequiredWord('cat');
+    catWord.populateChanges(wordGetter);
     
-    // Create a mock word interaction
-    currentWord = {
-      value: 'cat',
-      previouslyVisited: false,
-      appState: appState
-    } as any;
+    const wordSayerTestDouble = new WordSayerTestDouble();
     
-    // Create a mock position interaction
-    positionInteraction = {
-      position: {
-        index: 0,
-        canInsert: true,
-        insertOptions: ['b', 'h', 'r'],
-        changes: {
-          insertChanges: [
-            { letter: 'b', result: { word: 'bcat' } },
-            { letter: 'h', result: { word: 'hcat' } },
-            { letter: 'r', result: { word: 'rcat' } }
-          ]
-        }
-      },
-      wordInteraction: currentWord,
-      menuManager: appState.menuManager,
-      isInsertMenuOpen: false,
-      setNewWord: (word: any) => {
-        appState.setNewWord(word);
-      },
-      openInsertMenuAction: {
-        enabled: true,
-        doAction: () => {
-          // No-op for testing - just verify button shows and is clickable
-        }
-      },
-      insertButtonRef: { current: null },
-      insertMenuRef: React.createRef<HTMLDivElement>(),
-      get selectionOfLetterToInsert() {
-        return {
-          options: this.position.changes.insertChanges,
-          onSelect: this.setNewWord
-        };
+    // Create a simple mock AppState for testing
+    appState = {
+      previouslyVisitedWords: new Set(),
+      newWordHandler: (word: any) => { /* mock handler */ },
+      wordSayer: wordSayerTestDouble,
+      menuManager: {
+        activeButtonElement: null,
+        closeMenus: () => {},
+        toggleMenu: () => {}
       }
-    };
+    } as any;
+
+    // Create WordInteraction using the populated Word
+    currentWord = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager);
     
-    // Add the positionInteraction to the currentWord for circular reference
-    currentWord.positionInteractions = [positionInteraction];
+    // Get the first position interaction (before 'c')
+    positionInteraction = currentWord.positionInteractions[0];
   });
 
   it('renders with insert icon when insertion is possible', () => {

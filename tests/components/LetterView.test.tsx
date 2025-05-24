@@ -3,76 +3,43 @@ import { render, fireEvent } from '@testing-library/react';
 import { LetterView } from '../../src/views/LetterView';
 import { Letter } from '../../src/models/Letter';
 import { WordInteraction } from '../../src/models/interaction/WordInteraction';
+import { LetterInteraction } from '../../src/models/interaction/LetterInteraction';
 import { AppState } from '../../src/models/AppState';
-import { createTestWordGraph, testWordLists } from '../utils/TestWordGraphBuilder';
-import { createTestAppState } from '../utils/TestAppBuilder';
+import { FreeTestWordGetter } from '../utils/FreeTestWordGetter';
+import { WordSayerTestDouble } from '../test_doubles/WordSayerTestDouble';
 
 
 
 describe('LetterView', () => {
   let appState: AppState;
   let currentWord: WordInteraction;
-  let letterInteraction: any;
+  let letterInteraction: LetterInteraction;
 
   beforeEach(() => {
-    // Create AppState with WordSayerTestDouble
-    appState = createTestAppState();
-    appState.previouslyVisitedWords = new Set();
-
-    // Create a mock word interaction
-    currentWord = {
-      value: 'cat',
-      previouslyVisited: false,
-      appState: appState
+    // Create a FreeTestWordGetter and populate it with changes
+    const wordGetter = new FreeTestWordGetter();
+    const catWord = wordGetter.getRequiredWord('cat');
+    catWord.populateChanges(wordGetter);
+    
+    const wordSayerTestDouble = new WordSayerTestDouble();
+    
+    // Create a simple mock AppState for testing
+    appState = {
+      previouslyVisitedWords: new Set(),
+      newWordHandler: (word: any) => { /* mock handler */ },
+      wordSayer: wordSayerTestDouble,
+      menuManager: {
+        activeButtonElement: null,
+        closeMenus: () => {},
+        toggleMenu: () => {}
+      }
     } as any;
 
-    // Create a mock letter interaction for the first letter 'c'
-    letterInteraction = {
-      letter: {
-        value: 'c',
-        position: 0,
-        canDelete: true,
-        canReplace: true,
-        replacements: ['b', 'h', 'r'],
-        changes: {
-          deleteChange: { result: { word: 'at' } },
-          replaceChanges: [
-            { letter: 'b', result: { word: 'bat' } },
-            { letter: 'h', result: { word: 'hat' } },
-            { letter: 'r', result: { word: 'rat' } }
-          ]
-        }
-      },
-      wordInteraction: currentWord,
-      menuManager: appState.menuManager,
-      isReplaceMenuOpen: false,
-      setNewWord: (word: any) => {
-        appState.setNewWord(word);
-      },
-      deleteAction: {
-        enabled: true,
-        doAction: () => {
-          // No-op for testing - just verify button shows and is clickable
-        }
-      },
-      openReplaceMenuAction: {
-        enabled: true,
-        doAction: () => {
-          // No-op for testing - just verify button shows and is clickable
-        }
-      },
-      replaceButtonRef: { current: null },
-      replaceMenuRef: React.createRef<HTMLDivElement>(),
-      get selectionOfReplacementLetter() {
-        return {
-          options: this.letter.changes.replaceChanges,
-          onSelect: this.setNewWord
-        };
-      }
-    };
+    // Create WordInteraction using the populated Word
+    currentWord = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager);
 
-    // Add the letterInteraction to the currentWord for circular reference
-    currentWord.letterInteractions = [letterInteraction];
+    // Get the first letter interaction ('c')
+    letterInteraction = currentWord.letterInteractions[0];
   });
 
   it('renders a letter with its value', () => {

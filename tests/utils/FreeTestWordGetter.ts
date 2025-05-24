@@ -44,10 +44,10 @@ export class FreeTestWordGetter implements WordGetter {
   getRequiredWord(word: string): Word {
     let wordObj = this.words.get(word);
     if (!wordObj) {
-      // Create a Word with default values for testing
+      // Create a Word with default values for testing that allow some operations
       const deletes = new Array(word.length).fill(true);  // Allow deletion of all letters
-      const inserts = new Array(word.length + 1).fill(''); // Allow insertion at all positions (empty means no specific letters)
-      const replaces = new Array(word.length).fill('');    // Allow replacement of all letters (empty means no specific letters)
+      const inserts = new Array(word.length + 1).fill('abc'); // Allow insertion of a, b, c at all positions
+      const replaces = new Array(word.length).fill('abc');    // Allow replacement with a, b, c for all letters
       
       wordObj = new Word(word, deletes, inserts, replaces);
       this.words.set(word, wordObj);
