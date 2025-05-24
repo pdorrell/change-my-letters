@@ -14,7 +14,7 @@ describe('Interaction Classes Integration', () => {
   let wordInteraction: WordInteraction;
 
   beforeEach(() => {
-    // Create a real AppState with test data
+    // Create AppState with test data
     appState = createTestAppState();
 
     // Use the WordInteraction that's already created by AppState

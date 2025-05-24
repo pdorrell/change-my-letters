@@ -16,7 +16,7 @@ describe('ApplicationLoader', () => {
     wordSayer = new WordSayerTestDouble();
   });
   
-  it('should load the application with real test data files', async () => {
+  it('should load the application with test data files', async () => {
     const loader = new ApplicationLoader(wordSayer, dataFileFetcher);
     
     // Wait for the loading to complete
@@ -28,7 +28,7 @@ describe('ApplicationLoader', () => {
     expect(loader.hasError).toBe(false);
     expect(loader.errorMessage).toBe('');
     
-    // Verify that the data was actually loaded from test files
+    // Verify that the data was loaded from test files
     expect(loader.appState?.wordGraph).toBeDefined();
     expect(loader.appState?.wordGraph.words.size).toBeGreaterThan(0);
     

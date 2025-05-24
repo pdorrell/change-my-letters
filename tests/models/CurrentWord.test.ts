@@ -10,7 +10,7 @@ describe('WordInteraction', () => {
   let menuManager: MenuManager;
   
   beforeEach(() => {
-    // Create a real AppState with test data
+    // Create AppState with test data
     appState = createTestAppState();
     menuManager = appState.menuManager;
   });

@@ -128,7 +128,7 @@ describe('LetterView', () => {
 
     render(<LetterView letterInteraction={letterInteraction} />);
 
-    // Use the menuRef to access the real LetterChoiceMenu
+    // Use the menuRef to access the LetterChoiceMenu
     const menu = letterInteraction.replaceMenuRef.current;
     expect(menu).toBeInTheDocument();
     expect(menu).toHaveClass('letter-choice-menu');
@@ -140,7 +140,7 @@ describe('LetterView', () => {
 
     render(<LetterView letterInteraction={letterInteraction} />);
 
-    // Use the menuRef to access the real LetterChoiceMenu
+    // Use the menuRef to access the LetterChoiceMenu
     const menu = letterInteraction.replaceMenuRef.current;
     expect(menu).toBeInTheDocument();
 

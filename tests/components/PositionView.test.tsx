@@ -92,7 +92,7 @@ describe('PositionView', () => {
     
     render(<PositionView positionInteraction={positionInteraction} />);
     
-    // Use the menuRef to access the real LetterChoiceMenu
+    // Use the menuRef to access the LetterChoiceMenu
     const menu = positionInteraction.insertMenuRef.current;
     expect(menu).toBeInTheDocument();
     expect(menu).toHaveClass('letter-choice-menu');
@@ -104,7 +104,7 @@ describe('PositionView', () => {
     
     render(<PositionView positionInteraction={positionInteraction} />);
     
-    // Use the menuRef to access the real LetterChoiceMenu
+    // Use the menuRef to access the LetterChoiceMenu
     const menu = positionInteraction.insertMenuRef.current;
     expect(menu).toBeInTheDocument();
     

@@ -36,7 +36,7 @@ describe('WordLoader', () => {
     }
   };
 
-  // Set up a test double for the data file fetcher using real test files
+  // Set up a test double for the data file fetcher using test files
   const routeMappings: [string, string][] = [
     ['/data/wordlists/default-words-graph.json', '/tests/data/word_loader_test/wordlists/default-words-graph.json'],
     ['/data/wordlists/default-words.txt', '/tests/data/word_loader_test/wordlists/default-words.txt'],

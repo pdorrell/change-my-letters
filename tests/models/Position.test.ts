@@ -11,13 +11,13 @@ describe('Position', () => {
     // Create AppState with WordSayerTestDouble
     appState = createTestAppState();
     
-    // Create a real WordInteraction using actual Word from WordGraph
+    // Create WordInteraction using Word from WordGraph
     const catWord = appState.wordGraph.getRequiredWord('cat');
     currentWord = new WordInteraction(catWord, appState, appState.menuManager);
   });
 
   it('should initialize with the correct properties', () => {
-    // Use the position from the real word
+    // Use the position from the word
     const position = currentWord.positionInteractions[1].position;
     
     expect(position.index).toBe(1);
