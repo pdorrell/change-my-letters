@@ -7,7 +7,6 @@ import { AppState } from '../../src/models/AppState';
 import { createTestWordGraph, testWordLists } from '../utils/TestWordGraphBuilder';
 import { createTestAppState } from '../utils/TestAppBuilder';
 
-// No mocking needed - using real LetterChoiceMenu component
 
 
 describe('PositionView', () => {
