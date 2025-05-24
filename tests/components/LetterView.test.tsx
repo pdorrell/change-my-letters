@@ -1,18 +1,14 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { LetterView } from '../../src/views/LetterView';
-import { Letter } from '../../src/models/Letter';
-import { WordInteraction } from '../../src/models/interaction/WordInteraction';
 import { LetterInteraction } from '../../src/models/interaction/LetterInteraction';
-import { AppState } from '../../src/models/AppState';
+import { Word } from '../../src/models/Word';
+import { MenuManager } from '../../src/models/MenuManager';
 import { FreeTestWordGetter } from '../utils/FreeTestWordGetter';
-import { WordSayerTestDouble } from '../test_doubles/WordSayerTestDouble';
 
 
 
 describe('LetterView', () => {
-  let appState: AppState;
-  let currentWord: WordInteraction;
   let letterInteraction: LetterInteraction;
 
   beforeEach(() => {
@@ -21,25 +17,19 @@ describe('LetterView', () => {
     const catWord = wordGetter.getRequiredWord('cat');
     catWord.populateChanges(wordGetter);
     
-    const wordSayerTestDouble = new WordSayerTestDouble();
-    
-    // Create a simple mock AppState for testing
-    appState = {
-      previouslyVisitedWords: new Set(),
-      newWordHandler: (word: any) => { /* mock handler */ },
-      wordSayer: wordSayerTestDouble,
-      menuManager: {
-        activeButtonElement: null,
-        closeMenus: () => {},
-        toggleMenu: () => {}
-      }
-    } as any;
+    // Create a simple mock MenuManager for testing
+    const mockMenuManager: Partial<MenuManager> = {
+      activeButtonElement: null,
+      closeMenus: () => {},
+      toggleMenu: () => {}
+    };
 
-    // Create WordInteraction using the populated Word
-    currentWord = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager);
+    // Mock newWordHandler function
+    const newWordHandler = (word: Word) => { /* mock handler */ };
 
-    // Get the first letter interaction ('c')
-    letterInteraction = currentWord.letterInteractions[0];
+    // Create LetterInteraction directly with just the required parameters
+    const firstLetter = catWord.letters[0];
+    letterInteraction = new LetterInteraction(firstLetter, newWordHandler, mockMenuManager as MenuManager);
   });
 
   it('renders a letter with its value', () => {
