@@ -4,6 +4,7 @@ import { WordInteraction } from '../models/interaction/WordInteraction';
 import { LetterView, LetterPlaceholder } from './LetterView';
 import { PositionView, PositionPlaceholder } from './PositionView';
 import { MenuManager } from '../models/MenuManager';
+import { MenuManagerInterface } from '../models/MenuManagerInterface';
 import {
   useFloating,
   autoUpdate,
@@ -107,7 +108,7 @@ import { WordSelectionByLetter } from '../models/WordSelectionByLetter';
 
 interface LetterChoiceMenuProps {
   wordSelectionByLetter: WordSelectionByLetter;
-  menuManager: MenuManager;
+  menuManager: MenuManagerInterface;
   menuRef?: React.RefObject<HTMLDivElement>;
 }
 

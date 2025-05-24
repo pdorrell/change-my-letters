@@ -3,8 +3,8 @@ import { render, fireEvent } from '@testing-library/react';
 import { LetterView } from '../../src/views/LetterView';
 import { LetterInteraction } from '../../src/models/interaction/LetterInteraction';
 import { Word } from '../../src/models/Word';
-import { MenuManager } from '../../src/models/MenuManager';
 import { FreeTestWordGetter } from '../utils/FreeTestWordGetter';
+import { MenuManagerTestDouble } from '../test_doubles/MenuManagerTestDouble';
 
 
 
@@ -17,19 +17,15 @@ describe('LetterView', () => {
     const catWord = wordGetter.getRequiredWord('cat');
     catWord.populateChanges(wordGetter);
     
-    // Create a simple mock MenuManager for testing
-    const mockMenuManager: Partial<MenuManager> = {
-      activeButtonElement: null,
-      closeMenus: () => {},
-      toggleMenu: () => {}
-    };
+    // Create a MenuManager test double
+    const menuManager = new MenuManagerTestDouble();
 
     // Mock newWordHandler function
     const newWordHandler = (word: Word) => { /* mock handler */ };
 
     // Create LetterInteraction directly with just the required parameters
     const firstLetter = catWord.letters[0];
-    letterInteraction = new LetterInteraction(firstLetter, newWordHandler, mockMenuManager as MenuManager);
+    letterInteraction = new LetterInteraction(firstLetter, newWordHandler, menuManager);
   });
 
   it('renders a letter with its value', () => {

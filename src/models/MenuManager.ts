@@ -1,10 +1,11 @@
 import { makeAutoObservable } from 'mobx';
 import React from 'react';
+import { MenuManagerInterface } from './MenuManagerInterface';
 
 /**
  * MenuManager - Handles menu state and control across the application
  */
-export class MenuManager {
+export class MenuManager implements MenuManagerInterface {
   // For floating menu positioning
   activeButtonElement: HTMLElement | null = null;
 

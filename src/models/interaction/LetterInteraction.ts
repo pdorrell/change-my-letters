@@ -1,7 +1,7 @@
 import { makeAutoObservable, action, computed } from 'mobx';
 import React from 'react';
 import { Letter } from '../Letter';
-import { MenuManager } from '../MenuManager';
+import { MenuManagerInterface } from '../MenuManagerInterface';
 import { Word } from '../Word';
 import { ButtonAction } from '../../lib/ui/actions';
 import { WordSelectionByLetter } from '../WordSelectionByLetter';
@@ -27,7 +27,7 @@ export class LetterInteraction {
     public readonly newWordHandler: (word: Word) => void,
     
     // Reference to the menu manager
-    public readonly menuManager: MenuManager
+    public readonly menuManager: MenuManagerInterface
   ) {
     makeAutoObservable(this, {
       setNewWord: action,
