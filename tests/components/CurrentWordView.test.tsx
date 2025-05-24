@@ -29,30 +29,8 @@ jest.mock('../../src/views/PositionView', () => ({
   )
 }));
 
-// Mock the LetterChoiceMenu inside CurrentWordView
-jest.mock('../../src/views/CurrentWordView', () => {
-  // Preserve the original export
-  const original = jest.requireActual('../../src/views/CurrentWordView');
-
-  // Mock only the LetterChoiceMenu
-  return {
-    ...original,
-    CurrentWordView: original.CurrentWordView,
-    LetterChoiceMenu: ({ options, previouslyVisited, wordInteraction }: { options: any[], previouslyVisited: string[], wordInteraction?: any }) => (
-      <div data-testid="letter-choice-menu">
-        {options.map((option, index) => (
-          <div 
-            key={index} 
-            data-testid="letter-choice-option" 
-            className={`letter-choice-option ${previouslyVisited.includes(option.result?.word) ? 'previously-visited' : ''}`}
-          >
-            {option.letter}
-          </div>
-        ))}
-      </div>
-    )
-  };
-});
+// LetterChoiceMenu is not mocked - using real component
+// Only child view components are mocked for layout testing
 
 
 describe('CurrentWordView', () => {

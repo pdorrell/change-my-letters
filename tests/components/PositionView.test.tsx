@@ -7,18 +7,7 @@ import { AppState } from '../../src/models/AppState';
 import { createTestWordGraph, testWordLists } from '../utils/TestWordGraphBuilder';
 import { createTestAppState } from '../utils/TestAppBuilder';
 
-// Mock the LetterChoiceMenu component only (not the model classes)
-jest.mock('../../src/views/CurrentWordView', () => ({
-  LetterChoiceMenu: ({ wordSelectionByLetter }: { wordSelectionByLetter: any }) => (
-    <div data-testid="letter-choice-menu">
-      {wordSelectionByLetter.options.map((option: any, index: number) => (
-        <div key={index} data-testid="letter-choice-option" onClick={() => wordSelectionByLetter.onSelect(option.result)}>
-          {option.letter}
-        </div>
-      ))}
-    </div>
-  ),
-}));
+// No mocking needed - using real LetterChoiceMenu component
 
 
 describe('PositionView', () => {
@@ -65,6 +54,7 @@ describe('PositionView', () => {
         }
       },
       insertButtonRef: { current: null },
+      insertMenuRef: React.createRef<HTMLDivElement>(),
       get selectionOfLetterToInsert() {
         return {
           options: this.position.changes.insertChanges,
@@ -101,26 +91,33 @@ describe('PositionView', () => {
     // Set the insert menu to open
     positionInteraction.isInsertMenuOpen = true;
     
-    const { getByTestId } = render(<PositionView positionInteraction={positionInteraction} />);
+    render(<PositionView positionInteraction={positionInteraction} />);
     
-    expect(getByTestId('letter-choice-menu')).toBeInTheDocument();
+    // Use the menuRef to access the real LetterChoiceMenu
+    const menu = positionInteraction.insertMenuRef.current;
+    expect(menu).toBeInTheDocument();
+    expect(menu).toHaveClass('letter-choice-menu');
   });
   
   it('displays letter choices when insert menu is open', () => {
     // Set the insert menu to open
     positionInteraction.isInsertMenuOpen = true;
     
-    const { getAllByTestId } = render(<PositionView positionInteraction={positionInteraction} />);
+    render(<PositionView positionInteraction={positionInteraction} />);
+    
+    // Use the menuRef to access the real LetterChoiceMenu
+    const menu = positionInteraction.insertMenuRef.current;
+    expect(menu).toBeInTheDocument();
     
     // Get the letter choice options
-    const letterOptions = getAllByTestId('letter-choice-option');
+    const letterOptions = menu?.querySelectorAll('.letter-choice-option');
     
     // Should be at least one letter option
-    expect(letterOptions.length).toBeGreaterThan(0);
+    expect(letterOptions?.length).toBeGreaterThan(0);
     
     // Just verify the menu is displayed properly - clicking leads to complex model interactions
     // that are better tested at the integration level
-    expect(letterOptions[0]).toBeInTheDocument();
+    expect(letterOptions?.[0]).toBeInTheDocument();
   });
   
   it('handles positions that cannot insert letters', () => {
@@ -144,6 +141,7 @@ describe('PositionView', () => {
         doAction: () => {}
       },
       insertButtonRef: { current: null },
+      insertMenuRef: React.createRef<HTMLDivElement>(),
       get selectionOfLetterToInsert() {
         return {
           options: [],
