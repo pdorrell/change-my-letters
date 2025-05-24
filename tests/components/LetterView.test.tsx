@@ -7,18 +7,7 @@ import { AppState } from '../../src/models/AppState';
 import { createTestWordGraph, testWordLists } from '../utils/TestWordGraphBuilder';
 import { createTestAppState } from '../utils/TestAppBuilder';
 
-// Mock the LetterChoiceMenu component only (not the model classes)
-jest.mock('../../src/views/CurrentWordView', () => ({
-  LetterChoiceMenu: ({ wordSelectionByLetter }: { wordSelectionByLetter: any }) => (
-    <div data-testid="letter-choice-menu">
-      {wordSelectionByLetter.options.map((option: any, index: number) => (
-        <div key={index} data-testid="letter-choice-option" onClick={() => wordSelectionByLetter.onSelect(option.result)}>
-          {option.letter}
-        </div>
-      ))}
-    </div>
-  ),
-}));
+// No mocking needed - using real LetterChoiceMenu component
 
 
 describe('LetterView', () => {
@@ -74,6 +63,7 @@ describe('LetterView', () => {
         }
       },
       replaceButtonRef: { current: null },
+      replaceMenuRef: React.createRef<HTMLDivElement>(),
       get selectionOfReplacementLetter() {
         return {
           options: this.letter.changes.replaceChanges,
@@ -137,26 +127,32 @@ describe('LetterView', () => {
       throw new Error('Test Letter does not have expected replace changes');
     }
 
-    const { getByTestId } = render(<LetterView letterInteraction={letterInteraction} />);
+    render(<LetterView letterInteraction={letterInteraction} />);
 
-    // The letter choice menu should be rendered
-    expect(getByTestId('letter-choice-menu')).toBeInTheDocument();
+    // Use the menuRef to access the real LetterChoiceMenu
+    const menu = letterInteraction.replaceMenuRef.current;
+    expect(menu).toBeInTheDocument();
+    expect(menu).toHaveClass('letter-choice-menu');
   });
 
   it('selects letter choice when option is clicked', () => {
     // Open the replace menu
     letterInteraction.isReplaceMenuOpen = true;
 
-    const { getAllByTestId } = render(<LetterView letterInteraction={letterInteraction} />);
+    render(<LetterView letterInteraction={letterInteraction} />);
+
+    // Use the menuRef to access the real LetterChoiceMenu
+    const menu = letterInteraction.replaceMenuRef.current;
+    expect(menu).toBeInTheDocument();
 
     // Get the letter choice options
-    const letterOptions = getAllByTestId('letter-choice-option');
+    const letterOptions = menu?.querySelectorAll('.letter-choice-option');
 
     // Should be at least one letter option (like 'b' to change 'cat' to 'bat')
-    expect(letterOptions.length).toBeGreaterThan(0);
+    expect(letterOptions?.length).toBeGreaterThan(0);
 
     // Just verify the menu is displayed properly - clicking it leads to complex model interactions
     // that are better tested at the integration level
-    expect(letterOptions[0]).toBeInTheDocument();
+    expect(letterOptions?.[0]).toBeInTheDocument();
   });
 });
