@@ -3,6 +3,7 @@ import { AppState } from './AppState';
 import { WordLoader } from './WordLoader';
 import { WordSayerInterface } from './WordSayerInterface';
 import { DataFileFetcherInterface } from './DataFileFetcherInterface';
+import localDevReviewState from '../data/local_dev/review-pronunciation-state.json';
 
 /**
  * ApplicationLoader handles asynchronous loading of application data
@@ -100,24 +101,23 @@ export class ApplicationLoader {
   /**
    * Load review pronunciation state in local development mode
    */
-  private async loadLocalDevReviewState(): Promise<void> {
-    // Only load in local dev mode
-    if (this.version !== 'development' || !this.appState) {
+  private loadLocalDevReviewState(): void {
+    // Only load in local dev mode (version ends with '+' in development)
+    if (!this.version.endsWith('+') || !this.appState) {
       return;
     }
     
     try {
-      const text = await this.dataFileFetcher.fetch('src/data/local_dev/review-pronunciation-state.json');
-      const reviewState = JSON.parse(text);
-      
+      // Import the local dev review state directly
       runInAction(() => {
         if (this.appState) {
-          this.appState.reviewPronunciationInteraction.setReviewState(reviewState);
+          this.appState.reviewPronunciationInteraction.setReviewState(localDevReviewState);
         }
       });
+      console.log('Loaded local dev review state with', localDevReviewState.reviewed?.length || 0, 'reviewed words and', localDevReviewState.soundsWrong?.length || 0, 'wrong words');
     } catch (error) {
       // Silently ignore errors loading local dev review state
-      console.log('Could not load local dev review state (this is normal if the file doesn\'t exist):', error);
+      console.log('Could not load local dev review state:', error);
     }
   }
   
