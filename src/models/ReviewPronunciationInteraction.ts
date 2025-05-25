@@ -1,4 +1,4 @@
-import { makeAutoObservable, computed } from 'mobx';
+import { makeAutoObservable, computed, action } from 'mobx';
 import { Word } from './Word';
 import { WordSayerInterface } from './WordSayerInterface';
 import { ReviewStateFilterOption } from './ReviewStateFilterOption';
@@ -274,5 +274,21 @@ export class ReviewPronunciationInteraction {
     a.download = 'words-that-sound-wrong.txt';
     a.click();
     URL.revokeObjectURL(url);
+  }
+
+  // Action methods for form controls
+  @action
+  setFilter(value: string): void {
+    this.filter = value;
+  }
+
+  @action
+  setMatchStartOnly(value: boolean): void {
+    this.matchStartOnly = value;
+  }
+
+  @action
+  setReviewStateFilter(filter: ReviewStateFilterOption): void {
+    this.reviewStateFilter = filter;
   }
 }

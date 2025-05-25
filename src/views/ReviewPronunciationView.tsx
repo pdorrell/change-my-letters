@@ -109,7 +109,7 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
               id="filter-input"
               type="text"
               value={reviewInteraction.filter}
-              onChange={(e) => reviewInteraction.filter = e.target.value}
+              onChange={(e) => reviewInteraction.setFilter(e.target.value)}
               placeholder="Enter filter text..."
             />
           </div>
@@ -119,7 +119,7 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
               <input
                 type="checkbox"
                 checked={reviewInteraction.matchStartOnly}
-                onChange={(e) => reviewInteraction.matchStartOnly = e.target.checked}
+                onChange={(e) => reviewInteraction.setMatchStartOnly(e.target.checked)}
               />
               Match start only
             </label>
@@ -132,7 +132,7 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
               value={reviewInteraction.reviewStateFilterOptions.indexOf(reviewInteraction.reviewStateFilter)}
               onChange={(e) => {
                 const index = parseInt(e.target.value);
-                reviewInteraction.reviewStateFilter = reviewInteraction.reviewStateFilterOptions[index];
+                reviewInteraction.setReviewStateFilter(reviewInteraction.reviewStateFilterOptions[index]);
               }}
             >
               {reviewInteraction.reviewStateFilterOptions.map((option, index) => (
