@@ -353,7 +353,142 @@ describe('ReviewPronunciationInteraction', () => {
       expect(reviewInteraction.matchStartOnly).toBe(true);
       expect(reviewInteraction.reviewStateFilter).toBe(ReviewStateFilterOption.ALL);
       expect(reviewInteraction.currentReviewWord).toBeNull();
+      expect(reviewInteraction.currentReviewWordIndex).toBeNull();
       expect(testWords[0].currentReview).toBe(false);
+    });
+  });
+
+  describe('keyboard navigation', () => {
+    it('should initialize with null currentReviewWordIndex', () => {
+      expect(reviewInteraction.currentReviewWordIndex).toBeNull();
+    });
+
+    it('should update currentReviewWordIndex when reviewWord is called', () => {
+      reviewInteraction.reviewWord('dog'); // dog is at index 1 in testWords
+      
+      expect(reviewInteraction.currentReviewWordIndex).toBe(1);
+      expect(reviewInteraction.currentReviewWord).toBe(testWords[1]);
+    });
+
+    describe('gotoNextWord', () => {
+      it('should start with first word when no current word', () => {
+        expect(reviewInteraction.currentReviewWord).toBeNull();
+        
+        reviewInteraction.gotoNextWord();
+        
+        expect(reviewInteraction.currentReviewWord).toBe(testWords[0]); // 'cat'
+        expect(reviewInteraction.currentReviewWordIndex).toBe(0);
+        expect(wordSayer.playedWords).toContain('cat');
+      });
+
+      it('should move to next word in sequence', () => {
+        reviewInteraction.reviewWord('cat'); // Start at index 0
+        wordSayer.playedWords = []; // Clear previous calls
+        
+        reviewInteraction.gotoNextWord();
+        
+        expect(reviewInteraction.currentReviewWord).toBe(testWords[1]); // 'dog'
+        expect(reviewInteraction.currentReviewWordIndex).toBe(1);
+        expect(wordSayer.playedWords).toContain('dog');
+      });
+
+      it('should repeat current word when at end of list', () => {
+        reviewInteraction.reviewWord('bird'); // Last word (index 3)
+        wordSayer.playedWords = []; // Clear previous calls
+        
+        reviewInteraction.gotoNextWord();
+        
+        expect(reviewInteraction.currentReviewWord).toBe(testWords[3]); // Still 'bird'
+        expect(reviewInteraction.currentReviewWordIndex).toBe(3);
+        expect(wordSayer.playedWords).toContain('bird');
+      });
+
+      it('should handle empty filtered list gracefully', () => {
+        reviewInteraction.filter = 'nonexistent';
+        
+        reviewInteraction.gotoNextWord();
+        
+        expect(reviewInteraction.currentReviewWord).toBeNull();
+        expect(reviewInteraction.currentReviewWordIndex).toBeNull();
+      });
+    });
+
+    describe('gotoPreviousWord', () => {
+      it('should start with last word when no current word', () => {
+        expect(reviewInteraction.currentReviewWord).toBeNull();
+        
+        reviewInteraction.gotoPreviousWord();
+        
+        expect(reviewInteraction.currentReviewWord).toBe(testWords[3]); // 'bird'
+        expect(reviewInteraction.currentReviewWordIndex).toBe(3);
+        expect(wordSayer.playedWords).toContain('bird');
+      });
+
+      it('should move to previous word in sequence', () => {
+        reviewInteraction.reviewWord('dog'); // Start at index 1
+        wordSayer.playedWords = []; // Clear previous calls
+        
+        reviewInteraction.gotoPreviousWord();
+        
+        expect(reviewInteraction.currentReviewWord).toBe(testWords[0]); // 'cat'
+        expect(reviewInteraction.currentReviewWordIndex).toBe(0);
+        expect(wordSayer.playedWords).toContain('cat');
+      });
+
+      it('should repeat current word when at start of list', () => {
+        reviewInteraction.reviewWord('cat'); // First word (index 0)
+        wordSayer.playedWords = []; // Clear previous calls
+        
+        reviewInteraction.gotoPreviousWord();
+        
+        expect(reviewInteraction.currentReviewWord).toBe(testWords[0]); // Still 'cat'
+        expect(reviewInteraction.currentReviewWordIndex).toBe(0);
+        expect(wordSayer.playedWords).toContain('cat');
+      });
+
+      it('should handle empty filtered list gracefully', () => {
+        reviewInteraction.filter = 'nonexistent';
+        
+        reviewInteraction.gotoPreviousWord();
+        
+        expect(reviewInteraction.currentReviewWord).toBeNull();
+        expect(reviewInteraction.currentReviewWordIndex).toBeNull();
+      });
+    });
+
+    describe('navigation with filtering', () => {
+      it('should update index when filter changes', () => {
+        // Start with 'dog' selected (index 1 in full list)
+        reviewInteraction.reviewWord('dog');
+        expect(reviewInteraction.currentReviewWordIndex).toBe(1);
+        
+        // Filter to only words starting with 'd'
+        reviewInteraction.setFilter('d');
+        
+        // Now 'dog' should be at index 0 in filtered list
+        expect(reviewInteraction.currentReviewWordIndex).toBe(0);
+        
+        // Test navigation works with filter
+        reviewInteraction.gotoNextWord();
+        expect(reviewInteraction.currentReviewWord?.word).toBe('dog'); // Should repeat since it's the only 'd' word
+      });
+
+      it('should handle word disappearing from filter', () => {
+        // Start with 'cat' selected
+        reviewInteraction.reviewWord('cat');
+        expect(reviewInteraction.currentReviewWordIndex).toBe(0);
+        
+        // Filter to only words starting with 'd' (cat disappears)
+        reviewInteraction.setFilter('d');
+        
+        // Index should be null since 'cat' is not in filtered list
+        expect(reviewInteraction.currentReviewWordIndex).toBeNull();
+        expect(reviewInteraction.currentReviewWord?.word).toBe('cat'); // Word is still current
+        
+        // Navigation should work from filtered list
+        reviewInteraction.gotoNextWord();
+        expect(reviewInteraction.currentReviewWord?.word).toBe('dog');
+      });
     });
   });
 });

@@ -8,6 +8,25 @@ interface ReviewPronunciationViewProps {
 }
 
 export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = observer(({ reviewInteraction }) => {
+  // Add keyboard event listener for arrow key navigation
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        reviewInteraction.gotoNextWord();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        reviewInteraction.gotoPreviousWord();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [reviewInteraction]);
+
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
   };
@@ -147,7 +166,12 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
 
       {/* Filtered Words */}
       <div className="filtered-words">
-        <h3>Words ({reviewInteraction.filteredWords.length})</h3>
+        <div className="words-header">
+          <h3>Words ({reviewInteraction.filteredWords.length})</h3>
+          <div className="keyboard-shortcuts">
+            <span className="shortcut-hint">Use ← → arrow keys to navigate</span>
+          </div>
+        </div>
         
         <div className="words-grid">
           {reviewInteraction.filteredWords.map(word => {
