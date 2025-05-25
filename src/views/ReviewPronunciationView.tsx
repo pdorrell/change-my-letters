@@ -8,7 +8,7 @@ interface ReviewPronunciationViewProps {
 }
 
 export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = observer(({ reviewInteraction }) => {
-  // Add keyboard event listener for arrow key navigation
+  // Add keyboard event listener for arrow key navigation and space bar toggle
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight') {
@@ -17,6 +17,13 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
       } else if (e.key === 'ArrowLeft') {
         e.preventDefault();
         reviewInteraction.gotoPreviousWord();
+      } else if (e.key === ' ' && reviewInteraction.currentReviewWord) {
+        e.preventDefault();
+        if (reviewInteraction.currentReviewWord.soundsWrong) {
+          reviewInteraction.markOK(reviewInteraction.currentReviewWord.word);
+        } else {
+          reviewInteraction.markSoundsWrong(reviewInteraction.currentReviewWord.word);
+        }
       }
     };
 
@@ -65,7 +72,6 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
           <ActionButton action={reviewInteraction.loadStateAction}>
             + Load State
           </ActionButton>
-          <span className="drop-hint">(or drag & drop)</span>
         </div>
         
         <ActionButton action={reviewInteraction.saveStateAction}>
@@ -91,42 +97,33 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
 
       {/* Current Word Panel - always visible */}
       <div className="current-word-panel">
-        {reviewInteraction.currentReviewWord ? (
-          <div>
-            <h3>Current Word</h3>
-          <div className="current-review-word">
-            <span 
-              className={`word-span ${
-                reviewInteraction.currentReviewWord.soundsWrong ? 'wrong' : 'ok'
-              } current-review`}
-            >
-              {reviewInteraction.currentReviewWord.word}
-            </span>
+        <div className="current-review-word">
+          <span 
+            className={`word-span ${
+              reviewInteraction.currentReviewWord 
+                ? (reviewInteraction.currentReviewWord.soundsWrong ? 'wrong' : 'ok') + ' current-review'
+                : 'no-word'
+            }`}
+          >
+            {reviewInteraction.currentReviewWord ? reviewInteraction.currentReviewWord.word : '\u00A0'}
+          </span>
+          
+          <div className="review-buttons">
+            <ActionButton action={reviewInteraction.markSoundsWrongAction}>
+              Sounds Wrong
+            </ActionButton>
             
-            <div className="review-buttons">
-              <ActionButton action={reviewInteraction.markSoundsWrongAction}>
-                Sounds Wrong
-              </ActionButton>
-              
-              <ActionButton action={reviewInteraction.markOKAction}>
-                Sounds OK
-              </ActionButton>
-            </div>
+            <ActionButton action={reviewInteraction.markOKAction}>
+              Sounds OK
+            </ActionButton>
           </div>
-          </div>
-        ) : (
-          <div>
-            <h3>Current Word</h3>
-            <span className="no-word">No word selected</span>
-          </div>
-        )}
+        </div>
       </div>
 
       <div className="filter-panel">
         
         <div className="filter-controls">
           <div className="filter-text">
-            <label htmlFor="filter-input">Filter text:</label>
             <input
               id="filter-input"
               type="text"
@@ -172,7 +169,7 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
         <div className="words-header">
           <span className="words-count">Words: {reviewInteraction.filteredWords.length}</span>
           <div className="keyboard-shortcuts">
-            <span className="shortcut-hint">Use ← → arrow keys to navigate</span>
+            <span className="shortcut-hint">Use ← → arrow keys to navigate, space bar to toggle sounds wrong</span>
           </div>
         </div>
         
