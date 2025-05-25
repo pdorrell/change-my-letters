@@ -105,6 +105,7 @@ export class ReviewPronunciationInteraction {
   }
 
   setReviewState(jsonData: any): void {
+    this.stopAutoplay();
     const data = jsonData as ReviewState;
 
     // Reset all words first
@@ -156,6 +157,7 @@ export class ReviewPronunciationInteraction {
   }
 
   resetAllToUnreviewed(): void {
+    this.stopAutoplay();
     // Clear current review word
     if (this.currentReviewWord) {
       this.currentReviewWord.currentReview = false;
@@ -171,6 +173,7 @@ export class ReviewPronunciationInteraction {
   }
 
   resetAllToOK(): void {
+    this.stopAutoplay();
     // Clear current review word
     if (this.currentReviewWord) {
       this.currentReviewWord.currentReview = false;
@@ -186,6 +189,7 @@ export class ReviewPronunciationInteraction {
   }
 
   reviewWrongWords(): void {
+    this.stopAutoplay();
     for (const word of this.sortedWords) {
       word.reviewed = !word.soundsWrong;
     }
@@ -198,6 +202,7 @@ export class ReviewPronunciationInteraction {
   }
 
   markOK(wordStr: string): void {
+    this.stopAutoplay();
     const word = this.wordsMap.get(wordStr);
     if (word) {
       word.soundsWrong = false;
@@ -206,6 +211,7 @@ export class ReviewPronunciationInteraction {
   }
 
   markSoundsWrong(wordStr: string): void {
+    this.stopAutoplay();
     const word = this.wordsMap.get(wordStr);
     if (word) {
       word.soundsWrong = true;
@@ -214,6 +220,7 @@ export class ReviewPronunciationInteraction {
   }
 
   reviewWord(wordStr: string): void {
+    this.stopAutoplay();
     const word = this.wordsMap.get(wordStr);
     if (!word) return;
 
@@ -248,6 +255,7 @@ export class ReviewPronunciationInteraction {
   }
 
   private triggerFileUpload(): void {
+    this.stopAutoplay();
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.json';
@@ -273,6 +281,7 @@ export class ReviewPronunciationInteraction {
   }
 
   private saveState(): void {
+    this.stopAutoplay();
     const state = this.getReviewState();
     const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
@@ -284,6 +293,7 @@ export class ReviewPronunciationInteraction {
   }
 
   private downloadWrongWords(): void {
+    this.stopAutoplay();
     const wrongWords = this.getWrongSoundingWords();
     const content = wrongWords.join('\n');
     const blob = new Blob([content], { type: 'text/plain' });
@@ -298,16 +308,19 @@ export class ReviewPronunciationInteraction {
   // Action methods for form controls
   @action
   setFilter(value: string): void {
+    this.stopAutoplay();
     this.filter = value;
   }
 
   @action
   setMatchStartOnly(value: boolean): void {
+    this.stopAutoplay();
     this.matchStartOnly = value;
   }
 
   @action
   setReviewStateFilter(filter: ReviewStateFilterOption): void {
+    this.stopAutoplay();
     this.reviewStateFilter = filter;
   }
 

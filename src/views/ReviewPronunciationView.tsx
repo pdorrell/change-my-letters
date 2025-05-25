@@ -59,6 +59,7 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
+    reviewInteraction.stopAutoplay();
     const files = Array.from(e.dataTransfer.files);
     const file = files.find(f => f.name === 'review-pronunciation-state.json');
     
@@ -144,7 +145,10 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
             
             <select
               value={reviewInteraction.autoPlayWaitMillis}
-              onChange={(e) => reviewInteraction.setAutoPlayWaitMillis(parseInt(e.target.value))}
+              onChange={(e) => {
+                reviewInteraction.stopAutoplay();
+                reviewInteraction.setAutoPlayWaitMillis(parseInt(e.target.value));
+              }}
               className="autoplay-interval-select"
             >
               <option value={100}>100ms</option>
