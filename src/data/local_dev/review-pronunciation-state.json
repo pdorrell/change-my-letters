@@ -1,1 +1,33 @@
-{"reviewed": [], "soundsWrong": []}
+{
+  "reviewed": [
+    "age",
+    "am",
+    "as",
+    "ash",
+    "axle",
+    "bag",
+    "cat",
+    "eat",
+    "halt",
+    "ham",
+    "hand",
+    "hang",
+    "harm",
+    "has",
+    "hat",
+    "heal",
+    "heap",
+    "hear",
+    "heat",
+    "heel",
+    "held",
+    "hell",
+    "help",
+    "hose",
+    "host"
+  ],
+  "soundsWrong": [
+    "eat",
+    "hose"
+  ]
+}
