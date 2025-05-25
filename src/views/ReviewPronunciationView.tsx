@@ -55,9 +55,7 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
 
   return (
     <div className="review-pronunciation-container">
-      <h2>Review Pronunciation</h2>
       
-      {/* Action Buttons Panel */}
       <div className="action-buttons-panel">
         <div 
           className="load-state-button-container"
@@ -65,7 +63,7 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
           onDrop={handleDrop}
         >
           <ActionButton action={reviewInteraction.loadStateAction}>
-            Load State
+            + Load State
           </ActionButton>
           <span className="drop-hint">(or drag & drop)</span>
         </div>
@@ -91,10 +89,11 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
         </ActionButton>
       </div>
 
-      {/* Just Reviewed Word Panel */}
-      {reviewInteraction.currentReviewWord && (
-        <div className="just-reviewed-panel">
-          <h3>Just Reviewed</h3>
+      {/* Current Word Panel - always visible */}
+      <div className="current-word-panel">
+        {reviewInteraction.currentReviewWord ? (
+          <div>
+            <h3>Current Word</h3>
           <div className="current-review-word">
             <span 
               className={`word-span ${
@@ -114,12 +113,16 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
               </ActionButton>
             </div>
           </div>
-        </div>
-      )}
+          </div>
+        ) : (
+          <div>
+            <h3>Current Word</h3>
+            <span className="no-word">No word selected</span>
+          </div>
+        )}
+      </div>
 
-      {/* Filter Panel */}
       <div className="filter-panel">
-        <h3>Filter</h3>
         
         <div className="filter-controls">
           <div className="filter-text">
@@ -167,7 +170,7 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
       {/* Filtered Words */}
       <div className="filtered-words">
         <div className="words-header">
-          <h3>Words ({reviewInteraction.filteredWords.length})</h3>
+          <span className="words-count">Words: {reviewInteraction.filteredWords.length}</span>
           <div className="keyboard-shortcuts">
             <span className="shortcut-hint">Use ← → arrow keys to navigate</span>
           </div>
