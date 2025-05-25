@@ -17,15 +17,15 @@ export class ReviewPronunciationInteraction {
   filter: string = '';
   reviewStateFilter: ReviewStateFilterOption = ReviewStateFilterOption.ALL;
   matchStartOnly: boolean = true;
-  
+
   // Current review word
   currentReviewWord: Word | null = null;
-  
+
   // Autoplay state
   autoplaying: boolean = false;
-  autoPlayWaitMillis: number = 300;
+  autoPlayWaitMillis: number = 100;
   private autoplayTimeoutId: number | null = null;
-  
+
   // Words map for quick lookup
   private wordsMap: Map<string, Word>;
 
@@ -54,7 +54,7 @@ export class ReviewPronunciationInteraction {
     this.resetAllToUnreviewedAction = new ButtonAction(() => this.resetAllToUnreviewed(), { tooltip: "Reset all words to unreviewed" });
     this.resetAllToOKAction = new ButtonAction(() => this.resetAllToOK(), { tooltip: "Reset all words to OK" });
     this.reviewWrongWordsAction = new ButtonAction(() => this.reviewWrongWords(), { tooltip: "Set reviewed = not soundsWrong for all words" });
-    
+
     makeAutoObservable(this, {
       filteredWords: computed,
       reviewStateFilterOptions: computed,
@@ -75,9 +75,9 @@ export class ReviewPronunciationInteraction {
       const matchesText = this.matchStartOnly
         ? word.word.toLowerCase().startsWith(this.filter.toLowerCase())
         : word.word.toLowerCase().includes(this.filter.toLowerCase());
-      
+
       if (!matchesText) return false;
-      
+
       // Apply review state filter
       return this.reviewStateFilter.include(word);
     });
@@ -86,7 +86,7 @@ export class ReviewPronunciationInteraction {
   // Computed property for currentReviewWordIndex
   get currentReviewWordIndex(): number | null {
     if (!this.currentReviewWord) return null;
-    
+
     const filtered = this.filteredWords;
     const index = filtered.findIndex(word => word === this.currentReviewWord);
     return index >= 0 ? index : null;
@@ -106,10 +106,10 @@ export class ReviewPronunciationInteraction {
 
   setReviewState(jsonData: any): void {
     const data = jsonData as ReviewState;
-    
+
     // Reset all words first
     this.resetAllToUnreviewed();
-    
+
     // Set reviewed words
     if (data.reviewed) {
       for (const wordStr of data.reviewed) {
@@ -119,7 +119,7 @@ export class ReviewPronunciationInteraction {
         }
       }
     }
-    
+
     // Set words that sound wrong
     if (data.soundsWrong) {
       for (const wordStr of data.soundsWrong) {
@@ -135,7 +135,7 @@ export class ReviewPronunciationInteraction {
   getReviewState(): ReviewState {
     const reviewed: string[] = [];
     const soundsWrong: string[] = [];
-    
+
     for (const word of this.sortedWords) {
       if (word.reviewed) {
         reviewed.push(word.word);
@@ -144,7 +144,7 @@ export class ReviewPronunciationInteraction {
         soundsWrong.push(word.word);
       }
     }
-    
+
     return { reviewed, soundsWrong };
   }
 
@@ -161,7 +161,7 @@ export class ReviewPronunciationInteraction {
       this.currentReviewWord.currentReview = false;
       this.currentReviewWord = null;
     }
-    
+
     // Reset all words
     for (const word of this.sortedWords) {
       word.reviewed = false;
@@ -176,7 +176,7 @@ export class ReviewPronunciationInteraction {
       this.currentReviewWord.currentReview = false;
       this.currentReviewWord = null;
     }
-    
+
     // Set all words as reviewed and OK
     for (const word of this.sortedWords) {
       word.reviewed = true;
@@ -189,7 +189,7 @@ export class ReviewPronunciationInteraction {
     for (const word of this.sortedWords) {
       word.reviewed = !word.soundsWrong;
     }
-    
+
     // Clear current review word if it's not wrong
     if (this.currentReviewWord && !this.currentReviewWord.soundsWrong) {
       this.currentReviewWord.currentReview = false;
@@ -216,17 +216,17 @@ export class ReviewPronunciationInteraction {
   reviewWord(wordStr: string): void {
     const word = this.wordsMap.get(wordStr);
     if (!word) return;
-    
+
     // Mark current review word as reviewed if it exists
     if (this.currentReviewWord) {
       this.currentReviewWord.reviewed = true;
       this.currentReviewWord.currentReview = false;
     }
-    
+
     // Set new current review word
     this.currentReviewWord = word;
     word.currentReview = true;
-    
+
     // Say the word
     this.wordSayer.say(wordStr);
   }
@@ -234,12 +234,12 @@ export class ReviewPronunciationInteraction {
   reset(): void {
     // Stop autoplay if running
     this.stopAutoplay();
-    
+
     // Reset filter settings
     this.filter = '';
     this.matchStartOnly = true;
     this.reviewStateFilter = ReviewStateFilterOption.ALL;
-    
+
     // Clear current review word
     if (this.currentReviewWord) {
       this.currentReviewWord.currentReview = false;
@@ -322,7 +322,7 @@ export class ReviewPronunciationInteraction {
   gotoNextWord(): void {
     const filtered = this.filteredWords;
     if (filtered.length === 0) return;
-    
+
     if (this.currentReviewWordIndex === null) {
       // No current word, start with first word
       this.reviewWord(filtered[0].word);
@@ -343,7 +343,7 @@ export class ReviewPronunciationInteraction {
   gotoPreviousWord(): void {
     const filtered = this.filteredWords;
     if (filtered.length === 0) return;
-    
+
     if (this.currentReviewWordIndex === null) {
       // No current word, start with last word
       this.reviewWord(filtered[filtered.length - 1].word);
@@ -379,13 +379,13 @@ export class ReviewPronunciationInteraction {
   // Move to next word in autoplay sequence
   private autoplayNext(): void {
     if (!this.autoplaying) return;
-    
+
     const filtered = this.filteredWords;
     if (filtered.length === 0) {
       this.stopAutoplay();
       return;
     }
-    
+
     let nextIndex: number;
     if (this.currentReviewWordIndex === null) {
       // No current word, start with first word
@@ -398,19 +398,19 @@ export class ReviewPronunciationInteraction {
       this.stopAutoplay();
       return;
     }
-    
+
     const nextWord = filtered[nextIndex];
-    
+
     // Mark current review word as reviewed if it exists
     if (this.currentReviewWord) {
       this.currentReviewWord.reviewed = true;
       this.currentReviewWord.currentReview = false;
     }
-    
+
     // Set new current review word
     this.currentReviewWord = nextWord;
     nextWord.currentReview = true;
-    
+
     // Say the word with callback to continue autoplay
     this.wordSayer.say(nextWord.word, () => {
       if (this.autoplaying) {
@@ -423,13 +423,13 @@ export class ReviewPronunciationInteraction {
 
   // Get the autoplay action button
   get autoplayAction(): ButtonAction {
-    const handler = this.autoplaying 
+    const handler = this.autoplaying
       ? () => this.stopAutoplay()
       : () => this.startAutoplay();
-    const tooltip = this.autoplaying 
-      ? "Stop automatic word review" 
+    const tooltip = this.autoplaying
+      ? "Stop automatic word review"
       : "Start automatic word review";
-    
+
     return new ButtonAction(handler, { tooltip });
   }
 }
