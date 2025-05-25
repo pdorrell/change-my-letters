@@ -19,8 +19,8 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
         <div className="version-display">
           Version: <b>{appState.version}</b>
         </div>
-        {appState.currentPage === 'reviewPronunciationView' ? (
-          <h1>Change My Letters <span className="sub-header">Review Pronunciation</span></h1>
+        {appState.subHeader ? (
+          <h1>Change My Letters <span className="sub-header">{appState.subHeader}</span></h1>
         ) : (
           <h1>Change My Letters</h1>
         )}

@@ -25,12 +25,12 @@ body {
 .app-container {
   max-width: 98vw; // Almost full width of the viewport
   margin: 0 auto;
-  padding: 20px;
+  padding: 0;
   overflow: visible; // Allow menus to extend beyond container
   
   header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 0;
     overflow: visible;
     position: relative;
     
@@ -445,11 +445,6 @@ body {
     padding: 20px;
     margin-bottom: 30px;
     
-    .no-word {
-      color: #666;
-      font-style: italic;
-    }
-    
     .current-review-word {
       display: flex;
       align-items: center;
@@ -462,6 +457,13 @@ body {
       padding: 10px 15px;
       border-radius: 6px;
       border: 2px solid transparent;
+      min-width: 10ch;
+      
+      &.no-word {
+        background-color: transparent;
+        border: 1px solid #ccc;
+        color: transparent;
+      }
       
       &.ok {
         background-color: #e3f2fd;
@@ -537,8 +539,8 @@ body {
       
       .review-state-filter {
         display: flex;
-        flex-direction: column;
-        gap: 5px;
+        align-items: center;
+        gap: 8px;
         
         label {
           font-weight: 500;

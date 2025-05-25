@@ -18,6 +18,9 @@ type AppPage = 'wordView' | 'historyView' | 'resetView' | 'reviewPronunciationVi
 export class AppState {
   // The current page being displayed
   currentPage: AppPage = 'wordView';
+  
+  // The current sub-header (null for main word view)
+  subHeader: string | null = null;
 
   // The current word interaction model
   currentWord: WordInteraction;
@@ -220,6 +223,22 @@ export class AppState {
    */
   navigateTo(page: AppPage): void {
     this.currentPage = page;
+    
+    // Set the appropriate sub-header for each page
+    switch (page) {
+      case 'wordView':
+        this.subHeader = null;
+        break;
+      case 'historyView':
+        this.subHeader = 'Word History';
+        break;
+      case 'resetView':
+        this.subHeader = 'Reset';
+        break;
+      case 'reviewPronunciationView':
+        this.subHeader = 'Review Pronunciation';
+        break;
+    }
     
     // If navigating to the reset view, reset the interaction state
     if (page === 'resetView') {
