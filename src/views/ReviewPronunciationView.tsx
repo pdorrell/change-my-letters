@@ -11,18 +11,37 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
   // Add keyboard event listener for arrow key navigation and space bar toggle
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') {
+      if (e.key === 'ArrowRight' && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
         e.preventDefault();
+        if (reviewInteraction.autoplaying) {
+          reviewInteraction.stopAutoplay();
+        }
         reviewInteraction.gotoNextWord();
-      } else if (e.key === 'ArrowLeft') {
+      } else if (e.key === 'ArrowRight' && !e.ctrlKey && e.altKey && !e.shiftKey && !e.metaKey) {
         e.preventDefault();
+        if (!reviewInteraction.autoplaying) {
+          reviewInteraction.startAutoplay();
+        }
+      } else if (e.key === 'ArrowLeft' && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
+        e.preventDefault();
+        if (reviewInteraction.autoplaying) {
+          reviewInteraction.stopAutoplay();
+        }
         reviewInteraction.gotoPreviousWord();
       } else if (e.key === ' ' && reviewInteraction.currentReviewWord) {
         e.preventDefault();
+        if (reviewInteraction.autoplaying) {
+          reviewInteraction.stopAutoplay();
+        }
         if (reviewInteraction.currentReviewWord.soundsWrong) {
           reviewInteraction.markOK(reviewInteraction.currentReviewWord.word);
         } else {
           reviewInteraction.markSoundsWrong(reviewInteraction.currentReviewWord.word);
+        }
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        if (reviewInteraction.autoplaying) {
+          reviewInteraction.stopAutoplay();
         }
       }
     };
@@ -117,6 +136,24 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
               Sounds OK
             </ActionButton>
           </div>
+          
+          <div className="autoplay-controls">
+            <ActionButton action={reviewInteraction.autoplayAction}>
+              {reviewInteraction.autoplaying ? 'Stop' : 'Auto'}
+            </ActionButton>
+            
+            <select
+              value={reviewInteraction.autoPlayWaitMillis}
+              onChange={(e) => reviewInteraction.setAutoPlayWaitMillis(parseInt(e.target.value))}
+              className="autoplay-interval-select"
+            >
+              <option value={100}>100ms</option>
+              <option value={200}>200ms</option>
+              <option value={300}>300ms</option>
+              <option value={400}>400ms</option>
+              <option value={500}>500ms</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -169,7 +206,7 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
         <div className="words-header">
           <span className="words-count">Words: {reviewInteraction.filteredWords.length}</span>
           <div className="keyboard-shortcuts">
-            <span className="shortcut-hint">Use ← → arrow keys to navigate, space bar to toggle sounds wrong</span>
+            <span className="shortcut-hint">Use ← → arrow keys to navigate, Alt+→ to start autoplay, space bar to toggle sounds wrong</span>
           </div>
         </div>
         

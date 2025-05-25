@@ -52,8 +52,9 @@ export class WordSayer implements WordSayerInterface {
   /**
    * Play the audio for a word, preloading it if necessary
    * @param word The word to play
+   * @param onFinished Optional callback to call when the word finishes playing
    */
-  say(word: string): void {
+  say(word: string, onFinished?: () => void): void {
     // Preload the word if it's not already loaded
     if (!this.loadedWords.has(word)) {
       this.preload(word);
@@ -63,10 +64,26 @@ export class WordSayer implements WordSayerInterface {
     const audio = this.loadedWords.get(word);
     
     if (audio) {
+      // If there's an onFinished callback, add the event listener
+      if (onFinished) {
+        const handleEnded = () => {
+          onFinished();
+          audio.removeEventListener('ended', handleEnded);
+        };
+        audio.addEventListener('ended', handleEnded);
+      }
+      
       // Play the audio
       audio.play().catch(error => {
         console.error(`Error playing word audio for "${word}":`, error);
+        // If there was an error, still call the callback
+        if (onFinished) {
+          onFinished();
+        }
       });
+    } else if (onFinished) {
+      // If no audio available, still call the callback
+      onFinished();
     }
   }
 }

@@ -21,6 +21,11 @@ export class ReviewPronunciationInteraction {
   // Current review word
   currentReviewWord: Word | null = null;
   
+  // Autoplay state
+  autoplaying: boolean = false;
+  autoPlayWaitMillis: number = 300;
+  private autoplayTimeoutId: number | null = null;
+  
   // Words map for quick lookup
   private wordsMap: Map<string, Word>;
 
@@ -55,7 +60,8 @@ export class ReviewPronunciationInteraction {
       reviewStateFilterOptions: computed,
       currentReviewWordIndex: computed,
       markOKAction: computed,
-      markSoundsWrongAction: computed
+      markSoundsWrongAction: computed,
+      autoplayAction: computed
     });
   }
 
@@ -226,6 +232,9 @@ export class ReviewPronunciationInteraction {
   }
 
   reset(): void {
+    // Stop autoplay if running
+    this.stopAutoplay();
+    
     // Reset filter settings
     this.filter = '';
     this.matchStartOnly = true;
@@ -302,6 +311,11 @@ export class ReviewPronunciationInteraction {
     this.reviewStateFilter = filter;
   }
 
+  @action
+  setAutoPlayWaitMillis(millis: number): void {
+    this.autoPlayWaitMillis = millis;
+  }
+
 
   // Navigate to next word in filtered list
   @action
@@ -343,5 +357,79 @@ export class ReviewPronunciationInteraction {
         this.wordSayer.say(this.currentReviewWord.word);
       }
     }
+  }
+
+  // Start autoplay from next word (or first word if no current word)
+  @action
+  startAutoplay(): void {
+    this.autoplaying = true;
+    this.autoplayNext();
+  }
+
+  // Stop autoplay
+  @action
+  stopAutoplay(): void {
+    this.autoplaying = false;
+    if (this.autoplayTimeoutId !== null) {
+      clearTimeout(this.autoplayTimeoutId);
+      this.autoplayTimeoutId = null;
+    }
+  }
+
+  // Move to next word in autoplay sequence
+  private autoplayNext(): void {
+    if (!this.autoplaying) return;
+    
+    const filtered = this.filteredWords;
+    if (filtered.length === 0) {
+      this.stopAutoplay();
+      return;
+    }
+    
+    let nextIndex: number;
+    if (this.currentReviewWordIndex === null) {
+      // No current word, start with first word
+      nextIndex = 0;
+    } else if (this.currentReviewWordIndex < filtered.length - 1) {
+      // Move to next word
+      nextIndex = this.currentReviewWordIndex + 1;
+    } else {
+      // Reached end of list, stop autoplay
+      this.stopAutoplay();
+      return;
+    }
+    
+    const nextWord = filtered[nextIndex];
+    
+    // Mark current review word as reviewed if it exists
+    if (this.currentReviewWord) {
+      this.currentReviewWord.reviewed = true;
+      this.currentReviewWord.currentReview = false;
+    }
+    
+    // Set new current review word
+    this.currentReviewWord = nextWord;
+    nextWord.currentReview = true;
+    
+    // Say the word with callback to continue autoplay
+    this.wordSayer.say(nextWord.word, () => {
+      if (this.autoplaying) {
+        this.autoplayTimeoutId = window.setTimeout(() => {
+          this.autoplayNext();
+        }, this.autoPlayWaitMillis);
+      }
+    });
+  }
+
+  // Get the autoplay action button
+  get autoplayAction(): ButtonAction {
+    const handler = this.autoplaying 
+      ? () => this.stopAutoplay()
+      : () => this.startAutoplay();
+    const tooltip = this.autoplaying 
+      ? "Stop automatic word review" 
+      : "Start automatic word review";
+    
+    return new ButtonAction(handler, { tooltip });
   }
 }
