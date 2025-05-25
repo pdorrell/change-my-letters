@@ -53,6 +53,7 @@ export class ReviewPronunciationInteraction {
     makeAutoObservable(this, {
       filteredWords: computed,
       reviewStateFilterOptions: computed,
+      currentReviewWordIndex: computed,
       markOKAction: computed,
       markSoundsWrongAction: computed
     });
@@ -74,6 +75,15 @@ export class ReviewPronunciationInteraction {
       // Apply review state filter
       return this.reviewStateFilter.include(word);
     });
+  }
+
+  // Computed property for currentReviewWordIndex
+  get currentReviewWordIndex(): number | null {
+    if (!this.currentReviewWord) return null;
+    
+    const filtered = this.filteredWords;
+    const index = filtered.findIndex(word => word === this.currentReviewWord);
+    return index >= 0 ? index : null;
   }
 
   get markOKAction(): ButtonAction {
@@ -290,5 +300,48 @@ export class ReviewPronunciationInteraction {
   @action
   setReviewStateFilter(filter: ReviewStateFilterOption): void {
     this.reviewStateFilter = filter;
+  }
+
+
+  // Navigate to next word in filtered list
+  @action
+  gotoNextWord(): void {
+    const filtered = this.filteredWords;
+    if (filtered.length === 0) return;
+    
+    if (this.currentReviewWordIndex === null) {
+      // No current word, start with first word
+      this.reviewWord(filtered[0].word);
+    } else if (this.currentReviewWordIndex < filtered.length - 1) {
+      // Move to next word
+      const nextIndex = this.currentReviewWordIndex + 1;
+      this.reviewWord(filtered[nextIndex].word);
+    } else {
+      // At end of list, repeat current word
+      if (this.currentReviewWord) {
+        this.wordSayer.say(this.currentReviewWord.word);
+      }
+    }
+  }
+
+  // Navigate to previous word in filtered list
+  @action
+  gotoPreviousWord(): void {
+    const filtered = this.filteredWords;
+    if (filtered.length === 0) return;
+    
+    if (this.currentReviewWordIndex === null) {
+      // No current word, start with last word
+      this.reviewWord(filtered[filtered.length - 1].word);
+    } else if (this.currentReviewWordIndex > 0) {
+      // Move to previous word
+      const prevIndex = this.currentReviewWordIndex - 1;
+      this.reviewWord(filtered[prevIndex].word);
+    } else {
+      // At start of list, repeat current word
+      if (this.currentReviewWord) {
+        this.wordSayer.say(this.currentReviewWord.word);
+      }
+    }
   }
 }

@@ -258,7 +258,8 @@ describe('ReviewPronunciationView', () => {
       
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      const wordsGrid = screen.getByText('Words (4)').nextElementSibling;
+      const wordsSection = screen.getByText('Words (4)').closest('.filtered-words');
+      const wordsGrid = wordsSection!.querySelector('.words-grid');
       const allSpans = wordsGrid!.querySelectorAll('.word-span');
       const catSpan = Array.from(allSpans).find(span => span.textContent === 'cat');
       const dogSpan = Array.from(allSpans).find(span => span.textContent === 'dog');
@@ -366,6 +367,69 @@ describe('ReviewPronunciationView', () => {
       expect(alertSpy).toHaveBeenCalledWith('Please drop a file named "review-pronunciation-state.json"');
       
       alertSpy.mockRestore();
+    });
+  });
+
+  describe('Keyboard Navigation', () => {
+    it('shows keyboard shortcuts hint', () => {
+      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      
+      expect(screen.getByText('Use ← → arrow keys to navigate')).toBeInTheDocument();
+    });
+
+    it('handles right arrow key for next word navigation', () => {
+      const gotoNextWordSpy = jest.spyOn(reviewInteraction, 'gotoNextWord');
+      
+      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      
+      // Simulate right arrow key press
+      act(() => {
+        fireEvent.keyDown(document, { key: 'ArrowRight' });
+      });
+      
+      expect(gotoNextWordSpy).toHaveBeenCalled();
+    });
+
+    it('handles left arrow key for previous word navigation', () => {
+      const gotoPreviousWordSpy = jest.spyOn(reviewInteraction, 'gotoPreviousWord');
+      
+      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      
+      // Simulate left arrow key press
+      act(() => {
+        fireEvent.keyDown(document, { key: 'ArrowLeft' });
+      });
+      
+      expect(gotoPreviousWordSpy).toHaveBeenCalled();
+    });
+
+    it('does not handle other keys', () => {
+      const gotoNextWordSpy = jest.spyOn(reviewInteraction, 'gotoNextWord');
+      const gotoPreviousWordSpy = jest.spyOn(reviewInteraction, 'gotoPreviousWord');
+      
+      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      
+      // Simulate other key presses
+      act(() => {
+        fireEvent.keyDown(document, { key: 'Enter' });
+        fireEvent.keyDown(document, { key: 'Space' });
+        fireEvent.keyDown(document, { key: 'ArrowUp' });
+      });
+      
+      expect(gotoNextWordSpy).not.toHaveBeenCalled();
+      expect(gotoPreviousWordSpy).not.toHaveBeenCalled();
+    });
+
+    it('removes event listener on unmount', () => {
+      const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
+      
+      const { unmount } = render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      
+      unmount();
+      
+      expect(removeEventListenerSpy).toHaveBeenCalledWith('keydown', expect.any(Function));
+      
+      removeEventListenerSpy.mockRestore();
     });
   });
 
