@@ -27,17 +27,18 @@ describe('ReviewPronunciationView', () => {
     reviewInteraction = new ReviewPronunciationInteraction(testWords, wordSayer);
   });
 
-  it('renders the main title', () => {
+  it('renders the view without main title (now in header)', () => {
     render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
     
-    expect(screen.getByText('Review Pronunciation')).toBeInTheDocument();
+    // The main title is now in the app header, not in the view itself
+    expect(screen.queryByText('Review Pronunciation')).not.toBeInTheDocument();
   });
 
   describe('Action Buttons Panel', () => {
     it('renders all action buttons', () => {
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      expect(screen.getByText('Load State')).toBeInTheDocument();
+      expect(screen.getByText('+ Load State')).toBeInTheDocument();
       expect(screen.getByText('Save State')).toBeInTheDocument();
       expect(screen.getByText('Download Wrong Words')).toBeInTheDocument();
       expect(screen.getByText('Reset All to Unreviewed')).toBeInTheDocument();
@@ -45,10 +46,10 @@ describe('ReviewPronunciationView', () => {
       expect(screen.getByText('Review Wrong Words')).toBeInTheDocument();
     });
 
-    it('shows drag and drop hint for load state button', () => {
+    it('does not show drag and drop hint anymore', () => {
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      expect(screen.getByText('(or drag & drop)')).toBeInTheDocument();
+      expect(screen.queryByText('(or drag & drop)')).not.toBeInTheDocument();
     });
 
     it('calls resetAllToUnreviewed when button is clicked', () => {
@@ -86,14 +87,18 @@ describe('ReviewPronunciationView', () => {
     });
   });
 
-  describe('Just Reviewed Word Panel', () => {
-    it('does not render when no current review word', () => {
+  describe('Current Word Panel', () => {
+    it('always renders the current word panel', () => {
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      expect(screen.queryByText('Just Reviewed')).not.toBeInTheDocument();
+      const currentWordPanel = document.querySelector('.current-word-panel');
+      expect(currentWordPanel).toBeInTheDocument();
+      expect(screen.getByText('Sounds Wrong')).toBeInTheDocument();
+      expect(screen.getByText('Sounds OK')).toBeInTheDocument();
+      expect(screen.getByText('Auto')).toBeInTheDocument();
     });
 
-    it('renders when there is a current review word', () => {
+    it('shows word when there is a current review word', () => {
       act(() => {
         runInAction(() => {
           reviewInteraction.reviewWord('cat');
@@ -102,9 +107,8 @@ describe('ReviewPronunciationView', () => {
       
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      expect(screen.getByText('Just Reviewed')).toBeInTheDocument();
-      const justReviewedPanel = screen.getByText('Just Reviewed').closest('.just-reviewed-panel');
-      expect(justReviewedPanel).toContainElement(screen.getAllByText('cat')[0]);
+      const currentWordPanel = document.querySelector('.current-word-panel');
+      expect(currentWordPanel).toContainElement(screen.getAllByText('cat')[0]);
       expect(screen.getByText('Sounds Wrong')).toBeInTheDocument();
       expect(screen.getByText('Sounds OK')).toBeInTheDocument();
     });
@@ -119,8 +123,8 @@ describe('ReviewPronunciationView', () => {
       
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      const justReviewedPanel = screen.getByText('Just Reviewed').closest('.just-reviewed-panel');
-      const wordSpan = justReviewedPanel!.querySelector('.word-span');
+      const currentWordPanel = document.querySelector('.current-word-panel');
+      const wordSpan = currentWordPanel!.querySelector('.word-span');
       expect(wordSpan).toHaveClass('wrong', 'current-review');
     });
 
@@ -135,8 +139,8 @@ describe('ReviewPronunciationView', () => {
       
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      const justReviewedPanel = screen.getByText('Just Reviewed').closest('.just-reviewed-panel');
-      const wordSpan = justReviewedPanel!.querySelector('.word-span');
+      const currentWordPanel = document.querySelector('.current-word-panel');
+      const wordSpan = currentWordPanel!.querySelector('.word-span');
       expect(wordSpan).toHaveClass('ok', 'current-review');
     });
 
@@ -162,7 +166,7 @@ describe('ReviewPronunciationView', () => {
     it('renders filter controls', () => {
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      expect(screen.getByLabelText('Filter text:')).toBeInTheDocument();
+      expect(screen.getByPlaceholderText('Enter filter text...')).toBeInTheDocument();
       expect(screen.getByLabelText('Match start only')).toBeInTheDocument();
       expect(screen.getByLabelText('Review state:')).toBeInTheDocument();
     });
@@ -170,7 +174,7 @@ describe('ReviewPronunciationView', () => {
     it('updates filter text when typing', () => {
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      const filterInput = screen.getByLabelText('Filter text:');
+      const filterInput = screen.getByPlaceholderText('Enter filter text...');
       
       act(() => {
         fireEvent.change(filterInput, { target: { value: 'cat' } });
@@ -224,7 +228,7 @@ describe('ReviewPronunciationView', () => {
     it('displays all words by default', () => {
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      expect(screen.getByText('Words (4)')).toBeInTheDocument();
+      expect(screen.getByText('Words: 4')).toBeInTheDocument();
       expect(screen.getByText('cat')).toBeInTheDocument();
       expect(screen.getByText('dog')).toBeInTheDocument();
       expect(screen.getByText('fish')).toBeInTheDocument();
@@ -241,7 +245,7 @@ describe('ReviewPronunciationView', () => {
       
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      expect(screen.getByText('Words (1)')).toBeInTheDocument();
+      expect(screen.getByText('Words: 1')).toBeInTheDocument();
       expect(screen.getByText('cat')).toBeInTheDocument();
       expect(screen.queryByText('dog')).not.toBeInTheDocument();
     });
@@ -258,7 +262,7 @@ describe('ReviewPronunciationView', () => {
       
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      const wordsSection = screen.getByText('Words (4)').closest('.filtered-words');
+      const wordsSection = screen.getByText('Words: 4').closest('.filtered-words');
       const wordsGrid = wordsSection!.querySelector('.words-grid');
       const allSpans = wordsGrid!.querySelectorAll('.word-span');
       const catSpan = Array.from(allSpans).find(span => span.textContent === 'cat');
@@ -293,7 +297,7 @@ describe('ReviewPronunciationView', () => {
     it('handles drag over event', () => {
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      const dropArea = screen.getByText('Load State').closest('.load-state-button-container');
+      const dropArea = screen.getByText('+ Load State').closest('.load-state-button-container');
       
       const dragOverEvent = new Event('dragover', { bubbles: true });
       Object.defineProperty(dragOverEvent, 'preventDefault', {
@@ -313,7 +317,7 @@ describe('ReviewPronunciationView', () => {
       
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      const dropArea = screen.getByText('Load State').closest('.load-state-button-container');
+      const dropArea = screen.getByText('+ Load State').closest('.load-state-button-container');
       
       const testData = '{"reviewed": ["cat"], "soundsWrong": ["dog"]}';
       const file = new File([testData], 'review-pronunciation-state.json', { type: 'application/json' });
@@ -350,7 +354,7 @@ describe('ReviewPronunciationView', () => {
       
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      const dropArea = screen.getByText('Load State').closest('.load-state-button-container');
+      const dropArea = screen.getByText('+ Load State').closest('.load-state-button-container');
       
       const file = new File(['{}'], 'wrong-name.json', { type: 'application/json' });
       
@@ -374,7 +378,7 @@ describe('ReviewPronunciationView', () => {
     it('shows keyboard shortcuts hint', () => {
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      expect(screen.getByText('Use ← → arrow keys to navigate')).toBeInTheDocument();
+      expect(screen.getByText('Use ← → arrow keys to navigate, Alt+→ to start autoplay, space bar to toggle sounds wrong')).toBeInTheDocument();
     });
 
     it('handles right arrow key for next word navigation', () => {
@@ -437,8 +441,9 @@ describe('ReviewPronunciationView', () => {
     it('reflects changes in interaction state', () => {
       const { rerender } = render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      // Initially no current review word panel
-      expect(screen.queryByText('Just Reviewed')).not.toBeInTheDocument();
+      // Initially current word panel always exists but no word shown
+      const currentWordPanel = document.querySelector('.current-word-panel');
+      expect(currentWordPanel).toBeInTheDocument();
       
       // Set a current review word
       act(() => {
@@ -449,16 +454,14 @@ describe('ReviewPronunciationView', () => {
       
       rerender(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      // Should now show the panel
-      expect(screen.getByText('Just Reviewed')).toBeInTheDocument();
-      const justReviewedPanel = screen.getByText('Just Reviewed').closest('.just-reviewed-panel');
-      expect(justReviewedPanel).toContainElement(screen.getAllByText('cat')[0]);
+      // Should now show the word in the panel
+      expect(currentWordPanel).toContainElement(screen.getAllByText('cat')[0]);
     });
 
     it('updates word count when filter changes', () => {
       const { rerender } = render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      expect(screen.getByText('Words (4)')).toBeInTheDocument();
+      expect(screen.getByText('Words: 4')).toBeInTheDocument();
       
       act(() => {
         runInAction(() => {
@@ -468,7 +471,7 @@ describe('ReviewPronunciationView', () => {
       
       rerender(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
-      expect(screen.getByText('Words (1)')).toBeInTheDocument();
+      expect(screen.getByText('Words: 1')).toBeInTheDocument();
     });
   });
 });
