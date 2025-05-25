@@ -37,6 +37,12 @@ body {
     h1 {
       font-size: 2.5em;
       color: #333;
+      
+      .sub-header {
+        font-size: 0.6em;
+        color: #666;
+        margin-left: 0.5em;
+      }
     }
     
     .version-display {
@@ -384,10 +390,17 @@ body {
   margin: 0 auto;
   padding: 20px;
   
-  h2 {
+  h1 {
     text-align: center;
     margin-bottom: 30px;
     color: #333;
+    font-size: 2.5em;
+    
+    .sub-header {
+      font-size: 0.6em;
+      color: #666;
+      margin-left: 0.5em;
+    }
   }
   
   h3 {
@@ -425,54 +438,59 @@ body {
     }
   }
   
-  .just-reviewed-panel {
+  .current-word-panel {
     background-color: #f8f9fa;
     border: 1px solid #dee2e6;
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 30px;
     
+    .no-word {
+      color: #666;
+      font-style: italic;
+    }
+    
     .current-review-word {
       display: flex;
       align-items: center;
       gap: 20px;
+    }
+    
+    .word-span {
+      font-size: 1.5em;
+      font-weight: bold;
+      padding: 10px 15px;
+      border-radius: 6px;
+      border: 2px solid transparent;
       
-      .word-span {
-        font-size: 1.5em;
-        font-weight: bold;
-        padding: 10px 15px;
-        border-radius: 6px;
-        border: 2px solid transparent;
+      &.ok {
+        background-color: #e3f2fd;
         
-        &.ok {
-          background-color: #e3f2fd;
-          
-          &.current-review {
-            background-color: #2196f3;
-            color: white;
-            border-color: #000;
-          }
-        }
-        
-        &.wrong {
-          background-color: #ffebee;
-          
-          &.current-review {
-            background-color: #f44336;
-            color: white;
-            border-color: #000;
-          }
-        }
-        
-        &.current-review:not(.ok):not(.wrong) {
+        &.current-review {
+          background-color: #2196f3;
+          color: white;
           border-color: #000;
         }
       }
       
-      .review-buttons {
-        display: flex;
-        gap: 10px;
+      &.wrong {
+        background-color: #ffebee;
+        
+        &.current-review {
+          background-color: #f44336;
+          color: white;
+          border-color: #000;
+        }
       }
+      
+      &.current-review:not(.ok):not(.wrong) {
+        border-color: #000;
+      }
+    }
+    
+    .review-buttons {
+      display: flex;
+      gap: 10px;
     }
   }
   
@@ -544,8 +562,11 @@ body {
       align-items: center;
       margin-bottom: 15px;
       
-      h3 {
+      .words-count {
         margin: 0;
+        font-weight: bold;
+        color: #555;
+        font-size: 1.2em;
       }
       
       .keyboard-shortcuts {
