@@ -449,6 +449,7 @@ body {
       display: flex;
       align-items: center;
       gap: 20px;
+      justify-content: space-between;
     }
     
     .word-span {
@@ -493,6 +494,20 @@ body {
     .review-buttons {
       display: flex;
       gap: 10px;
+    }
+    
+    .autoplay-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      
+      .autoplay-interval-select {
+        padding: 4px 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        min-width: 80px;
+      }
     }
   }
   

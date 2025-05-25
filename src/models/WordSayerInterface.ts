@@ -11,6 +11,7 @@ export interface WordSayerInterface {
   /**
    * Play the audio for a word
    * @param word The word to play
+   * @param onFinished Optional callback to call when the word finishes playing
    */
-  say(word: string): void;
+  say(word: string, onFinished?: () => void): void;
 }
