@@ -94,6 +94,7 @@ export const ResetView: React.FC<ResetViewProps> = observer(({ resetInteraction 
           </p>
         )}
       </div>
+      
     </div>
   );
 });

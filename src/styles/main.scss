@@ -425,6 +425,71 @@ body {
   }
 }
 
+// Compact history view
+.compact-history-view {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  
+  .compact-history-title {
+    font-size: 0.9em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #666;
+  }
+  
+  .compact-history-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    
+    .compact-history-word {
+      padding: 4px 8px;
+      background-color: white;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 0.9em;
+      transition: background-color 0.2s;
+      
+      &:hover {
+        background-color: #f0f0f0;
+      }
+      
+      &.current {
+        background-color: #e6f7ff;
+        border-color: #1890ff;
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+// Show history controls
+.current-word-controls {
+  margin-top: 15px;
+  text-align: center;
+  
+  .show-history-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9em;
+    cursor: pointer;
+  }
+}
+
+.reset-show-history {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.9em;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
 // Import reset view styles
 @import 'reset-view';
 

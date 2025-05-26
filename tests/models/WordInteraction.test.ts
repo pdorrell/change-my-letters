@@ -12,7 +12,7 @@ describe('WordInteraction', () => {
 
   it('should initialize correctly with a word', () => {
     const wordObj = appState.wordGraph.getRequiredWord('cat');
-    const wordInteraction = new WordInteraction(wordObj, appState.newWordHandler, appState.wordSayer, appState.menuManager);
+    const wordInteraction = new WordInteraction(wordObj, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
 
     expect(wordInteraction.value).toBe('cat');
     expect(wordInteraction.word).toBe(wordObj);
@@ -31,7 +31,7 @@ describe('WordInteraction', () => {
   it('should update word value and related properties', () => {
     const catWord = appState.wordGraph.getRequiredWord('cat');
     const batWord = appState.wordGraph.getRequiredWord('bat');
-    const wordInteraction = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager);
+    const wordInteraction = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
     wordInteraction.updateWord(batWord);
 
     expect(wordInteraction.value).toBe('bat');
@@ -46,7 +46,7 @@ describe('WordInteraction', () => {
 
   it('should create letterInteractions for each character', () => {
     const wordObj = appState.wordGraph.getRequiredWord('cat');
-    const wordInteraction = new WordInteraction(wordObj, appState.newWordHandler, appState.wordSayer, appState.menuManager);
+    const wordInteraction = new WordInteraction(wordObj, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
 
     // Verify that the letterInteractions have been created correctly
     expect(wordInteraction.letterInteractions.length).toBe(3);
@@ -67,7 +67,7 @@ describe('WordInteraction', () => {
 
   it('should create positionInteractions for before, between, and after characters', () => {
     const wordObj = appState.wordGraph.getRequiredWord('cat');
-    const wordInteraction = new WordInteraction(wordObj, appState.newWordHandler, appState.wordSayer, appState.menuManager);
+    const wordInteraction = new WordInteraction(wordObj, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
 
     // Verify that the positionInteractions have been created correctly
     expect(wordInteraction.positionInteractions.length).toBe(4);
@@ -88,7 +88,7 @@ describe('WordInteraction', () => {
     const batWord = appState.wordGraph.getRequiredWord('bat');
     const atWord = appState.wordGraph.getRequiredWord('at');
 
-    const wordInteraction = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager);
+    const wordInteraction = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
 
     // Update to different word of same length
     wordInteraction.updateWord(batWord);
@@ -105,7 +105,7 @@ describe('WordInteraction', () => {
 
   it('should close all menus', () => {
     const wordObj = appState.wordGraph.getRequiredWord('cat');
-    const wordInteraction = new WordInteraction(wordObj, appState.newWordHandler, appState.wordSayer, appState.menuManager);
+    const wordInteraction = new WordInteraction(wordObj, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
 
     // Open some menus
     wordInteraction.letterInteractions[0].isReplaceMenuOpen = true;
@@ -130,7 +130,7 @@ describe('WordInteraction', () => {
 
   it('should have a computed value property that returns the word string', () => {
     const wordObj = appState.wordGraph.getRequiredWord('cat');
-    const wordInteraction = new WordInteraction(wordObj, appState.newWordHandler, appState.wordSayer, appState.menuManager);
+    const wordInteraction = new WordInteraction(wordObj, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
 
     expect(wordInteraction.value).toBe('cat');
 
@@ -145,7 +145,7 @@ describe('WordInteraction', () => {
 
   it('should initialize with a Word object', () => {
     const catWord = appState.wordGraph.getRequiredWord('cat');
-    const wordInteraction = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager);
+    const wordInteraction = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
 
     expect(wordInteraction.value).toBe('cat');
     expect(wordInteraction.letterInteractions.length).toBe(3);
@@ -154,7 +154,7 @@ describe('WordInteraction', () => {
 
   it('should call the wordSayer.say method with the current word', () => {
     const wordObj = appState.wordGraph.getRequiredWord('cat');
-    const wordInteraction = new WordInteraction(wordObj, appState.newWordHandler, appState.wordSayer, appState.menuManager);
+    const wordInteraction = new WordInteraction(wordObj, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
 
     // Call the say method
     wordInteraction.say();

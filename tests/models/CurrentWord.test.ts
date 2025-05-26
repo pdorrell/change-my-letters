@@ -17,7 +17,7 @@ describe('WordInteraction', () => {
   
   it('should initialize correctly with a word', () => {
     const wordObj = appState.wordGraph.getRequiredWord('cat');
-    const currentWord = new WordInteraction(wordObj, appState.newWordHandler, appState.wordSayer, menuManager);
+    const currentWord = new WordInteraction(wordObj, appState.newWordHandler, appState.wordSayer, menuManager, appState.history);
 
     expect(currentWord.value).toBe('cat');
     expect(currentWord.word).toBe(wordObj);
@@ -32,7 +32,7 @@ describe('WordInteraction', () => {
   it('should update word value and related properties', () => {
     const catWord = appState.wordGraph.getRequiredWord('cat');
     const batWord = appState.wordGraph.getRequiredWord('bat');
-    const currentWord = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, menuManager);
+    const currentWord = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, menuManager, appState.history);
     currentWord.updateWord(batWord);
 
     expect(currentWord.value).toBe('bat');
@@ -47,7 +47,7 @@ describe('WordInteraction', () => {
 
   it('should access letters and positions via getters', () => {
     const word = appState.wordGraph.getRequiredWord('cat');
-    const currentWord = new WordInteraction(word, appState.newWordHandler, appState.wordSayer, menuManager);
+    const currentWord = new WordInteraction(word, appState.newWordHandler, appState.wordSayer, menuManager, appState.history);
 
     // letters and positions are getters that map from interactions
     expect(currentWord.letters.length).toBe(3);
@@ -59,7 +59,7 @@ describe('WordInteraction', () => {
     const canWord = appState.wordGraph.getRequiredWord('can');
     const atWord = appState.wordGraph.getRequiredWord('at'); // 2-letter word from deletion
     
-    const currentWord = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, menuManager);
+    const currentWord = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, menuManager, appState.history);
 
     // Update to same length word
     currentWord.updateWord(canWord);

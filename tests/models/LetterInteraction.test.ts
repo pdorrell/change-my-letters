@@ -17,7 +17,7 @@ describe('LetterInteraction', () => {
     
     // Create WordInteraction using Word from WordGraph
     const catWord = appState.wordGraph.getRequiredWord('cat');
-    wordInteraction = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager);
+    wordInteraction = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
     
     // Get the first letter ('c')
     letter = catWord.letters[0];
