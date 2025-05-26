@@ -10,7 +10,7 @@ import { Word } from './Word';
 import { ButtonAction } from '../lib/ui/actions';
 
 // Type for the main application pages
-type AppPage = 'wordView' | 'historyView' | 'resetView' | 'reviewPronunciationView';
+type AppPage = 'wordView' | 'resetView' | 'reviewPronunciationView';
 
 // Page configuration with labels for navigation
 interface PageConfig {
@@ -21,7 +21,6 @@ interface PageConfig {
 const PAGE_CONFIGS: Record<AppPage, PageConfig> = {
   wordView: { label: 'Word', tooltip: 'Change letters of a word' },
   resetView: { label: 'Reset...', tooltip: 'Choose a new word to start again' },
-  historyView: { label: 'History', tooltip: 'View history' },
   reviewPronunciationView: { label: 'Pronunciation', tooltip: 'Review pronunciation of words' }
 };
 
@@ -119,7 +118,6 @@ export class AppState {
     makeAutoObservable(this, {
       undoAction: computed,
       redoAction: computed,
-      toggleViewAction: computed,
       newWordHandler: computed
     });
   }
@@ -270,7 +268,7 @@ export class AppState {
    * Get all pages in navigation order with their config
    */
   get allPages(): Array<{ page: AppPage; label: string; tooltip: string; isActive: boolean }> {
-    const pageOrder: AppPage[] = ['wordView', 'resetView', 'historyView', 'reviewPronunciationView'];
+    const pageOrder: AppPage[] = ['wordView', 'resetView', 'reviewPronunciationView'];
     return pageOrder.map(page => ({
       page,
       label: PAGE_CONFIGS[page].label,
@@ -279,12 +277,6 @@ export class AppState {
     }));
   }
 
-  /**
-   * Toggle between word view and history view
-   */
-  toggleView(): void {
-    this.navigateTo(this.currentPage === 'wordView' ? 'historyView' : 'wordView');
-  }
 
   /**
    * Get the undo action - updating the handler based on history state
@@ -302,11 +294,4 @@ export class AppState {
     return new ButtonAction(handler, { tooltip: "Redo last undone change" });
   }
 
-  /**
-   * Get the toggle view action with appropriate tooltip based on current page
-   */
-  get toggleViewAction(): ButtonAction {
-    const tooltip = this.currentPage === 'wordView' ? "View history" : "Back to word";
-    return new ButtonAction(() => this.toggleView(), { tooltip });
-  }
 }
