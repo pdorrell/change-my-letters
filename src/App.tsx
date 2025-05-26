@@ -6,7 +6,6 @@ import { ResetView } from './views/ResetView';
 import { ReviewPronunciationView } from './views/ReviewPronunciationView';
 import { AppState } from './models/AppState';
 import { ActionButton } from './lib/ui/ActionButton';
-import { ButtonAction } from './lib/ui/actions';
 
 interface AppProps {
   appState: AppState;
@@ -19,42 +18,21 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
         <div className="version-display">
           Version: <b>{appState.version}</b>
         </div>
-        {appState.subHeader ? (
-          <h1>Change My Letters <span className="sub-header">{appState.subHeader}</span></h1>
-        ) : (
-          <h1>Change My Letters</h1>
-        )}
+        <h1>Change My Letters</h1>
+        <div className="page-navigation-tabs">
+          {appState.allPages.map(({ page, label, tooltip, isActive }) => (
+            <button
+              key={page}
+              className={`page-tab ${isActive ? 'active' : ''}`}
+              onClick={isActive ? undefined : () => appState.navigateTo(page)}
+              title={tooltip}
+              disabled={isActive}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
         <div className="app-controls">
-          <ActionButton action={new ButtonAction(
-            appState.currentPage === 'resetView' ? null : () => appState.navigateTo('resetView'),
-            { tooltip: "Choose a new word" }
-          )}>
-            Reset...
-          </ActionButton>
-          
-          {appState.availablePages.length > 0 && (
-            <div className="page-navigation">
-              <span className="page-nav-arrow">→</span>
-              <select 
-                value=""
-                onChange={(e) => {
-                  if (e.target.value) {
-                    appState.navigateTo(e.target.value as 'wordView' | 'historyView' | 'resetView' | 'reviewPronunciationView');
-                    e.target.value = ""; // Reset to empty after navigation
-                  }
-                }}
-                className="page-nav-select"
-              >
-                <option value="">page...</option>
-                {appState.availablePages.map(({ page, label }) => (
-                  <option key={page} value={page}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-          
           <ActionButton action={appState.undoAction}>
             Undo
           </ActionButton>
