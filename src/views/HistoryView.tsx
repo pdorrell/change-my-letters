@@ -14,14 +14,11 @@ export const CompactHistoryView: React.FC<CompactHistoryViewProps> = observer(({
 
   return (
     <div className="compact-history-view">
-      <div className="history-summary">
-        History ({history.entries.length} words):
-      </div>
-      <div className="history-words">
+      <div className="compact-history-list">
         {history.entries.map((entry, index) => (
           <span
             key={index}
-            className={`history-word ${index === history.currentIndex ? 'current' : ''} ${
+            className={`compact-history-word ${index === history.currentIndex ? 'current' : ''} ${
               history.hasVisited(entry.word) ? 'visited' : 'unvisited'
             }`}
             onClick={() => handleHistoryClick(index)}
