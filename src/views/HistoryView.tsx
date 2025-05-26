@@ -1,11 +1,11 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { HistoryModel } from '../models/HistoryModel';
+import { History } from '../models/History';
 
 /**
  * View component for displaying the word history
  */
-interface HistoryViewProps { history: HistoryModel; }
+interface HistoryViewProps { history: History; }
 
 export const HistoryView: React.FC<HistoryViewProps> = observer(({ history }) => {
   // Now we can access appState through history

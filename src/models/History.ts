@@ -23,7 +23,7 @@ export type HistoryEntry = {
 /**
  * Model for tracking the history of word changes
  */
-export class HistoryModel {
+export class History {
   // List of all words in order
   entries: HistoryEntry[] = [];
 
