@@ -15,14 +15,14 @@ type AppPage = 'wordView' | 'historyView' | 'resetView' | 'reviewPronunciationVi
 // Page configuration with labels for navigation
 interface PageConfig {
   label: string;
-  subheading: string | null;
+  tooltip: string;
 }
 
 const PAGE_CONFIGS: Record<AppPage, PageConfig> = {
-  wordView: { label: 'Current Word', subheading: null },
-  historyView: { label: 'Word History', subheading: 'Word History' },
-  resetView: { label: 'Reset', subheading: 'Reset' },
-  reviewPronunciationView: { label: 'Review Pronunciation', subheading: 'Review Pronunciation' }
+  wordView: { label: 'Word', tooltip: 'Change letters of a word' },
+  resetView: { label: 'Reset...', tooltip: 'Choose a new word to start again' },
+  historyView: { label: 'History', tooltip: 'View history' },
+  reviewPronunciationView: { label: 'Pronunciation', tooltip: 'Review pronunciation of words' }
 };
 
 /**
@@ -237,8 +237,8 @@ export class AppState {
   navigateTo(page: AppPage): void {
     this.currentPage = page;
     
-    // Set the appropriate sub-header using the page config
-    this.subHeader = PAGE_CONFIGS[page].subheading;
+    // Remove sub-header since we're using header navigation now
+    this.subHeader = null;
     
     // If navigating to the reset view, reset the interaction state
     if (page === 'resetView') {
@@ -252,19 +252,16 @@ export class AppState {
   }
 
   /**
-   * Get the label for the current page
+   * Get all pages in navigation order with their config
    */
-  get currentPageLabel(): string {
-    return PAGE_CONFIGS[this.currentPage].label;
-  }
-
-  /**
-   * Get available pages for navigation (excluding current page and reset)
-   */
-  get availablePages(): Array<{ page: AppPage; label: string }> {
-    return Object.entries(PAGE_CONFIGS)
-      .filter(([page]) => page !== this.currentPage && page !== 'resetView')
-      .map(([page, config]) => ({ page: page as AppPage, label: config.label }));
+  get allPages(): Array<{ page: AppPage; label: string; tooltip: string; isActive: boolean }> {
+    const pageOrder: AppPage[] = ['wordView', 'resetView', 'historyView', 'reviewPronunciationView'];
+    return pageOrder.map(page => ({
+      page,
+      label: PAGE_CONFIGS[page].label,
+      tooltip: PAGE_CONFIGS[page].tooltip,
+      isActive: page === this.currentPage
+    }));
   }
 
   /**
