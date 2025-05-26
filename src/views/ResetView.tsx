@@ -27,7 +27,11 @@ export const ResetView: React.FC<ResetViewProps> = observer(({ resetInteraction 
   // These handlers are now replaced by ButtonAction objects in resetInteraction
 
   const handleWordClick = (word: string) => {
-    resetInteraction.setNewWord(word);
+    // Get the Word object from the word graph
+    const wordObj = resetInteraction.appState.wordGraph.getNode(word);
+    if (wordObj) {
+      resetInteraction.setNewWord(wordObj);
+    }
   };
 
   // Get filtered words

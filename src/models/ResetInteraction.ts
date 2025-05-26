@@ -1,6 +1,7 @@
 import { makeAutoObservable, computed } from 'mobx';
 import { AppState } from './AppState';
 import { ButtonAction } from '../lib/ui/actions';
+import { Word } from './Word';
 
 /**
  * Model for the Reset page interaction
@@ -101,26 +102,17 @@ export class ResetInteraction {
     if (allWordObjects.length > 0) {
       const randomIndex = Math.floor(Math.random() * allWordObjects.length);
       const randomWordObj = allWordObjects[randomIndex];
-      this.setNewWord(randomWordObj.word);
+      this.setNewWord(randomWordObj);
     }
   }
   
   /**
    * Set a new word as the current word and reset the history
    */
-  setNewWord(word: string): void {
-    // Get the Word object from the word graph
-    const wordObj = this.appState.wordGraph.getNode(word);
-    if (!wordObj) {
-      throw new Error(`Word "${word}" doesn't exist in the word graph`);
-    }
-    
+  setNewWord(wordObj: Word): void {
     // Reset the app state with the new word object
     // This already sets the word as the current visiting word and resets history
     this.appState.reset(wordObj);
-    
-    // Initialize the current word with the new Word object
-    this.appState.currentWord.updateWord(wordObj);
     
     // Navigate back to the word view
     this.appState.navigateTo('wordView');

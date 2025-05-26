@@ -132,10 +132,10 @@ export class AppState {
   }
 
   /**
-   * Set a new current word
+   * Set the current word without adding to history
    * @param wordObj The Word object to set as the current word
    */
-  setNewWord(wordObj: Word): void {
+  setCurrentWord(wordObj: Word): void {
     // Get the word string value
     const word = wordObj.word;
 
@@ -169,6 +169,18 @@ export class AppState {
     }
   }
 
+  /**
+   * Set a new word and add it to history
+   * @param wordObj The Word object to set as the new current word
+   */
+  setNewWord(wordObj: Word): void {
+    // Add the new word to history first
+    this.history.addWord(wordObj);
+    
+    // Then set it as the current word
+    this.setCurrentWord(wordObj);
+  }
+
   // Note: The deleteLetter, insertLetter, and replaceLetter methods have been removed
   // Changes are now handled directly through LetterChange objects with direct references to resulting Word objects
 
@@ -181,8 +193,8 @@ export class AppState {
     // Get previous word from history
     const prevWordObj = this.history.undo();
     if (prevWordObj) {
-      // Set the new current word (which will handle marking the current word as visited)
-      this.setNewWord(prevWordObj);
+      // Set the current word without adding to history (since we're navigating through history)
+      this.setCurrentWord(prevWordObj);
     }
   }
 
@@ -193,8 +205,8 @@ export class AppState {
     // Get next word from history
     const nextWordObj = this.history.redo();
     if (nextWordObj) {
-      // Set the new current word (which will handle marking the current word as visited)
-      this.setNewWord(nextWordObj);
+      // Set the current word without adding to history (since we're navigating through history)
+      this.setCurrentWord(nextWordObj);
     }
   }
 
@@ -225,6 +237,9 @@ export class AppState {
     
     // Set visitingWord to the new initial word
     this.visitingWord = initialWord;
+    
+    // Update the current word interaction
+    this.currentWord.updateWord(initialWord);
     
     // Also update the history model
     this.history.reset(initialWord);
