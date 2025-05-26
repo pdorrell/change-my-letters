@@ -25,7 +25,10 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
           <h1>Change My Letters</h1>
         )}
         <div className="app-controls">
-          <ActionButton action={appState.resetAction}>
+          <ActionButton action={new ButtonAction(
+            appState.currentPage === 'resetView' ? null : () => appState.navigateTo('resetView'),
+            { tooltip: "Choose a new word" }
+          )}>
             Reset...
           </ActionButton>
           <ActionButton action={appState.undoAction}>
@@ -34,20 +37,28 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
           <ActionButton action={appState.redoAction}>
             Redo
           </ActionButton>
-          <ActionButton action={appState.toggleViewAction}>
-            {appState.currentPage === 'wordView' ? '→ History' : '→ Current Word'}
-          </ActionButton>
           
-          {appState.currentPage === 'wordView' && (
-            <ActionButton action={appState.reviewPronunciationAction}>
-              → Review Pronunciation
-            </ActionButton>
-          )}
-          
-          {appState.currentPage === 'reviewPronunciationView' && (
-            <ActionButton action={new ButtonAction(() => appState.navigateTo('wordView'), { tooltip: "Back to current word" })}>
-              → Current Word
-            </ActionButton>
+          {appState.availablePages.length > 0 && (
+            <div className="page-navigation">
+              <span className="page-nav-arrow">→</span>
+              <select 
+                value=""
+                onChange={(e) => {
+                  if (e.target.value) {
+                    appState.navigateTo(e.target.value as 'wordView' | 'historyView' | 'resetView' | 'reviewPronunciationView');
+                    e.target.value = ""; // Reset to empty after navigation
+                  }
+                }}
+                className="page-nav-select"
+              >
+                <option value="">Select page...</option>
+                {appState.availablePages.map(({ page, label }) => (
+                  <option key={page} value={page}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </div>
           )}
           
           {appState.currentPage === 'wordView' && (
