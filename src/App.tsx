@@ -31,12 +31,6 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
           )}>
             Reset...
           </ActionButton>
-          <ActionButton action={appState.undoAction}>
-            Undo
-          </ActionButton>
-          <ActionButton action={appState.redoAction}>
-            Redo
-          </ActionButton>
           
           {appState.availablePages.length > 0 && (
             <div className="page-navigation">
@@ -51,7 +45,7 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
                 }}
                 className="page-nav-select"
               >
-                <option value="">Select page...</option>
+                <option value="">page...</option>
                 {appState.availablePages.map(({ page, label }) => (
                   <option key={page} value={page}>
                     {label}
@@ -60,6 +54,13 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
               </select>
             </div>
           )}
+          
+          <ActionButton action={appState.undoAction}>
+            Undo
+          </ActionButton>
+          <ActionButton action={appState.redoAction}>
+            Redo
+          </ActionButton>
           
           {appState.currentPage === 'wordView' && (
             <>
