@@ -30,6 +30,8 @@ export class History {
   // Current pointer in the history (for undo/redo)
   currentIndex: number = 0;
 
+  // Whether to show the compact history view
+  showCompactHistory: boolean = false;
 
   // Reference to app state
   appState: AppState;
@@ -130,5 +132,12 @@ export class History {
   reset(initialWord: Word): void {
     this.entries = [{ word: initialWord, wordString: initialWord.word }];
     this.currentIndex = 0;
+  }
+
+  /**
+   * Toggle the compact history view
+   */
+  toggleShowCompactHistory(): void {
+    this.showCompactHistory = !this.showCompactHistory;
   }
 }

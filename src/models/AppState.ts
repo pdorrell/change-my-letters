@@ -105,8 +105,8 @@ export class AppState {
     // Initialize history with the initial word object
     this.history = new History(this, wordNode);
 
-    // Initialize the current word with the menu manager
-    this.currentWord = new WordInteraction(wordNode, this.newWordHandler, this.wordSayer, this.menuManager);
+    // Initialize the current word with the menu manager and history
+    this.currentWord = new WordInteraction(wordNode, this.newWordHandler, this.wordSayer, this.menuManager, this.history);
 
     // Initialize button actions
     this.resetAction = new ButtonAction(() => this.resetGame(), { tooltip: "Choose a new word" });

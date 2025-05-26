@@ -6,6 +6,7 @@ import { Letter } from '../Letter';
 import { Position } from '../Position';
 import { MenuManager } from '../MenuManager';
 import { WordSayerInterface } from '../WordSayerInterface';
+import { History } from '../History';
 
 /**
  * Model representing the user's current interaction with a word
@@ -40,7 +41,10 @@ export class WordInteraction {
     public readonly wordSayer: WordSayerInterface,
     
     // Reference to the menu manager
-    public readonly menuManager: MenuManager
+    public readonly menuManager: MenuManager,
+    
+    // History model for compact history view
+    public readonly history: History
   ) {
     // Initialize letter and position interactions
     this.initializeInteractions();

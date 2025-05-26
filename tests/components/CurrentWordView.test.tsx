@@ -18,7 +18,7 @@ describe('CurrentWordView', () => {
     
     // Create WordInteraction using Word from WordGraph
     const catWord = appState.wordGraph.getRequiredWord('cat');
-    currentWord = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager);
+    currentWord = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
   });
   
   it('renders the current word with letters and positions', () => {
@@ -73,7 +73,7 @@ describe('CurrentWordView', () => {
   it('handles different word lengths', () => {
     // Test with a different word - we'll use "bat" which is also available in our test graph
     const batWord = appState.wordGraph.getRequiredWord('bat');
-    const batWordInteraction = new WordInteraction(batWord, appState.newWordHandler, appState.wordSayer, appState.menuManager);
+    const batWordInteraction = new WordInteraction(batWord, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
     
     const { container } = render(<CurrentWordView currentWord={batWordInteraction} maxWordLength={10} />);
     
