@@ -18,19 +18,21 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
         <div className="version-display">
           Version: <b>{appState.version}</b>
         </div>
-        <h1>Change My Letters</h1>
-        <div className="page-navigation-tabs">
-          {appState.allPages.map(({ page, label, tooltip, isActive }) => (
-            <button
-              key={page}
-              className={`page-tab ${isActive ? 'active' : ''}`}
-              onClick={isActive ? undefined : () => appState.navigateTo(page)}
-              title={tooltip}
-              disabled={isActive}
-            >
-              {label}
-            </button>
-          ))}
+        <div className="header-with-navigation">
+          <h1>Change My Letters</h1>
+          <div className="page-navigation-tabs">
+            {appState.allPages.map(({ page, label, tooltip, isActive }) => (
+              <button
+                key={page}
+                className={`page-tab ${isActive ? 'active' : ''}`}
+                onClick={isActive ? undefined : () => appState.navigateTo(page)}
+                title={tooltip}
+                disabled={isActive}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
         </div>
         <div className="app-controls">
           <ActionButton action={appState.undoAction}>
