@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { CurrentWordView } from './views/CurrentWordView';
-import { HistoryView, ShowCompactHistoryCheckbox, CompactHistoryView } from './views/HistoryView';
+import { CompactHistoryView } from './views/HistoryView';
 import { ResetView } from './views/ResetView';
 import { ReviewPronunciationView } from './views/ReviewPronunciationView';
 import { AppState } from './models/AppState';
@@ -57,12 +57,7 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
                 />
                 Say Immediately
               </label>
-              <ShowCompactHistoryCheckbox history={appState.history} />
             </>
-          )}
-          
-          {appState.currentPage === 'resetView' && (
-            <ShowCompactHistoryCheckbox history={appState.history} />
           )}
         </div>
       </header>
@@ -70,20 +65,14 @@ const App: React.FC<AppProps> = observer(({ appState }) => {
         {appState.currentPage === 'wordView' ? (
           <>
             <CurrentWordView currentWord={appState.currentWord} maxWordLength={appState.wordGraph.maxWordLength} />
-            {appState.history.showCompactHistory && (
-              <CompactHistoryView history={appState.history} />
-            )}
+            <CompactHistoryView history={appState.history} />
           </>
-        ) : appState.currentPage === 'historyView' ? (
-          <HistoryView history={appState.history} />
         ) : appState.currentPage === 'reviewPronunciationView' ? (
           <ReviewPronunciationView reviewInteraction={appState.reviewPronunciationInteraction} />
         ) : (
           <>
             <ResetView resetInteraction={appState.resetInteraction} />
-            {appState.history.showCompactHistory && (
-              <CompactHistoryView history={appState.history} />
-            )}
+            <CompactHistoryView history={appState.history} />
           </>
         )}
       </main>
