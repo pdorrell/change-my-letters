@@ -1,5 +1,5 @@
 import { makeAutoObservable, computed } from 'mobx';
-import { HistoryModel } from './HistoryModel';
+import { History } from './History';
 import { WordGraph } from './WordGraph';
 import { WordInteraction } from './interaction/WordInteraction';
 import { WordSayerInterface } from './WordSayerInterface';
@@ -39,7 +39,7 @@ export class AppState {
   currentWord: WordInteraction;
 
   // The word history model
-  history: HistoryModel;
+  history: History;
 
   // Current word being visited
   visitingWord: Word;
@@ -103,7 +103,7 @@ export class AppState {
     this.visitingWord = wordNode;
 
     // Initialize history with the initial word object
-    this.history = new HistoryModel(this, wordNode);
+    this.history = new History(this, wordNode);
 
     // Initialize the current word with the menu manager
     this.currentWord = new WordInteraction(wordNode, this.newWordHandler, this.wordSayer, this.menuManager);

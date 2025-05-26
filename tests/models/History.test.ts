@@ -1,12 +1,12 @@
-import { HistoryModel, WordChange } from '../../src/models/HistoryModel';
+import { History, WordChange } from '../../src/models/History';
 import { AppState } from '../../src/models/AppState';
 import { Word } from '../../src/models/Word';
 import { WordGraph } from '../../src/models/WordGraph';
 import { WordGraphBuilder } from '../../src/models/WordGraphBuilder';
 import { WordSayerTestDouble } from '../test_doubles/WordSayerTestDouble';
 
-describe('HistoryModel', () => {
-  let historyModel: HistoryModel;
+describe('History', () => {
+  let history: History;
   let appState: AppState;
   let wordGraph: WordGraph;
 
@@ -32,15 +32,15 @@ describe('HistoryModel', () => {
     const catWord = wordGraph.getNode('cat');
     
     // Initialize the history model with AppState and the initial word
-    historyModel = new HistoryModel(appState, catWord!);
+    history = new History(appState, catWord!);
   });
 
   it('should initialize with initial word', () => {
     const catWord = appState.wordGraph.getNode('cat')!;
-    expect(historyModel.entries[0].wordString).toBe('cat');
-    expect(historyModel.entries[0].word).toBe(catWord);
-    expect(historyModel.currentIndex).toBe(0);
-    expect(historyModel.hasVisited('cat')).toBe(false);
+    expect(history.entries[0].wordString).toBe('cat');
+    expect(history.entries[0].word).toBe(catWord);
+    expect(history.currentIndex).toBe(0);
+    expect(history.hasVisited('cat')).toBe(false);
     expect(appState.visitingWord).toBe(catWord);
   });
 
@@ -52,20 +52,20 @@ describe('HistoryModel', () => {
     };
     
     const batWord = appState.wordGraph.getNode('bat')!;
-    historyModel.addWord(batWord, change);
+    history.addWord(batWord, change);
     
-    expect(historyModel.entries.length).toBe(2);
-    expect(historyModel.entries[1].wordString).toBe('bat');
-    expect(historyModel.entries[1].word).toBe(batWord);
-    expect(historyModel.entries[1].change).toEqual(change);
-    expect(historyModel.currentIndex).toBe(1);
+    expect(history.entries.length).toBe(2);
+    expect(history.entries[1].wordString).toBe('bat');
+    expect(history.entries[1].word).toBe(batWord);
+    expect(history.entries[1].change).toEqual(change);
+    expect(history.currentIndex).toBe(1);
     
     // For the test, manually mark 'cat' as visited
     const catWordObj = appState.wordGraph.getNode('cat')!;
     catWordObj.previouslyVisited = true;
     appState.previouslyVisitedWords.add('cat');
     // Now check if it's visited
-    expect(historyModel.hasVisited('cat')).toBe(true);
+    expect(history.hasVisited('cat')).toBe(true);
   });
 
   it('should support undo/redo operations', () => {
@@ -85,41 +85,41 @@ describe('HistoryModel', () => {
     const ratWord = appState.wordGraph.getNode('rat')!;
     const catWord = appState.wordGraph.getNode('cat')!;
     
-    historyModel.addWord(batWord, change1);
-    historyModel.addWord(ratWord, change2);
+    history.addWord(batWord, change1);
+    history.addWord(ratWord, change2);
     
     // Undo should move back in history
-    const undoResult = historyModel.undo();
+    const undoResult = history.undo();
     expect(undoResult).toBe(batWord);
     expect(undoResult!.word).toBe('bat');
-    expect(historyModel.currentIndex).toBe(1);
+    expect(history.currentIndex).toBe(1);
     
     // Undo again
-    const undoResult2 = historyModel.undo();
+    const undoResult2 = history.undo();
     expect(undoResult2).toBe(catWord);
     expect(undoResult2!.word).toBe('cat');
-    expect(historyModel.currentIndex).toBe(0);
+    expect(history.currentIndex).toBe(0);
     
     // Can't undo beyond the beginning
-    const undoResult3 = historyModel.undo();
+    const undoResult3 = history.undo();
     expect(undoResult3).toBeNull();
-    expect(historyModel.currentIndex).toBe(0);
+    expect(history.currentIndex).toBe(0);
     
     // Redo should move forward in history
-    const redoResult = historyModel.redo();
+    const redoResult = history.redo();
     expect(redoResult).toBe(batWord);
     expect(redoResult!.word).toBe('bat');
-    expect(historyModel.currentIndex).toBe(1);
+    expect(history.currentIndex).toBe(1);
     
-    const redoResult2 = historyModel.redo();
+    const redoResult2 = history.redo();
     expect(redoResult2).toBe(ratWord);
     expect(redoResult2!.word).toBe('rat');
-    expect(historyModel.currentIndex).toBe(2);
+    expect(history.currentIndex).toBe(2);
     
     // Can't redo beyond the end
-    const redoResult3 = historyModel.redo();
+    const redoResult3 = history.redo();
     expect(redoResult3).toBeNull();
-    expect(historyModel.currentIndex).toBe(2);
+    expect(history.currentIndex).toBe(2);
   });
 
   it('should correctly check if a word has been visited', () => {
@@ -130,16 +130,16 @@ describe('HistoryModel', () => {
     };
     
     const batWord = appState.wordGraph.getNode('bat')!;
-    historyModel.addWord(batWord, change);
+    history.addWord(batWord, change);
     
     // First makes 'cat' visited manually for the test
     const catWordObj = appState.wordGraph.getNode('cat')!;
     catWordObj.previouslyVisited = true;
     appState.previouslyVisitedWords.add('cat');
     // Check that 'cat' is now visited
-    expect(historyModel.hasVisited('cat')).toBe(true);
-    expect(historyModel.hasVisited('bat')).toBe(false);
-    expect(historyModel.hasVisited('rat')).toBe(false);
+    expect(history.hasVisited('cat')).toBe(true);
+    expect(history.hasVisited('bat')).toBe(false);
+    expect(history.hasVisited('rat')).toBe(false);
   });
 
   it('should jump to a specific index in history', () => {
@@ -159,25 +159,25 @@ describe('HistoryModel', () => {
     const ratWord = appState.wordGraph.getNode('rat')!;
     const catWord = appState.wordGraph.getNode('cat')!;
     
-    historyModel.addWord(batWord, change1);
-    historyModel.addWord(ratWord, change2);
+    history.addWord(batWord, change1);
+    history.addWord(ratWord, change2);
     
     // Jump to index 0
-    const jumpResult = historyModel.jumpToIndex(0);
+    const jumpResult = history.jumpToIndex(0);
     expect(jumpResult).toBe(catWord);
     expect(jumpResult!.word).toBe('cat');
-    expect(historyModel.currentIndex).toBe(0);
+    expect(history.currentIndex).toBe(0);
     
     // Jump to index 2
-    const jumpResult2 = historyModel.jumpToIndex(2);
+    const jumpResult2 = history.jumpToIndex(2);
     expect(jumpResult2).toBe(ratWord);
     expect(jumpResult2!.word).toBe('rat');
-    expect(historyModel.currentIndex).toBe(2);
+    expect(history.currentIndex).toBe(2);
     
     // Invalid index returns null
-    const jumpResult3 = historyModel.jumpToIndex(5);
+    const jumpResult3 = history.jumpToIndex(5);
     expect(jumpResult3).toBeNull();
-    expect(historyModel.currentIndex).toBe(2);
+    expect(history.currentIndex).toBe(2);
   });
 
   it('should clear history when reset', () => {
@@ -190,29 +190,29 @@ describe('HistoryModel', () => {
     const batWord = appState.wordGraph.getNode('bat')!;
     const dogWord = appState.wordGraph.getNode('dog')!;
     
-    historyModel.addWord(batWord, change);
+    history.addWord(batWord, change);
     
-    historyModel.reset(dogWord);
+    history.reset(dogWord);
     
-    expect(historyModel.entries.length).toBe(1);
-    expect(historyModel.entries[0].wordString).toBe('dog');
-    expect(historyModel.entries[0].word).toBe(dogWord);
-    expect(historyModel.entries[0].change).toBeUndefined();
-    expect(historyModel.currentIndex).toBe(0);
+    expect(history.entries.length).toBe(1);
+    expect(history.entries[0].wordString).toBe('dog');
+    expect(history.entries[0].word).toBe(dogWord);
+    expect(history.entries[0].change).toBeUndefined();
+    expect(history.currentIndex).toBe(0);
     // After reset, all previouslyVisited flags should be reset by AppState.reset()
     // Test that our cat word isn't marked as previously visited by setting the flags directly
     const catWord = appState.wordGraph.getNode('cat')!;
     catWord.previouslyVisited = false;
-    expect(historyModel.hasVisited('cat')).toBe(false);
+    expect(history.hasVisited('cat')).toBe(false);
     
     // Same for bat and dog
     const batWordObj = appState.wordGraph.getNode('bat')!;
     batWordObj.previouslyVisited = false;
-    expect(historyModel.hasVisited('bat')).toBe(false);
+    expect(history.hasVisited('bat')).toBe(false);
     
     const dogWordObj = appState.wordGraph.getNode('dog')!;
     dogWordObj.previouslyVisited = false;
-    expect(historyModel.hasVisited('dog')).toBe(false);
+    expect(history.hasVisited('dog')).toBe(false);
   });
 
   it('should truncate redo history when adding a new word after undo', () => {
@@ -239,33 +239,33 @@ describe('HistoryModel', () => {
     const fatWord = appState.wordGraph.getNode('fat')!;
     const catWord = appState.wordGraph.getNode('cat')!;
     
-    historyModel.addWord(batWord, change1);
-    historyModel.addWord(ratWord, change2);
+    history.addWord(batWord, change1);
+    history.addWord(ratWord, change2);
     
     // Undo twice
-    historyModel.undo();
-    historyModel.undo();
+    history.undo();
+    history.undo();
     
     // Add a new word
-    historyModel.addWord(fatWord, change3);
+    history.addWord(fatWord, change3);
     
     // History should be truncated, with only 'cat' and 'fat'
-    expect(historyModel.entries.length).toBe(2);
-    expect(historyModel.entries[0].wordString).toBe('cat');
-    expect(historyModel.entries[0].word).toBe(catWord);
-    expect(historyModel.entries[1].wordString).toBe('fat');
-    expect(historyModel.entries[1].word).toBe(fatWord);
-    expect(historyModel.currentIndex).toBe(1);
+    expect(history.entries.length).toBe(2);
+    expect(history.entries[0].wordString).toBe('cat');
+    expect(history.entries[0].word).toBe(catWord);
+    expect(history.entries[1].wordString).toBe('fat');
+    expect(history.entries[1].word).toBe(fatWord);
+    expect(history.currentIndex).toBe(1);
     
     // Redo should not work now
-    const redoResult = historyModel.redo();
+    const redoResult = history.redo();
     expect(redoResult).toBeNull();
   });
   
   it('should provide canUndo and canRedo properties', () => {
     // Initially, can't undo but also can't redo
-    expect(historyModel.canUndo).toBe(false);
-    expect(historyModel.canRedo).toBe(false);
+    expect(history.canUndo).toBe(false);
+    expect(history.canRedo).toBe(false);
     
     const change: WordChange = {
       type: 'replace_letter',
@@ -274,24 +274,24 @@ describe('HistoryModel', () => {
     };
     
     const batWord = appState.wordGraph.getNode('bat')!;
-    historyModel.addWord(batWord, change);
+    history.addWord(batWord, change);
     
     // After adding a word, can undo but can't redo
-    expect(historyModel.canUndo).toBe(true);
-    expect(historyModel.canRedo).toBe(false);
+    expect(history.canUndo).toBe(true);
+    expect(history.canRedo).toBe(false);
     
     // After undoing, can't undo more (at beginning) but can redo
-    historyModel.undo();
-    expect(historyModel.canUndo).toBe(false);
-    expect(historyModel.canRedo).toBe(true);
+    history.undo();
+    expect(history.canUndo).toBe(false);
+    expect(history.canRedo).toBe(true);
   });
   
   it('should provide currentWord property', () => {
     const catWord = appState.wordGraph.getNode('cat')!;
     const batWord = appState.wordGraph.getNode('bat')!;
     
-    expect(historyModel.currentWord).toBe(catWord);
-    expect(historyModel.currentWord.word).toBe('cat');
+    expect(history.currentWord).toBe(catWord);
+    expect(history.currentWord.word).toBe('cat');
     
     const change: WordChange = {
       type: 'replace_letter',
@@ -299,12 +299,12 @@ describe('HistoryModel', () => {
       letter: 'b'
     };
     
-    historyModel.addWord(batWord, change);
-    expect(historyModel.currentWord).toBe(batWord);
-    expect(historyModel.currentWord.word).toBe('bat');
+    history.addWord(batWord, change);
+    expect(history.currentWord).toBe(batWord);
+    expect(history.currentWord.word).toBe('bat');
     
-    historyModel.undo();
-    expect(historyModel.currentWord).toBe(catWord);
-    expect(historyModel.currentWord.word).toBe('cat');
+    history.undo();
+    expect(history.currentWord).toBe(catWord);
+    expect(history.currentWord.word).toBe('cat');
   });
 });
