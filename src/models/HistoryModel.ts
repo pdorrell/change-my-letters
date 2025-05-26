@@ -46,7 +46,7 @@ export class HistoryModel {
   /**
    * Add a new word to the history
    */
-  addWord(word: Word, change: WordChange): void {
+  addWord(word: Word, change?: WordChange): void {
     // If we're not at the end of the history, remove all future entries
     if (this.currentIndex < this.entries.length - 1) {
       this.entries = this.entries.slice(0, this.currentIndex + 1);
