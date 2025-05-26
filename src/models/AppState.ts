@@ -12,6 +12,19 @@ import { ButtonAction } from '../lib/ui/actions';
 // Type for the main application pages
 type AppPage = 'wordView' | 'historyView' | 'resetView' | 'reviewPronunciationView';
 
+// Page configuration with labels for navigation
+interface PageConfig {
+  label: string;
+  subheading: string | null;
+}
+
+const PAGE_CONFIGS: Record<AppPage, PageConfig> = {
+  wordView: { label: 'Current Word', subheading: null },
+  historyView: { label: 'Word History', subheading: 'Word History' },
+  resetView: { label: 'Reset', subheading: 'Reset' },
+  reviewPronunciationView: { label: 'Review Pronunciation', subheading: 'Review Pronunciation' }
+};
+
 /**
  * Main application state that manages the current page and models
  */
@@ -224,21 +237,8 @@ export class AppState {
   navigateTo(page: AppPage): void {
     this.currentPage = page;
     
-    // Set the appropriate sub-header for each page
-    switch (page) {
-      case 'wordView':
-        this.subHeader = null;
-        break;
-      case 'historyView':
-        this.subHeader = 'Word History';
-        break;
-      case 'resetView':
-        this.subHeader = 'Reset';
-        break;
-      case 'reviewPronunciationView':
-        this.subHeader = 'Review Pronunciation';
-        break;
-    }
+    // Set the appropriate sub-header using the page config
+    this.subHeader = PAGE_CONFIGS[page].subheading;
     
     // If navigating to the reset view, reset the interaction state
     if (page === 'resetView') {
@@ -249,6 +249,22 @@ export class AppState {
     if (page === 'reviewPronunciationView') {
       this.reviewPronunciationInteraction.reset();
     }
+  }
+
+  /**
+   * Get the label for the current page
+   */
+  get currentPageLabel(): string {
+    return PAGE_CONFIGS[this.currentPage].label;
+  }
+
+  /**
+   * Get available pages for navigation (excluding current page and reset)
+   */
+  get availablePages(): Array<{ page: AppPage; label: string }> {
+    return Object.entries(PAGE_CONFIGS)
+      .filter(([page]) => page !== this.currentPage && page !== 'resetView')
+      .map(([page, config]) => ({ page: page as AppPage, label: config.label }));
   }
 
   /**
