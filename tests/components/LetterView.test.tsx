@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, act } from '@testing-library/react';
-import { LetterView } from '../../src/views/LetterView';
+import { LetterView } from '../../src/views/Letter';
 import { LetterInteraction } from '../../src/models/interaction/LetterInteraction';
 import { Word } from '../../src/models/Word';
 import { FreeTestWordGetter } from '../utils/FreeTestWordGetter';
