@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, act } from '@testing-library/react';
-import { PositionView } from '../../src/views/Position';
+import { PositionView } from '../../src/views/position';
 import { PositionInteraction } from '../../src/models/interaction/PositionInteraction';
 import { Word } from '../../src/models/Word';
 import { FreeTestWordGetter } from '../utils/FreeTestWordGetter';

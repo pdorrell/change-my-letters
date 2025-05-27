@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { ReviewPronunciationInteraction } from '../models/ReviewPronunciationInteraction';
-import { ActionButton } from '../lib/ui/ActionButton';
+import { ActionButton } from '../lib/ui/action-button';
 import { AppState } from '../models/AppState';
 
 /**

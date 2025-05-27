@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import App from './App';
+import App from './app';
 import { ApplicationLoader } from './models/ApplicationLoader';
 
 interface AppLoaderProps {

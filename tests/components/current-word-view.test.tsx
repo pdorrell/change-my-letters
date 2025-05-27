@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { CurrentWordView } from '../../src/views/CurrentWord';
+import { CurrentWordView } from '../../src/views/current-word';
 import { WordInteraction } from '../../src/models/interaction/WordInteraction';
 import { AppState } from '../../src/models/AppState';
 import { createTestAppState } from '../utils/TestAppBuilder';
