@@ -1,12 +1,83 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { AppHeader } from './components/AppHeader';
-import { AppBody } from './components/AppBody';
 import { AppState } from './models/AppState';
+import { CurrentWordPage, CurrentWordAppControls } from './views/CurrentWord';
+import { ReviewPronunciationPage } from './views/ReviewPronunciation';
+import { ResetPage, ResetAppControls } from './views/Reset';
 
 interface AppProps {
   appState: AppState;
 }
+
+interface AppVersionProps { version: string; }
+
+const AppVersion: React.FC<AppVersionProps> = ({ version }) => {
+  return (
+    <div className="version-display">
+      Version: <b>{version}</b>
+    </div>
+  );
+};
+
+interface PageNavigationProps { appState: AppState; }
+
+const PageNavigation: React.FC<PageNavigationProps> = observer(({ appState }) => {
+  return (
+    <div className="page-navigation-tabs">
+      {appState.allPages.map(({ page, label, tooltip, isActive }) => (
+        <button
+          key={page}
+          className={`page-tab ${isActive ? 'active' : ''}`}
+          onClick={isActive ? undefined : () => appState.navigateTo(page)}
+          title={tooltip}
+          disabled={isActive}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+  );
+});
+
+
+interface AppHeaderProps { appState: AppState; }
+
+const AppHeader: React.FC<AppHeaderProps> = observer(({ appState }) => {
+  return (
+    <header>
+      <AppVersion version={appState.version} />
+      <div className="header-with-navigation">
+        <h1>Change My Letters</h1>
+        <PageNavigation appState={appState} />
+      </div>
+      {appState.currentPage === 'wordView' ? (
+        <CurrentWordAppControls appState={appState} />
+      ) : appState.currentPage === 'reviewPronunciationView' ? (
+        <div className="app-controls">
+          {/* No specific controls for review pronunciation page */}
+        </div>
+      ) : (
+        <ResetAppControls appState={appState} />
+      )}
+    </header>
+  );
+});
+
+interface AppBodyProps { appState: AppState; }
+
+const AppBody: React.FC<AppBodyProps> = observer(({ appState }) => {
+  return (
+    <main>
+      {appState.currentPage === 'wordView' ? (
+        <CurrentWordPage appState={appState} />
+      ) : appState.currentPage === 'reviewPronunciationView' ? (
+        <ReviewPronunciationPage appState={appState} />
+      ) : (
+        <ResetPage appState={appState} />
+      )}
+    </main>
+  );
+});
 
 const App: React.FC<AppProps> = observer(({ appState }) => {
   return (
