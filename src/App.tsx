@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { AppState } from './models/AppState';
-import { CurrentWordPage, CurrentWordAppControls } from './views/CurrentWord';
+import { CurrentWordPage } from './views/CurrentWord';
 import { ReviewPronunciationPage } from './views/ReviewPronunciation';
-import { ResetPage, ResetAppControls } from './views/Reset';
+import { ResetPage } from './views/Reset';
 
 interface AppProps {
   appState: AppState;
@@ -50,15 +50,6 @@ const AppHeader: React.FC<AppHeaderProps> = observer(({ appState }) => {
         <h1>Change My Letters</h1>
         <PageNavigation appState={appState} />
       </div>
-      {appState.currentPage === 'wordView' ? (
-        <CurrentWordAppControls appState={appState} />
-      ) : appState.currentPage === 'reviewPronunciationView' ? (
-        <div className="app-controls">
-          {/* No specific controls for review pronunciation page */}
-        </div>
-      ) : (
-        <ResetAppControls appState={appState} />
-      )}
     </header>
   );
 });
