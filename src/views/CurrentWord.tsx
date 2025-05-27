@@ -6,7 +6,7 @@ import { PositionView, PositionPlaceholder } from './Position';
 import { MenuManagerInterface } from '../models/MenuManagerInterface';
 import { AppState } from '../models/AppState';
 import { ActionButton } from '../lib/ui/ActionButton';
-import { CompactHistoryView } from './History';
+import { HistoryPanel } from './History';
 import {
   useFloating,
   autoUpdate,
@@ -207,13 +207,13 @@ export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ wordSelectio
 };
 
 /**
- * App controls component for Current Word page
+ * Controls component for Current Word page
  */
-interface CurrentWordAppControlsProps { appState: AppState; }
+interface CurrentWordControlsProps { appState: AppState; }
 
-export const CurrentWordAppControls: React.FC<CurrentWordAppControlsProps> = ({ appState }) => {
+export const CurrentWordControls: React.FC<CurrentWordControlsProps> = ({ appState }) => {
   return (
-    <div className="app-controls">
+    <div className="current-word-controls">
       <ActionButton action={appState.undoAction}>
         Undo
       </ActionButton>
@@ -245,9 +245,9 @@ interface CurrentWordPageProps { appState: AppState; }
 export const CurrentWordPage: React.FC<CurrentWordPageProps> = ({ appState }) => {
   return (
     <>
-      <CurrentWordAppControls appState={appState} />
+      <CurrentWordControls appState={appState} />
       <CurrentWordView currentWord={appState.currentWord} maxWordLength={appState.wordGraph.maxWordLength} />
-      <CompactHistoryView history={appState.history} />
+      <HistoryPanel history={appState.history} />
     </>
   );
 };

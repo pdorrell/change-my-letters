@@ -2,9 +2,9 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { History } from '../models/History';
 
-interface CompactHistoryViewProps { history: History; }
+interface HistoryPanelProps { history: History; }
 
-export const CompactHistoryView: React.FC<CompactHistoryViewProps> = observer(({ history }) => {
+export const HistoryPanel: React.FC<HistoryPanelProps> = observer(({ history }) => {
   const handleHistoryClick = (index: number) => {
     const word = history.jumpToIndex(index);
     if (word) {
@@ -13,12 +13,12 @@ export const CompactHistoryView: React.FC<CompactHistoryViewProps> = observer(({
   };
 
   return (
-    <div className="compact-history-view">
-      <div className="compact-history-list">
+    <div className="history-panel">
+      <div className="history-panel-list">
         {history.entries.map((entry, index) => (
           <span
             key={index}
-            className={`compact-history-word ${index === history.currentIndex ? 'current' : ''} ${
+            className={`history-panel-word ${index === history.currentIndex ? 'current' : ''} ${
               history.hasVisited(entry.word) ? 'visited' : 'unvisited'
             }`}
             onClick={() => handleHistoryClick(index)}

@@ -1,11 +1,9 @@
-// Reset view styles
-.reset-view {
+// Reset controls styles
+.reset-controls {
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  
-  .reset-controls {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
@@ -74,38 +72,45 @@
     }
   }
   
-  .reset-word-list {
-    background-color: #fff;
-    border: 1px solid #eee;
-    border-radius: 8px;
+}
+
+// Reset word choice styles
+.reset-word-choice {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px 20px 20px;
+  
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+  line-height: 2;
+  
+  p {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .reset-word-option {
+    cursor: pointer;
+    display: inline-block;
+    padding: 3px 6px;
+    margin: 2px;
+    border-radius: 3px;
+    
+    &:hover {
+      background-color: #e6f7ff;
+      text-decoration: underline;
+    }
+  }
+  
+  .reset-no-words {
+    color: #999;
+    font-style: italic;
+    text-align: center;
     padding: 20px;
-    max-height: 400px;
-    overflow-y: auto;
-    line-height: 2;
-    
-    p {
-      margin: 0;
-      padding: 0;
-    }
-    
-    .reset-word-option {
-      cursor: pointer;
-      display: inline-block;
-      padding: 3px 6px;
-      margin: 2px;
-      border-radius: 3px;
-      
-      &:hover {
-        background-color: #e6f7ff;
-        text-decoration: underline;
-      }
-    }
-    
-    .reset-no-words {
-      color: #999;
-      font-style: italic;
-      text-align: center;
-      padding: 20px;
-    }
   }
 }
