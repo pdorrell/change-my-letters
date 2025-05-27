@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { AppState } from '../models/AppState';
 import { CurrentWordPage } from './CurrentWordPage';
 import { ReviewPronunciationPage } from './ReviewPronunciationPage';
@@ -6,7 +7,7 @@ import { ResetPage } from './ResetPage';
 
 interface AppBodyProps { appState: AppState; }
 
-export const AppBody: React.FC<AppBodyProps> = ({ appState }) => {
+export const AppBody: React.FC<AppBodyProps> = observer(({ appState }) => {
   return (
     <main>
       {appState.currentPage === 'wordView' ? (
@@ -18,4 +19,4 @@ export const AppBody: React.FC<AppBodyProps> = ({ appState }) => {
       )}
     </main>
   );
-};
+});
