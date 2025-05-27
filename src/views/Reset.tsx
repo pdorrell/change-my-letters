@@ -3,11 +3,14 @@ import { observer } from 'mobx-react-lite';
 import { ResetInteraction } from '../models/ResetInteraction';
 import { ActionButton } from '../lib/ui/ActionButton';
 import { AppState } from '../models/AppState';
-import { CompactHistoryView } from './History';
+import { HistoryPanel } from './History';
 
-interface ResetViewProps { resetInteraction: ResetInteraction; }
+/**
+ * Controls component for Reset page
+ */
+interface ResetControlsProps { resetInteraction: ResetInteraction; }
 
-export const ResetView: React.FC<ResetViewProps> = observer(({ resetInteraction }) => {
+export const ResetControls: React.FC<ResetControlsProps> = observer(({ resetInteraction }) => {
   // Create a ref for the filter input to focus it on mount
   const filterInputRef = useRef<HTMLInputElement>(null);
 
@@ -26,8 +29,48 @@ export const ResetView: React.FC<ResetViewProps> = observer(({ resetInteraction 
     resetInteraction.toggleMatchStartOnly();
   };
 
-  // These handlers are now replaced by ButtonAction objects in resetInteraction
+  return (
+    <div className="reset-controls">
+      <div className="reset-controls-left">
+        <input
+          type="text"
+          ref={filterInputRef}
+          value={resetInteraction.filter}
+          onChange={handleFilterChange}
+          placeholder="Filter words..."
+          className="reset-filter-input"
+        />
+        <label className="reset-match-start-only">
+          <input
+            type="checkbox"
+            checked={resetInteraction.matchStartOnly}
+            onChange={handleMatchStartOnlyChange}
+          />
+          Match start only
+        </label>
+      </div>
+      <div className="reset-controls-right">
+        <ActionButton
+          action={resetInteraction.randomAction}
+        >
+          Choose Random
+        </ActionButton>
+        <ActionButton
+          action={resetInteraction.cancelAction}
+        >
+          Cancel
+        </ActionButton>
+      </div>
+    </div>
+  );
+});
 
+/**
+ * Word choice component for Reset page
+ */
+interface ResetWordChoiceProps { resetInteraction: ResetInteraction; }
+
+export const ResetWordChoice: React.FC<ResetWordChoiceProps> = observer(({ resetInteraction }) => {
   const handleWordClick = (word: string) => {
     // Get the Word object from the word graph
     const wordObj = resetInteraction.appState.wordGraph.getNode(word);
@@ -40,63 +83,27 @@ export const ResetView: React.FC<ResetViewProps> = observer(({ resetInteraction 
   const filteredWords = resetInteraction.filteredWords;
 
   return (
-    <div className="reset-view">
-      <div className="reset-controls">
-        <div className="reset-controls-left">
-          <input
-            type="text"
-            ref={filterInputRef}
-            value={resetInteraction.filter}
-            onChange={handleFilterChange}
-            placeholder="Filter words..."
-            className="reset-filter-input"
-          />
-          <label className="reset-match-start-only">
-            <input
-              type="checkbox"
-              checked={resetInteraction.matchStartOnly}
-              onChange={handleMatchStartOnlyChange}
-            />
-            Match start only
-          </label>
-        </div>
-        <div className="reset-controls-right">
-          <ActionButton
-            action={resetInteraction.randomAction}
-          >
-            Choose Random
-          </ActionButton>
-          <ActionButton
-            action={resetInteraction.cancelAction}
-          >
-            Cancel
-          </ActionButton>
-        </div>
-      </div>
-
-      <div className="reset-word-list">
-        {filteredWords.length > 0 ? (
-          <p>
-            {filteredWords.map((word, index) => (
-              <React.Fragment key={word}>
-                <span
-                  className="reset-word-option"
-                  onClick={() => handleWordClick(word)}
-                  title={`Set current word to '${word}'`}
-                >
-                  {word}
-                </span>
-                {index < filteredWords.length - 1 && ' '}
-              </React.Fragment>
-            ))}
-          </p>
-        ) : (
-          <p className="reset-no-words">
-            No words match the current filter.
-          </p>
-        )}
-      </div>
-      
+    <div className="reset-word-choice">
+      {filteredWords.length > 0 ? (
+        <p>
+          {filteredWords.map((word, index) => (
+            <React.Fragment key={word}>
+              <span
+                className="reset-word-option"
+                onClick={() => handleWordClick(word)}
+                title={`Set current word to '${word}'`}
+              >
+                {word}
+              </span>
+              {index < filteredWords.length - 1 && ' '}
+            </React.Fragment>
+          ))}
+        </p>
+      ) : (
+        <p className="reset-no-words">
+          No words match the current filter.
+        </p>
+      )}
     </div>
   );
 });
@@ -109,8 +116,9 @@ interface ResetPageProps { appState: AppState; }
 export const ResetPage: React.FC<ResetPageProps> = ({ appState }) => {
   return (
     <>
-      <ResetView resetInteraction={appState.resetInteraction} />
-      <CompactHistoryView history={appState.history} />
+      <ResetControls resetInteraction={appState.resetInteraction} />
+      <ResetWordChoice resetInteraction={appState.resetInteraction} />
+      <HistoryPanel history={appState.history} />
     </>
   );
 };

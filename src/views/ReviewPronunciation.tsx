@@ -4,55 +4,14 @@ import { ReviewPronunciationInteraction } from '../models/ReviewPronunciationInt
 import { ActionButton } from '../lib/ui/ActionButton';
 import { AppState } from '../models/AppState';
 
-interface ReviewPronunciationViewProps {
+/**
+ * Controls component for Review Pronunciation page
+ */
+interface ReviewPronunciationControlsProps {
   reviewInteraction: ReviewPronunciationInteraction;
 }
 
-export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = observer(({ reviewInteraction }) => {
-  // Add keyboard event listener for arrow key navigation and space bar toggle
-  React.useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight' && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
-        e.preventDefault();
-        if (reviewInteraction.autoplaying) {
-          reviewInteraction.stopAutoplay();
-        }
-        reviewInteraction.gotoNextWord();
-      } else if (e.key === 'ArrowRight' && !e.ctrlKey && e.altKey && !e.shiftKey && !e.metaKey) {
-        e.preventDefault();
-        if (!reviewInteraction.autoplaying) {
-          reviewInteraction.startAutoplay();
-        }
-      } else if (e.key === 'ArrowLeft' && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
-        e.preventDefault();
-        if (reviewInteraction.autoplaying) {
-          reviewInteraction.stopAutoplay();
-        }
-        reviewInteraction.gotoPreviousWord();
-      } else if (e.key === ' ' && reviewInteraction.currentReviewWord) {
-        e.preventDefault();
-        if (reviewInteraction.autoplaying) {
-          reviewInteraction.stopAutoplay();
-        }
-        if (reviewInteraction.currentReviewWord.soundsWrong) {
-          reviewInteraction.markOK(reviewInteraction.currentReviewWord.word);
-        } else {
-          reviewInteraction.markSoundsWrong(reviewInteraction.currentReviewWord.word);
-        }
-      } else if (e.key === 'Escape') {
-        e.preventDefault();
-        if (reviewInteraction.autoplaying) {
-          reviewInteraction.stopAutoplay();
-        }
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [reviewInteraction]);
+export const ReviewPronunciationControls: React.FC<ReviewPronunciationControlsProps> = observer(({ reviewInteraction }) => {
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -82,8 +41,7 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
   };
 
   return (
-    <div className="review-pronunciation-container">
-      
+    <div className="review-pronunciation-controls">
       <div className="action-buttons-panel">
         <div 
           className="load-state-button-container"
@@ -161,7 +119,20 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
           </div>
         </div>
       </div>
+    </div>
+  );
+});
 
+/**
+ * Filters component for Review Pronunciation page
+ */
+interface ReviewPronunciationFiltersProps {
+  reviewInteraction: ReviewPronunciationInteraction;
+}
+
+export const ReviewPronunciationFilters: React.FC<ReviewPronunciationFiltersProps> = observer(({ reviewInteraction }) => {
+  return (
+    <div className="review-pronunciation-filters">
       <div className="filter-panel">
         
         <div className="filter-controls">
@@ -205,7 +176,20 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
           </div>
         </div>
       </div>
+    </div>
+  );
+});
 
+/**
+ * Word choice component for Review Pronunciation page
+ */
+interface ReviewPronunciationWordChoiceProps {
+  reviewInteraction: ReviewPronunciationInteraction;
+}
+
+export const ReviewPronunciationWordChoice: React.FC<ReviewPronunciationWordChoiceProps> = observer(({ reviewInteraction }) => {
+  return (
+    <div className="review-pronunciation-word-choice">
       {/* Filtered Words */}
       <div className="filtered-words">
         <div className="words-header">
@@ -242,6 +226,68 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
           })}
         </div>
       </div>
+    </div>
+  );
+});
+
+/**
+ * Main view component for Review Pronunciation page
+ */
+interface ReviewPronunciationViewProps {
+  reviewInteraction: ReviewPronunciationInteraction;
+}
+
+export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = observer(({ reviewInteraction }) => {
+  // Add keyboard event listener for arrow key navigation and space bar toggle
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowRight' && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
+        e.preventDefault();
+        if (reviewInteraction.autoplaying) {
+          reviewInteraction.stopAutoplay();
+        }
+        reviewInteraction.gotoNextWord();
+      } else if (e.key === 'ArrowRight' && !e.ctrlKey && e.altKey && !e.shiftKey && !e.metaKey) {
+        e.preventDefault();
+        if (!reviewInteraction.autoplaying) {
+          reviewInteraction.startAutoplay();
+        }
+      } else if (e.key === 'ArrowLeft' && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
+        e.preventDefault();
+        if (reviewInteraction.autoplaying) {
+          reviewInteraction.stopAutoplay();
+        }
+        reviewInteraction.gotoPreviousWord();
+      } else if (e.key === ' ' && reviewInteraction.currentReviewWord) {
+        e.preventDefault();
+        if (reviewInteraction.autoplaying) {
+          reviewInteraction.stopAutoplay();
+        }
+        if (reviewInteraction.currentReviewWord.soundsWrong) {
+          reviewInteraction.markOK(reviewInteraction.currentReviewWord.word);
+        } else {
+          reviewInteraction.markSoundsWrong(reviewInteraction.currentReviewWord.word);
+        }
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        if (reviewInteraction.autoplaying) {
+          reviewInteraction.stopAutoplay();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [reviewInteraction]);
+
+  return (
+    <div className="review-pronunciation-container">
+      <ReviewPronunciationControls reviewInteraction={reviewInteraction} />
+      <ReviewPronunciationFilters reviewInteraction={reviewInteraction} />
+      <ReviewPronunciationWordChoice reviewInteraction={reviewInteraction} />
     </div>
   );
 });
