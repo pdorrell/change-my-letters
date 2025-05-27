@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { WordInteraction } from '../models/interaction/WordInteraction';
-import { LetterView, LetterPlaceholder } from './LetterView';
-import { PositionView, PositionPlaceholder } from './PositionView';
+import { LetterView, LetterPlaceholder } from './Letter';
+import { PositionView, PositionPlaceholder } from './Position';
 import { MenuManagerInterface } from '../models/MenuManagerInterface';
 import {
   useFloating,
