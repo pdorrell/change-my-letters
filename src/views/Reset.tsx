@@ -2,6 +2,8 @@ import React, { useRef, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { ResetInteraction } from '../models/ResetInteraction';
 import { ActionButton } from '../lib/ui/ActionButton';
+import { AppState } from '../models/AppState';
+import { CompactHistoryView } from './History';
 
 interface ResetViewProps { resetInteraction: ResetInteraction; }
 
@@ -98,3 +100,35 @@ export const ResetView: React.FC<ResetViewProps> = observer(({ resetInteraction 
     </div>
   );
 });
+
+/**
+ * App controls component for Reset page
+ */
+interface ResetAppControlsProps { appState: AppState; }
+
+export const ResetAppControls: React.FC<ResetAppControlsProps> = ({ appState }) => {
+  return (
+    <div className="app-controls">
+      <ActionButton action={appState.undoAction}>
+        Undo
+      </ActionButton>
+      <ActionButton action={appState.redoAction}>
+        Redo
+      </ActionButton>
+    </div>
+  );
+};
+
+/**
+ * Full page component for Reset page
+ */
+interface ResetPageProps { appState: AppState; }
+
+export const ResetPage: React.FC<ResetPageProps> = ({ appState }) => {
+  return (
+    <>
+      <ResetView resetInteraction={appState.resetInteraction} />
+      <CompactHistoryView history={appState.history} />
+    </>
+  );
+};

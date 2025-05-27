@@ -4,6 +4,9 @@ import { WordInteraction } from '../models/interaction/WordInteraction';
 import { LetterView, LetterPlaceholder } from './Letter';
 import { PositionView, PositionPlaceholder } from './Position';
 import { MenuManagerInterface } from '../models/MenuManagerInterface';
+import { AppState } from '../models/AppState';
+import { ActionButton } from '../lib/ui/ActionButton';
+import { CompactHistoryView } from './History';
 import {
   useFloating,
   autoUpdate,
@@ -200,5 +203,50 @@ export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ wordSelectio
         </div>
       </div>
     </FloatingPortal>
+  );
+};
+
+/**
+ * App controls component for Current Word page
+ */
+interface CurrentWordAppControlsProps { appState: AppState; }
+
+export const CurrentWordAppControls: React.FC<CurrentWordAppControlsProps> = ({ appState }) => {
+  return (
+    <div className="app-controls">
+      <ActionButton action={appState.undoAction}>
+        Undo
+      </ActionButton>
+      <ActionButton action={appState.redoAction}>
+        Redo
+      </ActionButton>
+      <ActionButton action={appState.sayAction}>
+        Say
+      </ActionButton>
+      <label className="say-immediately-container">
+        <input
+          type="checkbox"
+          checked={appState.sayImmediately}
+          onChange={(e) => {
+            appState.sayImmediately = e.target.checked;
+          }}
+        />
+        Say Immediately
+      </label>
+    </div>
+  );
+};
+
+/**
+ * Full page component for Current Word page
+ */
+interface CurrentWordPageProps { appState: AppState; }
+
+export const CurrentWordPage: React.FC<CurrentWordPageProps> = ({ appState }) => {
+  return (
+    <>
+      <CurrentWordView currentWord={appState.currentWord} maxWordLength={appState.wordGraph.maxWordLength} />
+      <CompactHistoryView history={appState.history} />
+    </>
   );
 };

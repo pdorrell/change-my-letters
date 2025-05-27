@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { ReviewPronunciationInteraction } from '../models/ReviewPronunciationInteraction';
 import { ActionButton } from '../lib/ui/ActionButton';
+import { AppState } from '../models/AppState';
 
 interface ReviewPronunciationViewProps {
   reviewInteraction: ReviewPronunciationInteraction;
@@ -244,3 +245,14 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
     </div>
   );
 });
+
+/**
+ * Full page component for Review Pronunciation page
+ */
+interface ReviewPronunciationPageProps { appState: AppState; }
+
+export const ReviewPronunciationPage: React.FC<ReviewPronunciationPageProps> = ({ appState }) => {
+  return (
+    <ReviewPronunciationView reviewInteraction={appState.reviewPronunciationInteraction} />
+  );
+};

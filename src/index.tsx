@@ -2,7 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { configure } from 'mobx';
 import AppLoader from './AppLoader';
-import { ErrorBoundary } from './components/ErrorBoundary';
+import { ErrorBoundary } from './utils/ErrorBoundary';
 import { ErrorHandler } from './utils/ErrorHandler';
 import { ApplicationLoader } from './models/ApplicationLoader';
 import { WordSayer } from './models/WordSayer';
