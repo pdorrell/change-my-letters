@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { AppState } from './models/AppState';
+import { AppState } from './models/app-state';
 import { CurrentWordPage } from './views/current-word';
 import { ReviewPronunciationPage } from './views/review-pronunciation';
 import { ResetPage } from './views/reset';

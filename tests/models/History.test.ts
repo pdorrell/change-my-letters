@@ -1,9 +1,9 @@
-import { History, WordChange } from '../../src/models/History';
-import { AppState } from '../../src/models/AppState';
-import { Word } from '../../src/models/Word';
-import { WordGraph } from '../../src/models/WordGraph';
-import { WordGraphBuilder } from '../../src/models/WordGraphBuilder';
-import { WordSayerTestDouble } from '../test_doubles/WordSayerTestDouble';
+import { History, WordChange } from '../../src/models/history';
+import { AppState } from '../../src/models/app-state';
+import { Word } from '../../src/models/word';
+import { WordGraph } from '../../src/models/word-graph';
+import { WordGraphBuilder } from '../../src/models/word-graph-builder';
+import { WordSayerTestDouble } from '../test_doubles/word-sayer-test-double';
 
 describe('History', () => {
   let history: History;

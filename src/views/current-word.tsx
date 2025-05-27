@@ -1,10 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { WordInteraction } from '../models/interaction/WordInteraction';
+import { WordInteraction } from '../models/interaction/word-interaction';
 import { LetterView, LetterPlaceholder } from './letter';
 import { PositionView, PositionPlaceholder } from './position';
-import { MenuManagerInterface } from '../models/MenuManagerInterface';
-import { AppState } from '../models/AppState';
+import { MenuManagerInterface } from '../models/menu-manager-interface';
+import { AppState } from '../models/app-state';
 import { ActionButton } from '../lib/ui/action-button';
 import { HistoryPanel } from './history';
 import {
@@ -110,7 +110,7 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
 /**
  * View component for the letter choice menu
  */
-import { WordSelectionByLetter } from '../models/WordSelectionByLetter';
+import { WordSelectionByLetter } from '../models/word-selection-by-letter';
 
 interface LetterChoiceMenuProps {
   wordSelectionByLetter: WordSelectionByLetter;

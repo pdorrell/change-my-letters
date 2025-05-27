@@ -1,8 +1,8 @@
 import React, { useRef, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import { ResetInteraction } from '../models/ResetInteraction';
+import { ResetInteraction } from '../models/reset-interaction';
 import { ActionButton } from '../lib/ui/action-button';
-import { AppState } from '../models/AppState';
+import { AppState } from '../models/app-state';
 import { HistoryPanel } from './history';
 
 /**

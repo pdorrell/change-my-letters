@@ -1,7 +1,7 @@
-import { Position } from '../../src/models/Position';
-import { WordInteraction } from '../../src/models/interaction/WordInteraction';
-import { AppState } from '../../src/models/AppState';
-import { createTestAppState } from '../utils/TestAppBuilder';
+import { Position } from '../../src/models/position';
+import { WordInteraction } from '../../src/models/interaction/word-interaction';
+import { AppState } from '../../src/models/app-state';
+import { createTestAppState } from '../utils/test-app-builder';
 
 describe('Position', () => {
   let appState: AppState;
