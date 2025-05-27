@@ -245,6 +245,7 @@ interface CurrentWordPageProps { appState: AppState; }
 export const CurrentWordPage: React.FC<CurrentWordPageProps> = ({ appState }) => {
   return (
     <>
+      <CurrentWordAppControls appState={appState} />
       <CurrentWordView currentWord={appState.currentWord} maxWordLength={appState.wordGraph.maxWordLength} />
       <CompactHistoryView history={appState.history} />
     </>

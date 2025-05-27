@@ -102,24 +102,6 @@ export const ResetView: React.FC<ResetViewProps> = observer(({ resetInteraction 
 });
 
 /**
- * App controls component for Reset page
- */
-interface ResetAppControlsProps { appState: AppState; }
-
-export const ResetAppControls: React.FC<ResetAppControlsProps> = ({ appState }) => {
-  return (
-    <div className="app-controls">
-      <ActionButton action={appState.undoAction}>
-        Undo
-      </ActionButton>
-      <ActionButton action={appState.redoAction}>
-        Redo
-      </ActionButton>
-    </div>
-  );
-};
-
-/**
  * Full page component for Reset page
  */
 interface ResetPageProps { appState: AppState; }
