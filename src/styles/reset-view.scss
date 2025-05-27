@@ -4,74 +4,73 @@
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+  
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+  
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+  
+  .reset-controls-left {
     display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
+    align-items: center;
     gap: 15px;
+    flex-wrap: wrap;
     
-    @media (max-width: 600px) {
-      flex-direction: column;
+    .reset-filter-input {
+      padding: 8px 12px;
+      font-size: 1em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      min-width: 200px;
+      
+      &:focus {
+        border-color: #4a90e2;
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+      }
     }
     
-    .reset-controls-left {
+    .reset-match-start-only {
       display: flex;
       align-items: center;
-      gap: 15px;
-      flex-wrap: wrap;
+      gap: 5px;
+      cursor: pointer;
       
-      .reset-filter-input {
-        padding: 8px 12px;
-        font-size: 1em;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        min-width: 200px;
-        
-        &:focus {
-          border-color: #4a90e2;
-          outline: none;
-          box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
-        }
-      }
-      
-      .reset-match-start-only {
-        display: flex;
-        align-items: center;
-        gap: 5px;
+      input[type="checkbox"] {
+        margin: 0;
         cursor: pointer;
-        
-        input[type="checkbox"] {
-          margin: 0;
-          cursor: pointer;
-        }
-      }
-    }
-    
-    .reset-controls-right {
-      display: flex;
-      gap: 10px;
-      
-      button {
-        padding: 8px 16px;
-        background-color: #4a90e2;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.9em;
-        
-        &:hover:not(:disabled) {
-          background-color: #3a80d2;
-        }
-        
-        &:disabled {
-          background-color: #ccc;
-          cursor: not-allowed;
-        }
       }
     }
   }
   
+  .reset-controls-right {
+    display: flex;
+    gap: 10px;
+    
+    button {
+      padding: 8px 16px;
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9em;
+      
+      &:hover:not(:disabled) {
+        background-color: #3a80d2;
+      }
+      
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+    }
+  }
 }
 
 // Reset word choice styles
