@@ -1,8 +1,8 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { configure } from 'mobx';
-import AppLoader from './AppLoader';
-import { ErrorBoundary } from './utils/ErrorBoundary';
+import AppLoader from './app-loader';
+import { ErrorBoundary } from './utils/error-boundary';
 import { ErrorHandler } from './utils/ErrorHandler';
 import { ApplicationLoader } from './models/ApplicationLoader';
 import { WordSayer } from './models/WordSayer';

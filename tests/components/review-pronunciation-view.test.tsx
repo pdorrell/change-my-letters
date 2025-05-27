@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { act } from 'react';
 import { runInAction } from 'mobx';
-import { ReviewPronunciationView } from '../../src/views/ReviewPronunciation';
+import { ReviewPronunciationView } from '../../src/views/review-pronunciation';
 import { ReviewPronunciationInteraction } from '../../src/models/ReviewPronunciationInteraction';
 import { ReviewStateFilterOption } from '../../src/models/ReviewStateFilterOption';
 import { Word } from '../../src/models/Word';

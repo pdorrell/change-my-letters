@@ -1,9 +1,9 @@
 import React, { useRef, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { ResetInteraction } from '../models/ResetInteraction';
-import { ActionButton } from '../lib/ui/ActionButton';
+import { ActionButton } from '../lib/ui/action-button';
 import { AppState } from '../models/AppState';
-import { HistoryPanel } from './History';
+import { HistoryPanel } from './history';
 
 /**
  * Controls component for Reset page

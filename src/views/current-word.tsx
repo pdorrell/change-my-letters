@@ -1,12 +1,12 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { WordInteraction } from '../models/interaction/WordInteraction';
-import { LetterView, LetterPlaceholder } from './Letter';
-import { PositionView, PositionPlaceholder } from './Position';
+import { LetterView, LetterPlaceholder } from './letter';
+import { PositionView, PositionPlaceholder } from './position';
 import { MenuManagerInterface } from '../models/MenuManagerInterface';
 import { AppState } from '../models/AppState';
-import { ActionButton } from '../lib/ui/ActionButton';
-import { HistoryPanel } from './History';
+import { ActionButton } from '../lib/ui/action-button';
+import { HistoryPanel } from './history';
 import {
   useFloating,
   autoUpdate,
