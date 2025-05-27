@@ -1,7 +1,7 @@
-import { Letter } from '../../src/models/Letter';
-import { WordInteraction } from '../../src/models/interaction/WordInteraction';
-import { AppState } from '../../src/models/AppState';
-import { createTestAppState } from '../utils/TestAppBuilder';
+import { Letter } from '../../src/models/letter';
+import { WordInteraction } from '../../src/models/interaction/word-interaction';
+import { AppState } from '../../src/models/app-state';
+import { createTestAppState } from '../utils/test-app-builder';
 
 describe('Letter', () => {
   let appState: AppState;

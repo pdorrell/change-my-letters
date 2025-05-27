@@ -3,10 +3,10 @@ import { createRoot } from 'react-dom/client';
 import { configure } from 'mobx';
 import AppLoader from './app-loader';
 import { ErrorBoundary } from './utils/error-boundary';
-import { ErrorHandler } from './utils/ErrorHandler';
-import { ApplicationLoader } from './models/ApplicationLoader';
-import { WordSayer } from './models/WordSayer';
-import { DataFileFetcher } from './models/DataFileFetcher';
+import { ErrorHandler } from './utils/error-handler';
+import { ApplicationLoader } from './models/application-loader';
+import { WordSayer } from './models/word-sayer';
+import { DataFileFetcher } from './models/data-file-fetcher';
 import './styles/main.scss';
 
 // Configure MobX with less strict settings for development

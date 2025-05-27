@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
-import { Word } from './Word';
-import { PositionChanges, InsertChange } from './WordChange';
+import { Word } from './word';
+import { PositionChanges, InsertChange } from './word-change';
 
 /**
  * Model representing a position where a letter can be inserted

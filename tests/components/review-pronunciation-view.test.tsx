@@ -3,10 +3,10 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { act } from 'react';
 import { runInAction } from 'mobx';
 import { ReviewPronunciationView } from '../../src/views/review-pronunciation';
-import { ReviewPronunciationInteraction } from '../../src/models/ReviewPronunciationInteraction';
-import { ReviewStateFilterOption } from '../../src/models/ReviewStateFilterOption';
-import { Word } from '../../src/models/Word';
-import { WordSayerTestDouble } from '../test_doubles/WordSayerTestDouble';
+import { ReviewPronunciationInteraction } from '../../src/models/review-pronunciation-interaction';
+import { ReviewStateFilterOption } from '../../src/models/review-state-filter-option';
+import { Word } from '../../src/models/word';
+import { WordSayerTestDouble } from '../test_doubles/word-sayer-test-double';
 
 describe('ReviewPronunciationView', () => {
   let reviewInteraction: ReviewPronunciationInteraction;

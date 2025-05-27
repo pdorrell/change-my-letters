@@ -1,8 +1,8 @@
 import { makeAutoObservable } from 'mobx';
-import { Letter } from './Letter';
-import { Position } from './Position';
-import { WordChanges, DeleteChange, InsertChange, ReplaceChange } from './WordChange';
-import { WordGetter } from './WordGetter';
+import { Letter } from './letter';
+import { Position } from './position';
+import { WordChanges, DeleteChange, InsertChange, ReplaceChange } from './word-change';
+import { WordGetter } from './word-getter';
 
 /**
  * Exception thrown when there's an error parsing the JSON for a word graph

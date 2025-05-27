@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { History } from '../models/History';
+import { History } from '../models/history';
 
 interface HistoryPanelProps { history: History; }
 

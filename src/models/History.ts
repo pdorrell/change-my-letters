@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
-import { AppState } from './AppState';
-import { Word } from './Word';
+import { AppState } from './app-state';
+import { Word } from './word';
 
 /**
  * Represents a change from one word to another

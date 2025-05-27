@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { LetterInteraction } from '../models/interaction/LetterInteraction';
+import { LetterInteraction } from '../models/interaction/letter-interaction';
 import { LetterChoiceMenu } from './current-word';
 import { ActionButton } from '../lib/ui/action-button';
 
