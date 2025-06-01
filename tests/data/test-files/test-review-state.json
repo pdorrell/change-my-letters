@@ -1,0 +1,4 @@
+{
+  "reviewed": ["cat", "dog", "fish"],
+  "soundsWrong": ["dog", "fish"]
+}
