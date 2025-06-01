@@ -211,7 +211,7 @@ export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ wordSelectio
  */
 interface CurrentWordControlsProps { appState: AppState; }
 
-export const CurrentWordControls: React.FC<CurrentWordControlsProps> = ({ appState }) => {
+export const CurrentWordControls: React.FC<CurrentWordControlsProps> = observer(({ appState }) => {
   return (
     <div className="current-word-controls">
       <ActionButton action={appState.undoAction}>Undo</ActionButton>
@@ -221,13 +221,13 @@ export const CurrentWordControls: React.FC<CurrentWordControlsProps> = ({ appSta
         <input
           type="checkbox"
           checked={appState.sayImmediately}
-          onChange={(e) => { appState.sayImmediately = e.target.checked; }}
+          onChange={(e) => appState.setSayImmediately(e.target.checked)}
         />
         Say Immediately
       </label>
     </div>
   );
-};
+});
 
 /**
  * Full page component for Current Word page
