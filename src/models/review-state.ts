@@ -8,26 +8,28 @@ export function getReviewStateFromJson(jsonData: unknown): ReviewState {
     throw new Error('Invalid review state: expected an object');
   }
 
-  const data = jsonData as Record<string, unknown>;
+  if (!('reviewed' in jsonData) || !('soundsWrong' in jsonData)) {
+    throw new Error('Invalid review state: missing required properties');
+  }
 
-  if (!Array.isArray(data.reviewed)) {
+  if (!Array.isArray(jsonData.reviewed)) {
     throw new Error('Invalid review state: "reviewed" must be an array of strings');
   }
 
-  if (!Array.isArray(data.soundsWrong)) {
+  if (!Array.isArray(jsonData.soundsWrong)) {
     throw new Error('Invalid review state: "soundsWrong" must be an array of strings');
   }
 
-  if (!data.reviewed.every(item => typeof item === 'string')) {
+  if (!jsonData.reviewed.every(item => typeof item === 'string')) {
     throw new Error('Invalid review state: all items in "reviewed" must be strings');
   }
 
-  if (!data.soundsWrong.every(item => typeof item === 'string')) {
+  if (!jsonData.soundsWrong.every(item => typeof item === 'string')) {
     throw new Error('Invalid review state: all items in "soundsWrong" must be strings');
   }
 
   return {
-    reviewed: data.reviewed as string[],
-    soundsWrong: data.soundsWrong as string[]
+    reviewed: jsonData.reviewed,
+    soundsWrong: jsonData.soundsWrong
   };
 }
