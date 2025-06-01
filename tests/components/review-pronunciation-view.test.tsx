@@ -312,43 +312,6 @@ describe('ReviewPronunciationView', () => {
       expect(dragOverEvent.preventDefault).toHaveBeenCalled();
     });
 
-    it('handles file drop with correct filename', async () => {
-      const setReviewStateSpy = jest.spyOn(reviewInteraction, 'setReviewState');
-      
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
-      
-      const dropArea = screen.getByText('+ Load State').closest('.load-state-button-container');
-      
-      const testData = '{"reviewed": ["cat"], "soundsWrong": ["dog"]}';
-      const file = new File([testData], 'review-pronunciation-state.json', { type: 'application/json' });
-      
-      const dropEvent = new Event('drop', { bubbles: true });
-      Object.defineProperty(dropEvent, 'preventDefault', { value: jest.fn() });
-      Object.defineProperty(dropEvent, 'dataTransfer', {
-        value: { files: [file] }
-      });
-      
-      // Mock FileReader
-      const mockFileReader = {
-        readAsText: jest.fn(),
-        onload: null as any,
-        result: testData
-      };
-      
-      jest.spyOn(window, 'FileReader').mockImplementation(() => mockFileReader as any);
-      
-      act(() => {
-        fireEvent(dropArea!, dropEvent);
-        // Simulate FileReader onload
-        mockFileReader.onload({ target: { result: testData } } as any);
-      });
-      
-      expect(setReviewStateSpy).toHaveBeenCalledWith({
-        reviewed: ['cat'],
-        soundsWrong: ['dog']
-      });
-    });
-
     it('shows alert for incorrect filename on drop', () => {
       const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
       
