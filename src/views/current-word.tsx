@@ -214,22 +214,14 @@ interface CurrentWordControlsProps { appState: AppState; }
 export const CurrentWordControls: React.FC<CurrentWordControlsProps> = ({ appState }) => {
   return (
     <div className="current-word-controls">
-      <ActionButton action={appState.undoAction}>
-        Undo
-      </ActionButton>
-      <ActionButton action={appState.redoAction}>
-        Redo
-      </ActionButton>
-      <ActionButton action={appState.sayAction}>
-        Say
-      </ActionButton>
+      <ActionButton action={appState.undoAction}>Undo</ActionButton>
+      <ActionButton action={appState.redoAction}>Redo</ActionButton>
+      <ActionButton action={appState.sayAction}>Say</ActionButton>
       <label className="say-immediately-container">
         <input
           type="checkbox"
           checked={appState.sayImmediately}
-          onChange={(e) => {
-            appState.sayImmediately = e.target.checked;
-          }}
+          onChange={(e) => { appState.sayImmediately = e.target.checked; }}
         />
         Say Immediately
       </label>
