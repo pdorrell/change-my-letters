@@ -249,6 +249,27 @@ export class ReviewPronunciationInteraction {
     }
   }
 
+  loadReviewStateFromFile(file: File): void {
+    this.stopAutoplay();
+    if (file.name !== 'review-pronunciation-state.json') {
+      alert('Please select a file named "review-pronunciation-state.json"');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const jsonData = JSON.parse(e.target?.result as string);
+        const reviewState = getReviewStateFromJson(jsonData);
+        this.setReviewState(reviewState);
+      } catch (error) {
+        console.error('Error parsing JSON file:', error);
+        alert('Error parsing JSON file. Please check the file format.');
+      }
+    };
+    reader.readAsText(file);
+  }
+
   private triggerFileUpload(): void {
     this.stopAutoplay();
     const input = document.createElement('input');
@@ -256,21 +277,8 @@ export class ReviewPronunciationInteraction {
     input.accept = '.json';
     input.onchange = (e) => {
       const file = (e.target as HTMLInputElement).files?.[0];
-      if (file && file.name === 'review-pronunciation-state.json') {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          try {
-            const jsonData = JSON.parse(e.target?.result as string);
-            const reviewState = getReviewStateFromJson(jsonData);
-            this.setReviewState(reviewState);
-          } catch (error) {
-            console.error('Error parsing JSON file:', error);
-            alert('Error parsing JSON file. Please check the file format.');
-          }
-        };
-        reader.readAsText(file);
-      } else {
-        alert('Please select a file named "review-pronunciation-state.json"');
+      if (file) {
+        this.loadReviewStateFromFile(file);
       }
     };
     input.click();
