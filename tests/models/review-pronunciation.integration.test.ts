@@ -1,14 +1,17 @@
 import { AppState } from '../../src/models/app-state';
 import { ReviewPronunciationInteraction } from '../../src/models/review-pronunciation-interaction';
 import { ReviewStateFilterOption } from '../../src/models/review-state-filter-option';
+import { WordSayerTestDouble } from '../test_doubles/word-sayer-test-double';
 import { createTestAppState } from '../utils/test-app-builder';
 
 describe('Review Pronunciation Integration', () => {
   let appState: AppState;
   let reviewInteraction: ReviewPronunciationInteraction;
+  let wordSayerTestDouble: WordSayerTestDouble;
 
   beforeEach(() => {
-    appState = createTestAppState();
+    wordSayerTestDouble = new WordSayerTestDouble();
+    appState = createTestAppState(wordSayerTestDouble);
     reviewInteraction = appState.reviewPronunciationInteraction;
   });
 
@@ -80,7 +83,7 @@ describe('Review Pronunciation Integration', () => {
       reviewInteraction.reviewWord(wordToReview);
       
       // Verify the word sayer was called (checking through test double)
-      expect((appState.wordSayer as any).playedWords).toContain(wordToReview);
+      expect(wordSayerTestDouble.playedWords).toContain(wordToReview);
     });
   });
 
