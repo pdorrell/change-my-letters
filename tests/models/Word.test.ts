@@ -117,4 +117,38 @@ describe('Word', () => {
     expect(json.replace).toBe('bcdf/bcdf/bcdf');
     // Case-related tests have been removed
   });
+
+  it('should roundtrip toJson -> fromJson correctly', () => {
+    const originalWord = new Word(
+      'hello',
+      [true, false, true, false, true],
+      ['abc', 'def', 'ghi', 'jkl', 'mno', 'pqr'],
+      ['xyz', 'uvw', 'rst', 'opq', 'lmn']
+    );
+
+    const json = originalWord.toJson();
+    const recreatedWord = Word.fromJson('hello', json);
+
+    expect(recreatedWord.word).toBe(originalWord.word);
+    expect(recreatedWord.deletes).toEqual(originalWord.deletes);
+    expect(recreatedWord.inserts).toEqual(originalWord.inserts);
+    expect(recreatedWord.replaces).toEqual(originalWord.replaces);
+  });
+
+  it('should roundtrip toJson -> fromJson with empty arrays', () => {
+    const originalWord = new Word(
+      'test',
+      [false, false, false, false],
+      ['', '', '', '', ''],
+      ['', '', '', '']
+    );
+
+    const json = originalWord.toJson();
+    const recreatedWord = Word.fromJson('test', json);
+
+    expect(recreatedWord.word).toBe(originalWord.word);
+    expect(recreatedWord.deletes).toEqual(originalWord.deletes);
+    expect(recreatedWord.inserts).toEqual(originalWord.inserts);
+    expect(recreatedWord.replaces).toEqual(originalWord.replaces);
+  });
 });
