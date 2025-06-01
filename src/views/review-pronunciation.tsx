@@ -290,8 +290,8 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
  */
 interface ReviewPronunciationPageProps { appState: AppState; }
 
-export const ReviewPronunciationPage: React.FC<ReviewPronunciationPageProps> = ({ appState }) => {
+export const ReviewPronunciationPage: React.FC<ReviewPronunciationPageProps> = observer(({ appState }) => {
   return (
     <ReviewPronunciationView reviewInteraction={appState.reviewPronunciationInteraction} />
   );
-};
+});

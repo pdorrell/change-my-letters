@@ -113,7 +113,7 @@ export const ResetWordChoice: React.FC<ResetWordChoiceProps> = observer(({ reset
  */
 interface ResetPageProps { appState: AppState; }
 
-export const ResetPage: React.FC<ResetPageProps> = ({ appState }) => {
+export const ResetPage: React.FC<ResetPageProps> = observer(({ appState }) => {
   return (
     <>
       <ResetControls resetInteraction={appState.resetInteraction} />
@@ -121,4 +121,4 @@ export const ResetPage: React.FC<ResetPageProps> = ({ appState }) => {
       <HistoryPanel history={appState.history} />
     </>
   );
-};
+});
