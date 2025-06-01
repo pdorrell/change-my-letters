@@ -2,6 +2,6 @@
   "included_extensions":  [".sh"],
   "excluded_extensions":  [],
   "included_files":  [],
-  "excluded_files":  ["package-lock.json"],
+  "excluded_files":  [],
   "excluded_dirs": ["deploy"]
 }

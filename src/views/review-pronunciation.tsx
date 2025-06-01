@@ -19,22 +19,11 @@ export const ReviewPronunciationControls: React.FC<ReviewPronunciationControlsPr
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
-    reviewInteraction.stopAutoplay();
     const files = Array.from(e.dataTransfer.files);
     const file = files.find(f => f.name === 'review-pronunciation-state.json');
     
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        try {
-          const jsonData = JSON.parse(e.target?.result as string);
-          reviewInteraction.setReviewState(jsonData);
-        } catch (error) {
-          console.error('Error parsing JSON file:', error);
-          alert('Error parsing JSON file. Please check the file format.');
-        }
-      };
-      reader.readAsText(file);
+      reviewInteraction.loadReviewStateFromFile(file);
     } else {
       alert('Please drop a file named "review-pronunciation-state.json"');
     }
