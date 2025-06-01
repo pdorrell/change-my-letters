@@ -1,6 +1,5 @@
 import { WordInteraction } from '../../src/models/interaction/word-interaction';
 import { AppState } from '../../src/models/app-state';
-import { Word } from '../../src/models/word';
 import { MenuManager } from '../../src/models/menu-manager';
 import { createTestAppState } from '../utils/test-app-builder';
 

@@ -39,7 +39,7 @@ class TestWordGetter implements WordGetter {
 
   getRequiredWord(word: string): Word {
     const wordObj = this.words.get(word);
-    if (!wordObj) { throw new MissingWordException(word); };
+    if (!wordObj) { throw new MissingWordException(word); }
     return wordObj;
   }
 }
