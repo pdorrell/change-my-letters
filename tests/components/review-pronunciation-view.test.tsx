@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { act } from 'react';
 import { runInAction } from 'mobx';
-import { ReviewPronunciationView } from '../../src/views/review-pronunciation';
+import { ReviewPronunciationView, ReviewPronunciationControls } from '../../src/views/review-pronunciation';
 import { ReviewPronunciationInteraction } from '../../src/models/review-pronunciation-interaction';
 import { ReviewStateFilterOption } from '../../src/models/review-state-filter-option';
 import { Word } from '../../src/models/word';
@@ -472,6 +472,167 @@ describe('ReviewPronunciationView', () => {
       rerender(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
       
       expect(screen.getByText('Words: 1')).toBeInTheDocument();
+    });
+  });
+});
+
+describe('ReviewPronunciationControls', () => {
+  let reviewInteraction: ReviewPronunciationInteraction;
+  let wordSayer: WordSayerTestDouble;
+  let reviewStateFileLoader: jest.Mock<void, [File]>;
+  let testWords: Word[];
+
+  beforeEach(() => {
+    wordSayer = new WordSayerTestDouble();
+    
+    // Create test words
+    testWords = [
+      new Word('cat', [false, false, false], ['', '', '', ''], ['', '', '']),
+      new Word('dog', [false, false, false], ['', '', '', ''], ['', '', ''])
+    ];
+    
+    reviewInteraction = new ReviewPronunciationInteraction(testWords, wordSayer);
+    
+    // Create test double for reviewStateFileLoader
+    reviewStateFileLoader = jest.fn();
+  });
+
+  describe('Drag and Drop', () => {
+    it('handles drag over event', () => {
+      render(
+        <ReviewPronunciationControls 
+          reviewInteraction={reviewInteraction} 
+          reviewStateFileLoader={reviewStateFileLoader}
+        />
+      );
+      
+      const dropArea = screen.getByText('+ Load State').closest('.load-state-button-container');
+      
+      const dragOverEvent = new Event('dragover', { bubbles: true });
+      Object.defineProperty(dragOverEvent, 'preventDefault', {
+        value: jest.fn(),
+        writable: true
+      });
+      
+      act(() => {
+        fireEvent(dropArea!, dragOverEvent);
+      });
+      
+      expect(dragOverEvent.preventDefault).toHaveBeenCalled();
+    });
+
+    it('calls reviewStateFileLoader with correct file on drop', () => {
+      render(
+        <ReviewPronunciationControls 
+          reviewInteraction={reviewInteraction} 
+          reviewStateFileLoader={reviewStateFileLoader}
+        />
+      );
+      
+      const dropArea = screen.getByText('+ Load State').closest('.load-state-button-container');
+      
+      const testData = '{"reviewed": ["cat"], "soundsWrong": ["dog"]}';
+      const file = new File([testData], 'review-pronunciation-state.json', { type: 'application/json' });
+      
+      const dropEvent = new Event('drop', { bubbles: true });
+      Object.defineProperty(dropEvent, 'preventDefault', { value: jest.fn() });
+      Object.defineProperty(dropEvent, 'dataTransfer', {
+        value: { files: [file] }
+      });
+      
+      act(() => {
+        fireEvent(dropArea!, dropEvent);
+      });
+      
+      expect(reviewStateFileLoader).toHaveBeenCalledWith(file);
+    });
+
+    it('shows alert for incorrect filename on drop without calling reviewStateFileLoader', () => {
+      const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
+      
+      render(
+        <ReviewPronunciationControls 
+          reviewInteraction={reviewInteraction} 
+          reviewStateFileLoader={reviewStateFileLoader}
+        />
+      );
+      
+      const dropArea = screen.getByText('+ Load State').closest('.load-state-button-container');
+      
+      const file = new File(['{}'], 'wrong-name.json', { type: 'application/json' });
+      
+      const dropEvent = new Event('drop', { bubbles: true });
+      Object.defineProperty(dropEvent, 'preventDefault', { value: jest.fn() });
+      Object.defineProperty(dropEvent, 'dataTransfer', {
+        value: { files: [file] }
+      });
+      
+      act(() => {
+        fireEvent(dropArea!, dropEvent);
+      });
+      
+      expect(alertSpy).toHaveBeenCalledWith('Please drop a file named "review-pronunciation-state.json"');
+      expect(reviewStateFileLoader).not.toHaveBeenCalled();
+      
+      alertSpy.mockRestore();
+    });
+
+    it('shows alert when no matching file is found on drop', () => {
+      const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
+      
+      render(
+        <ReviewPronunciationControls 
+          reviewInteraction={reviewInteraction} 
+          reviewStateFileLoader={reviewStateFileLoader}
+        />
+      );
+      
+      const dropArea = screen.getByText('+ Load State').closest('.load-state-button-container');
+      
+      const file1 = new File(['{}'], 'file1.txt', { type: 'text/plain' });
+      const file2 = new File(['{}'], 'file2.json', { type: 'application/json' });
+      
+      const dropEvent = new Event('drop', { bubbles: true });
+      Object.defineProperty(dropEvent, 'preventDefault', { value: jest.fn() });
+      Object.defineProperty(dropEvent, 'dataTransfer', {
+        value: { files: [file1, file2] }
+      });
+      
+      act(() => {
+        fireEvent(dropArea!, dropEvent);
+      });
+      
+      expect(alertSpy).toHaveBeenCalledWith('Please drop a file named "review-pronunciation-state.json"');
+      expect(reviewStateFileLoader).not.toHaveBeenCalled();
+      
+      alertSpy.mockRestore();
+    });
+
+    it('calls reviewStateFileLoader when correct file is found among multiple files', () => {
+      render(
+        <ReviewPronunciationControls 
+          reviewInteraction={reviewInteraction} 
+          reviewStateFileLoader={reviewStateFileLoader}
+        />
+      );
+      
+      const dropArea = screen.getByText('+ Load State').closest('.load-state-button-container');
+      
+      const file1 = new File(['{}'], 'file1.txt', { type: 'text/plain' });
+      const correctFile = new File(['{"reviewed": [], "soundsWrong": []}'], 'review-pronunciation-state.json', { type: 'application/json' });
+      const file3 = new File(['{}'], 'file3.json', { type: 'application/json' });
+      
+      const dropEvent = new Event('drop', { bubbles: true });
+      Object.defineProperty(dropEvent, 'preventDefault', { value: jest.fn() });
+      Object.defineProperty(dropEvent, 'dataTransfer', {
+        value: { files: [file1, correctFile, file3] }
+      });
+      
+      act(() => {
+        fireEvent(dropArea!, dropEvent);
+      });
+      
+      expect(reviewStateFileLoader).toHaveBeenCalledWith(correctFile);
     });
   });
 });
