@@ -94,7 +94,7 @@ export class ErrorBoundary extends Component<Props, State> {
         // Silently ignore failed logging - don't add more errors
         console.debug('Failed to send error to server:', err);
       });
-    } catch (e) {
+    } catch (_e) {
       // Ignore any errors in the error logging itself
     }
   }

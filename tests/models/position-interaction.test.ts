@@ -1,53 +1,50 @@
 import { PositionInteraction } from '../../src/models/interaction/position-interaction';
 import { Position } from '../../src/models/position';
-import { WordInteraction } from '../../src/models/interaction/word-interaction';
 import { AppState } from '../../src/models/app-state';
 import { createTestAppState } from '../utils/test-app-builder';
 
 describe('PositionInteraction', () => {
   let positionInteraction: PositionInteraction;
   let position: Position;
-  let wordInteraction: WordInteraction;
   let appState: AppState;
-  
+
   beforeEach(() => {
     // Create AppState with WordSayerTestDouble
     appState = createTestAppState();
-    
+
     // Create WordInteraction using Word from WordGraph
     const catWord = appState.wordGraph.getRequiredWord('cat');
-    wordInteraction = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
-    
+
     // Get the first position
     position = catWord.positions[0];
-    
+
     // Create the position interaction to test
     positionInteraction = new PositionInteraction(position, appState.newWordHandler, appState.menuManager);
   });
-  
+
   it('should initialize with correct position references', () => {
     expect(positionInteraction.position).toBe(position);
     expect(positionInteraction.isInsertMenuOpen).toBe(false);
   });
-  
+
   it('should be able to control insert menu state', () => {
     // Initially closed
     expect(positionInteraction.isInsertMenuOpen).toBe(false);
-    
+
     // Open menu
     positionInteraction.isInsertMenuOpen = true;
     expect(positionInteraction.isInsertMenuOpen).toBe(true);
-    
+
     // Close menu
     positionInteraction.isInsertMenuOpen = false;
     expect(positionInteraction.isInsertMenuOpen).toBe(false);
   });
-  
+
   it('should be able to modify the state directly', () => {
     // Verify we can change menu state and it persists
     positionInteraction.isInsertMenuOpen = true;
     expect(positionInteraction.isInsertMenuOpen).toBe(true);
-    
+
     positionInteraction.isInsertMenuOpen = false;
     expect(positionInteraction.isInsertMenuOpen).toBe(false);
   });
