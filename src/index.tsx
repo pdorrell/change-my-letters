@@ -11,7 +11,7 @@ import './styles/main.scss';
 
 
 configure({
-  enforceActions: "always", // or "strict"
+  enforceActions: "observed",
   computedRequiresReaction: true,
   reactionRequiresObservable: true,
   observableRequiresReaction: true,

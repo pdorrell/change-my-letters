@@ -1,4 +1,4 @@
-import { makeAutoObservable, computed, observable } from 'mobx';
+import { makeAutoObservable, computed } from 'mobx';
 import { History } from './history';
 import { WordGraph } from './word-graph';
 import { WordInteraction } from './interaction/word-interaction';
