@@ -39,6 +39,7 @@ interface State {
 /**
  * Error boundary component to catch and display errors in the app
  */
+// eslint-disable-next-line mobx/missing-observer
 export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);

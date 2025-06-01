@@ -8,7 +8,7 @@ import { ActionButton } from '../lib/ui/action-button';
  * Placeholder component that maintains the same dimensions as a letter
  * but is invisible to the user
  */
-export const LetterPlaceholder: React.FC = () => {
+export const LetterPlaceholder: React.FC = observer(() => {
   return (
     <div className="letter-container">
       <div className="letter hidden" data-testid="letter-view">
@@ -20,7 +20,7 @@ export const LetterPlaceholder: React.FC = () => {
       </div>
     </div>
   );
-};
+});
 
 /**
  * View component for displaying a single letter

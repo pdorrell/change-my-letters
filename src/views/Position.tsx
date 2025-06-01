@@ -8,13 +8,13 @@ import { ActionButton } from '../lib/ui/action-button';
  * Placeholder component that maintains the same dimensions as a position
  * but is invisible to the user
  */
-export const PositionPlaceholder: React.FC = () => {
+export const PositionPlaceholder: React.FC = observer(() => {
   return (
     <div className="position-container">
       <button className="insert-icon hidden" data-testid="position-view">➕</button>
     </div>
   );
-};
+});
 
 /**
  * View component for displaying a position where letters can be inserted

@@ -118,7 +118,7 @@ interface LetterChoiceMenuProps {
   menuRef?: React.RefObject<HTMLDivElement>;
 }
 
-export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ wordSelectionByLetter, menuManager, menuRef }) => {
+export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = observer(({ wordSelectionByLetter, menuManager, menuRef }) => {
   const { options, onSelect } = wordSelectionByLetter;
   // Using floating-ui for positioning
   const {refs, floatingStyles, context} = useFloating({
@@ -204,7 +204,7 @@ export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = ({ wordSelectio
       </div>
     </FloatingPortal>
   );
-};
+});
 
 /**
  * Controls component for Current Word page
@@ -234,7 +234,7 @@ export const CurrentWordControls: React.FC<CurrentWordControlsProps> = observer(
  */
 interface CurrentWordPageProps { appState: AppState; }
 
-export const CurrentWordPage: React.FC<CurrentWordPageProps> = ({ appState }) => {
+export const CurrentWordPage: React.FC<CurrentWordPageProps> = observer(({ appState }) => {
   return (
     <>
       <CurrentWordControls appState={appState} />
@@ -242,4 +242,4 @@ export const CurrentWordPage: React.FC<CurrentWordPageProps> = ({ appState }) =>
       <HistoryPanel history={appState.history} />
     </>
   );
-};
+});
