@@ -9,9 +9,10 @@ import { AppState } from '../models/app-state';
  */
 interface ReviewPronunciationControlsProps {
   reviewInteraction: ReviewPronunciationInteraction;
+  reviewStateFileLoader: (file: File) => void;
 }
 
-export const ReviewPronunciationControls: React.FC<ReviewPronunciationControlsProps> = observer(({ reviewInteraction }) => {
+export const ReviewPronunciationControls: React.FC<ReviewPronunciationControlsProps> = observer(({ reviewInteraction, reviewStateFileLoader }) => {
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -23,7 +24,7 @@ export const ReviewPronunciationControls: React.FC<ReviewPronunciationControlsPr
     const file = files.find(f => f.name === 'review-pronunciation-state.json');
     
     if (file) {
-      reviewInteraction.loadReviewStateFromFile(file);
+      reviewStateFileLoader(file);
     } else {
       alert('Please drop a file named "review-pronunciation-state.json"');
     }
@@ -274,7 +275,10 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
 
   return (
     <div className="review-pronunciation-container">
-      <ReviewPronunciationControls reviewInteraction={reviewInteraction} />
+      <ReviewPronunciationControls 
+        reviewInteraction={reviewInteraction} 
+        reviewStateFileLoader={(file: File) => reviewInteraction.loadReviewStateFromFile(file)}
+      />
       <ReviewPronunciationFilters reviewInteraction={reviewInteraction} />
       <ReviewPronunciationWordChoice reviewInteraction={reviewInteraction} />
     </div>
