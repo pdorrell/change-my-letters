@@ -5,7 +5,7 @@
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended"
   ],
-  "plugins": ["react", "@typescript-eslint", "unused-imports"],
+  "plugins": ["react", "@typescript-eslint", "unused-imports", "mobx"],
   "env": {
     "browser": true,
     "es6": true,
@@ -31,7 +31,8 @@
       "caughtErrorsIgnorePattern": "^_"
     }],
     "unused-imports/no-unused-imports": "error",
-    "prefer-const": "warn"
+    "prefer-const": "warn",
+    "mobx/missing-observer": "error"
   },
   "parserOptions": {
     "ecmaVersion": 2020,

@@ -11,13 +11,13 @@ interface AppProps {
 
 interface AppVersionProps { version: string; }
 
-const AppVersion: React.FC<AppVersionProps> = ({ version }) => {
+const AppVersion: React.FC<AppVersionProps> = observer(({ version }) => {
   return (
     <div className="version-display">
       Version: <b>{version}</b>
     </div>
   );
-};
+});
 
 interface PageNavigationProps { appState: AppState; }
 
