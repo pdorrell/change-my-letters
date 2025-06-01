@@ -1,4 +1,3 @@
-import React from 'react';
 import { MenuManagerTestDouble } from '../test_doubles/menu-manager-test-double';
 
 describe('MenuManagerTestDouble', () => {

@@ -1,11 +1,5 @@
 import { WordInteraction } from '../../src/models/interaction/word-interaction';
-import { LetterInteraction } from '../../src/models/interaction/letter-interaction';
-import { PositionInteraction } from '../../src/models/interaction/position-interaction';
-import { Letter } from '../../src/models/letter';
-import { Position } from '../../src/models/position';
-import { Word } from '../../src/models/word';
 import { AppState } from '../../src/models/app-state';
-import { MenuManager } from '../../src/models/menu-manager';
 import { createTestAppState } from '../utils/test-app-builder';
 
 

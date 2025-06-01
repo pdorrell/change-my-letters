@@ -1,6 +1,4 @@
 import { WordGraph } from '../../src/models/word-graph';
-import fs from 'fs';
-import path from 'path';
 
 describe('WordGraph', () => {
   it('creates a word graph', () => {

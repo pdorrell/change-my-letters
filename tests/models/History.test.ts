@@ -1,6 +1,5 @@
 import { History, WordChange } from '../../src/models/history';
 import { AppState } from '../../src/models/app-state';
-import { Word } from '../../src/models/word';
 import { WordGraph } from '../../src/models/word-graph';
 import { WordGraphBuilder } from '../../src/models/word-graph-builder';
 import { WordSayerTestDouble } from '../test_doubles/word-sayer-test-double';

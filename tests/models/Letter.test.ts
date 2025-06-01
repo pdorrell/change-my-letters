@@ -1,4 +1,3 @@
-import { Letter } from '../../src/models/letter';
 import { WordInteraction } from '../../src/models/interaction/word-interaction';
 import { AppState } from '../../src/models/app-state';
 import { createTestAppState } from '../utils/test-app-builder';
