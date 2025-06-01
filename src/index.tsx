@@ -9,12 +9,13 @@ import { WordSayer } from './models/word-sayer';
 import { DataFileFetcher } from './models/data-file-fetcher';
 import './styles/main.scss';
 
-// Configure MobX with less strict settings for development
+
 configure({
-  enforceActions: 'observed',
-  computedRequiresReaction: false,
-  reactionRequiresObservable: false,
-  observableRequiresReaction: false
+  enforceActions: "always", // or "strict"
+  computedRequiresReaction: true,
+  reactionRequiresObservable: true,
+  observableRequiresReaction: true,
+  disableErrorBoundaries: true
 });
 
 // Initialize global error handling

@@ -1,4 +1,4 @@
-import { makeAutoObservable, computed } from 'mobx';
+import { makeAutoObservable, computed, observable } from 'mobx';
 import { History } from './history';
 import { WordGraph } from './word-graph';
 import { WordInteraction } from './interaction/word-interaction';
@@ -30,7 +30,7 @@ const PAGE_CONFIGS: Record<AppPage, PageConfig> = {
 export class AppState {
   // The current page being displayed
   currentPage: AppPage = 'wordView';
-  
+
   // The current sub-header (null for main word view)
   subHeader: string | null = null;
 
@@ -45,7 +45,7 @@ export class AppState {
 
   // Set of previously visited words
   previouslyVisitedWords: Set<string> = new Set();
-  
+
   // Reset word interaction model
   resetInteraction: ResetInteraction;
 
@@ -64,18 +64,18 @@ export class AppState {
   reviewPronunciationAction: ButtonAction;
 
   constructor(
-    initialWord: string, 
-    
+    initialWord: string,
+
     // The word graph model containing possible word connections
     public readonly wordGraph: WordGraph,
-    
+
     // Application version
     public readonly version: string,
-    
+
     // Audio player for word pronunciation
     public readonly wordSayer: WordSayerInterface
   ) {
-    
+
     // Initialize reset interaction
     this.resetInteraction = new ResetInteraction(this);
 
@@ -174,7 +174,7 @@ export class AppState {
   setNewWord(wordObj: Word): void {
     // Add the new word to history first
     this.history.addWord(wordObj);
-    
+
     // Then set it as the current word
     this.setCurrentWord(wordObj);
   }
@@ -216,7 +216,7 @@ export class AppState {
     // (The filter reset happens in navigateTo)
     this.navigateTo('resetView');
   }
-  
+
   /**
    * Reset the game with a new initial word
    * @param initialWord The new starting word
@@ -229,35 +229,43 @@ export class AppState {
         wordNode.previouslyVisited = false;
       }
     });
-    
+
     // Clear previouslyVisitedWords set
     this.previouslyVisitedWords.clear();
-    
+
     // Set visitingWord to the new initial word
     this.visitingWord = initialWord;
-    
+
     // Update the current word interaction
     this.currentWord.updateWord(initialWord);
-    
+
     // Also update the history model
     this.history.reset(initialWord);
   }
 
 
   /**
+   * Set the sayImmediately setting
+   */
+  setSayImmediately(value: boolean): void {
+    console.debug("setSayImmediately value = ", value);
+    this.sayImmediately = value;
+  }
+
+  /**
    * Navigate to a page
    */
   navigateTo(page: AppPage): void {
     this.currentPage = page;
-    
+
     // Remove sub-header since we're using header navigation now
     this.subHeader = null;
-    
+
     // If navigating to the reset view, reset the interaction state
     if (page === 'resetView') {
       this.resetInteraction.reset();
     }
-    
+
     // If navigating to the review pronunciation view, reset the interaction state
     if (page === 'reviewPronunciationView') {
       this.reviewPronunciationInteraction.reset();
