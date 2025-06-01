@@ -1,3 +1,6 @@
+// Import reset view styles  
+@use 'reset-view';
+
 // Base styles
 html, body {
   overflow-x: hidden; // Prevent horizontal scrollbar 
@@ -518,8 +521,6 @@ body {
   margin-top: 10px;
 }
 
-// Import reset view styles
-@import 'reset-view';
 
 // Review Pronunciation view
 .review-pronunciation-container {
