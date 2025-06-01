@@ -5,9 +5,9 @@ import { WordSayerTestDouble } from '../test_doubles/word-sayer-test-double';
 import * as fs from 'fs';
 import * as path from 'path';
 
-// Helper function to create File objects from test data files
+// Helper function to create File objects from review-state test data files
 function createFileFromTestData(filename: string, customName?: string): File {
-  const testFilePath = path.join(__dirname, '../data/test-files', filename);
+  const testFilePath = path.join(__dirname, '../data/test-files/review-state', filename);
   const content = fs.readFileSync(testFilePath, 'utf8');
   return new File([content], customName || 'review-pronunciation-state.json', { type: 'application/json' });
 }
