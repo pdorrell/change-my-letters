@@ -8,7 +8,7 @@ function safeToString(value: unknown): string {
   if (value instanceof Error) return value.stack || value.toString();
   try {
     return String(value);
-  } catch (e) {
+  } catch (_e) {
     return 'Unknown value (could not convert to string)';
   }
 }
