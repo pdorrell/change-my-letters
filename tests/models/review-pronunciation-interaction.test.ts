@@ -2,6 +2,15 @@ import { ReviewPronunciationInteraction } from '../../src/models/review-pronunci
 import { ReviewStateFilterOption } from '../../src/models/review-state-filter-option';
 import { Word } from '../../src/models/word';
 import { WordSayerTestDouble } from '../test_doubles/word-sayer-test-double';
+import * as fs from 'fs';
+import * as path from 'path';
+
+// Helper function to create File objects from test data files
+function createFileFromTestData(filename: string, customName?: string): File {
+  const testFilePath = path.join(__dirname, '../data/test-files', filename);
+  const content = fs.readFileSync(testFilePath, 'utf8');
+  return new File([content], customName || 'review-pronunciation-state.json', { type: 'application/json' });
+}
 
 describe('ReviewPronunciationInteraction', () => {
   let reviewInteraction: ReviewPronunciationInteraction;
@@ -494,41 +503,30 @@ describe('ReviewPronunciationInteraction', () => {
 
   describe('loadReviewStateFromFile', () => {
     it('should load valid review state from test file', (done) => {
-      // Create a test file with known content
-      const testData = '{"reviewed": ["cat", "dog", "fish"], "soundsWrong": ["dog", "fish"]}';
-      const file = new File([testData], 'review-pronunciation-state.json', { type: 'application/json' });
+      // Use real test file with valid data
+      const file = createFileFromTestData('valid-review-state.json');
       
       // Spy on setReviewState to verify it gets called with correct data
       const setReviewStateSpy = jest.spyOn(reviewInteraction, 'setReviewState');
       
-      // Mock FileReader to simulate successful file reading
-      const mockFileReader = {
-        readAsText: jest.fn(),
-        onload: null as any,
-        result: testData
-      };
-      
-      jest.spyOn(window, 'FileReader').mockImplementation(() => mockFileReader as any);
-      
       reviewInteraction.loadReviewStateFromFile(file);
       
-      // Simulate FileReader completing successfully
+      // Wait for FileReader to complete (real FileReader is asynchronous)
       setTimeout(() => {
-        mockFileReader.onload({ target: { result: testData } } as any);
-        
         expect(setReviewStateSpy).toHaveBeenCalledWith({
           reviewed: ['cat', 'dog', 'fish'],
           soundsWrong: ['dog', 'fish']
         });
         
         done();
-      }, 0);
+      }, 50); // Give real FileReader time to complete
     });
 
     it('should show alert for incorrect filename', () => {
       const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
       
-      const file = new File(['{}'], 'wrong-name.json', { type: 'application/json' });
+      // Use real test file but with wrong filename
+      const file = createFileFromTestData('valid-review-state.json', 'wrong-name.json');
       
       reviewInteraction.loadReviewStateFromFile(file);
       
@@ -541,62 +539,40 @@ describe('ReviewPronunciationInteraction', () => {
       const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
       const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
       
-      const invalidData = 'invalid json content';
-      const file = new File([invalidData], 'review-pronunciation-state.json', { type: 'application/json' });
-      
-      // Mock FileReader
-      const mockFileReader = {
-        readAsText: jest.fn(),
-        onload: null as any,
-        result: invalidData
-      };
-      
-      jest.spyOn(window, 'FileReader').mockImplementation(() => mockFileReader as any);
+      // Use real test file with invalid JSON
+      const file = createFileFromTestData('invalid-json.json');
       
       reviewInteraction.loadReviewStateFromFile(file);
       
-      // Simulate FileReader completing with invalid JSON
+      // Wait for FileReader to complete and error handling to execute
       setTimeout(() => {
-        mockFileReader.onload({ target: { result: invalidData } } as any);
-        
         expect(consoleErrorSpy).toHaveBeenCalled();
         expect(alertSpy).toHaveBeenCalledWith('Error parsing JSON file. Please check the file format.');
         
         alertSpy.mockRestore();
         consoleErrorSpy.mockRestore();
         done();
-      }, 0);
+      }, 50);
     });
 
     it('should show alert for invalid review state structure', (done) => {
       const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
       const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
       
-      const invalidStructure = '{"reviewed": "not an array", "soundsWrong": []}';
-      const file = new File([invalidStructure], 'review-pronunciation-state.json', { type: 'application/json' });
-      
-      // Mock FileReader
-      const mockFileReader = {
-        readAsText: jest.fn(),
-        onload: null as any,
-        result: invalidStructure
-      };
-      
-      jest.spyOn(window, 'FileReader').mockImplementation(() => mockFileReader as any);
+      // Use real test file with invalid structure
+      const file = createFileFromTestData('invalid-structure.json');
       
       reviewInteraction.loadReviewStateFromFile(file);
       
-      // Simulate FileReader completing with invalid structure
+      // Wait for FileReader to complete and validation to execute
       setTimeout(() => {
-        mockFileReader.onload({ target: { result: invalidStructure } } as any);
-        
         expect(consoleErrorSpy).toHaveBeenCalled();
         expect(alertSpy).toHaveBeenCalledWith('Error parsing JSON file. Please check the file format.');
         
         alertSpy.mockRestore();
         consoleErrorSpy.mockRestore();
         done();
-      }, 0);
+      }, 50);
     });
   });
 });
