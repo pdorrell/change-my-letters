@@ -21,7 +21,7 @@ describe('LetterView', () => {
     const menuManager = new MenuManagerTestDouble();
 
     // Mock newWordHandler function
-    const newWordHandler = (word: Word) => { /* mock handler */ };
+    const newWordHandler = (_word: Word) => { /* mock handler */ };
 
     // Create LetterInteraction directly with just the required parameters
     const firstLetter = catWord.letters[0];

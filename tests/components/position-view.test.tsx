@@ -21,7 +21,7 @@ describe('PositionView', () => {
     const menuManager = new MenuManagerTestDouble();
 
     // Mock newWordHandler function
-    const newWordHandler = (word: Word) => { /* mock handler */ };
+    const newWordHandler = (_word: Word) => { /* mock handler */ };
 
     // Create PositionInteraction directly with just the required parameters
     const firstPosition = catWord.positions[0];
@@ -95,7 +95,7 @@ describe('PositionView', () => {
     const menuManager = new MenuManagerTestDouble();
     
     // Mock newWordHandler function
-    const newWordHandler = (word: Word) => { /* mock handler */ };
+    const newWordHandler = (_word: Word) => { /* mock handler */ };
     
     // Find a position that cannot insert
     const nonInsertablePosition = word.positions.find(pos => !pos.canInsert);

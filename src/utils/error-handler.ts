@@ -65,17 +65,17 @@ export class ErrorHandler {
    */
   static captureError(message: string, error?: Error | unknown): void {
     const errorMsg = error ? `${message}\n${error instanceof Error ? error.stack : String(error)}` : message;
-    
+
     // No need to create standardized error object if we're not using it
     // Just using the text message for display purposes
 
     // Add to our list of errors (in development mode)
     if (process.env.NODE_ENV === 'development') {
       ErrorHandler.errors.push(errorMsg);
-      
+
       // Display in the UI
       ErrorHandler.updateErrorDisplay();
-      
+
       // Send details to server in development
       ErrorHandler.sendErrorToServer(message, error);
     }
@@ -193,7 +193,7 @@ export class ErrorHandler {
       }).catch(() => {
         // Silently ignore failed logging
       });
-    } catch (e) {
+    } catch (_e) {
       // Ignore any errors in the error logging itself
     }
   }

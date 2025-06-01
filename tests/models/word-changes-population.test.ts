@@ -78,7 +78,6 @@ describe('Word Changes Population', () => {
     // Get the cat word and ensure bat and chat words exist
     const catWord = wordGetter.getRequiredWord('cat')!;
     const batWord = wordGetter.getRequiredWord('bat')!;
-    const chatWord = wordGetter.getRequiredWord('chat')!;
 
     // Manually create the expected insert change for testing
     const batInsertChange = new InsertChange(batWord, 'b');
