@@ -2,6 +2,7 @@ import { makeAutoObservable } from 'mobx';
 import { Word } from './word';
 import { WordGraphBuilder } from './word-graph-builder';
 import { WordGetter } from './word-getter';
+import { wordGraphSchema } from './word-schemas';
 
 /**
  * Exception thrown when a requested word is not found in the graph
@@ -228,11 +229,14 @@ export class WordGraph implements WordGetter {
    * Load a pre-computed word graph from JSON
    */
   loadFromJson(jsonData: Record<string, Record<string, unknown>>): void {
+    // Validate the entire graph structure using Zod schema
+    const validatedData = wordGraphSchema.parse(jsonData);
+    
     this.wordMap.clear();
     this.words.clear();
     this.sortedWords = [];
 
-    for (const [wordStr, wordData] of Object.entries(jsonData)) {
+    for (const [wordStr, wordData] of Object.entries(validatedData)) {
       this.words.add(wordStr);
       const wordObj = Word.fromJson(wordStr, wordData);
       this.wordMap.set(wordStr, wordObj);

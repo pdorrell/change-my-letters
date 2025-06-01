@@ -124,5 +124,39 @@ describe('WordGraph', () => {
     // Should return the length of the longest word ('elephant' = 8)
     expect(wordGraph.maxWordLength).toBe(8);
   });
+
+  it('should roundtrip toJson -> loadFromJson correctly', () => {
+    const originalGraph = new WordGraph();
+    
+    // Create a graph with some test data
+    const testData = {
+      'cat': { delete: 'c.t', insert: 'ab/cd/ef/gh', replace: 'bd/ac/sg' },
+      'bat': { delete: 'b..', insert: 'xy/zw/uv/rs', replace: 'ca/bt/sg' },
+      'hello': { delete: 'h....', insert: 'a/b/c/d/e/f', replace: 'w/x/y/z/q' }
+    };
+    
+    originalGraph.loadFromJson(testData);
+    
+    // Convert to JSON and back
+    const json = originalGraph.toJson();
+    const recreatedGraph = new WordGraph();
+    recreatedGraph.loadFromJson(json);
+    
+    // Verify the recreated graph has the same words
+    expect(recreatedGraph.words.size).toBe(originalGraph.words.size);
+    expect(Array.from(recreatedGraph.words).sort()).toEqual(Array.from(originalGraph.words).sort());
+    
+    // Verify individual words have the same properties
+    for (const wordStr of originalGraph.words) {
+      const originalWord = originalGraph.getWordObj(wordStr);
+      const recreatedWord = recreatedGraph.getWordObj(wordStr);
+      
+      expect(recreatedWord).toBeDefined();
+      expect(recreatedWord!.word).toBe(originalWord!.word);
+      expect(recreatedWord!.deletes).toEqual(originalWord!.deletes);
+      expect(recreatedWord!.inserts).toEqual(originalWord!.inserts);
+      expect(recreatedWord!.replaces).toEqual(originalWord!.replaces);
+    }
+  });
   
 });

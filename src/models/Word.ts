@@ -3,6 +3,7 @@ import { Letter } from './letter';
 import { Position } from './position';
 import { WordChanges, DeleteChange, InsertChange, ReplaceChange } from './word-change';
 import { WordGetter } from './word-getter';
+import { wordSchema } from './word-schemas';
 
 /**
  * Exception thrown when there's an error parsing the JSON for a word graph
@@ -166,6 +167,9 @@ export class Word {
    */
   static fromJson(word: string, data: Record<string, unknown>): Word {
     const wordLength = word.length;
+    
+    // Validate the data structure using Zod schema
+    const validatedData = wordSchema.parse(data);
 
     /**
      * Parses a slash-separated string into an array of strings
@@ -211,16 +215,12 @@ export class Word {
       return Array.from(str).map(char => char !== '.');
     }
 
-    // Process string arrays (inserts, replaces) with runtime type checking
-    const insertData = (typeof data.insert === 'string') ? data.insert : undefined;
-    const replaceData = (typeof data.replace === 'string') ? data.replace : undefined;
-    const deleteData = (typeof data.delete === 'string') ? data.delete : undefined;
-    
-    const inserts = parseSlashSeparatedString(insertData, wordLength + 1);
-    const replaces = parseSlashSeparatedString(replaceData, wordLength);
+    // Use the validated data
+    const inserts = parseSlashSeparatedString(validatedData.insert, wordLength + 1);
+    const replaces = parseSlashSeparatedString(validatedData.replace, wordLength);
 
     // Process boolean arrays (deletes)
-    const deletes = parseBooleanString(deleteData, wordLength);
+    const deletes = parseBooleanString(validatedData.delete, wordLength);
 
     return new Word(
       word,
