@@ -3,11 +3,7 @@ import { Word } from './word';
 import { WordSayerInterface } from './word-sayer-interface';
 import { ReviewStateFilterOption } from './review-state-filter-option';
 import { ButtonAction } from '../lib/ui/actions';
-
-interface ReviewState {
-  reviewed: string[];
-  soundsWrong: string[];
-}
+import { ReviewState, getReviewStateFromJson } from './review-state';
 
 /**
  * Manages interactions for the Review Pronunciation page
@@ -104,9 +100,8 @@ export class ReviewPronunciationInteraction {
     return new ButtonAction(handler, { tooltip: "Mark current word as sounding wrong" });
   }
 
-  setReviewState(jsonData: any): void {
+  setReviewState(data: ReviewState): void {
     this.stopAutoplay();
-    const data = jsonData as ReviewState;
 
     // Reset all words first
     this.resetAllToUnreviewed();
@@ -266,7 +261,8 @@ export class ReviewPronunciationInteraction {
         reader.onload = (e) => {
           try {
             const jsonData = JSON.parse(e.target?.result as string);
-            this.setReviewState(jsonData);
+            const reviewState = getReviewStateFromJson(jsonData);
+            this.setReviewState(reviewState);
           } catch (error) {
             console.error('Error parsing JSON file:', error);
             alert('Error parsing JSON file. Please check the file format.');
