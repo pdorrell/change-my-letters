@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint --format ./eslint-relative-formatter.cjs '{src,tests}/**/*.{ts,tsx}'",
     "lint:fix": "eslint --format ./eslint-relative-formatter.cjs '{src,tests}/**/*.{ts,tsx}' --fix",
+    "check-code": "npm run typecheck && npm run lint",
     "test": "jest",
     "generate-word-graphs": "tsx src/scripts/generateWordGraphs.ts",
     "analyze-word-graphs": "tsx src/scripts/analyzeWordGraph.ts",
