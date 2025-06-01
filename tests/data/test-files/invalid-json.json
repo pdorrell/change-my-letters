@@ -1,0 +1,4 @@
+invalid json content {
+  "missing": "quotes and commas"
+  "invalid": syntax
+}
