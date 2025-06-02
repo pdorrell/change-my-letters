@@ -62,7 +62,7 @@ export class ResetInteraction {
    * Reset the state to default values
    */
   reset(): void {
-    this.filter.setValue('');
+    this.filter.value.set('');
     this.filter.matchStartOnly.set(true);
   }
 

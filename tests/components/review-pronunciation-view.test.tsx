@@ -180,7 +180,7 @@ describe('ReviewPronunciationView', () => {
         fireEvent.change(filterInput, { target: { value: 'cat' } });
       });
 
-      expect(reviewInteraction.filter.value).toBe('cat');
+      expect(reviewInteraction.filter.value.value).toBe('cat');
       expect(filterInput).toHaveValue('cat');
     });
 
@@ -238,7 +238,7 @@ describe('ReviewPronunciationView', () => {
     it('updates word count when filtering', () => {
       act(() => {
         runInAction(() => {
-          reviewInteraction.filter.setValue('c');
+          reviewInteraction.filter.value.set('c');
           reviewInteraction.filter.matchStartOnly.set(true);
         });
       });
@@ -428,7 +428,7 @@ describe('ReviewPronunciationView', () => {
 
       act(() => {
         runInAction(() => {
-          reviewInteraction.filter.setValue('fish');
+          reviewInteraction.filter.value.set('fish');
         });
       });
 

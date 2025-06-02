@@ -239,7 +239,7 @@ export class ReviewPronunciationInteraction {
     this.stopAutoplay();
 
     // Reset filter settings
-    this.filter.setValue('');
+    this.filter.value.set('');
     this.filter.matchStartOnly.set(true);
     this.setReviewStateFilter(ReviewStateFilterOption.ALL);
 
