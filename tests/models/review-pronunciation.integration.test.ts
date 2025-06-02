@@ -29,12 +29,12 @@ describe('Review Pronunciation Integration', () => {
 
     it('should reset review interaction when navigating to review pronunciation view', () => {
       // Set some state
-      reviewInteraction.filter.setValue('test');
+      reviewInteraction.filter.value.set('test');
       reviewInteraction.filter.matchStartOnly.set(false);
 
       appState.navigateTo('reviewPronunciationView');
 
-      expect(reviewInteraction.filter.value).toBe('');
+      expect(reviewInteraction.filter.value.value).toBe('');
       expect(reviewInteraction.filter.matchStartOnly.value).toBe(true);
     });
 
@@ -139,7 +139,7 @@ describe('Review Pronunciation Integration', () => {
       const wordsStartingWithC = appState.wordGraph.sortedWords.filter(w => w.word.startsWith('c'));
 
       if (wordsStartingWithC.length > 0) {
-        reviewInteraction.filter.setValue('c');
+        reviewInteraction.filter.value.set('c');
         reviewInteraction.filter.matchStartOnly.set(true);
 
         const filtered = reviewInteraction.filteredWords;

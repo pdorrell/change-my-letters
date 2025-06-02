@@ -1,29 +1,20 @@
-import { makeObservable, observable, action } from 'mobx';
 import { ValueModel } from './models/value-models';
 
 export class Filter {
-  value: string = '';
+  value: ValueModel<string>;
   matchStartOnly: ValueModel<boolean>;
 
   constructor(matchStartOnly: boolean = false) {
+    this.value = new ValueModel('', 'Filter text', 'Text to filter the word list');
     this.matchStartOnly = new ValueModel(matchStartOnly, 'Match start only', 'Only show words that start with the filter text');
-
-    makeObservable(this, {
-      value: observable,
-      setValue: action,
-    });
-  }
-
-  setValue(value: string): void {
-    this.value = value;
   }
 
   filtered(strings: string[]): string[] {
-    if (this.value === '') {
+    if (this.value.value === '') {
       return strings;
     }
 
-    const filterValue = this.value.toLowerCase();
+    const filterValue = this.value.value.toLowerCase();
     return strings.filter(str => {
       const lowerStr = str.toLowerCase();
       return this.matchStartOnly.value
