@@ -4,16 +4,15 @@ import { WordSayerInterface } from './word-sayer-interface';
 import { ReviewStateFilterOption } from './review-state-filter-option';
 import { ButtonAction } from '../lib/models/actions';
 import { ReviewState, getReviewStateFromJson } from './review-state';
-import { ValueModel } from '../lib/models/value-models';
+import { Filter } from '../lib/filter';
 
 /**
  * Manages interactions for the Review Pronunciation page
  */
 export class ReviewPronunciationInteraction {
   // Filter settings
-  filter: string = '';
+  filter: Filter;
   reviewStateFilter: ReviewStateFilterOption = ReviewStateFilterOption.ALL;
-  matchStartOnly: ValueModel<boolean>;
 
   // Current review word
   currentReviewWord: Word | null = null;
@@ -38,8 +37,9 @@ export class ReviewPronunciationInteraction {
     public readonly sortedWords: Word[],
     public readonly wordSayer: WordSayerInterface
   ) {
-    // Initialize match start only setting
-    this.matchStartOnly = new ValueModel(true, 'Match start only', 'Only show words that start with the filter text');
+    // Initialize filter
+    this.filter = new Filter();
+    this.filter.setMatchStartOnly(true);
 
     // Create words map for efficient lookup
     this.wordsMap = new Map();
@@ -70,17 +70,15 @@ export class ReviewPronunciationInteraction {
   }
 
   get filteredWords(): Word[] {
-    return this.sortedWords.filter(word => {
-      // Apply text filter
-      const matchesText = this.matchStartOnly.value
-        ? word.word.toLowerCase().startsWith(this.filter.toLowerCase())
-        : word.word.toLowerCase().includes(this.filter.toLowerCase());
+    // Apply review state filter first
+    const stateFiltered = this.sortedWords.filter(word => this.reviewStateFilter.include(word));
 
-      if (!matchesText) return false;
+    // Get word strings and apply text filter
+    const wordStrings = stateFiltered.map(word => word.word);
+    const textFiltered = this.filter.filtered(wordStrings);
 
-      // Apply review state filter
-      return this.reviewStateFilter.include(word);
-    });
+    // Return Word objects that match the text filter
+    return stateFiltered.filter(word => textFiltered.includes(word.word));
   }
 
   // Computed property for currentReviewWordIndex
@@ -242,9 +240,9 @@ export class ReviewPronunciationInteraction {
     this.stopAutoplay();
 
     // Reset filter settings
-    this.filter = '';
-    this.matchStartOnly.set(true);
-    this.reviewStateFilter = ReviewStateFilterOption.ALL;
+    this.filter.setValue('');
+    this.filter.setMatchStartOnly(true);
+    this.setReviewStateFilter(ReviewStateFilterOption.ALL);
 
     // Clear current review word
     if (this.currentReviewWord) {
@@ -313,18 +311,6 @@ export class ReviewPronunciationInteraction {
     URL.revokeObjectURL(url);
   }
 
-  // Action methods for form controls
-  @action
-  setFilter(value: string): void {
-    this.stopAutoplay();
-    this.filter = value;
-  }
-
-  @action
-  setMatchStartOnly(value: boolean): void {
-    this.stopAutoplay();
-    this.matchStartOnly.set(value);
-  }
 
   @action
   setReviewStateFilter(filter: ReviewStateFilterOption): void {
