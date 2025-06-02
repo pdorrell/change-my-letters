@@ -1,10 +1,10 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { ResetInteraction } from '../models/reset-interaction';
 import { ActionButton } from '../lib/views/action-button';
 import { AppState } from '../models/app-state';
 import { HistoryPanel } from './history';
-import { ValueCheckbox } from '../lib/views/value-model-views';
+import { FilterView } from '../lib/views/filter';
 
 /**
  * Controls component for Reset page
@@ -12,33 +12,10 @@ import { ValueCheckbox } from '../lib/views/value-model-views';
 interface ResetControlsProps { resetInteraction: ResetInteraction; }
 
 export const ResetControls: React.FC<ResetControlsProps> = observer(({ resetInteraction }) => {
-  // Create a ref for the filter input to focus it on mount
-  const filterInputRef = useRef<HTMLInputElement>(null);
-
-  // Focus the filter input when the component mounts
-  useEffect(() => {
-    if (filterInputRef.current) {
-      filterInputRef.current.focus();
-    }
-  }, []);
-
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    resetInteraction.setFilter(e.target.value);
-  };
-
-
   return (
     <div className="reset-controls">
       <div className="reset-controls-left">
-        <input
-          type="text"
-          ref={filterInputRef}
-          value={resetInteraction.filter}
-          onChange={handleFilterChange}
-          placeholder="Filter words..."
-          className="reset-filter-input"
-        />
-        <ValueCheckbox value={resetInteraction.matchStartOnly} />
+        <FilterView filter={resetInteraction.filter} />
       </div>
       <div className="reset-controls-right">
         <ActionButton

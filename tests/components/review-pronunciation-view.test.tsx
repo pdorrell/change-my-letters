@@ -166,7 +166,7 @@ describe('ReviewPronunciationView', () => {
     it('renders filter controls', () => {
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
-      expect(screen.getByPlaceholderText('Enter filter text...')).toBeInTheDocument();
+      expect(screen.getByPlaceholderText('Filter text...')).toBeInTheDocument();
       expect(screen.getByLabelText('Match start only')).toBeInTheDocument();
       expect(screen.getByLabelText('Review state:')).toBeInTheDocument();
     });
@@ -174,13 +174,13 @@ describe('ReviewPronunciationView', () => {
     it('updates filter text when typing', () => {
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
-      const filterInput = screen.getByPlaceholderText('Enter filter text...');
+      const filterInput = screen.getByPlaceholderText('Filter text...');
 
       act(() => {
         fireEvent.change(filterInput, { target: { value: 'cat' } });
       });
 
-      expect(reviewInteraction.filter).toBe('cat');
+      expect(reviewInteraction.filter.value).toBe('cat');
       expect(filterInput).toHaveValue('cat');
     });
 
@@ -194,7 +194,7 @@ describe('ReviewPronunciationView', () => {
         fireEvent.click(checkbox);
       });
 
-      expect(reviewInteraction.matchStartOnly.value).toBe(false);
+      expect(reviewInteraction.filter.matchStartOnly).toBe(false);
       expect(checkbox).not.toBeChecked();
     });
 
@@ -238,8 +238,8 @@ describe('ReviewPronunciationView', () => {
     it('updates word count when filtering', () => {
       act(() => {
         runInAction(() => {
-          reviewInteraction.filter = 'c';
-          reviewInteraction.matchStartOnly.set(true);
+          reviewInteraction.filter.setValue('c');
+          reviewInteraction.filter.setMatchStartOnly(true);
         });
       });
 
@@ -428,7 +428,7 @@ describe('ReviewPronunciationView', () => {
 
       act(() => {
         runInAction(() => {
-          reviewInteraction.filter = 'fish';
+          reviewInteraction.filter.setValue('fish');
         });
       });
 

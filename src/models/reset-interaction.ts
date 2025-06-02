@@ -2,17 +2,14 @@ import { makeAutoObservable, computed } from 'mobx';
 import { AppState } from './app-state';
 import { ButtonAction } from '../lib/models/actions';
 import { Word } from './word';
-import { ValueModel } from '../lib/models/value-models';
+import { Filter } from '../lib/filter';
 
 /**
  * Model for the Reset page interaction
  */
 export class ResetInteraction {
-  // The filter text entered by the user
-  filter: string = '';
-
-  // Whether to match only words that start with the filter
-  matchStartOnly: ValueModel<boolean>;
+  // Filter for word selection
+  filter: Filter;
 
   // Button actions
   cancelAction: ButtonAction;
@@ -24,8 +21,9 @@ export class ResetInteraction {
   constructor(appState: AppState) {
     this.appState = appState;
 
-    // Initialize match start only setting
-    this.matchStartOnly = new ValueModel(true, 'Match start only', 'Only show words that start with the filter text');
+    // Initialize filter
+    this.filter = new Filter();
+    this.filter.setMatchStartOnly(true);
 
     // Initialize button actions with tooltips
     this.cancelAction = new ButtonAction(
@@ -54,42 +52,19 @@ export class ResetInteraction {
   get filteredWords(): string[] {
     // Get the Word objects from the graph
     const wordObjects = this.appState.wordGraph.sortedWords;
+    const allWords = wordObjects.map(wordObj => wordObj.word);
 
-    // If no filter is set, return all word strings
-    if (!this.filter) {
-      return wordObjects.map(wordObj => wordObj.word);
-    }
-
-    const lowerFilter = this.filter.toLowerCase();
-
-    // Apply the filter to the word strings
-    if (this.matchStartOnly.value) {
-      // Filter words that start with the filter text
-      return wordObjects
-        .filter(wordObj => wordObj.word.toLowerCase().startsWith(lowerFilter))
-        .map(wordObj => wordObj.word);
-    } else {
-      // Filter words that contain the filter text
-      return wordObjects
-        .filter(wordObj => wordObj.word.toLowerCase().includes(lowerFilter))
-        .map(wordObj => wordObj.word);
-    }
+    return this.filter.filtered(allWords);
   }
 
-  /**
-   * Set a new filter text
-   */
-  setFilter(newFilter: string): void {
-    this.filter = newFilter;
-  }
 
 
   /**
    * Reset the state to default values
    */
   reset(): void {
-    this.filter = '';
-    this.matchStartOnly.set(true);
+    this.filter.setValue('');
+    this.filter.setMatchStartOnly(true);
   }
 
   /**

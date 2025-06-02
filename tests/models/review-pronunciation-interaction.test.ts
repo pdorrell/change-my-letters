@@ -33,9 +33,9 @@ describe('ReviewPronunciationInteraction', () => {
 
   describe('initialization', () => {
     it('should initialize with correct default values', () => {
-      expect(reviewInteraction.filter).toBe('');
+      expect(reviewInteraction.filter.value).toBe('');
       expect(reviewInteraction.reviewStateFilter).toBe(ReviewStateFilterOption.ALL);
-      expect(reviewInteraction.matchStartOnly.value).toBe(true);
+      expect(reviewInteraction.filter.matchStartOnly).toBe(true);
       expect(reviewInteraction.currentReviewWord).toBeNull();
       expect(reviewInteraction.sortedWords).toEqual(testWords);
     });
@@ -61,8 +61,8 @@ describe('ReviewPronunciationInteraction', () => {
 
   describe('filtering', () => {
     it('should filter words by text (match start)', () => {
-      reviewInteraction.filter = 'c';
-      reviewInteraction.matchStartOnly.set(true);
+      reviewInteraction.filter.setValue('c');
+      reviewInteraction.filter.setMatchStartOnly(true);
 
       const filtered = reviewInteraction.filteredWords;
       expect(filtered).toHaveLength(1);
@@ -70,8 +70,8 @@ describe('ReviewPronunciationInteraction', () => {
     });
 
     it('should filter words by text (contains)', () => {
-      reviewInteraction.filter = 'i';
-      reviewInteraction.matchStartOnly.set(false);
+      reviewInteraction.filter.setValue('i');
+      reviewInteraction.filter.setMatchStartOnly(false);
 
       const filtered = reviewInteraction.filteredWords;
       expect(filtered).toHaveLength(2);
@@ -129,8 +129,8 @@ describe('ReviewPronunciationInteraction', () => {
       testWords[0].reviewed = true; // cat reviewed
       testWords[2].soundsWrong = true; // fish wrong
 
-      reviewInteraction.filter = 'f';
-      reviewInteraction.matchStartOnly.set(true);
+      reviewInteraction.filter.setValue('f');
+      reviewInteraction.filter.setMatchStartOnly(true);
       reviewInteraction.reviewStateFilter = ReviewStateFilterOption.WRONG;
 
       const filtered = reviewInteraction.filteredWords;
@@ -350,16 +350,16 @@ describe('ReviewPronunciationInteraction', () => {
 
   describe('reset function', () => {
     it('should reset filter settings and clear current review word', () => {
-      reviewInteraction.filter = 'test';
-      reviewInteraction.matchStartOnly.set(false);
+      reviewInteraction.filter.setValue('test');
+      reviewInteraction.filter.setMatchStartOnly(false);
       reviewInteraction.reviewStateFilter = ReviewStateFilterOption.WRONG;
       testWords[0].currentReview = true;
       reviewInteraction.currentReviewWord = testWords[0];
 
       reviewInteraction.reset();
 
-      expect(reviewInteraction.filter).toBe('');
-      expect(reviewInteraction.matchStartOnly.value).toBe(true);
+      expect(reviewInteraction.filter.value).toBe('');
+      expect(reviewInteraction.filter.matchStartOnly).toBe(true);
       expect(reviewInteraction.reviewStateFilter).toBe(ReviewStateFilterOption.ALL);
       expect(reviewInteraction.currentReviewWord).toBeNull();
       expect(reviewInteraction.currentReviewWordIndex).toBeNull();
@@ -413,7 +413,7 @@ describe('ReviewPronunciationInteraction', () => {
       });
 
       it('should handle empty filtered list gracefully', () => {
-        reviewInteraction.filter = 'nonexistent';
+        reviewInteraction.filter.setValue('nonexistent');
 
         reviewInteraction.gotoNextWord();
 
@@ -456,7 +456,7 @@ describe('ReviewPronunciationInteraction', () => {
       });
 
       it('should handle empty filtered list gracefully', () => {
-        reviewInteraction.filter = 'nonexistent';
+        reviewInteraction.filter.setValue('nonexistent');
 
         reviewInteraction.gotoPreviousWord();
 
@@ -472,7 +472,7 @@ describe('ReviewPronunciationInteraction', () => {
         expect(reviewInteraction.currentReviewWordIndex).toBe(1);
 
         // Filter to only words starting with 'd'
-        reviewInteraction.setFilter('d');
+        reviewInteraction.filter.setValue('d');
 
         // Now 'dog' should be at index 0 in filtered list
         expect(reviewInteraction.currentReviewWordIndex).toBe(0);
@@ -488,7 +488,7 @@ describe('ReviewPronunciationInteraction', () => {
         expect(reviewInteraction.currentReviewWordIndex).toBe(0);
 
         // Filter to only words starting with 'd' (cat disappears)
-        reviewInteraction.setFilter('d');
+        reviewInteraction.filter.setValue('d');
 
         // Index should be null since 'cat' is not in filtered list
         expect(reviewInteraction.currentReviewWordIndex).toBeNull();
