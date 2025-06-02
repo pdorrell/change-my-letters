@@ -5,9 +5,9 @@ import { WordInteraction } from './interaction/word-interaction';
 import { WordSayerInterface } from './word-sayer-interface';
 import { ResetInteraction } from './reset-interaction';
 import { ReviewPronunciationInteraction } from './review-pronunciation-interaction';
-import { MenuManager } from '../lib/models/menu-manager';
+import { MenuManager } from '../lib/views/menu-manager';
 import { Word } from './word';
-import { ButtonAction } from '../lib/ui/actions';
+import { ButtonAction } from '../lib/models/actions';
 import { ValueModel } from '../lib/models/value-models';
 
 // Type for the main application pages

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ButtonAction } from './actions';
+import { ButtonAction } from '../models/actions';
 
 /**
  * Props for the ActionButton component

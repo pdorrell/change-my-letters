@@ -2,7 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { AppState } from './app-state';
 import { WordLoader } from './word-loader';
 import { WordSayerInterface } from './word-sayer-interface';
-import { DataFileFetcherInterface } from '../lib/models/data-file-fetcher-interface';
+import { DataFileFetcherInterface } from '../lib/data-fetching/data-file-fetcher-interface';
 import localDevReviewState from '../data/local_dev/review-pronunciation-state.json';
 
 /**

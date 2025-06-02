@@ -1,5 +1,5 @@
 import React from 'react';
-import { MenuManagerInterface } from '../../src/lib/models/menu-manager-interface';
+import { MenuManagerInterface } from '../../src/lib/views/menu-manager-interface';
 
 /**
  * Test double for MenuManager that implements the interface without requiring MobX
