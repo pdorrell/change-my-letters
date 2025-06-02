@@ -10,12 +10,12 @@ export class MenuManagerTestDouble implements MenuManagerInterface {
   constructor(private closeAllMenus: () => void = () => {}) {}
 
   toggleMenu(
-    currentlyOpen: boolean, 
-    setMenuOpen: () => void, 
+    currentlyOpen: boolean,
+    setMenuOpen: () => void,
     buttonRef: React.RefObject<HTMLButtonElement>
   ): void {
     this.closeMenus();
-    
+
     if (!currentlyOpen && buttonRef.current) {
       this.activeButtonElement = buttonRef.current;
       setMenuOpen();

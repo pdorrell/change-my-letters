@@ -47,7 +47,7 @@ export const testWordLists = {
    * A very small list for focused tests
    */
   minimal: [
-    'cat', 'bat', 'hat', 'rat', 
+    'cat', 'bat', 'hat', 'rat',
     'car', 'can'
   ]
 };
@@ -59,9 +59,9 @@ export function createTestWordGraph(words: string[] = testWordLists.minimal): Wo
   // For tests, use the pre-defined sample graph JSON if we're asking for the minimal set
   // Otherwise, build a new one with the provided words
   const wordGraph = new WordGraph();
-  
-  if (words === testWordLists.minimal || 
-      (words.length === testWordLists.minimal.length && 
+
+  if (words === testWordLists.minimal ||
+      (words.length === testWordLists.minimal.length &&
        words.every(w => testWordLists.minimal.includes(w)))) {
     wordGraph.loadFromJson(sampleWordGraphJson);
   } else {
@@ -69,11 +69,11 @@ export function createTestWordGraph(words: string[] = testWordLists.minimal): Wo
     const jsonGraph = builder.build();
     wordGraph.loadFromJson(jsonGraph);
   }
-  
+
   // Note: We don't call populateChanges() for test graphs because the sample data
   // contains references to words that aren't in the test word list (like 'bcat' from inserting 'b' into 'cat')
   // Tests that need populated changes should use createWordGraphFromJson() instead
-  
+
   return wordGraph;
 }
 

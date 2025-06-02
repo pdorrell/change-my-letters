@@ -7,13 +7,13 @@ import { createTestAppState } from '../utils/test-app-builder';
 describe('WordInteraction', () => {
   let appState: AppState;
   let menuManager: MenuManager;
-  
+
   beforeEach(() => {
     // Create AppState with test data
     appState = createTestAppState();
     menuManager = appState.menuManager;
   });
-  
+
   it('should initialize correctly with a word', () => {
     const wordObj = appState.wordGraph.getRequiredWord('cat');
     const currentWord = new WordInteraction(wordObj, appState.newWordHandler, appState.wordSayer, menuManager, appState.history);
@@ -23,7 +23,7 @@ describe('WordInteraction', () => {
 
     // Should have 3 letterInteractions for 'cat'
     expect(currentWord.letterInteractions.length).toBe(3);
-    
+
     // Should have 4 positionInteractions (before, between, and after letters)
     expect(currentWord.positionInteractions.length).toBe(4);
   });
@@ -39,7 +39,7 @@ describe('WordInteraction', () => {
 
     // Should have 3 letterInteractions
     expect(currentWord.letterInteractions.length).toBe(3);
-    
+
     // Should still have 4 positionInteractions
     expect(currentWord.positionInteractions.length).toBe(4);
   });
@@ -57,7 +57,7 @@ describe('WordInteraction', () => {
     const catWord = appState.wordGraph.getRequiredWord('cat');
     const canWord = appState.wordGraph.getRequiredWord('can');
     const atWord = appState.wordGraph.getRequiredWord('at'); // 2-letter word from deletion
-    
+
     const currentWord = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, menuManager, appState.history);
 
     // Update to same length word

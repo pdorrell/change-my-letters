@@ -12,10 +12,10 @@ import { WordSelectionByLetter } from '../word-selection-by-letter';
 export class PositionInteraction {
   // Whether the insert menu is currently open
   isInsertMenuOpen: boolean = false;
-  
+
   // Reference to the insert button element
   insertButtonRef: React.RefObject<HTMLButtonElement> = React.createRef<HTMLButtonElement>();
-  
+
   // Reference to the insert menu element for testing
   insertMenuRef: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
 
@@ -25,7 +25,7 @@ export class PositionInteraction {
 
     // Handler function for setting new words
     public readonly newWordHandler: (word: Word) => void,
-    
+
     // Reference to the menu manager
     public readonly menuManager: MenuManagerInterface
   ) {
@@ -38,14 +38,14 @@ export class PositionInteraction {
       insertMenuRef: false // Don't make the ref observable
     });
   }
-  
+
   /**
    * Whether there is a pending action on this position
    */
   get actionPending(): boolean {
     return this.isInsertMenuOpen;
   }
-  
+
   /**
    * Get the action that opens the insert menu for this position
    */
@@ -54,7 +54,7 @@ export class PositionInteraction {
     if (!this.position.canInsert) {
       return new ButtonAction(null, { tooltip: "Insert a letter here" });
     }
-    
+
     // Otherwise, return an action that toggles the insert menu
     return new ButtonAction(() => {
       this.menuManager.toggleMenu(
@@ -62,12 +62,12 @@ export class PositionInteraction {
         action(() => { this.isInsertMenuOpen = true; }),
         this.insertButtonRef
       );
-    }, { 
+    }, {
       tooltip: "Insert a letter here",
       onPress: () => this.menuManager.closeMenus()
     });
   }
-  
+
   /**
    * Get the selection of letters to insert at this position
    */
@@ -77,7 +77,7 @@ export class PositionInteraction {
       (wordObj: Word) => this.setNewWord(wordObj)
     );
   }
-  
+
   /**
    * Set a new word for the application
    * @param wordObj The Word object to set as the new word
@@ -87,7 +87,7 @@ export class PositionInteraction {
     action(() => {
       this.isInsertMenuOpen = false;
     })();
-    
+
     // Use the newWordHandler to set the new word
     this.newWordHandler(wordObj);
   }

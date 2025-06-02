@@ -167,7 +167,7 @@ export class Word {
    */
   static fromJson(word: string, data: Record<string, unknown>): Word {
     const wordLength = word.length;
-    
+
     // Validate the data structure using Zod schema
     const validatedData = wordSchema.parse(data);
 

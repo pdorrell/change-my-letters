@@ -231,7 +231,7 @@ export class WordGraph implements WordGetter {
   loadFromJson(jsonData: Record<string, Record<string, unknown>>): void {
     // Validate the entire graph structure using Zod schema
     const validatedData = wordGraphSchema.parse(jsonData);
-    
+
     this.wordMap.clear();
     this.words.clear();
     this.sortedWords = [];
@@ -295,11 +295,11 @@ export class WordGraph implements WordGetter {
     for (const [, wordObj] of this.wordMap.entries()) {
       wordObj.populateChanges(this);
     }
-    
+
     // Create the sorted array of Word objects sorted by their word strings
     this.updateSortedWords();
   }
-  
+
   /**
    * Update the sortedWords array with Word objects sorted by their word strings
    */

@@ -16,7 +16,7 @@ describe('LetterView', () => {
     const wordGetter = new FreeTestWordGetter();
     const catWord = wordGetter.getRequiredWord('cat');
     catWord.populateChanges(wordGetter);
-    
+
     // Create a MenuManager test double
     const menuManager = new MenuManagerTestDouble();
 

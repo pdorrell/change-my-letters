@@ -18,7 +18,7 @@ describe('TestChoiceHandler', () => {
 
     it('records a single choice', () => {
       handler.chooser('hello');
-      
+
       expect(handler.choices).toEqual(['hello']);
       expect(handler.choice).toBe('hello');
     });
@@ -27,14 +27,14 @@ describe('TestChoiceHandler', () => {
       handler.chooser('first');
       handler.chooser('second');
       handler.chooser('third');
-      
+
       expect(handler.choices).toEqual(['first', 'second', 'third']);
     });
 
     it('throws error when accessing choice with multiple choices made', () => {
       handler.chooser('first');
       handler.chooser('second');
-      
+
       expect(() => handler.choice).toThrow('Multiple choices (2) were made');
     });
 
@@ -42,7 +42,7 @@ describe('TestChoiceHandler', () => {
       handler.chooser('test');
       const choices = handler.choices;
       choices.push('modified');
-      
+
       expect(handler.choices).toEqual(['test']);
     });
   });
@@ -62,17 +62,17 @@ describe('TestChoiceHandler', () => {
     it('records object choices correctly', () => {
       const choice1 = { id: 1, name: 'first' };
       const choice2 = { id: 2, name: 'second' };
-      
+
       handler.chooser(choice1);
       handler.chooser(choice2);
-      
+
       expect(handler.choices).toEqual([choice1, choice2]);
     });
 
     it('returns single object choice', () => {
       const choice = { id: 42, name: 'answer' };
       handler.chooser(choice);
-      
+
       expect(handler.choice).toEqual(choice);
       expect(handler.choice).toBe(choice);
     });
@@ -91,7 +91,7 @@ describe('TestChoiceHandler', () => {
       handler.chooser(3);
       handler.chooser(4);
       handler.chooser(5);
-      
+
       expect(() => handler.choice).toThrow('Multiple choices (5) were made');
     });
   });

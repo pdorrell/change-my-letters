@@ -72,7 +72,7 @@ describe('ReviewStateFilterOption', () => {
   describe('options static property', () => {
     it('should contain all filter options in correct order', () => {
       const options = ReviewStateFilterOption.options;
-      
+
       expect(options).toHaveLength(4);
       expect(options[0]).toBe(ReviewStateFilterOption.ALL);
       expect(options[1]).toBe(ReviewStateFilterOption.UNREVIEWED);

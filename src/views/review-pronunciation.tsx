@@ -22,7 +22,7 @@ export const ReviewPronunciationControls: React.FC<ReviewPronunciationControlsPr
     e.preventDefault();
     const files = Array.from(e.dataTransfer.files);
     const file = files.find(f => f.name === 'review-pronunciation-state.json');
-    
+
     if (file) {
       reviewStateFileLoader(file);
     } else {
@@ -33,7 +33,7 @@ export const ReviewPronunciationControls: React.FC<ReviewPronunciationControlsPr
   return (
     <div className="review-pronunciation-controls">
       <div className="action-buttons-panel">
-        <div 
+        <div
           className="load-state-button-container"
           onDragOver={handleDragOver}
           onDrop={handleDrop}
@@ -42,23 +42,23 @@ export const ReviewPronunciationControls: React.FC<ReviewPronunciationControlsPr
             + Load State
           </ActionButton>
         </div>
-        
+
         <ActionButton action={reviewInteraction.saveStateAction}>
           Save State
         </ActionButton>
-        
+
         <ActionButton action={reviewInteraction.downloadWrongWordsAction}>
           Download Wrong Words
         </ActionButton>
-        
+
         <ActionButton action={reviewInteraction.resetAllToUnreviewedAction}>
           Reset All to Unreviewed
         </ActionButton>
-        
+
         <ActionButton action={reviewInteraction.resetAllToOKAction}>
           Reset All to OK
         </ActionButton>
-        
+
         <ActionButton action={reviewInteraction.reviewWrongWordsAction}>
           Review Wrong Words
         </ActionButton>
@@ -67,31 +67,31 @@ export const ReviewPronunciationControls: React.FC<ReviewPronunciationControlsPr
       {/* Current Word Panel - always visible */}
       <div className="current-word-panel">
         <div className="current-review-word">
-          <span 
+          <span
             className={`word-span ${
-              reviewInteraction.currentReviewWord 
+              reviewInteraction.currentReviewWord
                 ? (reviewInteraction.currentReviewWord.soundsWrong ? 'wrong' : 'ok') + ' current-review'
                 : 'no-word'
             }`}
           >
             {reviewInteraction.currentReviewWord ? reviewInteraction.currentReviewWord.word : '\u00A0'}
           </span>
-          
+
           <div className="review-buttons">
             <ActionButton action={reviewInteraction.markSoundsWrongAction}>
               Sounds Wrong
             </ActionButton>
-            
+
             <ActionButton action={reviewInteraction.markOKAction}>
               Sounds OK
             </ActionButton>
           </div>
-          
+
           <div className="autoplay-controls">
             <ActionButton action={reviewInteraction.autoplayAction}>
               {reviewInteraction.autoplaying ? 'Stop' : 'Auto'}
             </ActionButton>
-            
+
             <select
               value={reviewInteraction.autoPlayWaitMillis}
               onChange={(e) => {
@@ -124,7 +124,7 @@ export const ReviewPronunciationFilters: React.FC<ReviewPronunciationFiltersProp
   return (
     <div className="review-pronunciation-filters">
       <div className="filter-panel">
-        
+
         <div className="filter-controls">
           <div className="filter-text">
             <input
@@ -135,7 +135,7 @@ export const ReviewPronunciationFilters: React.FC<ReviewPronunciationFiltersProp
               placeholder="Enter filter text..."
             />
           </div>
-          
+
           <div className="match-start">
             <label>
               <input
@@ -146,7 +146,7 @@ export const ReviewPronunciationFilters: React.FC<ReviewPronunciationFiltersProp
               Match start only
             </label>
           </div>
-          
+
           <div className="review-state-filter">
             <label htmlFor="review-state-select">Review state:</label>
             <select
@@ -188,13 +188,13 @@ export const ReviewPronunciationWordChoice: React.FC<ReviewPronunciationWordChoi
             <span className="shortcut-hint">Use ← → arrow keys to navigate, Alt+→ to start autoplay, space bar to toggle sounds wrong</span>
           </div>
         </div>
-        
+
         <div className="words-grid">
           {reviewInteraction.filteredWords.map(word => {
             const isCurrentReview = word.currentReview;
             const isReviewed = word.reviewed && !word.soundsWrong;
             const isWrong = word.soundsWrong;
-            
+
             let className = 'word-span';
             if (isWrong) {
               className += isCurrentReview ? ' wrong current-review' : ' wrong';
@@ -203,7 +203,7 @@ export const ReviewPronunciationWordChoice: React.FC<ReviewPronunciationWordChoi
             } else if (isCurrentReview) {
               className += ' current-review';
             }
-            
+
             return (
               <span
                 key={word.word}
@@ -267,7 +267,7 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
     };
 
     document.addEventListener('keydown', handleKeyDown);
-    
+
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
@@ -275,8 +275,8 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
 
   return (
     <div className="review-pronunciation-container">
-      <ReviewPronunciationControls 
-        reviewInteraction={reviewInteraction} 
+      <ReviewPronunciationControls
+        reviewInteraction={reviewInteraction}
         reviewStateFileLoader={(file: File) => reviewInteraction.loadReviewStateFromFile(file)}
       />
       <ReviewPronunciationFilters reviewInteraction={reviewInteraction} />

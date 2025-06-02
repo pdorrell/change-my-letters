@@ -9,7 +9,7 @@ describe('Position', () => {
   beforeEach(() => {
     // Create AppState with WordSayerTestDouble
     appState = createTestAppState();
-    
+
     // Create WordInteraction using Word from WordGraph
     const catWord = appState.wordGraph.getRequiredWord('cat');
     currentWord = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
@@ -18,7 +18,7 @@ describe('Position', () => {
   it('should initialize with the correct properties', () => {
     // Use the position from the word
     const position = currentWord.positionInteractions[1].position;
-    
+
     expect(position.index).toBe(1);
     expect(position.canInsert).toBeDefined();
     expect(position.insertOptions).toBeDefined();
@@ -26,7 +26,7 @@ describe('Position', () => {
 
   it('should provide insert options when insertions are possible', () => {
     const position = currentWord.positionInteractions[0].position;
-    
+
     if (position.canInsert) {
       expect(position.insertOptions.length).toBeGreaterThan(0);
       // Insert options should be strings

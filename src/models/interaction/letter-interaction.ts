@@ -12,10 +12,10 @@ import { WordSelectionByLetter } from '../word-selection-by-letter';
 export class LetterInteraction {
   // Whether the replacement menu is currently open
   isReplaceMenuOpen: boolean = false;
-  
+
   // Reference to the replace button element
   replaceButtonRef: React.RefObject<HTMLButtonElement> = React.createRef<HTMLButtonElement>();
-  
+
   // Reference to the replace menu element for testing
   replaceMenuRef: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
 
@@ -25,7 +25,7 @@ export class LetterInteraction {
 
     // Handler function for setting new words
     public readonly newWordHandler: (word: Word) => void,
-    
+
     // Reference to the menu manager
     public readonly menuManager: MenuManagerInterface
   ) {
@@ -39,14 +39,14 @@ export class LetterInteraction {
       replaceMenuRef: false // Don't make the ref observable
     });
   }
-  
+
   /**
    * Whether there is a pending action on this letter
    */
   get actionPending(): boolean {
     return this.isReplaceMenuOpen;
   }
-  
+
   /**
    * Get the delete action for this letter
    */
@@ -55,18 +55,18 @@ export class LetterInteraction {
     if (!this.letter.canDelete || !this.letter.changes.deleteChange) {
       return new ButtonAction(null, { tooltip: "Delete this letter" });
     }
-    
+
     // Otherwise, return an action that performs the delete
     return new ButtonAction(() => {
       if (this.letter.changes.deleteChange) {
         this.setNewWord(this.letter.changes.deleteChange.result);
       }
-    }, { 
+    }, {
       tooltip: "Delete this letter",
       onPress: () => this.menuManager.closeMenus()
     });
   }
-  
+
   /**
    * Get the action that opens the replace menu for this letter
    */
@@ -75,7 +75,7 @@ export class LetterInteraction {
     if (!this.letter.canReplace) {
       return new ButtonAction(null, { tooltip: "Replace this letter" });
     }
-    
+
     // Otherwise, return an action that toggles the replace menu
     return new ButtonAction(() => {
       this.menuManager.toggleMenu(
@@ -83,12 +83,12 @@ export class LetterInteraction {
         action(() => { this.isReplaceMenuOpen = true; }),
         this.replaceButtonRef
       );
-    }, { 
+    }, {
       tooltip: "Replace this letter",
       onPress: () => this.menuManager.closeMenus()
     });
   }
-  
+
   /**
    * Get the selection of replacement letters for this letter
    */
@@ -98,7 +98,7 @@ export class LetterInteraction {
       (wordObj: Word) => this.setNewWord(wordObj)
     );
   }
-  
+
   /**
    * Set a new word for the application
    * @param wordObj The Word object to set as the new word
@@ -108,7 +108,7 @@ export class LetterInteraction {
     action(() => {
       this.isReplaceMenuOpen = false;
     })();
-    
+
     // Use the newWordHandler to set the new word
     this.newWordHandler(wordObj);
   }

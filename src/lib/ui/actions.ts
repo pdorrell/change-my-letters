@@ -6,7 +6,7 @@ export interface ButtonActionOptions {
    * Optional tooltip text for the action
    */
   tooltip?: string;
-  
+
   /**
    * Optional handler for pressing the button
    */
@@ -21,12 +21,12 @@ export class ButtonAction {
    * Optional tooltip text for the action
    */
   readonly tooltip?: string;
-  
+
   /**
    * Optional handler for pressing the button
    */
   readonly onPress?: () => void;
-  
+
   /**
    * Create a new button action
    * @param handler The handler function, or null if the action is disabled

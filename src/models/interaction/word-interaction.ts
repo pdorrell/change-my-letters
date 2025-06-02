@@ -33,16 +33,16 @@ export class WordInteraction {
   constructor(
     // The Word object this interaction is for
     public word: Word,
-    
+
     // Handler function for setting new words
     public readonly newWordHandler: (word: Word) => void,
-    
+
     // Word sayer for audio pronunciation
     public readonly wordSayer: WordSayerInterface,
-    
+
     // Reference to the menu manager
     public readonly menuManager: MenuManager,
-    
+
     // History model for compact history view
     public readonly history: History
   ) {
@@ -119,7 +119,7 @@ export class WordInteraction {
     // Use the wordSayer to play the audio for this word
     this.wordSayer.say(this.word.word);
   }
-  
+
   /**
    * Set a new word for the application
    * @param wordObj The Word object to set as the new word

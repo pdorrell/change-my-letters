@@ -46,15 +46,15 @@ function analyzeWordGraph(filePath: string): void {
     // Create a 'reports' subdirectory in the same directory as the input file
     const inputDir = path.dirname(filePath);
     const reportsDir = path.join(inputDir, 'reports');
-    
+
     // Create the reports directory if it doesn't exist
     if (!fs.existsSync(reportsDir)) {
       fs.mkdirSync(reportsDir, { recursive: true });
     }
-    
+
     // Get just the filename without extension
     const fileBaseName = path.basename(filePath, path.extname(filePath));
-    
+
     // Write report to file in the reports subdirectory
     const outputPath = path.join(reportsDir, `${fileBaseName}-report.txt`);
     fs.writeFileSync(outputPath, report, 'utf-8');

@@ -9,9 +9,9 @@ import { AppState } from '../../src/models/app-state';
 export function createTestAppState(wordSayer?: WordSayerInterface): AppState {
   const wordGraph = createTestWordGraph(testWordLists.minimal);
   const wordSayerToUse = wordSayer || new WordSayerTestDouble();
-  
+
   // Get the first word from the test word graph as initial word
   const initialWord = Array.from(wordGraph.words)[0];
-  
+
   return new AppState(initialWord, wordGraph, 'test-version', wordSayerToUse);
 }

@@ -24,10 +24,10 @@ describe('Word', () => {
     );
 
     const letters = word.letters;
-    
+
     // Should have three letters for 'cat'
     expect(letters.length).toBe(3);
-    
+
     // Letters should have correct values
     expect(letters[0].value).toBe('c');
     expect(letters[1].value).toBe('a');
@@ -45,10 +45,10 @@ describe('Word', () => {
     );
 
     const positions = word.positions;
-    
+
     // Should have four positions for 'cat'
     expect(positions.length).toBe(4);
-    
+
     // Positions should have correct indices
     expect(positions[0].index).toBe(0);
     expect(positions[1].index).toBe(1);
@@ -98,7 +98,7 @@ describe('Word', () => {
     expect(word.word).toBe('cat');
     expect(word.deletes).toEqual([true, false, true]);
     expect(word.replaces).toEqual(['bcdf', 'bcdf', 'bcdf']);
-    
+
     // Case-related tests have been removed
   });
 

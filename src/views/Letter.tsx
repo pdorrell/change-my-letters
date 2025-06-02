@@ -29,10 +29,10 @@ interface LetterViewProps { letterInteraction: LetterInteraction; }
 
 export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteraction }) => {
   const letter = letterInteraction.letter;
-  
+
   // Delete action is now handled by letterInteraction.deleteAction
   // Replace action is now handled by letterInteraction.openReplaceMenuAction
-  
+
   // Case change handler has been removed
 
   return (

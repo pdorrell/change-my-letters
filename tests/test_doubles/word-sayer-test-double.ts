@@ -6,7 +6,7 @@ import { WordSayerInterface } from '../../src/models/word-sayer-interface';
 export class WordSayerTestDouble implements WordSayerInterface {
   // Track which words were preloaded for test verification
   public preloadedWords: Set<string> = new Set();
-  
+
   // Track which words were played for test verification
   public playedWords: string[] = [];
 
