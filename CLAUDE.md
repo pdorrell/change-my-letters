@@ -301,3 +301,12 @@ Current test doubles are -
 * `WordSayerTestDouble` which is a test double for `WordSayer` which wraps use of the global `Audio` class to
   generate audio of words from MP3 files.
 
+## eslint settings
+
+There are eslint settings to enforce the following rules -
+
+* no trailing spaces (therefore all blank lines are completely empty)
+* source files must end on a eoln character
+* no unused variables, and unused parameters must start with _
+* no unused imports
+* check for missing mobx `observer` for functional react components
