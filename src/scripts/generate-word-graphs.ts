@@ -23,7 +23,7 @@ function processWordListFile(filePath: string): void {
       console.log(`Skipping ${filePath} (not a .txt file)`);
       return;
     }
-    
+
     const pathDir = path.dirname(filePath);
     const fileName = path.basename(filePath, '.txt');
     const jsonOutputPath = path.join(pathDir, `${fileName}-graph.json`);
@@ -59,7 +59,7 @@ function processDirectory(directoryPath: string): void {
     console.error(`Directory not found: ${directoryPath}`);
     process.exit(1);
   }
-  
+
   // Check if it's actually a directory
   const stats = fs.statSync(directoryPath);
   if (!stats.isDirectory()) {
@@ -93,16 +93,16 @@ function processDirectory(directoryPath: string): void {
 function main(): void {
   // Get command-line argument if provided
   const inputPath = process.argv[2] ? path.resolve(process.argv[2]) : DEFAULT_DATA_DIR;
-  
+
   // Check if the path exists
   if (!fs.existsSync(inputPath)) {
     console.error(`Path not found: ${inputPath}`);
     process.exit(1);
   }
-  
+
   // Check if it's a directory or a file
   const stats = fs.statSync(inputPath);
-  
+
   if (stats.isDirectory()) {
     console.log(`Processing directory: ${inputPath}`);
     processDirectory(inputPath);

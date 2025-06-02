@@ -24,8 +24,8 @@ export class MenuManager implements MenuManagerInterface {
    * @param buttonRef Reference to the button element that triggered the menu
    */
   toggleMenu(
-    currentlyOpen: boolean, 
-    setMenuOpen: () => void, 
+    currentlyOpen: boolean,
+    setMenuOpen: () => void,
     buttonRef: React.RefObject<HTMLButtonElement>
   ): void {
     // Close all menus first
@@ -44,7 +44,7 @@ export class MenuManager implements MenuManagerInterface {
   closeMenus(): void {
     // Call the closeAllMenus function passed in the constructor
     this.closeAllMenus();
-    
+
     // Reset button element reference
     this.activeButtonElement = null;
   }

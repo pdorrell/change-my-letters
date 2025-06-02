@@ -13,7 +13,7 @@ type RouteMapping = [string, string];
 export class DataFileFetcherTestDouble implements DataFileFetcherInterface {
   private readonly rootPath: string;
   private readonly routeMappings: RouteMapping[];
-  
+
   /**
    * Create a new DataFileFetcherTestDouble
    * @param routeMappings Array of URL to file path mappings
@@ -26,7 +26,7 @@ export class DataFileFetcherTestDouble implements DataFileFetcherInterface {
     this.routeMappings = routeMappings;
     this.rootPath = rootPath;
   }
-  
+
   /**
    * Maps a URL to a file path relative to the project root
    * @param url The URL to route
@@ -35,20 +35,20 @@ export class DataFileFetcherTestDouble implements DataFileFetcherInterface {
    */
   route(url: string): string {
     // Find a matching route
-    const matchedRoute = this.routeMappings.find(([urlPattern]) => 
+    const matchedRoute = this.routeMappings.find(([urlPattern]) =>
       url.startsWith(urlPattern) || url === urlPattern
     );
-    
+
     if (!matchedRoute) {
       throw new Error(`No mapping found for URL: ${url}`);
     }
-    
+
     const [urlPattern, filePathPattern] = matchedRoute;
-    
+
     // Replace the URL pattern with the file path pattern
     return url.replace(urlPattern, filePathPattern);
   }
-  
+
   /**
    * Gets the absolute file path for a given URL
    * @param url The URL to get the absolute path for
@@ -59,7 +59,7 @@ export class DataFileFetcherTestDouble implements DataFileFetcherInterface {
     const localPath = this.route(url);
     return path.join(this.rootPath, localPath);
   }
-  
+
   /**
    * Fetch data by mapping the URL to a local file
    * @param url The URL to map and fetch
@@ -68,7 +68,7 @@ export class DataFileFetcherTestDouble implements DataFileFetcherInterface {
    */
   async fetch(url: string): Promise<string> {
     const fullPath = this.getAbsolutePath(url);
-    
+
     try {
       // Read the file
       return await fs.readFile(fullPath, 'utf-8');

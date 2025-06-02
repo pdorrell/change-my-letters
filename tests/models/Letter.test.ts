@@ -9,7 +9,7 @@ describe('Letter', () => {
   beforeEach(() => {
     // Create AppState with WordSayerTestDouble
     appState = createTestAppState();
-    
+
     // Create WordInteraction using Word from WordGraph
     const catWord = appState.wordGraph.getRequiredWord('cat');
     currentWord = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
@@ -18,7 +18,7 @@ describe('Letter', () => {
   it('should initialize with the correct properties', () => {
     // Use the first letter from the word
     const letter = currentWord.letterInteractions[0].letter;
-    
+
     expect(letter.value).toBe('c');
     expect(letter.position).toBe(0);
     expect(letter.canDelete).toBeDefined();
@@ -27,7 +27,7 @@ describe('Letter', () => {
 
   it('should provide replacement options when replacements are possible', () => {
     const letter = currentWord.letterInteractions[0].letter;
-    
+
     if (letter.canReplace) {
       expect(letter.replacements.length).toBeGreaterThan(0);
       // Replace options should be strings

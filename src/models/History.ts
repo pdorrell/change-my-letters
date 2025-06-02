@@ -41,7 +41,7 @@ export class History {
 
     makeAutoObservable(this);
   }
-  
+
   /**
    * Add a new word to the history
    */
@@ -50,14 +50,14 @@ export class History {
     if (this.currentIndex < this.entries.length - 1) {
       this.entries = this.entries.slice(0, this.currentIndex + 1);
     }
-    
+
     // Add the new word to history
     this.entries.push({ word, wordString: word.word, change });
-    
+
     // Update the index
     this.currentIndex = this.entries.length - 1;
   }
-  
+
   /**
    * Check if a word has been visited before
    */
@@ -68,7 +68,7 @@ export class History {
       return word.previouslyVisited;
     }
   }
-  
+
   /**
    * Undo the last change
    */
@@ -79,7 +79,7 @@ export class History {
     }
     return null;
   }
-  
+
   /**
    * Redo a previously undone change
    */
@@ -90,28 +90,28 @@ export class History {
     }
     return null;
   }
-  
+
   /**
    * Check if undo is available
    */
   get canUndo(): boolean {
     return this.currentIndex > 0;
   }
-  
+
   /**
    * Check if redo is available
    */
   get canRedo(): boolean {
     return this.currentIndex < this.entries.length - 1;
   }
-  
+
   /**
    * Get the current word
    */
   get currentWord(): Word {
     return this.entries[this.currentIndex].word;
   }
-  
+
   /**
    * Jump to a specific point in history
    */
@@ -122,7 +122,7 @@ export class History {
     }
     return null;
   }
-  
+
   /**
    * Clear the history and start with a new word
    */

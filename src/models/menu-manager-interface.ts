@@ -5,12 +5,12 @@ import React from 'react';
  */
 export interface MenuManagerInterface {
   activeButtonElement: HTMLElement | null;
-  
+
   toggleMenu(
-    currentlyOpen: boolean, 
-    setMenuOpen: () => void, 
+    currentlyOpen: boolean,
+    setMenuOpen: () => void,
     buttonRef: React.RefObject<HTMLButtonElement>
   ): void;
-  
+
   closeMenus(): void;
 }

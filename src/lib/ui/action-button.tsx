@@ -21,14 +21,14 @@ export const ActionButton = React.forwardRef<
   const handleClick = () => {
     action.doAction();
   };
-  
+
   const handleMouseDown = () => {
     // Execute onPress handler if it exists
     if (action.onPress) {
       action.onPress();
     }
   };
-  
+
   return (
     <button
       ref={ref}

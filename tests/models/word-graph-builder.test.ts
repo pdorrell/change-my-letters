@@ -18,7 +18,7 @@ describe('WordGraphBuilder', () => {
   it('should build a graph', () => {
     const builder = new WordGraphBuilder(testWordList);
     const graph = builder.build();
-    
+
     expect(graph).toBeDefined();
     expect(typeof graph).toBe('object');
   });
@@ -26,10 +26,10 @@ describe('WordGraphBuilder', () => {
   it('should generate JSON data for a word graph', () => {
     const builder = new WordGraphBuilder(['cat', 'bat']);
     const graph = builder.build();
-    
+
     // Since the exact format can vary, we just check that it's a non-empty object
     expect(Object.keys(graph).length).toBeGreaterThan(0);
-    
+
     // Test specific words
     if (graph.words) {
       expect(graph.words.cat).toBeDefined();

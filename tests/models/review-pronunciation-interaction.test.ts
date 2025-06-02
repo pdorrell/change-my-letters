@@ -19,7 +19,7 @@ describe('ReviewPronunciationInteraction', () => {
 
   beforeEach(() => {
     wordSayer = new WordSayerTestDouble();
-    
+
     // Create test words
     testWords = [
       new Word('cat', [false, false, false], ['', '', '', ''], ['', '', '']),
@@ -27,7 +27,7 @@ describe('ReviewPronunciationInteraction', () => {
       new Word('fish', [false, false, false, false], ['', '', '', '', ''], ['', '', '', '']),
       new Word('bird', [false, false, false, false], ['', '', '', '', ''], ['', '', '', ''])
     ];
-    
+
     reviewInteraction = new ReviewPronunciationInteraction(testWords, wordSayer);
   });
 
@@ -63,7 +63,7 @@ describe('ReviewPronunciationInteraction', () => {
     it('should filter words by text (match start)', () => {
       reviewInteraction.filter = 'c';
       reviewInteraction.matchStartOnly = true;
-      
+
       const filtered = reviewInteraction.filteredWords;
       expect(filtered).toHaveLength(1);
       expect(filtered[0].word).toBe('cat');
@@ -72,7 +72,7 @@ describe('ReviewPronunciationInteraction', () => {
     it('should filter words by text (contains)', () => {
       reviewInteraction.filter = 'i';
       reviewInteraction.matchStartOnly = false;
-      
+
       const filtered = reviewInteraction.filteredWords;
       expect(filtered).toHaveLength(2);
       expect(filtered.map(w => w.word)).toContain('fish');
@@ -83,9 +83,9 @@ describe('ReviewPronunciationInteraction', () => {
       // Mark some words as reviewed
       testWords[0].reviewed = true;
       testWords[1].reviewed = true;
-      
+
       reviewInteraction.reviewStateFilter = ReviewStateFilterOption.UNREVIEWED;
-      
+
       const filtered = reviewInteraction.filteredWords;
       expect(filtered).toHaveLength(2);
       expect(filtered.map(w => w.word)).toContain('fish');
@@ -96,9 +96,9 @@ describe('ReviewPronunciationInteraction', () => {
       // Mark some words as wrong
       testWords[0].soundsWrong = true;
       testWords[2].soundsWrong = true;
-      
+
       reviewInteraction.reviewStateFilter = ReviewStateFilterOption.WRONG;
-      
+
       const filtered = reviewInteraction.filteredWords;
       expect(filtered).toHaveLength(2);
       expect(filtered.map(w => w.word)).toContain('cat');
@@ -109,14 +109,14 @@ describe('ReviewPronunciationInteraction', () => {
       // Mark some words as reviewed and OK
       testWords[0].reviewed = true;
       testWords[0].soundsWrong = false;
-      
+
       // Mark one as wrong
       testWords[1].soundsWrong = true;
-      
+
       // Leave others unreviewed
-      
+
       reviewInteraction.reviewStateFilter = ReviewStateFilterOption.UNREVIEWED_OR_WRONG;
-      
+
       const filtered = reviewInteraction.filteredWords;
       expect(filtered).toHaveLength(3); // dog (wrong), fish (unreviewed), bird (unreviewed)
       expect(filtered.map(w => w.word)).toContain('dog');
@@ -128,11 +128,11 @@ describe('ReviewPronunciationInteraction', () => {
     it('should combine text and review state filters', () => {
       testWords[0].reviewed = true; // cat reviewed
       testWords[2].soundsWrong = true; // fish wrong
-      
+
       reviewInteraction.filter = 'f';
       reviewInteraction.matchStartOnly = true;
       reviewInteraction.reviewStateFilter = ReviewStateFilterOption.WRONG;
-      
+
       const filtered = reviewInteraction.filteredWords;
       expect(filtered).toHaveLength(1);
       expect(filtered[0].word).toBe('fish');
@@ -145,9 +145,9 @@ describe('ReviewPronunciationInteraction', () => {
         reviewed: ['cat', 'dog'],
         soundsWrong: ['dog']
       };
-      
+
       reviewInteraction.setReviewState(reviewState);
-      
+
       expect(testWords[0].reviewed).toBe(true); // cat
       expect(testWords[0].soundsWrong).toBe(false);
       expect(testWords[1].reviewed).toBe(true); // dog
@@ -162,9 +162,9 @@ describe('ReviewPronunciationInteraction', () => {
       testWords[1].soundsWrong = true;
       testWords[2].soundsWrong = true;
       testWords[2].reviewed = true;
-      
+
       const reviewState = reviewInteraction.getReviewState();
-      
+
       expect(reviewState.reviewed).toContain('cat');
       expect(reviewState.reviewed).toContain('dog');
       expect(reviewState.reviewed).toContain('fish');
@@ -177,9 +177,9 @@ describe('ReviewPronunciationInteraction', () => {
       testWords[3].soundsWrong = true; // bird
       testWords[1].soundsWrong = true; // dog
       testWords[0].soundsWrong = true; // cat
-      
+
       const wrongWords = reviewInteraction.getWrongSoundingWords();
-      
+
       expect(wrongWords).toEqual(['bird', 'cat', 'dog']); // sorted alphabetically
     });
   });
@@ -196,7 +196,7 @@ describe('ReviewPronunciationInteraction', () => {
 
     it('should reset all to unreviewed', () => {
       reviewInteraction.resetAllToUnreviewed();
-      
+
       testWords.forEach(word => {
         expect(word.reviewed).toBe(false);
         expect(word.soundsWrong).toBe(false);
@@ -207,7 +207,7 @@ describe('ReviewPronunciationInteraction', () => {
 
     it('should reset all to OK', () => {
       reviewInteraction.resetAllToOK();
-      
+
       testWords.forEach(word => {
         expect(word.reviewed).toBe(true);
         expect(word.soundsWrong).toBe(false);
@@ -220,9 +220,9 @@ describe('ReviewPronunciationInteraction', () => {
       testWords[0].soundsWrong = true;
       testWords[1].soundsWrong = false;
       testWords[2].soundsWrong = true;
-      
+
       reviewInteraction.reviewWrongWords();
-      
+
       expect(testWords[0].reviewed).toBe(false); // wrong word
       expect(testWords[1].reviewed).toBe(true); // not wrong
       expect(testWords[2].reviewed).toBe(false); // wrong word
@@ -232,9 +232,9 @@ describe('ReviewPronunciationInteraction', () => {
       testWords[1].soundsWrong = false;
       testWords[1].currentReview = true;
       reviewInteraction.currentReviewWord = testWords[1];
-      
+
       reviewInteraction.reviewWrongWords();
-      
+
       expect(testWords[1].currentReview).toBe(false);
       expect(reviewInteraction.currentReviewWord).toBeNull();
     });
@@ -243,9 +243,9 @@ describe('ReviewPronunciationInteraction', () => {
       testWords[1].soundsWrong = true;
       testWords[1].currentReview = true;
       reviewInteraction.currentReviewWord = testWords[1];
-      
+
       reviewInteraction.reviewWrongWords();
-      
+
       expect(testWords[1].currentReview).toBe(true);
       expect(reviewInteraction.currentReviewWord).toBe(testWords[1]);
     });
@@ -254,16 +254,16 @@ describe('ReviewPronunciationInteraction', () => {
   describe('mark functions', () => {
     it('should mark word as OK', () => {
       testWords[0].soundsWrong = true;
-      
+
       reviewInteraction.markOK('cat');
-      
+
       expect(testWords[0].soundsWrong).toBe(false);
       expect(testWords[0].reviewed).toBe(true);
     });
 
     it('should mark word as sounds wrong', () => {
       reviewInteraction.markSoundsWrong('cat');
-      
+
       expect(testWords[0].soundsWrong).toBe(true);
       expect(testWords[0].reviewed).toBe(true);
     });
@@ -279,7 +279,7 @@ describe('ReviewPronunciationInteraction', () => {
   describe('review word function', () => {
     it('should set current review word and say it', () => {
       reviewInteraction.reviewWord('cat');
-      
+
       expect(reviewInteraction.currentReviewWord).toBe(testWords[0]);
       expect(testWords[0].currentReview).toBe(true);
       expect(wordSayer.playedWords).toContain('cat');
@@ -288,10 +288,10 @@ describe('ReviewPronunciationInteraction', () => {
     it('should mark previous review word as reviewed when setting new one', () => {
       // Set initial review word
       reviewInteraction.reviewWord('cat');
-      
+
       // Set new review word
       reviewInteraction.reviewWord('dog');
-      
+
       expect(testWords[0].reviewed).toBe(true);
       expect(testWords[0].currentReview).toBe(false);
       expect(testWords[1].currentReview).toBe(true);
@@ -302,7 +302,7 @@ describe('ReviewPronunciationInteraction', () => {
       expect(() => {
         reviewInteraction.reviewWord('nonexistent');
       }).not.toThrow();
-      
+
       expect(reviewInteraction.currentReviewWord).toBeNull();
     });
   });
@@ -311,7 +311,7 @@ describe('ReviewPronunciationInteraction', () => {
     it('should enable mark OK action when current word sounds wrong', () => {
       testWords[0].soundsWrong = true;
       reviewInteraction.currentReviewWord = testWords[0];
-      
+
       const action = reviewInteraction.markOKAction;
       expect(action.enabled).toBe(true);
     });
@@ -319,14 +319,14 @@ describe('ReviewPronunciationInteraction', () => {
     it('should disable mark OK action when current word does not sound wrong', () => {
       testWords[0].soundsWrong = false;
       reviewInteraction.currentReviewWord = testWords[0];
-      
+
       const action = reviewInteraction.markOKAction;
       expect(action.enabled).toBe(false);
     });
 
     it('should disable mark OK action when no current word', () => {
       reviewInteraction.currentReviewWord = null;
-      
+
       const action = reviewInteraction.markOKAction;
       expect(action.enabled).toBe(false);
     });
@@ -334,7 +334,7 @@ describe('ReviewPronunciationInteraction', () => {
     it('should enable mark sounds wrong action when current word does not sound wrong', () => {
       testWords[0].soundsWrong = false;
       reviewInteraction.currentReviewWord = testWords[0];
-      
+
       const action = reviewInteraction.markSoundsWrongAction;
       expect(action.enabled).toBe(true);
     });
@@ -342,7 +342,7 @@ describe('ReviewPronunciationInteraction', () => {
     it('should disable mark sounds wrong action when current word sounds wrong', () => {
       testWords[0].soundsWrong = true;
       reviewInteraction.currentReviewWord = testWords[0];
-      
+
       const action = reviewInteraction.markSoundsWrongAction;
       expect(action.enabled).toBe(false);
     });
@@ -355,9 +355,9 @@ describe('ReviewPronunciationInteraction', () => {
       reviewInteraction.reviewStateFilter = ReviewStateFilterOption.WRONG;
       testWords[0].currentReview = true;
       reviewInteraction.currentReviewWord = testWords[0];
-      
+
       reviewInteraction.reset();
-      
+
       expect(reviewInteraction.filter).toBe('');
       expect(reviewInteraction.matchStartOnly).toBe(true);
       expect(reviewInteraction.reviewStateFilter).toBe(ReviewStateFilterOption.ALL);
@@ -374,7 +374,7 @@ describe('ReviewPronunciationInteraction', () => {
 
     it('should update currentReviewWordIndex when reviewWord is called', () => {
       reviewInteraction.reviewWord('dog'); // dog is at index 1 in testWords
-      
+
       expect(reviewInteraction.currentReviewWordIndex).toBe(1);
       expect(reviewInteraction.currentReviewWord).toBe(testWords[1]);
     });
@@ -382,9 +382,9 @@ describe('ReviewPronunciationInteraction', () => {
     describe('gotoNextWord', () => {
       it('should start with first word when no current word', () => {
         expect(reviewInteraction.currentReviewWord).toBeNull();
-        
+
         reviewInteraction.gotoNextWord();
-        
+
         expect(reviewInteraction.currentReviewWord).toBe(testWords[0]); // 'cat'
         expect(reviewInteraction.currentReviewWordIndex).toBe(0);
         expect(wordSayer.playedWords).toContain('cat');
@@ -393,9 +393,9 @@ describe('ReviewPronunciationInteraction', () => {
       it('should move to next word in sequence', () => {
         reviewInteraction.reviewWord('cat'); // Start at index 0
         wordSayer.playedWords = []; // Clear previous calls
-        
+
         reviewInteraction.gotoNextWord();
-        
+
         expect(reviewInteraction.currentReviewWord).toBe(testWords[1]); // 'dog'
         expect(reviewInteraction.currentReviewWordIndex).toBe(1);
         expect(wordSayer.playedWords).toContain('dog');
@@ -404,9 +404,9 @@ describe('ReviewPronunciationInteraction', () => {
       it('should repeat current word when at end of list', () => {
         reviewInteraction.reviewWord('bird'); // Last word (index 3)
         wordSayer.playedWords = []; // Clear previous calls
-        
+
         reviewInteraction.gotoNextWord();
-        
+
         expect(reviewInteraction.currentReviewWord).toBe(testWords[3]); // Still 'bird'
         expect(reviewInteraction.currentReviewWordIndex).toBe(3);
         expect(wordSayer.playedWords).toContain('bird');
@@ -414,9 +414,9 @@ describe('ReviewPronunciationInteraction', () => {
 
       it('should handle empty filtered list gracefully', () => {
         reviewInteraction.filter = 'nonexistent';
-        
+
         reviewInteraction.gotoNextWord();
-        
+
         expect(reviewInteraction.currentReviewWord).toBeNull();
         expect(reviewInteraction.currentReviewWordIndex).toBeNull();
       });
@@ -425,9 +425,9 @@ describe('ReviewPronunciationInteraction', () => {
     describe('gotoPreviousWord', () => {
       it('should start with last word when no current word', () => {
         expect(reviewInteraction.currentReviewWord).toBeNull();
-        
+
         reviewInteraction.gotoPreviousWord();
-        
+
         expect(reviewInteraction.currentReviewWord).toBe(testWords[3]); // 'bird'
         expect(reviewInteraction.currentReviewWordIndex).toBe(3);
         expect(wordSayer.playedWords).toContain('bird');
@@ -436,9 +436,9 @@ describe('ReviewPronunciationInteraction', () => {
       it('should move to previous word in sequence', () => {
         reviewInteraction.reviewWord('dog'); // Start at index 1
         wordSayer.playedWords = []; // Clear previous calls
-        
+
         reviewInteraction.gotoPreviousWord();
-        
+
         expect(reviewInteraction.currentReviewWord).toBe(testWords[0]); // 'cat'
         expect(reviewInteraction.currentReviewWordIndex).toBe(0);
         expect(wordSayer.playedWords).toContain('cat');
@@ -447,9 +447,9 @@ describe('ReviewPronunciationInteraction', () => {
       it('should repeat current word when at start of list', () => {
         reviewInteraction.reviewWord('cat'); // First word (index 0)
         wordSayer.playedWords = []; // Clear previous calls
-        
+
         reviewInteraction.gotoPreviousWord();
-        
+
         expect(reviewInteraction.currentReviewWord).toBe(testWords[0]); // Still 'cat'
         expect(reviewInteraction.currentReviewWordIndex).toBe(0);
         expect(wordSayer.playedWords).toContain('cat');
@@ -457,9 +457,9 @@ describe('ReviewPronunciationInteraction', () => {
 
       it('should handle empty filtered list gracefully', () => {
         reviewInteraction.filter = 'nonexistent';
-        
+
         reviewInteraction.gotoPreviousWord();
-        
+
         expect(reviewInteraction.currentReviewWord).toBeNull();
         expect(reviewInteraction.currentReviewWordIndex).toBeNull();
       });
@@ -470,13 +470,13 @@ describe('ReviewPronunciationInteraction', () => {
         // Start with 'dog' selected (index 1 in full list)
         reviewInteraction.reviewWord('dog');
         expect(reviewInteraction.currentReviewWordIndex).toBe(1);
-        
+
         // Filter to only words starting with 'd'
         reviewInteraction.setFilter('d');
-        
+
         // Now 'dog' should be at index 0 in filtered list
         expect(reviewInteraction.currentReviewWordIndex).toBe(0);
-        
+
         // Test navigation works with filter
         reviewInteraction.gotoNextWord();
         expect(reviewInteraction.currentReviewWord?.word).toBe('dog'); // Should repeat since it's the only 'd' word
@@ -486,14 +486,14 @@ describe('ReviewPronunciationInteraction', () => {
         // Start with 'cat' selected
         reviewInteraction.reviewWord('cat');
         expect(reviewInteraction.currentReviewWordIndex).toBe(0);
-        
+
         // Filter to only words starting with 'd' (cat disappears)
         reviewInteraction.setFilter('d');
-        
+
         // Index should be null since 'cat' is not in filtered list
         expect(reviewInteraction.currentReviewWordIndex).toBeNull();
         expect(reviewInteraction.currentReviewWord?.word).toBe('cat'); // Word is still current
-        
+
         // Navigation should work from filtered list
         reviewInteraction.gotoNextWord();
         expect(reviewInteraction.currentReviewWord?.word).toBe('dog');
@@ -505,50 +505,50 @@ describe('ReviewPronunciationInteraction', () => {
     it('should load valid review state from test file', (done) => {
       // Use real test file with valid data
       const file = createFileFromTestData('valid-review-state.json');
-      
+
       // Spy on setReviewState to verify it gets called with correct data
       const setReviewStateSpy = jest.spyOn(reviewInteraction, 'setReviewState');
-      
+
       reviewInteraction.loadReviewStateFromFile(file);
-      
+
       // Wait for FileReader to complete (real FileReader is asynchronous)
       setTimeout(() => {
         expect(setReviewStateSpy).toHaveBeenCalledWith({
           reviewed: ['cat', 'dog', 'fish'],
           soundsWrong: ['dog', 'fish']
         });
-        
+
         done();
       }, 50); // Give real FileReader time to complete
     });
 
     it('should show alert for incorrect filename', () => {
       const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
-      
+
       // Use real test file but with wrong filename
       const file = createFileFromTestData('valid-review-state.json', 'wrong-name.json');
-      
+
       reviewInteraction.loadReviewStateFromFile(file);
-      
+
       expect(alertSpy).toHaveBeenCalledWith('Please select a file named "review-pronunciation-state.json"');
-      
+
       alertSpy.mockRestore();
     });
 
     it('should show alert for invalid JSON content', (done) => {
       const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
       const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-      
+
       // Use real test file with invalid JSON
       const file = createFileFromTestData('invalid-json.json');
-      
+
       reviewInteraction.loadReviewStateFromFile(file);
-      
+
       // Wait for FileReader to complete and error handling to execute
       setTimeout(() => {
         expect(consoleErrorSpy).toHaveBeenCalled();
         expect(alertSpy).toHaveBeenCalledWith('Error parsing JSON file. Please check the file format.');
-        
+
         alertSpy.mockRestore();
         consoleErrorSpy.mockRestore();
         done();
@@ -558,17 +558,17 @@ describe('ReviewPronunciationInteraction', () => {
     it('should show alert for invalid review state structure', (done) => {
       const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
       const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-      
+
       // Use real test file with invalid structure
       const file = createFileFromTestData('invalid-structure.json');
-      
+
       reviewInteraction.loadReviewStateFromFile(file);
-      
+
       // Wait for FileReader to complete and validation to execute
       setTimeout(() => {
         expect(consoleErrorSpy).toHaveBeenCalled();
         expect(alertSpy).toHaveBeenCalledWith('Error parsing JSON file. Please check the file format.');
-        
+
         alertSpy.mockRestore();
         consoleErrorSpy.mockRestore();
         done();

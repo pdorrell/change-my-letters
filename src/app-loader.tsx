@@ -20,7 +20,7 @@ const AppLoader: React.FC<AppLoaderProps> = observer(({ applicationLoader }) => 
       </div>
     );
   }
-  
+
   // Show error if there was a problem loading the app
   if (applicationLoader.hasError) {
     return (
@@ -28,7 +28,7 @@ const AppLoader: React.FC<AppLoaderProps> = observer(({ applicationLoader }) => 
         <div className="error-text">
           Error loading application: {applicationLoader.errorMessage}
         </div>
-        <button 
+        <button
           onClick={() => applicationLoader.loadApplication()}
           className="retry-button"
         >
@@ -37,7 +37,7 @@ const AppLoader: React.FC<AppLoaderProps> = observer(({ applicationLoader }) => 
       </div>
     );
   }
-  
+
   // Show main app once loading is complete
   return (
     <App appState={applicationLoader.appState!} />

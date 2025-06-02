@@ -17,12 +17,12 @@ function safeToString(value: unknown): string {
 function getErrorCauses(error: Error): Error[] {
   const causes: Error[] = [];
   let currentError: Error | null = error;
-  
+
   while (currentError && 'cause' in currentError && currentError.cause instanceof Error) {
     causes.push(currentError.cause);
     currentError = currentError.cause;
   }
-  
+
   return causes;
 }
 
@@ -103,7 +103,7 @@ export class ErrorBoundary extends Component<Props, State> {
   render(): ReactNode {
     if (this.state.hasError) {
       const error = this.state.error;
-      
+
       // For development mode, show full error details
       if (process.env.NODE_ENV === 'development') {
         return (
@@ -114,7 +114,7 @@ export class ErrorBoundary extends Component<Props, State> {
                 <div className="error-message">
                   {error && error.toString()}
                 </div>
-                
+
                 {/* Show error cause chain if available */}
                 {error && 'cause' in error && error.cause !== null && error.cause !== undefined && (
                   <details>
@@ -125,7 +125,7 @@ export class ErrorBoundary extends Component<Props, State> {
                           <strong>Immediate cause:</strong>
                           <pre>{error.cause.stack || error.cause.toString()}</pre>
                         </div>
-                        
+
                         {/* Show nested causes if any */}
                         {getErrorCauses(error.cause).length > 0 && (
                           <div>
@@ -144,12 +144,12 @@ export class ErrorBoundary extends Component<Props, State> {
                     )}
                   </details>
                 )}
-                
+
                 <details>
                   <summary>Component Stack</summary>
                   <pre>{this.state.errorInfo?.componentStack || 'No stack trace available'}</pre>
                 </details>
-                
+
                 <div className="error-actions">
                   <button onClick={() => window.location.reload()}>
                     Reload Application
@@ -159,8 +159,8 @@ export class ErrorBoundary extends Component<Props, State> {
             </div>
           </div>
         );
-      } 
-      
+      }
+
       // For production mode, show minimal error message
       return (
         <div className="error-boundary">

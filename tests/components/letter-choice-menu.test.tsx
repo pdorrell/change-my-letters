@@ -34,7 +34,7 @@ describe('LetterChoiceMenu', () => {
     const batWord = wordGetter.getRequiredWord('bat');
     const hatWord = wordGetter.getRequiredWord('hat');
     const ratWord = wordGetter.getRequiredWord('rat');
-    
+
     options = [
       new ReplaceChange(batWord, 'b'),
       new ReplaceChange(hatWord, 'h'),

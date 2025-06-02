@@ -6,7 +6,7 @@ import { WordGetter } from '../../src/models/word-getter';
  * Unlike WordGraph which has a fixed set of words, this class will create new Word objects
  * on demand when getRequiredWord() is called, making it useful for testing Word.populateChanges()
  * without needing to mock Word objects.
- * 
+ *
  * Example usage:
  * ```typescript
  * const getter = new FreeTestWordGetter();
@@ -48,7 +48,7 @@ export class FreeTestWordGetter implements WordGetter {
       const deletes = new Array(word.length).fill(true);  // Allow deletion of all letters
       const inserts = new Array(word.length + 1).fill('abc'); // Allow insertion of a, b, c at all positions
       const replaces = new Array(word.length).fill('abc');    // Allow replacement with a, b, c for all letters
-      
+
       wordObj = new Word(word, deletes, inserts, replaces);
       this.words.set(word, wordObj);
     }

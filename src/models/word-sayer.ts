@@ -31,17 +31,17 @@ export class WordSayer implements WordSayerInterface {
     try {
       // Create the audio element
       const audio = new Audio(this.getMp3Url(word));
-      
+
       // Add a loading error handler
       audio.addEventListener('error', (e) => {
         console.error(`Error loading audio for word "${word}":`, e);
         // Remove from loaded words on error
         this.loadedWords.delete(word);
       });
-      
+
       // Start loading the audio
       audio.load();
-      
+
       // Add to our map of loaded words
       this.loadedWords.set(word, audio);
     } catch (error) {
@@ -62,7 +62,7 @@ export class WordSayer implements WordSayerInterface {
 
     // Get the audio element
     const audio = this.loadedWords.get(word);
-    
+
     if (audio) {
       // If there's an onFinished callback, add the event listener
       if (onFinished) {
@@ -72,7 +72,7 @@ export class WordSayer implements WordSayerInterface {
         };
         audio.addEventListener('ended', handleEnded);
       }
-      
+
       // Play the audio
       audio.play().catch(error => {
         console.error(`Error playing word audio for "${word}":`, error);
