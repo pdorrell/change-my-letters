@@ -480,6 +480,15 @@ body {
     padding: 8px 0;
   }
   
+  .value-checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.9em;
+    cursor: pointer;
+    padding: 8px 0;
+  }
+  
   button {
     padding: 8px 16px;
     background-color: #4a90e2;

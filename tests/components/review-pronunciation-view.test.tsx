@@ -194,7 +194,7 @@ describe('ReviewPronunciationView', () => {
         fireEvent.click(checkbox);
       });
 
-      expect(reviewInteraction.matchStartOnly).toBe(false);
+      expect(reviewInteraction.matchStartOnly.value).toBe(false);
       expect(checkbox).not.toBeChecked();
     });
 
@@ -239,7 +239,7 @@ describe('ReviewPronunciationView', () => {
       act(() => {
         runInAction(() => {
           reviewInteraction.filter = 'c';
-          reviewInteraction.matchStartOnly = true;
+          reviewInteraction.matchStartOnly.set(true);
         });
       });
 

@@ -4,6 +4,7 @@ import { WordSayerInterface } from './word-sayer-interface';
 import { ReviewStateFilterOption } from './review-state-filter-option';
 import { ButtonAction } from '../lib/ui/actions';
 import { ReviewState, getReviewStateFromJson } from './review-state';
+import { ValueModel } from './value-models';
 
 /**
  * Manages interactions for the Review Pronunciation page
@@ -12,7 +13,7 @@ export class ReviewPronunciationInteraction {
   // Filter settings
   filter: string = '';
   reviewStateFilter: ReviewStateFilterOption = ReviewStateFilterOption.ALL;
-  matchStartOnly: boolean = true;
+  matchStartOnly: ValueModel<boolean>;
 
   // Current review word
   currentReviewWord: Word | null = null;
@@ -37,6 +38,9 @@ export class ReviewPronunciationInteraction {
     public readonly sortedWords: Word[],
     public readonly wordSayer: WordSayerInterface
   ) {
+    // Initialize match start only setting
+    this.matchStartOnly = new ValueModel(true, 'Match start only', 'Only show words that start with the filter text');
+
     // Create words map for efficient lookup
     this.wordsMap = new Map();
     for (const word of sortedWords) {
@@ -68,7 +72,7 @@ export class ReviewPronunciationInteraction {
   get filteredWords(): Word[] {
     return this.sortedWords.filter(word => {
       // Apply text filter
-      const matchesText = this.matchStartOnly
+      const matchesText = this.matchStartOnly.value
         ? word.word.toLowerCase().startsWith(this.filter.toLowerCase())
         : word.word.toLowerCase().includes(this.filter.toLowerCase());
 
@@ -239,7 +243,7 @@ export class ReviewPronunciationInteraction {
 
     // Reset filter settings
     this.filter = '';
-    this.matchStartOnly = true;
+    this.matchStartOnly.set(true);
     this.reviewStateFilter = ReviewStateFilterOption.ALL;
 
     // Clear current review word
@@ -319,7 +323,7 @@ export class ReviewPronunciationInteraction {
   @action
   setMatchStartOnly(value: boolean): void {
     this.stopAutoplay();
-    this.matchStartOnly = value;
+    this.matchStartOnly.set(value);
   }
 
   @action

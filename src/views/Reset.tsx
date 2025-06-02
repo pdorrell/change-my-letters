@@ -4,6 +4,7 @@ import { ResetInteraction } from '../models/reset-interaction';
 import { ActionButton } from '../lib/ui/action-button';
 import { AppState } from '../models/app-state';
 import { HistoryPanel } from './history';
+import { ValueCheckbox } from './value-model-views';
 
 /**
  * Controls component for Reset page
@@ -25,9 +26,6 @@ export const ResetControls: React.FC<ResetControlsProps> = observer(({ resetInte
     resetInteraction.setFilter(e.target.value);
   };
 
-  const handleMatchStartOnlyChange = () => {
-    resetInteraction.toggleMatchStartOnly();
-  };
 
   return (
     <div className="reset-controls">
@@ -40,14 +38,7 @@ export const ResetControls: React.FC<ResetControlsProps> = observer(({ resetInte
           placeholder="Filter words..."
           className="reset-filter-input"
         />
-        <label className="reset-match-start-only">
-          <input
-            type="checkbox"
-            checked={resetInteraction.matchStartOnly}
-            onChange={handleMatchStartOnlyChange}
-          />
-          Match start only
-        </label>
+        <ValueCheckbox value={resetInteraction.matchStartOnly} />
       </div>
       <div className="reset-controls-right">
         <ActionButton

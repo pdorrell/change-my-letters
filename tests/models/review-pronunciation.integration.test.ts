@@ -30,12 +30,12 @@ describe('Review Pronunciation Integration', () => {
     it('should reset review interaction when navigating to review pronunciation view', () => {
       // Set some state
       reviewInteraction.filter = 'test';
-      reviewInteraction.matchStartOnly = false;
+      reviewInteraction.matchStartOnly.set(false);
 
       appState.navigateTo('reviewPronunciationView');
 
       expect(reviewInteraction.filter).toBe('');
-      expect(reviewInteraction.matchStartOnly).toBe(true);
+      expect(reviewInteraction.matchStartOnly.value).toBe(true);
     });
 
     it('should have review pronunciation action button', () => {
@@ -140,7 +140,7 @@ describe('Review Pronunciation Integration', () => {
 
       if (wordsStartingWithC.length > 0) {
         reviewInteraction.filter = 'c';
-        reviewInteraction.matchStartOnly = true;
+        reviewInteraction.matchStartOnly.set(true);
 
         const filtered = reviewInteraction.filteredWords;
         expect(filtered.length).toBe(wordsStartingWithC.length);
