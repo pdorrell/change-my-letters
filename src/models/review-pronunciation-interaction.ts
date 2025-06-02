@@ -2,7 +2,7 @@ import { makeAutoObservable, computed, action } from 'mobx';
 import { Word } from './word';
 import { WordSayerInterface } from './word-sayer-interface';
 import { ReviewStateFilterOption } from './review-state-filter-option';
-import { ButtonAction } from '../lib/ui/actions';
+import { ButtonAction } from '../lib/models/actions';
 import { ReviewState, getReviewStateFromJson } from './review-state';
 import { ValueModel } from '../lib/models/value-models';
 

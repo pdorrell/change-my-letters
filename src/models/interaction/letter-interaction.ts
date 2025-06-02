@@ -1,9 +1,9 @@
 import { makeAutoObservable, action, computed } from 'mobx';
 import React from 'react';
 import { Letter } from '../letter';
-import { MenuManagerInterface } from '../../lib/models/menu-manager-interface';
+import { MenuManagerInterface } from '../../lib/views/menu-manager-interface';
 import { Word } from '../word';
-import { ButtonAction } from '../../lib/ui/actions';
+import { ButtonAction } from '../../lib/models/actions';
 import { WordSelectionByLetter } from '../word-selection-by-letter';
 
 /**

@@ -1,6 +1,6 @@
 import { makeAutoObservable, computed } from 'mobx';
 import { AppState } from './app-state';
-import { ButtonAction } from '../lib/ui/actions';
+import { ButtonAction } from '../lib/models/actions';
 import { Word } from './word';
 import { ValueModel } from '../lib/models/value-models';
 

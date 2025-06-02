@@ -3,9 +3,9 @@ import { observer } from 'mobx-react-lite';
 import { WordInteraction } from '../models/interaction/word-interaction';
 import { LetterView, LetterPlaceholder } from './letter';
 import { PositionView, PositionPlaceholder } from './position';
-import { MenuManagerInterface } from '../lib/models/menu-manager-interface';
+import { MenuManagerInterface } from '../lib/views/menu-manager-interface';
 import { AppState } from '../models/app-state';
-import { ActionButton } from '../lib/ui/action-button';
+import { ActionButton } from '../lib/views/action-button';
 import { HistoryPanel } from './history';
 import { ValueCheckbox } from '../lib/views/value-model-views';
 import {
