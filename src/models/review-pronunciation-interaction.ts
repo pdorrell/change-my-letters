@@ -38,8 +38,7 @@ export class ReviewPronunciationInteraction {
     public readonly wordSayer: WordSayerInterface
   ) {
     // Initialize filter
-    this.filter = new Filter();
-    this.filter.setMatchStartOnly(true);
+    this.filter = new Filter(true);
 
     // Create words map for efficient lookup
     this.wordsMap = new Map();
@@ -241,7 +240,7 @@ export class ReviewPronunciationInteraction {
 
     // Reset filter settings
     this.filter.setValue('');
-    this.filter.setMatchStartOnly(true);
+    this.filter.matchStartOnly.set(true);
     this.setReviewStateFilter(ReviewStateFilterOption.ALL);
 
     // Clear current review word

@@ -4,7 +4,7 @@ import { ResetInteraction } from '../models/reset-interaction';
 import { ActionButton } from '../lib/views/action-button';
 import { AppState } from '../models/app-state';
 import { HistoryPanel } from './history';
-import { FilterView } from '../lib/views/filter';
+import { FilterControls } from '../lib/views/filter-controls';
 
 /**
  * Controls component for Reset page
@@ -15,7 +15,7 @@ export const ResetControls: React.FC<ResetControlsProps> = observer(({ resetInte
   return (
     <div className="reset-controls">
       <div className="reset-controls-left">
-        <FilterView filter={resetInteraction.filter} />
+        <FilterControls filter={resetInteraction.filter} />
       </div>
       <div className="reset-controls-right">
         <ActionButton
