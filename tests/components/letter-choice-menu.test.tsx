@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { LetterChoiceMenu } from '../../src/views/current-word';
 import { createTestAppState } from '../utils/test-app-builder';
-import { MenuManager } from '../../src/models/menu-manager';
+import { MenuManager } from '../../src/lib/models/menu-manager';
 import { WordSelectionByLetter } from '../../src/models/word-selection-by-letter';
 import { AppState } from '../../src/models/app-state';
 import { Word } from '../../src/models/word';
