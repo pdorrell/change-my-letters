@@ -35,7 +35,7 @@ describe('ReviewPronunciationInteraction', () => {
     it('should initialize with correct default values', () => {
       expect(reviewInteraction.filter.value).toBe('');
       expect(reviewInteraction.reviewStateFilter).toBe(ReviewStateFilterOption.ALL);
-      expect(reviewInteraction.filter.matchStartOnly).toBe(true);
+      expect(reviewInteraction.filter.matchStartOnly.value).toBe(true);
       expect(reviewInteraction.currentReviewWord).toBeNull();
       expect(reviewInteraction.sortedWords).toEqual(testWords);
     });
@@ -62,7 +62,7 @@ describe('ReviewPronunciationInteraction', () => {
   describe('filtering', () => {
     it('should filter words by text (match start)', () => {
       reviewInteraction.filter.setValue('c');
-      reviewInteraction.filter.setMatchStartOnly(true);
+      reviewInteraction.filter.matchStartOnly.set(true);
 
       const filtered = reviewInteraction.filteredWords;
       expect(filtered).toHaveLength(1);
@@ -71,7 +71,7 @@ describe('ReviewPronunciationInteraction', () => {
 
     it('should filter words by text (contains)', () => {
       reviewInteraction.filter.setValue('i');
-      reviewInteraction.filter.setMatchStartOnly(false);
+      reviewInteraction.filter.matchStartOnly.set(false);
 
       const filtered = reviewInteraction.filteredWords;
       expect(filtered).toHaveLength(2);
@@ -130,7 +130,7 @@ describe('ReviewPronunciationInteraction', () => {
       testWords[2].soundsWrong = true; // fish wrong
 
       reviewInteraction.filter.setValue('f');
-      reviewInteraction.filter.setMatchStartOnly(true);
+      reviewInteraction.filter.matchStartOnly.set(true);
       reviewInteraction.reviewStateFilter = ReviewStateFilterOption.WRONG;
 
       const filtered = reviewInteraction.filteredWords;
@@ -351,7 +351,7 @@ describe('ReviewPronunciationInteraction', () => {
   describe('reset function', () => {
     it('should reset filter settings and clear current review word', () => {
       reviewInteraction.filter.setValue('test');
-      reviewInteraction.filter.setMatchStartOnly(false);
+      reviewInteraction.filter.matchStartOnly.set(false);
       reviewInteraction.reviewStateFilter = ReviewStateFilterOption.WRONG;
       testWords[0].currentReview = true;
       reviewInteraction.currentReviewWord = testWords[0];
@@ -359,7 +359,7 @@ describe('ReviewPronunciationInteraction', () => {
       reviewInteraction.reset();
 
       expect(reviewInteraction.filter.value).toBe('');
-      expect(reviewInteraction.filter.matchStartOnly).toBe(true);
+      expect(reviewInteraction.filter.matchStartOnly.value).toBe(true);
       expect(reviewInteraction.reviewStateFilter).toBe(ReviewStateFilterOption.ALL);
       expect(reviewInteraction.currentReviewWord).toBeNull();
       expect(reviewInteraction.currentReviewWordIndex).toBeNull();

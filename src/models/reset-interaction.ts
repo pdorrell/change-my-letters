@@ -22,8 +22,7 @@ export class ResetInteraction {
     this.appState = appState;
 
     // Initialize filter
-    this.filter = new Filter();
-    this.filter.setMatchStartOnly(true);
+    this.filter = new Filter(true);
 
     // Initialize button actions with tooltips
     this.cancelAction = new ButtonAction(
@@ -64,7 +63,7 @@ export class ResetInteraction {
    */
   reset(): void {
     this.filter.setValue('');
-    this.filter.setMatchStartOnly(true);
+    this.filter.matchStartOnly.set(true);
   }
 
   /**
