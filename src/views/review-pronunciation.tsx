@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { ReviewPronunciationInteraction } from '../models/review-pronunciation-interaction';
 import { ActionButton } from '../lib/ui/action-button';
 import { AppState } from '../models/app-state';
+import { ValueCheckbox } from './value-model-views';
 
 /**
  * Controls component for Review Pronunciation page
@@ -137,14 +138,7 @@ export const ReviewPronunciationFilters: React.FC<ReviewPronunciationFiltersProp
           </div>
 
           <div className="match-start">
-            <label>
-              <input
-                type="checkbox"
-                checked={reviewInteraction.matchStartOnly}
-                onChange={(e) => reviewInteraction.setMatchStartOnly(e.target.checked)}
-              />
-              Match start only
-            </label>
+            <ValueCheckbox value={reviewInteraction.matchStartOnly} />
           </div>
 
           <div className="review-state-filter">

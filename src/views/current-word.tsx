@@ -7,6 +7,7 @@ import { MenuManagerInterface } from '../models/menu-manager-interface';
 import { AppState } from '../models/app-state';
 import { ActionButton } from '../lib/ui/action-button';
 import { HistoryPanel } from './history';
+import { ValueCheckbox } from './value-model-views';
 import {
   useFloating,
   autoUpdate,
@@ -217,14 +218,7 @@ export const CurrentWordControls: React.FC<CurrentWordControlsProps> = observer(
       <ActionButton action={appState.undoAction}>Undo</ActionButton>
       <ActionButton action={appState.redoAction}>Redo</ActionButton>
       <ActionButton action={appState.sayAction}>Say</ActionButton>
-      <label className="say-immediately-container">
-        <input
-          type="checkbox"
-          checked={appState.sayImmediately}
-          onChange={(e) => appState.setSayImmediately(e.target.checked)}
-        />
-        Say Immediately
-      </label>
+      <ValueCheckbox value={appState.sayImmediately} />
     </div>
   );
 });

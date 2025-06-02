@@ -2,6 +2,7 @@ import { makeAutoObservable, computed } from 'mobx';
 import { AppState } from './app-state';
 import { ButtonAction } from '../lib/ui/actions';
 import { Word } from './word';
+import { ValueModel } from './value-models';
 
 /**
  * Model for the Reset page interaction
@@ -11,7 +12,7 @@ export class ResetInteraction {
   filter: string = '';
 
   // Whether to match only words that start with the filter
-  matchStartOnly: boolean = true;
+  matchStartOnly: ValueModel<boolean>;
 
   // Button actions
   cancelAction: ButtonAction;
@@ -22,6 +23,9 @@ export class ResetInteraction {
 
   constructor(appState: AppState) {
     this.appState = appState;
+
+    // Initialize match start only setting
+    this.matchStartOnly = new ValueModel(true, 'Match start only', 'Only show words that start with the filter text');
 
     // Initialize button actions with tooltips
     this.cancelAction = new ButtonAction(
@@ -59,7 +63,7 @@ export class ResetInteraction {
     const lowerFilter = this.filter.toLowerCase();
 
     // Apply the filter to the word strings
-    if (this.matchStartOnly) {
+    if (this.matchStartOnly.value) {
       // Filter words that start with the filter text
       return wordObjects
         .filter(wordObj => wordObj.word.toLowerCase().startsWith(lowerFilter))
@@ -79,19 +83,13 @@ export class ResetInteraction {
     this.filter = newFilter;
   }
 
-  /**
-   * Toggle the matchStartOnly setting
-   */
-  toggleMatchStartOnly(): void {
-    this.matchStartOnly = !this.matchStartOnly;
-  }
 
   /**
    * Reset the state to default values
    */
   reset(): void {
     this.filter = '';
-    this.matchStartOnly = true;
+    this.matchStartOnly.set(true);
   }
 
   /**

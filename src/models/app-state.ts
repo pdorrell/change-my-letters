@@ -8,6 +8,7 @@ import { ReviewPronunciationInteraction } from './review-pronunciation-interacti
 import { MenuManager } from './menu-manager';
 import { Word } from './word';
 import { ButtonAction } from '../lib/ui/actions';
+import { ValueModel } from './value-models';
 
 // Type for the main application pages
 type AppPage = 'wordView' | 'resetView' | 'reviewPronunciationView';
@@ -56,7 +57,7 @@ export class AppState {
   menuManager: MenuManager;
 
   // Audio settings
-  sayImmediately: boolean = true;
+  sayImmediately: ValueModel<boolean>;
 
   // Button actions
   resetAction: ButtonAction;
@@ -75,6 +76,9 @@ export class AppState {
     // Audio player for word pronunciation
     public readonly wordSayer: WordSayerInterface
   ) {
+
+    // Initialize audio settings
+    this.sayImmediately = new ValueModel(true, 'Say Immediately', 'Automatically pronounce words when they change');
 
     // Initialize reset interaction
     this.resetInteraction = new ResetInteraction(this);
@@ -162,7 +166,7 @@ export class AppState {
     }
 
     // Say the word immediately if that option is enabled
-    if (this.sayImmediately) {
+    if (this.sayImmediately.value) {
       this.currentWord.say();
     }
   }
@@ -249,7 +253,7 @@ export class AppState {
    */
   setSayImmediately(value: boolean): void {
     console.debug("setSayImmediately value = ", value);
-    this.sayImmediately = value;
+    this.sayImmediately.set(value);
   }
 
   /**
