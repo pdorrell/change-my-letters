@@ -1,4 +1,4 @@
-import { DataFileFetcherInterface } from '../../src/models/data-file-fetcher-interface';
+import { DataFileFetcherInterface } from '../../src/lib/models/data-file-fetcher-interface';
 import path from 'path';
 import fs from 'fs/promises';
 

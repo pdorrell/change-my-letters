@@ -4,7 +4,7 @@ import { PositionInteraction } from './position-interaction';
 import { Word } from '../word';
 import { Letter } from '../letter';
 import { Position } from '../position';
-import { MenuManager } from '../menu-manager';
+import { MenuManager } from '../../lib/models/menu-manager';
 import { WordSayerInterface } from '../word-sayer-interface';
 import { History } from '../history';
 

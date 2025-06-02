@@ -5,10 +5,10 @@ import { WordInteraction } from './interaction/word-interaction';
 import { WordSayerInterface } from './word-sayer-interface';
 import { ResetInteraction } from './reset-interaction';
 import { ReviewPronunciationInteraction } from './review-pronunciation-interaction';
-import { MenuManager } from './menu-manager';
+import { MenuManager } from '../lib/models/menu-manager';
 import { Word } from './word';
 import { ButtonAction } from '../lib/ui/actions';
-import { ValueModel } from './value-models';
+import { ValueModel } from '../lib/models/value-models';
 
 // Type for the main application pages
 type AppPage = 'wordView' | 'resetView' | 'reviewPronunciationView';

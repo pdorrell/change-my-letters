@@ -4,7 +4,7 @@ import { ResetInteraction } from '../models/reset-interaction';
 import { ActionButton } from '../lib/ui/action-button';
 import { AppState } from '../models/app-state';
 import { HistoryPanel } from './history';
-import { ValueCheckbox } from './value-model-views';
+import { ValueCheckbox } from '../lib/views/value-model-views';
 
 /**
  * Controls component for Reset page

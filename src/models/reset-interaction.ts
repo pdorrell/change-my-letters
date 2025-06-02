@@ -2,7 +2,7 @@ import { makeAutoObservable, computed } from 'mobx';
 import { AppState } from './app-state';
 import { ButtonAction } from '../lib/ui/actions';
 import { Word } from './word';
-import { ValueModel } from './value-models';
+import { ValueModel } from '../lib/models/value-models';
 
 /**
  * Model for the Reset page interaction
