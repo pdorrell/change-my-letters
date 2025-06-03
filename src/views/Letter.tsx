@@ -40,26 +40,46 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
       <div
         ref={letterInteraction.menuRef}
         className={`letter ${letterInteraction.letterClickAction.enabled ? 'clickable' : ''}`}
-        onClick={letterInteraction.letterClickAction.enabled ? () => letterInteraction.letterClickAction.doAction() : undefined}
+        onClick={letterInteraction.letterClickAction.enabled ? (e) => {
+          // Ensure the click is handled regardless of what element was clicked
+          e.preventDefault();
+          e.stopPropagation();
+          letterInteraction.letterClickAction.doAction();
+        } : undefined}
         title={letterInteraction.letterClickAction.tooltip}
       >
-        {letter.value}
-      </div>
-
-      <div className="letter-actions">
+        <span 
+          className="letter-text"
+          onClick={letterInteraction.letterClickAction.enabled ? (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            letterInteraction.letterClickAction.doAction();
+          } : undefined}
+        >
+          {letter.value}
+        </span>
+        
         <div
-          className={`delete-icon ${!letterInteraction.deleteAction.enabled ? 'hidden' : ''}`}
+          className={`delete-icon-inside ${!letterInteraction.deleteAction.enabled ? 'hidden' : ''}`}
+          onClick={letterInteraction.letterClickAction.enabled ? (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            letterInteraction.letterClickAction.doAction();
+          } : undefined}
         >
           🗑️
         </div>
 
         <div
-          className={`replace-icon ${!letterInteraction.openReplaceMenuAction.enabled ? 'hidden' : ''}`}
+          className={`replace-icon-inside ${!letterInteraction.openReplaceMenuAction.enabled ? 'hidden' : ''}`}
+          onClick={letterInteraction.letterClickAction.enabled ? (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            letterInteraction.letterClickAction.doAction();
+          } : undefined}
         >
           🔄
         </div>
-
-        {/* Case change buttons have been removed */}
       </div>
 
       {letterInteraction.isReplaceMenuOpen && (

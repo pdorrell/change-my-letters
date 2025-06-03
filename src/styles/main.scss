@@ -268,6 +268,7 @@ body {
   }
   
   .letter {
+    position: relative; // Allow absolute positioning of child elements
     display: flex;
     align-items: flex-start; // Align to the top instead of center
     justify-content: center;
@@ -289,30 +290,31 @@ body {
         border-color: #333;
       }
     }
-  }
-  
-  .letter-actions {
-    display: flex;
-    justify-content: center;
-    margin-top: 5px;
     
-    button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 2px;
-      margin: 0 2px;
-      font-size: 1.2em;
-      
-      &:hover {
-        transform: scale(1.2);
-      }
-      
-      &.delete-icon {
-        &.previously-visited {
-          background-color: #ffe4e1; // Light pink
-        }
-      }
+    .letter-text {
+      // The actual letter text
+      cursor: inherit; // Inherit cursor from parent letter
+      z-index: 1; // Ensure text appears above icons
+    }
+    
+    .delete-icon-inside {
+      position: absolute;
+      bottom: 4px;
+      left: 4px;
+      font-size: 0.15em; // 60% of 0.25em = 0.15em
+      opacity: 0.7;
+      cursor: inherit; // Inherit cursor from parent letter
+      z-index: 0; // Behind the letter text
+    }
+    
+    .replace-icon-inside {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      font-size: 0.15em; // 60% of 0.25em = 0.15em
+      opacity: 0.7;
+      cursor: inherit; // Inherit cursor from parent letter
+      z-index: 0; // Behind the letter text
     }
   }
 }
