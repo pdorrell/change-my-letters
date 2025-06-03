@@ -46,8 +46,8 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
           menuClick =
             target.classList.contains('letter-choice-menu') ||
             target.classList.contains('letter-choice-option') ||
-            target.classList.contains('replace-icon') ||
             target.classList.contains('insert-icon') ||
+            target.classList.contains('letter-text') ||
             (target.classList.contains('letter') && target.classList.contains('clickable'));
         }
 

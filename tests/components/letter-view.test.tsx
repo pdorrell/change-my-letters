@@ -37,36 +37,34 @@ describe('LetterView', () => {
     // Use the first letter of 'cat', which should be deletable to get 'at'
     const { container } = render(<LetterView letterInteraction={letterInteraction} />);
 
-    const deleteButton = container.querySelector('.delete-icon:not(.hidden)');
-    expect(deleteButton).toBeInTheDocument();
+    const deleteIcon = container.querySelector('.delete-icon-inside:not(.hidden)');
+    expect(deleteIcon).toBeInTheDocument();
   });
 
   it('shows replace icon when letter has replacements', () => {
     // First letter of 'cat' should be replaceable with 'b', 'h', 'r', etc.
     const { container } = render(<LetterView letterInteraction={letterInteraction} />);
 
-    const replaceButton = container.querySelector('.replace-icon:not(.hidden)');
-    expect(replaceButton).toBeInTheDocument();
+    const replaceIcon = container.querySelector('.replace-icon-inside:not(.hidden)');
+    expect(replaceIcon).toBeInTheDocument();
   });
 
-  it('opens menu when replace icon is clicked', () => {
+  it('shows replace icon as visual indicator', () => {
     const { container } = render(<LetterView letterInteraction={letterInteraction} />);
 
-    const replaceButton = container.querySelector('.replace-icon:not(.hidden)');
-    if (replaceButton) fireEvent.click(replaceButton);
-
-    // Test that menu action is triggered without checking specific mock calls
-    expect(replaceButton).toBeInTheDocument();
+    const replaceIcon = container.querySelector('.replace-icon-inside:not(.hidden)');
+    
+    // Test that icon is present as visual indicator (icons are no longer clickable)
+    expect(replaceIcon).toBeInTheDocument();
   });
 
-  it('triggers delete action when delete icon is clicked', () => {
+  it('shows delete icon as visual indicator', () => {
     const { container } = render(<LetterView letterInteraction={letterInteraction} />);
 
-    const deleteButton = container.querySelector('.delete-icon:not(.hidden)');
-    if (deleteButton) fireEvent.click(deleteButton);
-
-    // Test that delete action is triggered without checking specific mock calls
-    expect(deleteButton).toBeInTheDocument();
+    const deleteIcon = container.querySelector('.delete-icon-inside:not(.hidden)');
+    
+    // Test that icon is present as visual indicator (icons are no longer clickable)
+    expect(deleteIcon).toBeInTheDocument();
   });
 
   it('handles a letter interaction with an open replace menu', () => {
