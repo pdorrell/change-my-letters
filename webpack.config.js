@@ -145,6 +145,24 @@ export default (env, argv) => {
         // Add error logging middleware
         middlewares.unshift(setupErrorLogger());
 
+        // Add kill endpoint for development
+        if (isDevelopment) {
+          middlewares.unshift({
+            name: 'kill-server',
+            path: '/kill',
+            middleware: (req, res) => {
+              res.writeHead(200, {'Content-Type': 'text/plain'});
+              res.end('Server shutting down...\n');
+              
+              // Shutdown the server after a brief delay to allow response to be sent
+              setTimeout(() => {
+                console.log('Received kill request, shutting down server...');
+                process.exit(0);
+              }, 100);
+            }
+          });
+        }
+
         return middlewares;
       }
     },

@@ -2,7 +2,6 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { LetterInteraction } from '../models/interaction/letter-interaction';
 import { LetterChoiceMenu } from './current-word';
-import { ActionButton } from '../lib/views/action-button';
 
 /**
  * Placeholder component that maintains the same dimensions as a letter
@@ -35,27 +34,30 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
 
   // Case change handler has been removed
 
+
   return (
     <div className={`letter-container ${letterInteraction.actionPending ? 'action-pending' : ''}`}>
-      <div className="letter">
+      <div
+        ref={letterInteraction.menuRef}
+        className={`letter ${letterInteraction.letterClickAction.enabled ? 'clickable' : ''}`}
+        onClick={letterInteraction.letterClickAction.enabled ? () => letterInteraction.letterClickAction.doAction() : undefined}
+        title={letterInteraction.letterClickAction.tooltip}
+      >
         {letter.value}
       </div>
 
       <div className="letter-actions">
-        <ActionButton
-          action={letterInteraction.deleteAction}
+        <div
           className={`delete-icon ${!letterInteraction.deleteAction.enabled ? 'hidden' : ''}`}
         >
           🗑️
-        </ActionButton>
+        </div>
 
-        <ActionButton
-          ref={letterInteraction.replaceButtonRef}
-          action={letterInteraction.openReplaceMenuAction}
+        <div
           className={`replace-icon ${!letterInteraction.openReplaceMenuAction.enabled ? 'hidden' : ''}`}
         >
           🔄
-        </ActionButton>
+        </div>
 
         {/* Case change buttons have been removed */}
       </div>
@@ -65,6 +67,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
           wordSelectionByLetter={letterInteraction.selectionOfReplacementLetter}
           menuManager={letterInteraction.menuManager}
           menuRef={letterInteraction.replaceMenuRef}
+          deleteAction={letterInteraction.deleteAction.enabled ? letterInteraction.deleteAction : undefined}
         />
       )}
     </div>

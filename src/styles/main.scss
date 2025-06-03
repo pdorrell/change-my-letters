@@ -280,6 +280,15 @@ body {
     font-weight: bold;
     padding-top: 10px; // Reduced padding at top (about 10% of standard box height)
     padding-bottom: 22px; // Increased padding at bottom for descenders
+    
+    &.clickable {
+      cursor: pointer;
+      
+      &:hover {
+        background-color: #fff8d0; // Slightly darker yellow on hover
+        border-color: #333;
+      }
+    }
   }
   
   .letter-actions {
@@ -331,7 +340,7 @@ body {
     border: none;
     cursor: pointer;
     padding: 5px;
-    font-size: 1.2em;
+    font-size: 2.4em; // Twice as big (was 1.2em)
     
     &:hover {
       transform: scale(1.2);
@@ -376,6 +385,15 @@ body {
     
     &.previously-visited {
       background-color: #ffe4e1; // Light pink
+    }
+    
+    &.delete-option {
+      background-color: #d0d0d0; // Grey background
+      color: #000; // Black text
+      
+      &:hover {
+        background-color: #c0c0c0; // Darker grey on hover
+      }
     }
   }
 }
