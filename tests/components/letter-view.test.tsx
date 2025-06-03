@@ -53,7 +53,7 @@ describe('LetterView', () => {
     const { container } = render(<LetterView letterInteraction={letterInteraction} />);
 
     const replaceIcon = container.querySelector('.replace-icon-inside:not(.hidden)');
-    
+
     // Test that icon is present as visual indicator (icons are no longer clickable)
     expect(replaceIcon).toBeInTheDocument();
   });
@@ -62,7 +62,7 @@ describe('LetterView', () => {
     const { container } = render(<LetterView letterInteraction={letterInteraction} />);
 
     const deleteIcon = container.querySelector('.delete-icon-inside:not(.hidden)');
-    
+
     // Test that icon is present as visual indicator (icons are no longer clickable)
     expect(deleteIcon).toBeInTheDocument();
   });

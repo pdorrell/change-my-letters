@@ -48,7 +48,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
         } : undefined}
         title={letterInteraction.letterClickAction.tooltip}
       >
-        <span 
+        <span
           className="letter-text"
           onClick={letterInteraction.letterClickAction.enabled ? (e) => {
             e.preventDefault();
@@ -58,7 +58,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
         >
           {letter.value}
         </span>
-        
+
         <div
           className={`delete-icon-inside ${!letterInteraction.deleteAction.enabled ? 'hidden' : ''}`}
           onClick={letterInteraction.letterClickAction.enabled ? (e) => {
