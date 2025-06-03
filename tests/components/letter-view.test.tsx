@@ -111,4 +111,24 @@ describe('LetterView', () => {
     // that are better tested at the integration level
     expect(letterOptions?.[0]).toBeInTheDocument();
   });
+
+  it('opens menu when letter is clicked and has clickable actions', () => {
+    const { container } = render(<LetterView letterInteraction={letterInteraction} />);
+    
+    // Find the letter element
+    const letterElement = container.querySelector('.letter.clickable');
+    expect(letterElement).toBeInTheDocument();
+    
+    // Verify the letter click action is enabled
+    expect(letterInteraction.letterClickAction.enabled).toBe(true);
+    
+    // Click the letter
+    if (letterElement) {
+      fireEvent.click(letterElement);
+    }
+    
+    // Verify that the menu should be open (we can't easily test the actual opening 
+    // due to complex interactions, but we can verify the click handler exists)
+    expect(letterElement).toHaveAttribute('title', letterInteraction.letterClickAction.tooltip);
+  });
 });

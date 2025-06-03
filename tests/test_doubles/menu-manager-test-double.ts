@@ -12,7 +12,7 @@ export class MenuManagerTestDouble implements MenuManagerInterface {
   toggleMenu(
     currentlyOpen: boolean,
     setMenuOpen: () => void,
-    buttonRef: React.RefObject<HTMLButtonElement>
+    buttonRef: React.RefObject<HTMLElement>
   ): void {
     this.closeMenus();
 

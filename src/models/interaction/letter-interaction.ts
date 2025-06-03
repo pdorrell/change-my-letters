@@ -13,8 +13,8 @@ export class LetterInteraction {
   // Whether the replacement menu is currently open
   isReplaceMenuOpen: boolean = false;
 
-  // Reference to the replace button element
-  replaceButtonRef: React.RefObject<HTMLButtonElement> = React.createRef<HTMLButtonElement>();
+  // Reference to the letter element for menu positioning
+  menuRef: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
 
   // Reference to the replace menu element for testing
   replaceMenuRef: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
@@ -32,10 +32,11 @@ export class LetterInteraction {
     makeAutoObservable(this, {
       setNewWord: action,
       deleteAction: computed,
+      letterClickAction: computed,
       openReplaceMenuAction: computed,
       selectionOfReplacementLetter: computed,
       actionPending: computed,
-      replaceButtonRef: false, // Don't make the ref observable
+      menuRef: false, // Don't make the ref observable
       replaceMenuRef: false // Don't make the ref observable
     });
   }
@@ -68,6 +69,28 @@ export class LetterInteraction {
   }
 
   /**
+   * Get the action for clicking on the letter (opens menu if delete or replace is available)
+   */
+  get letterClickAction(): ButtonAction {
+    // If the letter can't be replaced and can't be deleted, return a disabled action
+    if (!this.letter.canReplace && !this.letter.canDelete) {
+      return new ButtonAction(null, { tooltip: "Click to change this letter" });
+    }
+
+    // Otherwise, return an action that toggles the replace menu (which now includes delete option)
+    return new ButtonAction(() => {
+      this.menuManager.toggleMenu(
+        this.isReplaceMenuOpen,
+        action(() => { this.isReplaceMenuOpen = true; }),
+        this.menuRef
+      );
+    }, {
+      tooltip: "Click to change this letter",
+      onPress: () => this.menuManager.closeMenus()
+    });
+  }
+
+  /**
    * Get the action that opens the replace menu for this letter
    */
   get openReplaceMenuAction(): ButtonAction {
@@ -81,7 +104,7 @@ export class LetterInteraction {
       this.menuManager.toggleMenu(
         this.isReplaceMenuOpen,
         action(() => { this.isReplaceMenuOpen = true; }),
-        this.replaceButtonRef
+        this.menuRef
       );
     }, {
       tooltip: "Replace this letter",

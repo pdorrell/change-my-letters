@@ -47,7 +47,8 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
             target.classList.contains('letter-choice-menu') ||
             target.classList.contains('letter-choice-option') ||
             target.classList.contains('replace-icon') ||
-            target.classList.contains('insert-icon');
+            target.classList.contains('insert-icon') ||
+            (target.classList.contains('letter') && target.classList.contains('clickable'));
         }
 
         if (!menuClick) {
@@ -112,14 +113,16 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
  * View component for the letter choice menu
  */
 import { WordSelectionByLetter } from '../models/word-selection-by-letter';
+import { ButtonAction } from '../lib/models/actions';
 
 interface LetterChoiceMenuProps {
   wordSelectionByLetter: WordSelectionByLetter;
   menuManager: MenuManagerInterface;
   menuRef?: React.RefObject<HTMLDivElement>;
+  deleteAction?: ButtonAction;
 }
 
-export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = observer(({ wordSelectionByLetter, menuManager, menuRef }) => {
+export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = observer(({ wordSelectionByLetter, menuManager, menuRef, deleteAction }) => {
   const { options, onSelect } = wordSelectionByLetter;
   // Using floating-ui for positioning
   const {refs, floatingStyles, context} = useFloating({
@@ -181,6 +184,19 @@ export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = observer(({ wor
           className="letter-choice-menu"
           onClick={handleMenuClick}
         >
+          {deleteAction && (
+            <div
+              key="delete-option"
+              className="letter-choice-option delete-option"
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteAction.doAction();
+              }}
+              title={deleteAction.tooltip}
+            >
+              🗑️
+            </div>
+          )}
           {options.map((change, index) => {
             const letter = change.letter;
             const resultWord = change.result;

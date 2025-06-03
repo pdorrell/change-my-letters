@@ -3,6 +3,8 @@ import { AppState } from './app-state';
 import { WordLoader } from './word-loader';
 import { WordSayerInterface } from './word-sayer-interface';
 import { DataFileFetcherInterface } from '../lib/data-fetching/data-file-fetcher-interface';
+import { WordGraph } from './word-graph';
+import { Word } from './word';
 import localDevReviewState from '../data/local_dev/review-pronunciation-state.json';
 
 /**
@@ -52,6 +54,32 @@ export class ApplicationLoader {
   }
 
   /**
+   * Get the initial word from URL parameter or random selection
+   */
+  private getInitialWord(wordGraph: WordGraph): string {
+    // Check for ?word=... parameter in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const wordParam = urlParams.get('word');
+    
+    if (wordParam) {
+      // Try to find the specified word in the graph
+      const specifiedWord = wordGraph.getWord(wordParam.toLowerCase());
+      if (specifiedWord) {
+        console.log(`Starting with specified word: ${wordParam}`);
+        return wordParam.toLowerCase();
+      } else {
+        console.warn(`Specified word "${wordParam}" not found in word graph, using random word`);
+      }
+    }
+    
+    // Fall back to random word selection
+    const wordStrings = Array.from(wordGraph.words);
+    const randomWordString = wordStrings[Math.floor(Math.random() * wordStrings.length)];
+    console.log(`Starting with random word: ${randomWordString}`);
+    return randomWordString;
+  }
+
+  /**
    * Load the application data and initialize AppState
    */
   async loadApplication(): Promise<void> {
@@ -63,13 +91,12 @@ export class ApplicationLoader {
       const wordGraph = await this.wordLoader.loadDefaultWordGraph();
 
       runInAction(() => {
-        // Initialize with a random word from the graph
+        // Initialize with specified word from URL parameter or random word
         if (wordGraph.words.size > 0) {
-          const words = Array.from(wordGraph.words);
-          const randomWord = words[Math.floor(Math.random() * words.length)];
+          const initialWordString = this.getInitialWord(wordGraph);
 
           // Create the app state with the loaded data and the injected WordSayer
-          this.appState = new AppState(randomWord, wordGraph, this.version, this.wordSayer);
+          this.appState = new AppState(initialWordString, wordGraph, this.version, this.wordSayer);
 
           // In local dev mode, load the review pronunciation state
           this.loadLocalDevReviewState();
