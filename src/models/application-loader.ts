@@ -4,7 +4,6 @@ import { WordLoader } from './word-loader';
 import { WordSayerInterface } from './word-sayer-interface';
 import { DataFileFetcherInterface } from '../lib/data-fetching/data-file-fetcher-interface';
 import { WordGraph } from './word-graph';
-import { Word } from './word';
 import localDevReviewState from '../data/local_dev/review-pronunciation-state.json';
 
 /**
@@ -60,7 +59,7 @@ export class ApplicationLoader {
     // Check for ?word=... parameter in URL
     const urlParams = new URLSearchParams(window.location.search);
     const wordParam = urlParams.get('word');
-    
+
     if (wordParam) {
       // Try to find the specified word in the graph
       const specifiedWord = wordGraph.getWord(wordParam.toLowerCase());
@@ -71,7 +70,7 @@ export class ApplicationLoader {
         console.warn(`Specified word "${wordParam}" not found in word graph, using random word`);
       }
     }
-    
+
     // Fall back to random word selection
     const wordStrings = Array.from(wordGraph.words);
     const randomWordString = wordStrings[Math.floor(Math.random() * wordStrings.length)];
