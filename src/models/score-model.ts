@@ -6,8 +6,10 @@ import { makeAutoObservable } from 'mobx';
 export class ScoreModel {
   correct: number = 0;
   incorrect: number = 0;
+  label: string[];
 
-  constructor() {
+  constructor(label: string[]) {
+    this.label = label;
     makeAutoObservable(this);
   }
 
