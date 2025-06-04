@@ -194,10 +194,10 @@ export class AppState {
 
     // Handle audio playback based on the new logic
     if (hadMakeMeWord && isCorrectMakeMeWord) {
-      // Play a random celebration word for successful Make Me
+      // Play a random celebration word for successful Make Me at 50% volume
       const randomIndex = Math.floor(Math.random() * this.celebrationWords.length);
       const celebrationWord = this.celebrationWords[randomIndex];
-      this.wordSayer.say(celebrationWord);
+      this.wordSayer.say(celebrationWord, undefined, 0.5);
     } else if (hadMakeMeWord || this.sayImmediately.value) {
       // Play the new current word
       this.currentWord.say();
