@@ -256,7 +256,7 @@ export const CurrentWordPage: React.FC<CurrentWordPageProps> = observer(({ appSt
     <>
       <CurrentWordControls appState={appState} />
       <CurrentWordView currentWord={appState.currentWord} maxWordLength={appState.wordGraph.maxWordLength} />
-      {appState.makeMeScore && <ScorePanel scoreModel={appState.makeMeScore} />}
+      <ScorePanel scoreModel={appState.makeMeScore} />
       <HistoryPanel history={appState.history} />
     </>
   );

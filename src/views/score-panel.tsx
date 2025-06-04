@@ -8,8 +8,9 @@ export const ScorePanel: React.FC<ScorePanelProps> = observer(({ scoreModel }) =
   return (
     <div className="score-panel">
       <div className="score-label-box">
-        <div className="score-label-line">Make Me</div>
-        <div className="score-label-line">Score</div>
+        {scoreModel.label.map((line, index) => (
+          <div key={index} className="score-label-line">{line}</div>
+        ))}
       </div>
       <div className="score-rows">
         <div className="score-row correct-row">

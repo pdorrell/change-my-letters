@@ -70,7 +70,7 @@ export class AppState {
 
   // Make Me feature
   makeMeWord: Word | null = null;
-  makeMeScore: ScoreModel | null = null;
+  makeMeScore: ScoreModel;
 
   constructor(
     initialWord: string,
@@ -118,6 +118,9 @@ export class AppState {
 
     // Initialize the current word with the menu manager and history
     this.currentWord = new WordInteraction(wordNode, this.newWordHandler, this.wordSayer, this.menuManager, this.history);
+
+    // Initialize Make Me score with label
+    this.makeMeScore = new ScoreModel(['"Make Me"', 'Score']);
 
     // Initialize button actions
     this.resetAction = new ButtonAction(() => this.resetGame(), { tooltip: "Choose a new word" });
@@ -177,7 +180,7 @@ export class AppState {
     // Handle Make Me scoring and audio if there's an active Make Me word
     const hadMakeMeWord = this.makeMeWord !== null;
     let isCorrectMakeMeWord = false;
-    if (this.makeMeWord && this.makeMeScore) {
+    if (this.makeMeWord) {
       // Check if the new word matches the Make Me word
       if (wordObj.word === this.makeMeWord.word) {
         this.makeMeScore.incrementCorrect();
@@ -269,7 +272,7 @@ export class AppState {
 
     // Clear Make Me state
     this.makeMeWord = null;
-    this.makeMeScore = null;
+    this.makeMeScore.reset();
 
     // Set visitingWord to the new initial word
     this.visitingWord = initialWord;
@@ -380,11 +383,6 @@ export class AppState {
 
     if (selectedWord) {
       this.makeMeWord = selectedWord;
-
-      // Create score model if it doesn't exist
-      if (!this.makeMeScore) {
-        this.makeMeScore = new ScoreModel();
-      }
 
       // Say the selected word
       this.wordSayer.say(selectedWordString);
