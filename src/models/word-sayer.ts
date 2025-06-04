@@ -7,7 +7,10 @@ export class WordSayer implements WordSayerInterface {
   // Maps words to their Audio objects
   private loadedWords: Map<string, HTMLAudioElement> = new Map();
 
-  constructor() {
+  constructor(
+    public readonly volume: number = 1.0,
+    public readonly baseMp3Url: string = '/assets/words/eleven_labs/words'
+  ) {
     // No need for makeAutoObservable as this class doesn't contain observable state
   }
 
@@ -15,7 +18,7 @@ export class WordSayer implements WordSayerInterface {
    * Get the URL for the word's MP3 file
    */
   getMp3Url(word: string): string {
-    return `/assets/words/eleven_labs/${word.toLowerCase()}.mp3`;
+    return `${this.baseMp3Url}/${word.toLowerCase()}.mp3`;
   }
 
   /**
@@ -55,7 +58,7 @@ export class WordSayer implements WordSayerInterface {
    * @param onFinished Optional callback to call when the word finishes playing
    * @param volume Optional volume level (0.0 to 1.0, default 1.0)
    */
-  say(word: string, onFinished?: () => void, volume: number = 1.0): void {
+  say(word: string, onFinished?: () => void, volume?: number): void {
     // Preload the word if it's not already loaded
     if (!this.loadedWords.has(word)) {
       this.preload(word);
@@ -65,8 +68,9 @@ export class WordSayer implements WordSayerInterface {
     const audio = this.loadedWords.get(word);
 
     if (audio) {
-      // Set the volume
-      audio.volume = Math.max(0.0, Math.min(1.0, volume));
+      // Set the volume (use provided volume or instance default)
+      const effectiveVolume = volume !== undefined ? volume : this.volume;
+      audio.volume = Math.max(0.0, Math.min(1.0, effectiveVolume));
 
       // If there's an onFinished callback, add the event listener
       if (onFinished) {

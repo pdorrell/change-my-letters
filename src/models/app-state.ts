@@ -30,6 +30,9 @@ const PAGE_CONFIGS: Record<AppPage, PageConfig> = {
  * Main application state that manages the current page and models
  */
 export class AppState {
+  // Base URL for word sayer MP3 files
+  private readonly baseWordSayerUrl = '/assets/words/eleven_labs/';
+
   // Special celebration words for Make Me success
   private readonly celebrationWords: string[] = ['cool!!', 'wow!!', 'hooray!!', 'yes!!'];
 
@@ -85,7 +88,13 @@ export class AppState {
     public readonly version: string,
 
     // Audio player for word pronunciation
-    public readonly wordSayer: WordSayerInterface
+    public readonly wordSayer: WordSayerInterface,
+
+    // Audio player for celebration words
+    public readonly happyWordSayer: WordSayerInterface,
+
+    // Audio player for negative phrases
+    public readonly sadWordSayer: WordSayerInterface
   ) {
 
     // Initialize audio settings
@@ -197,20 +206,20 @@ export class AppState {
 
     // Handle audio playback based on the new logic
     if (hadMakeMeWord && isCorrectMakeMeWord) {
-      // Play a random celebration word for successful Make Me at 50% volume
+      // Play a random celebration word for successful Make Me
       const randomIndex = Math.floor(Math.random() * this.celebrationWords.length);
       const celebrationWord = this.celebrationWords[randomIndex];
-      this.wordSayer.say(celebrationWord, undefined, 0.5);
+      this.happyWordSayer.say(celebrationWord);
     } else if (hadMakeMeWord && !isCorrectMakeMeWord) {
       // Play a random negative phrase followed by the new word after 0.2 seconds
       const randomIndex = Math.floor(Math.random() * this.negativePhrases.length);
       const negativePhrase = this.negativePhrases[randomIndex];
-      this.wordSayer.say(negativePhrase, () => {
+      this.sadWordSayer.say(negativePhrase, () => {
         // Wait 0.2 seconds then say the new word
         setTimeout(() => {
           this.currentWord.say();
         }, 200);
-      }, 0.5);
+      });
     } else if (this.sayImmediately.value) {
       // Play the new current word
       this.currentWord.say();
