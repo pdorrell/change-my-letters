@@ -490,26 +490,40 @@ body {
   background-color: #f9f9f9;
   border: 1px solid #eee;
   border-radius: 4px;
-  text-align: center;
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
   
-  .score-label {
-    font-size: 0.9em;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: #666;
+  .score-label-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8px 12px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    min-height: 48px; // Roughly matches height of two rows of squares with gap
+    
+    .score-label-line {
+      font-size: 0.9em;
+      font-weight: bold;
+      color: #666;
+      line-height: 1.2;
+      text-align: center;
+    }
   }
   
   .score-rows {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    align-items: center;
+    flex: 1;
     
     .score-row {
       display: flex;
       gap: 4px;
       flex-wrap: wrap;
-      justify-content: center;
+      justify-content: flex-start; // Left justify the squares
       
       .score-square {
         width: 20px;
@@ -577,6 +591,14 @@ body {
     
     &.hidden {
       visibility: hidden;
+    }
+    
+    &.make-me-active {
+      background-color: #8b5cf6; // Purple background when Make Me word is active
+      
+      &:hover {
+        background-color: #7c3aed; // Darker purple on hover
+      }
     }
   }
   

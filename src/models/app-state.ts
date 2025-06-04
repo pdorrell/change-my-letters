@@ -330,17 +330,24 @@ export class AppState {
   }
 
   /**
-   * Get the Make Me button action - enabled when no Make Me word is active
+   * Get the Make Me button action - always enabled, changes color when active
    */
   get makeMeButtonAction(): ButtonAction {
-    const handler = this.makeMeWord === null ? () => this.makeMeSay() : null;
+    const handler = () => this.makeMeSay();
     return new ButtonAction(handler, { tooltip: "Choose a random word for me to make" });
   }
 
   /**
-   * Choose a random word from possible next words and say it
+   * Choose a random word from possible next words and say it, or repeat the current Make Me word
    */
   makeMeSay(): void {
+    // If makeMeWord already exists, just say it again
+    if (this.makeMeWord) {
+      this.wordSayer.say(this.makeMeWord.word);
+      return;
+    }
+
+    // Otherwise, choose a new Make Me word
     const possibleWords = this.visitingWord.possibleNextWords;
     if (possibleWords.length === 0) {
       return;
