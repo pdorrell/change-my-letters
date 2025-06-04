@@ -235,7 +235,12 @@ export const CurrentWordControls: React.FC<CurrentWordControlsProps> = observer(
       <ActionButton action={appState.undoAction}>Undo</ActionButton>
       <ActionButton action={appState.redoAction}>Redo</ActionButton>
       <ActionButton action={appState.sayAction}>Say</ActionButton>
-      <ActionButton action={appState.makeMeButtonAction}>Make Me</ActionButton>
+      <ActionButton
+        action={appState.makeMeButtonAction}
+        className={appState.makeMeWord ? 'make-me-active' : ''}
+      >
+        Make Me
+      </ActionButton>
       <ValueCheckbox value={appState.sayImmediately} />
     </div>
   );
