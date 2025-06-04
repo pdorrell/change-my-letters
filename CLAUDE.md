@@ -358,8 +358,10 @@ AppState has the following -
     * chooses the makeMeWord
     * says the makeMeWord
     * creates a new makeMeScore if there isn't one yet
-* update AppState.setCurrentWord so that it also:
-  * says the new word is sayImmediately.value or if makeMeWord is not null
+* update AppState.setCurrentWord so that:
+  * if makeMeWord is not null and the new word matches the makeMeWord, say one
+    of the 4 special words cool!! wow!! hooray!! or yes!! (at random)
+  * otherwise, if makeMeWord is not null or sayImmediately is checked, then say the new current word 
   * if makeMeWord is not null
      * check if makeMeWord matches the new word
        * defensively creates a makeMeScore if it doesn't yet exist (actually always it will,
