@@ -346,11 +346,14 @@ The mobx state supporting this feature would be:
 * A ScoreModel class that contains two values, both starting at 0 -
   * correct : int
   * incorrect : int
+* ScoreModel also has a label param of type string[] (usually just 2 lines so
+  that the label matches the height of the green & red rows.
   
 AppState has the following -
 
 * makeMeWord: Word | null - the current word if the Make Me button has been pressed
-* makeMeScore: ScoreModel | null - the score once the Make Me button has been pressed first time
+* makeMeScore: ScoreModel the score for the Make Me button initialised with a label `['"Make Me"', 'Score'] (so actually
+  showing quotes around Make Me).
 * makeMeButtonAction: ButtonAction - The action for makeMeButtonAction calls
   a method AppState.makeMeSay() which:
   * if makeWord already exists, just says it again
@@ -371,4 +374,4 @@ AppState has the following -
 
 Suggested names of new view class -
 
-* ScorePanel, taking scoreModel: ScoreModel as a prop (CurrentWordPage will include ScorePanel if appState.makeMeScore is not null)
+* ScorePanel, taking scoreModel: ScoreModel as a prop
