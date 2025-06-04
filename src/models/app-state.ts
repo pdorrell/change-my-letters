@@ -9,6 +9,7 @@ import { MenuManager } from '../lib/views/menu-manager';
 import { Word } from './word';
 import { ButtonAction } from '../lib/models/actions';
 import { ValueModel } from '../lib/models/value-models';
+import { ScoreModel } from './score-model';
 
 // Type for the main application pages
 type AppPage = 'wordView' | 'resetView' | 'reviewPronunciationView';
@@ -63,6 +64,10 @@ export class AppState {
   resetAction: ButtonAction;
   sayAction: ButtonAction;
   reviewPronunciationAction: ButtonAction;
+
+  // Make Me feature
+  makeMeWord: Word | null = null;
+  makeMeScore: ScoreModel | null = null;
 
   constructor(
     initialWord: string,
@@ -122,7 +127,8 @@ export class AppState {
     makeAutoObservable(this, {
       undoAction: computed,
       redoAction: computed,
-      newWordHandler: computed
+      newWordHandler: computed,
+      makeMeButtonAction: computed
     });
   }
 
@@ -165,8 +171,21 @@ export class AppState {
       this.wordSayer.preload(nextWord);
     }
 
-    // Say the word immediately if that option is enabled
-    if (this.sayImmediately.value) {
+    // Handle Make Me scoring and audio if there's an active Make Me word
+    const hadMakeMeWord = this.makeMeWord !== null;
+    if (this.makeMeWord && this.makeMeScore) {
+      // Check if the new word matches the Make Me word
+      if (wordObj.word === this.makeMeWord.word) {
+        this.makeMeScore.incrementCorrect();
+      } else {
+        this.makeMeScore.incrementIncorrect();
+      }
+      // Clear the Make Me word since the user has made a change
+      this.makeMeWord = null;
+    }
+
+    // Say the word immediately if that option is enabled OR if there was a Make Me word
+    if (this.sayImmediately.value || hadMakeMeWord) {
       this.currentWord.say();
     }
   }
@@ -237,6 +256,10 @@ export class AppState {
     // Clear previouslyVisitedWords set
     this.previouslyVisitedWords.clear();
 
+    // Clear Make Me state
+    this.makeMeWord = null;
+    this.makeMeScore = null;
+
     // Set visitingWord to the new initial word
     this.visitingWord = initialWord;
 
@@ -304,6 +327,50 @@ export class AppState {
   get redoAction(): ButtonAction {
     const handler = this.history.canRedo ? () => this.redo() : null;
     return new ButtonAction(handler, { tooltip: "Redo last undone change" });
+  }
+
+  /**
+   * Get the Make Me button action - enabled when no Make Me word is active
+   */
+  get makeMeButtonAction(): ButtonAction {
+    const handler = this.makeMeWord === null ? () => this.makeMeSay() : null;
+    return new ButtonAction(handler, { tooltip: "Choose a random word for me to make" });
+  }
+
+  /**
+   * Choose a random word from possible next words and say it
+   */
+  makeMeSay(): void {
+    const possibleWords = this.visitingWord.possibleNextWords;
+    if (possibleWords.length === 0) {
+      return;
+    }
+
+    // Filter for unvisited words first, if any exist
+    const unvisitedWords = possibleWords.filter(wordString => {
+      const wordNode = this.wordGraph.getNode(wordString);
+      return wordNode && !wordNode.previouslyVisited;
+    });
+
+    // Choose from unvisited words if available, otherwise from all possible words
+    const candidateWords = unvisitedWords.length > 0 ? unvisitedWords : possibleWords;
+
+    // Randomly select a word
+    const randomIndex = Math.floor(Math.random() * candidateWords.length);
+    const selectedWordString = candidateWords[randomIndex];
+    const selectedWord = this.wordGraph.getNode(selectedWordString);
+
+    if (selectedWord) {
+      this.makeMeWord = selectedWord;
+
+      // Create score model if it doesn't exist
+      if (!this.makeMeScore) {
+        this.makeMeScore = new ScoreModel();
+      }
+
+      // Say the selected word
+      this.wordSayer.say(selectedWordString);
+    }
   }
 
 }

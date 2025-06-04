@@ -7,6 +7,7 @@ import { MenuManagerInterface } from '../lib/views/menu-manager-interface';
 import { AppState } from '../models/app-state';
 import { ActionButton } from '../lib/views/action-button';
 import { HistoryPanel } from './history';
+import { ScorePanel } from './score-panel';
 import { ValueCheckbox } from '../lib/views/value-model-views';
 import {
   useFloating,
@@ -234,6 +235,7 @@ export const CurrentWordControls: React.FC<CurrentWordControlsProps> = observer(
       <ActionButton action={appState.undoAction}>Undo</ActionButton>
       <ActionButton action={appState.redoAction}>Redo</ActionButton>
       <ActionButton action={appState.sayAction}>Say</ActionButton>
+      <ActionButton action={appState.makeMeButtonAction}>Make Me</ActionButton>
       <ValueCheckbox value={appState.sayImmediately} />
     </div>
   );
@@ -249,6 +251,7 @@ export const CurrentWordPage: React.FC<CurrentWordPageProps> = observer(({ appSt
     <>
       <CurrentWordControls appState={appState} />
       <CurrentWordView currentWord={appState.currentWord} maxWordLength={appState.wordGraph.maxWordLength} />
+      {appState.makeMeScore && <ScorePanel scoreModel={appState.makeMeScore} />}
       <HistoryPanel history={appState.history} />
     </>
   );
