@@ -2,6 +2,7 @@ import { makeAutoObservable, runInAction } from 'mobx';
 import { AppState } from './app-state';
 import { WordLoader } from './word-loader';
 import { WordSayerInterface } from './word-sayer-interface';
+import { WordSayer } from './word-sayer';
 import { DataFileFetcherInterface } from '../lib/data-fetching/data-file-fetcher-interface';
 import { WordGraph } from './word-graph';
 import localDevReviewState from '../data/local_dev/review-pronunciation-state.json';
@@ -33,12 +34,23 @@ export class ApplicationLoader {
   // Word sayer for audio functionality
   public readonly wordSayer: WordSayerInterface;
 
+  // Happy word sayer for celebration sounds
+  public readonly happyWordSayer: WordSayerInterface;
+
+  // Sad word sayer for negative sounds
+  public readonly sadWordSayer: WordSayerInterface;
+
   constructor(wordSayer: WordSayerInterface, dataFileFetcher: DataFileFetcherInterface) {
     // Set version from environment or fallback
     this.version = process.env.APP_VERSION || 'development';
 
     // Store the required word sayer
     this.wordSayer = wordSayer;
+
+    // Create specialized word sayers for different audio types
+    const baseWordSayerUrl = '/assets/words/eleven_labs/';
+    this.happyWordSayer = new WordSayer(0.5, `${baseWordSayerUrl}happy`);
+    this.sadWordSayer = new WordSayer(0.5, `${baseWordSayerUrl}sad`);
 
     // Store the required data file fetcher
     this.dataFileFetcher = dataFileFetcher;
@@ -94,8 +106,8 @@ export class ApplicationLoader {
         if (wordGraph.words.size > 0) {
           const initialWordString = this.getInitialWord(wordGraph);
 
-          // Create the app state with the loaded data and the injected WordSayer
-          this.appState = new AppState(initialWordString, wordGraph, this.version, this.wordSayer);
+          // Create the app state with the loaded data and the injected WordSayers
+          this.appState = new AppState(initialWordString, wordGraph, this.version, this.wordSayer, this.happyWordSayer, this.sadWordSayer);
 
           // In local dev mode, load the review pronunciation state
           this.loadLocalDevReviewState();
