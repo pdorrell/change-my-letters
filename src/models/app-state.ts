@@ -30,6 +30,9 @@ const PAGE_CONFIGS: Record<AppPage, PageConfig> = {
  * Main application state that manages the current page and models
  */
 export class AppState {
+  // Special celebration words for Make Me success
+  private readonly celebrationWords: string[] = ['cool!!', 'wow!!', 'hooray!!', 'yes!!'];
+
   // The current page being displayed
   currentPage: AppPage = 'wordView';
 
@@ -173,10 +176,12 @@ export class AppState {
 
     // Handle Make Me scoring and audio if there's an active Make Me word
     const hadMakeMeWord = this.makeMeWord !== null;
+    let isCorrectMakeMeWord = false;
     if (this.makeMeWord && this.makeMeScore) {
       // Check if the new word matches the Make Me word
       if (wordObj.word === this.makeMeWord.word) {
         this.makeMeScore.incrementCorrect();
+        isCorrectMakeMeWord = true;
       } else {
         this.makeMeScore.incrementIncorrect();
       }
@@ -184,8 +189,14 @@ export class AppState {
       this.makeMeWord = null;
     }
 
-    // Say the word immediately if that option is enabled OR if there was a Make Me word
-    if (this.sayImmediately.value || hadMakeMeWord) {
+    // Handle audio playback based on the new logic
+    if (hadMakeMeWord && isCorrectMakeMeWord) {
+      // Play a random celebration word for successful Make Me
+      const randomIndex = Math.floor(Math.random() * this.celebrationWords.length);
+      const celebrationWord = this.celebrationWords[randomIndex];
+      this.wordSayer.say(celebrationWord);
+    } else if (hadMakeMeWord || this.sayImmediately.value) {
+      // Play the new current word
       this.currentWord.say();
     }
   }
