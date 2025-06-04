@@ -310,3 +310,56 @@ There are eslint settings to enforce the following rules -
 * no unused variables, and unused parameters must start with _
 * no unused imports
 * check for missing mobx `observer` for functional react components
+
+## Make Me
+
+"Make Me" is an additional feature of the main "Word" page.
+
+* A button "Make Me" to the right of the other buttons
+* When the user presses "Make Me", the application randomly chooses
+  a word that can be made from the current word in one step, giving
+  preference to words not yet visited, and the application says that word.
+  * The "Make Me" button gets disabled
+  * When the user changes the current word, the application says the
+    new current word (whether or not Say Immediately is checked)
+    * If the new word matches the Make Me word, the user scores 1 corrrect
+    * If the new words doesn't match, the user scores 1 incorrect
+  * After the user changes the current word, the "Make Me" button is 
+    re-enabled
+  * The score is displayed in a panel below the main word display, but above the history
+  
+The score display shows as a label on the left, "Make Me Score", and two rows of squares -
+* The first row is one green square for each correct answer
+* The second row is one red square for each incorrect answer
+
+The user is free to make normal word changes even if the "Make Me" button isn't
+pressed.
+
+The score panel only displays after the "Make Me" button has been pressed the first
+time after starting the application or resetting the current word.
+
+The mobx state supporting this feature would be:
+
+* A ScoreModel class that contains two values, both starting at 0 -
+  * correct : int
+  * incorrect : int
+  
+AppState has the following -
+
+* makeMeWord: Word | null - the current word if the Make Me button has been pressed
+* makeMeScore: ScoreModel | null - the score once the Make Me button has been pressed first time
+* makeMeButtonAction: ButtonAction - enabled if makeMeWord is null. The action for makeMeButtonAction calls
+  a method AppState.makeMeSay() which:
+  * chooses the makeMeWord
+  * says the makeMeWord
+  * creates a new makeMeScore if there isn't one yet
+* update AppState.setCurrentWord so that it also:
+  * says the new word is sayImmediately.value or if makeMeWord is not null
+  * if makeMeWord is not null
+     * check if makeMeWord matches the new word
+       * increment the makeMeScore.correct or incorrect value accordingly
+     * set makeMeWord back to null
+
+Suggested names of new view class -
+
+* ScorePanel, taking scoreModel: ScoreModel as a prop (CurrentWordPage will include ScorePanel if appState.makeMeScore is not null)
