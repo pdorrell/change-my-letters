@@ -22,9 +22,8 @@ export class WordSayerTestDouble implements WordSayerInterface {
    * Play the audio for a word (test implementation)
    * @param word The word to play
    * @param onFinished Optional callback to call when the word finishes playing
-   * @param volume Optional volume level (0.0 to 1.0, default 1.0)
    */
-  say(word: string, onFinished?: () => void, _volume?: number): void {
+  say(word: string, onFinished?: () => void): void {
     this.playedWords.push(word);
     if (onFinished) {
       onFinished();
