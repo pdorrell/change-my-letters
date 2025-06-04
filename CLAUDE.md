@@ -319,7 +319,10 @@ There are eslint settings to enforce the following rules -
 * When the user presses "Make Me", the application randomly chooses
   a word that can be made from the current word in one step, giving
   preference to words not yet visited, and the application says that word.
-  * The "Make Me" button gets disabled
+  * If the "Make Me" word has been set, then pressing the "Make Me"
+    button again just makes it say the same make me word again, 
+    for example if the user didn't hear it properly the first time.
+    But pressing it again doesn't otherwise alter the current state.
   * When the user changes the current word, the application says the
     new current word (whether or not Say Immediately is checked)
     * If the new word matches the Make Me word, the user scores 1 corrrect
@@ -348,15 +351,19 @@ AppState has the following -
 
 * makeMeWord: Word | null - the current word if the Make Me button has been pressed
 * makeMeScore: ScoreModel | null - the score once the Make Me button has been pressed first time
-* makeMeButtonAction: ButtonAction - enabled if makeMeWord is null. The action for makeMeButtonAction calls
+* makeMeButtonAction: ButtonAction - The action for makeMeButtonAction calls
   a method AppState.makeMeSay() which:
-  * chooses the makeMeWord
-  * says the makeMeWord
-  * creates a new makeMeScore if there isn't one yet
+  * if makeWord already exists, just says it again
+  * if makeWord doesn't yet exist:
+    * chooses the makeMeWord
+    * says the makeMeWord
+    * creates a new makeMeScore if there isn't one yet
 * update AppState.setCurrentWord so that it also:
   * says the new word is sayImmediately.value or if makeMeWord is not null
   * if makeMeWord is not null
      * check if makeMeWord matches the new word
+       * defensively creates a makeMeScore if it doesn't yet exist (actually always it will,
+         but this makes the type-checking easier)
        * increment the makeMeScore.correct or incorrect value accordingly
      * set makeMeWord back to null
 
