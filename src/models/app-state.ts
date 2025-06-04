@@ -33,6 +33,9 @@ export class AppState {
   // Special celebration words for Make Me success
   private readonly celebrationWords: string[] = ['cool!!', 'wow!!', 'hooray!!', 'yes!!'];
 
+  // Special negative phrases for Make Me failure
+  private readonly negativePhrases: string[] = ['oh dear!', 'oh no!', 'whoops!'];
+
   // The current page being displayed
   currentPage: AppPage = 'wordView';
 
@@ -198,7 +201,17 @@ export class AppState {
       const randomIndex = Math.floor(Math.random() * this.celebrationWords.length);
       const celebrationWord = this.celebrationWords[randomIndex];
       this.wordSayer.say(celebrationWord, undefined, 0.5);
-    } else if (hadMakeMeWord || this.sayImmediately.value) {
+    } else if (hadMakeMeWord && !isCorrectMakeMeWord) {
+      // Play a random negative phrase followed by the new word after 0.2 seconds
+      const randomIndex = Math.floor(Math.random() * this.negativePhrases.length);
+      const negativePhrase = this.negativePhrases[randomIndex];
+      this.wordSayer.say(negativePhrase, () => {
+        // Wait 0.2 seconds then say the new word
+        setTimeout(() => {
+          this.currentWord.say();
+        }, 200);
+      }, 0.5);
+    } else if (this.sayImmediately.value) {
       // Play the new current word
       this.currentWord.say();
     }
