@@ -3,6 +3,7 @@ import { WordSayerInterface } from './word-sayer-interface';
 import { WordToFind } from './word-to-find';
 import { WordToChoose } from './word-to-choose';
 import { ButtonAction } from '../lib/models/actions';
+import { ValueModel } from '../lib/models/value-models';
 
 export class FinderInteraction {
   wordSayer: WordSayerInterface;
@@ -14,6 +15,7 @@ export class FinderInteraction {
   correct: number = 0;
   tried: number = 0;
   newWordsCallback?: () => string[];
+  auto: ValueModel<boolean>;
 
   constructor(wordSayer: WordSayerInterface, words?: string[], newWordsCallback?: () => string[]) {
     this.wordSayer = wordSayer;
@@ -27,6 +29,9 @@ export class FinderInteraction {
 
     this.wordsToFind = this.words.map(word => new WordToFind(this, word));
     this.wordsToChoose = this.words.map(word => new WordToChoose(this, word));
+
+    // Initialize auto checkbox (defaulted to checked)
+    this.auto = new ValueModel(true, 'Auto', 'Automatically choose next word to find');
 
     makeAutoObservable(this, {
       numWordsChosen: computed,
@@ -69,6 +74,23 @@ export class FinderInteraction {
 
   clearCurrentWordToFind(): void {
     this.currentWordToFind = null;
+
+    // If auto is enabled, choose next word after delay
+    if (this.auto.value) {
+      setTimeout(() => {
+        this.autoChooseNextWord();
+      }, 500);
+    }
+  }
+
+  private autoChooseNextWord(): void {
+    const waitingWords = this.wordsToFind.filter(w => w.state === 'waiting');
+    if (waitingWords.length > 0) {
+      const randomIndex = Math.floor(Math.random() * waitingWords.length);
+      const nextWord = waitingWords[randomIndex];
+      this.setCurrentWordToFind(nextWord);
+      this.wordSayer.say(nextWord.word);
+    }
   }
 
   setMessage(message: string): void {
@@ -123,6 +145,7 @@ export class FinderInteraction {
     this.words = words.slice();
     this.wordsToFind = this.words.map(word => new WordToFind(this, word));
     this.wordsToChoose = this.words.map(word => new WordToChoose(this, word));
+    // Keep the auto setting when setting new words
     this.retry();
   }
 }
