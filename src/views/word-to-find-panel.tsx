@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { FinderInteraction } from '../models/finder-interaction';
 import { WordToFindView } from './word-to-find-view';
+import { ValueCheckbox } from '../lib/views/value-model-views';
 
 interface WordToFindPanelProps { finderInteraction: FinderInteraction; }
 
@@ -13,6 +14,9 @@ export const WordToFindPanel: React.FC<WordToFindPanelProps> = observer(({ finde
         {finderInteraction.wordsToFind.map((wordToFind, index) => (
           <WordToFindView key={index} wordToFind={wordToFind} />
         ))}
+      </div>
+      <div className="finder-auto-checkbox">
+        <ValueCheckbox value={finderInteraction.auto} />
       </div>
     </div>
   );

@@ -906,6 +906,8 @@ body {
   margin: 20px auto;
   max-width: 800px;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   
   h3 {
       text-align: center;
@@ -913,6 +915,16 @@ body {
       padding: 0;
       color: #333;
       font-size: 1.3em;
+  }
+  
+  .finder-auto-checkbox {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    
+    .value-checkbox-container {
+      font-size: 0.9em;
+    }
   }
 }
 
@@ -941,6 +953,7 @@ body {
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
+  flex: 1;
   
   .word-to-find {
     width: 40px;
