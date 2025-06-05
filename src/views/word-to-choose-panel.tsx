@@ -7,9 +7,9 @@ interface WordToChoosePanelProps { finderInteraction: FinderInteraction; }
 
 export const WordToChoosePanel: React.FC<WordToChoosePanelProps> = observer(({ finderInteraction }) => {
   return (
-    <div className="word-to-choose-panel">
+    <div className="finder-panel">
       <h3>Choose the word you hear:</h3>
-      <div className="word-to-choose-buttons">
+      <div className="words-grid">
         {finderInteraction.wordsToChoose.map((wordToChoose, index) => (
           <WordToChooseButton key={index} wordToChoose={wordToChoose} />
         ))}

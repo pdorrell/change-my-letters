@@ -26,7 +26,7 @@ export const WordToFindView: React.FC<WordToFindViewProps> = observer(({ wordToF
   };
 
   const getDisplayText = (): string => {
-    return wordToFind.state === 'right' || wordToFind.state === 'wrong' ? wordToFind.word : '?';
+    return wordToFind.state === 'right' || wordToFind.state === 'wrong' ? '' : '?';
   };
 
   return (

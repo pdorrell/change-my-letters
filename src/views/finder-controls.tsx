@@ -7,7 +7,7 @@ interface FinderControlsProps { finderInteraction: FinderInteraction; }
 
 export const FinderControls: React.FC<FinderControlsProps> = observer(({ finderInteraction }) => {
   return (
-    <div className="finder-controls">
+    <div className="current-word-controls">
       <ActionButton action={finderInteraction.retryAction}>
         Retry
       </ActionButton>
