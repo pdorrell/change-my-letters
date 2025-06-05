@@ -11,9 +11,9 @@ interface FinderPageProps { appState: AppState; }
 export const FinderPage: React.FC<FinderPageProps> = observer(({ appState }) => {
   return (
     <>
-      <FinderMessagePanel finderInteraction={appState.finderInteraction} />
       <WordToChoosePanel finderInteraction={appState.finderInteraction} />
       <WordToFindPanel finderInteraction={appState.finderInteraction} />
+      <FinderMessagePanel finderInteraction={appState.finderInteraction} />
       <FinderControls finderInteraction={appState.finderInteraction} />
     </>
   );
