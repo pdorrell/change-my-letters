@@ -1,0 +1,20 @@
+import React from 'react';
+import { observer } from 'mobx-react-lite';
+import { FinderInteraction } from '../models/finder-interaction';
+
+interface FinderMessagePanelProps { finderInteraction: FinderInteraction; }
+
+export const FinderMessagePanel: React.FC<FinderMessagePanelProps> = observer(({ finderInteraction }) => {
+  return (
+    <div className="finder-message-panel">
+      {finderInteraction.message && (
+        <div className="finder-message">
+          {finderInteraction.message}
+        </div>
+      )}
+      <div className="finder-score">
+        {finderInteraction.scoreText}
+      </div>
+    </div>
+  );
+});

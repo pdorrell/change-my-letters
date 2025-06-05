@@ -1,0 +1,53 @@
+import { makeAutoObservable } from 'mobx';
+import { WordSayerInterface } from './word-sayer-interface';
+
+export type WordToFindState = 'waiting' | 'current' | 'wrong' | 'right';
+
+interface FinderInterface {
+  wordSayer: WordSayerInterface;
+  setCurrentWordToFind(wordToFind: WordToFind): void;
+  setMessage(message: string): void;
+  incrementCorrect(): void;
+  incrementTried(): void;
+  clearCurrentWordToFind(): void;
+}
+
+export class WordToFind {
+  finder: FinderInterface;
+  word: string;
+  state: WordToFindState = 'waiting';
+
+  constructor(finder: FinderInterface, word: string) {
+    this.finder = finder;
+    this.word = word;
+
+    makeAutoObservable(this);
+  }
+
+  get canChoose(): boolean {
+    return this.state === 'waiting' || this.state === 'current';
+  }
+
+  choose(): void {
+    if (!this.canChoose) return;
+
+    this.finder.wordSayer.say(this.word);
+    this.finder.setCurrentWordToFind(this);
+  }
+
+  chosenAs(chosenWord: string): void {
+    if (this.state === 'right' || this.state === 'wrong') return;
+
+    if (chosenWord === this.word) {
+      this.state = 'right';
+      this.finder.setMessage('Correct 😊');
+      this.finder.incrementCorrect();
+    } else {
+      this.state = 'wrong';
+      this.finder.setMessage('Wrong 😢');
+      this.finder.incrementTried();
+    }
+
+    this.finder.clearCurrentWordToFind();
+  }
+}

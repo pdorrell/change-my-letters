@@ -1,0 +1,128 @@
+import { makeAutoObservable, computed } from 'mobx';
+import { WordSayerInterface } from './word-sayer-interface';
+import { WordToFind } from './word-to-find';
+import { WordToChoose } from './word-to-choose';
+import { ButtonAction } from '../lib/models/actions';
+
+export class FinderInteraction {
+  wordSayer: WordSayerInterface;
+  words: string[];
+  wordsToFind: WordToFind[];
+  currentWordToFind: WordToFind | null = null;
+  wordsToChoose: WordToChoose[];
+  message: string = '';
+  correct: number = 0;
+  tried: number = 0;
+  newWordsCallback?: () => string[];
+
+  constructor(wordSayer: WordSayerInterface, words?: string[], newWordsCallback?: () => string[]) {
+    this.wordSayer = wordSayer;
+    this.newWordsCallback = newWordsCallback;
+
+    if (words) {
+      this.words = words.slice();
+    } else {
+      this.words = [];
+    }
+
+    this.wordsToFind = this.words.map(word => new WordToFind(this, word));
+    this.wordsToChoose = this.words.map(word => new WordToChoose(this, word));
+
+    makeAutoObservable(this, {
+      numWordsChosen: computed,
+      finished: computed,
+      scoreText: computed,
+      retryAction: computed,
+      newAction: computed
+    });
+  }
+
+  get numWordsChosen(): number {
+    return this.wordsToFind.filter(w => w.state === 'right' || w.state === 'wrong').length;
+  }
+
+  get finished(): boolean {
+    return this.numWordsChosen === this.wordsToFind.length;
+  }
+
+  get scoreText(): string {
+    return `${this.correct} / ${this.tried}`;
+  }
+
+  get retryAction(): ButtonAction {
+    const handler = this.finished ? () => this.retry() : null;
+    return new ButtonAction(handler, { tooltip: "Retry with the same words" });
+  }
+
+  get newAction(): ButtonAction {
+    const handler = this.finished ? () => this.new() : null;
+    return new ButtonAction(handler, { tooltip: "Start with a new set of words" });
+  }
+
+  setCurrentWordToFind(wordToFind: WordToFind): void {
+    if (this.currentWordToFind && this.currentWordToFind !== wordToFind) {
+      this.currentWordToFind.state = 'waiting';
+    }
+    this.currentWordToFind = wordToFind;
+    wordToFind.state = 'current';
+  }
+
+  clearCurrentWordToFind(): void {
+    this.currentWordToFind = null;
+  }
+
+  setMessage(message: string): void {
+    this.message = message;
+    setTimeout(() => {
+      this.message = '';
+    }, 2000);
+  }
+
+  incrementCorrect(): void {
+    this.correct++;
+    this.tried++;
+    this.checkFinished();
+  }
+
+  incrementTried(): void {
+    this.tried++;
+    this.checkFinished();
+  }
+
+  private checkFinished(): void {
+    if (this.finished) {
+      if (this.correct === this.wordsToFind.length) {
+        this.setMessage(`Congratulations you got all ${this.wordsToFind.length} words right! 😊😊`);
+      } else {
+        this.setMessage(`You got ${this.correct} out of ${this.wordsToFind.length}`);
+      }
+    }
+  }
+
+  retry(): void {
+    this.currentWordToFind = null;
+    this.message = '';
+    this.correct = 0;
+    this.tried = 0;
+
+    this.wordsToFind.forEach(wordToFind => {
+      wordToFind.state = 'waiting';
+    });
+  }
+
+  new(): void {
+    if (this.newWordsCallback) {
+      const newWords = this.newWordsCallback();
+      this.setWords(newWords);
+    } else {
+      this.retry();
+    }
+  }
+
+  setWords(words: string[]): void {
+    this.words = words.slice();
+    this.wordsToFind = this.words.map(word => new WordToFind(this, word));
+    this.wordsToChoose = this.words.map(word => new WordToChoose(this, word));
+    this.retry();
+  }
+}
