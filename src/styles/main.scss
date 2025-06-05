@@ -907,10 +907,11 @@ body {
   max-width: 800px;
   
   h3 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-    font-size: 1.3em;
+      text-align: center;
+      margin: 0 0 12px 0;
+      padding: 0;
+      color: #333;
+      font-size: 1.3em;
   }
 }
 
@@ -983,8 +984,8 @@ body {
 }
 
 .word-to-choose-button {
-  padding: 8px 12px;
-  border: 2px solid #ddd;
+  padding: 3px 8px;
+  border: 2px solid #333;
   border-radius: 4px;
   cursor: pointer;
   font-size: 28px;
