@@ -16,10 +16,15 @@ export class FinderInteraction {
   tried: number = 0;
   newWordsCallback?: () => string[];
   auto: ValueModel<boolean>;
+  happyWordSayer?: WordSayerInterface;
 
-  constructor(wordSayer: WordSayerInterface, words?: string[], newWordsCallback?: () => string[]) {
+  // Happy celebration words for perfect score
+  private readonly celebrationWords: string[] = ['cool!!', 'wow!!', 'hooray!!', 'yes!!'];
+
+  constructor(wordSayer: WordSayerInterface, words?: string[], newWordsCallback?: () => string[], happyWordSayer?: WordSayerInterface) {
     this.wordSayer = wordSayer;
     this.newWordsCallback = newWordsCallback;
+    this.happyWordSayer = happyWordSayer;
 
     if (words) {
       this.words = words.slice();
@@ -115,6 +120,13 @@ export class FinderInteraction {
     if (this.finished) {
       if (this.correct === this.wordsToFind.length) {
         this.setMessage(`Congratulations you got all ${this.wordsToFind.length} words right! 😊😊`);
+
+        // Play a random happy word for perfect score
+        if (this.happyWordSayer) {
+          const randomIndex = Math.floor(Math.random() * this.celebrationWords.length);
+          const celebrationWord = this.celebrationWords[randomIndex];
+          this.happyWordSayer.say(celebrationWord);
+        }
       } else {
         this.setMessage(`You got ${this.correct} out of ${this.wordsToFind.length}`);
       }

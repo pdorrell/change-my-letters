@@ -120,7 +120,8 @@ export class AppState {
     this.finderInteraction = new FinderInteraction(
       this.wordSayer,
       randomWords,
-      () => this.getRandomWords(allWords, 10)
+      () => this.getRandomWords(allWords, 10),
+      this.happyWordSayer
     );
 
     // Initialize the current word
