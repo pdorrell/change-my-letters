@@ -25,7 +25,10 @@ export class WordToChoose {
   choose(): void {
     if (!this.enabled || !this.finder.currentWordToFind) return;
 
-    this.finder.wordSayer.say(this.word);
+    const isCorrect = this.word === this.finder.currentWordToFind.word;
+    if (!isCorrect) {
+      this.finder.wordSayer.say(this.word);
+    }
     this.finder.currentWordToFind.chosenAs(this.word);
   }
 }

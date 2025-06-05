@@ -7,7 +7,7 @@ interface WordToFindPanelProps { finderInteraction: FinderInteraction; }
 
 export const WordToFindPanel: React.FC<WordToFindPanelProps> = observer(({ finderInteraction }) => {
   return (
-    <div className="word-to-find-panel">
+    <div className="finder-panel">
       <h3>Click to hear a word:</h3>
       <div className="word-to-find-buttons">
         {finderInteraction.wordsToFind.map((wordToFind, index) => (
