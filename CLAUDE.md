@@ -379,3 +379,74 @@ AppState has the following -
 Suggested names of new view class -
 
 * ScorePanel, taking scoreModel: ScoreModel as a prop
+
+## Word Finder
+
+`Word Finder` is a separate page that provides an alternative activity using the same word list and MP3 files.
+It has a short label "Finder"
+
+An overview of the page is:
+
+* A random list of N words is chosen (N defaults to 10).
+* The words are displayed where the user can see them and choose a word by clicking on it.
+* There is a set of N buttons representing the words to find. The buttons do _not_ show the user which word it is.
+* There is a message area.
+* Each word-to-find button is either in a state of waiting (showing "?"), current (light yellow background with ?), 
+  wrong (shown as red background), or right (shown as green).
+* On clicking on a button, the word is pronounced.
+* If the user clicks on a different word-to-find button then that says that word which becomes the current word
+  to be found (and the previous current word goes back to waiting).
+* If they click on the same button, the same word gets pronounced again and it remains the current word to be found.
+* The user can then click on a displayed word. The displayed word gets pronounced. 
+  The word-to-find button gets marked right or wrong, and can no longer
+  be activated by the user. A temporary message gets displayed "Correct <happy smiley>" or "Wrong <sad smiley>"
+* The word in the word-to-find button is never displayed, so the user is always choosing the next word to find
+  with all the possible words shown as possible choices.
+* The page shows a running total of "number correct" / "number tried"
+* When all word-to-find buttons have been tried, the page is finished, and a message displays in the message area
+  like "You got 7 out of 10", or "Congratulations you got all 10 words right! <smileys>"
+* When the game finishes, two previously disabled buttons become enabled:
+   * Retry - retry with the same set of words
+   * New - start with a new set of words
+   
+Suggested model classes:
+
+* WordToFindState - literal union of waiting, current, wrong, right
+ 
+* WordToFind with attributes & methods, representing the buttons
+  * finder: FinderInteraction (parent object)
+  * word: str
+  * state: WordToFindState = initial state = waiting
+  * canChoose - if state = waiting or current
+  * choose() - choose word to be current word 
+     * say the word, and set finder.currentWordToFind = this
+  * chosenAs(word: str)
+     
+* WordToChoose
+  * finder: FinderInteraction (parent object)
+  * word: str
+  * enabled: boolean - only if the finder.currentWordToFind is not null
+  * choose() - call finder.currentWordToFind.chosenAs(this.word)
+
+The model class FinderInteraction will have attributes & methods:
+
+* public constructor param wordSayer: WordSayer
+* words: str[]
+* wordsToFind: WordToFind[] (initialised from this.words)
+* currentWordToFind: WordToFind | null
+* wordsToChoose: WordToChoose[] (initialised from this.words)
+* numWordsChosen: int - how many wordsToChoose are in state right or wrong
+* finished: boolean - true if all WordsToFind are right or wrong.
+* retry() - restart with the same wordsToFind & wordsToChoose
+* new() - make a new random choice of words, and restart
+
+Suggested view classes, in suggested vertical order:
+
+* FinderMessagePanel - where messages get displayed
+* WordToChooseButton - because it is a button
+* WordToFindView - just a rectangle with colour indicating it's current state
+* WordToChoosePanel - panel showing WordToChooseButton's
+* WordToFindPanel - panel of Words to Find
+* FinderControls - panel with buttons for Retry & New buttons
+   * Retry button
+   * New button
