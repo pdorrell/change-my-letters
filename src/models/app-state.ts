@@ -221,10 +221,8 @@ export class AppState {
 
     // Handle audio playback based on the new logic
     if (hadMakeMeWord && isCorrectMakeMeWord) {
-      // Play a random celebration word for successful Make Me
-      const randomIndex = Math.floor(Math.random() * this.celebrationWords.length);
-      const celebrationWord = this.celebrationWords[randomIndex];
-      await this.happyWordSayer.say(celebrationWord);
+      // For correct Make Me words, just say the word without celebration
+      await this.wordChanger.say();
     } else if (hadMakeMeWord && !isCorrectMakeMeWord) {
       // Play a random negative phrase followed by the new word after 0.2 seconds
       const randomIndex = Math.floor(Math.random() * this.negativePhrases.length);
