@@ -28,11 +28,11 @@ export class WordToFind {
     return this.state === 'waiting' || this.state === 'current';
   }
 
-  setToFind(): void {
+  async setToFind(): Promise<void> {
     if (!this.canSetToFind) return;
 
-    this.finder.wordSayer.say(this.word);
     this.finder.setWordChangerToFind(this);
+    await this.finder.wordSayer.say(this.word);
   }
 
   chosenAs(chosenWord: string): void {

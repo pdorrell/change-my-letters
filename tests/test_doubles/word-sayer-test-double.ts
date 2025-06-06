@@ -21,12 +21,10 @@ export class WordSayerTestDouble implements WordSayerInterface {
   /**
    * Play the audio for a word (test implementation)
    * @param word The word to play
-   * @param onFinished Optional callback to call when the word finishes playing
+   * @returns Promise that resolves immediately (for testing)
    */
-  say(word: string, onFinished?: () => void): void {
+  say(word: string): Promise<void> {
     this.playedWords.push(word);
-    if (onFinished) {
-      onFinished();
-    }
+    return Promise.resolve();
   }
 }

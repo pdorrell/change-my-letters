@@ -88,13 +88,13 @@ export class FinderInteraction {
     }
   }
 
-  private autoChooseNextWord(): void {
+  private async autoChooseNextWord(): Promise<void> {
     const waitingWords = this.wordsToFind.filter(w => w.state === 'waiting');
     if (waitingWords.length > 0) {
       const randomIndex = Math.floor(Math.random() * waitingWords.length);
       const nextWord = waitingWords[randomIndex];
       this.setWordChangerToFind(nextWord);
-      this.wordSayer.say(nextWord.word);
+      await this.wordSayer.say(nextWord.word);
     }
   }
 
@@ -116,7 +116,7 @@ export class FinderInteraction {
     this.checkFinished();
   }
 
-  private checkFinished(): void {
+  private async checkFinished(): Promise<void> {
     if (this.finished) {
       if (this.correct === this.wordsToFind.length) {
         this.setMessage(`Congratulations you got all ${this.wordsToFind.length} words right! 😊😊`);
@@ -125,7 +125,7 @@ export class FinderInteraction {
         if (this.happyWordSayer) {
           const randomIndex = Math.floor(Math.random() * this.celebrationWords.length);
           const celebrationWord = this.celebrationWords[randomIndex];
-          this.happyWordSayer.say(celebrationWord);
+          await this.happyWordSayer.say(celebrationWord);
         }
       } else {
         this.setMessage(`You got ${this.correct} out of ${this.wordsToFind.length}`);

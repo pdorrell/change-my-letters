@@ -215,7 +215,7 @@ export class ReviewPronunciationInteraction {
     }
   }
 
-  reviewWord(wordStr: string): void {
+  async reviewWord(wordStr: string): Promise<void> {
     this.stopAutoplay();
     const word = this.wordsMap.get(wordStr);
     if (!word) return;
@@ -231,7 +231,7 @@ export class ReviewPronunciationInteraction {
     word.currentReview = true;
 
     // Say the word
-    this.wordSayer.say(wordStr);
+    await this.wordSayer.say(wordStr);
   }
 
   reset(): void {
@@ -325,42 +325,42 @@ export class ReviewPronunciationInteraction {
 
   // Navigate to next word in filtered list
   @action
-  gotoNextWord(): void {
+  async gotoNextWord(): Promise<void> {
     const filtered = this.filteredWords;
     if (filtered.length === 0) return;
 
     if (this.currentReviewWordIndex === null) {
       // No word changer, start with first word
-      this.reviewWord(filtered[0].word);
+      await this.reviewWord(filtered[0].word);
     } else if (this.currentReviewWordIndex < filtered.length - 1) {
       // Move to next word
       const nextIndex = this.currentReviewWordIndex + 1;
-      this.reviewWord(filtered[nextIndex].word);
+      await this.reviewWord(filtered[nextIndex].word);
     } else {
       // At end of list, repeat word changer
       if (this.currentReviewWord) {
-        this.wordSayer.say(this.currentReviewWord.word);
+        await this.wordSayer.say(this.currentReviewWord.word);
       }
     }
   }
 
   // Navigate to previous word in filtered list
   @action
-  gotoPreviousWord(): void {
+  async gotoPreviousWord(): Promise<void> {
     const filtered = this.filteredWords;
     if (filtered.length === 0) return;
 
     if (this.currentReviewWordIndex === null) {
       // No word changer, start with last word
-      this.reviewWord(filtered[filtered.length - 1].word);
+      await this.reviewWord(filtered[filtered.length - 1].word);
     } else if (this.currentReviewWordIndex > 0) {
       // Move to previous word
       const prevIndex = this.currentReviewWordIndex - 1;
-      this.reviewWord(filtered[prevIndex].word);
+      await this.reviewWord(filtered[prevIndex].word);
     } else {
       // At start of list, repeat word changer
       if (this.currentReviewWord) {
-        this.wordSayer.say(this.currentReviewWord.word);
+        await this.wordSayer.say(this.currentReviewWord.word);
       }
     }
   }
@@ -383,7 +383,7 @@ export class ReviewPronunciationInteraction {
   }
 
   // Move to next word in autoplay sequence
-  private autoplayNext(): void {
+  private async autoplayNext(): Promise<void> {
     if (!this.autoplaying) return;
 
     const filtered = this.filteredWords;
@@ -417,14 +417,15 @@ export class ReviewPronunciationInteraction {
     this.currentReviewWord = nextWord;
     nextWord.currentReview = true;
 
-    // Say the word with callback to continue autoplay
-    this.wordSayer.say(nextWord.word, () => {
-      if (this.autoplaying) {
-        this.autoplayTimeoutId = window.setTimeout(() => {
-          this.autoplayNext();
-        }, this.autoPlayWaitMillis);
-      }
-    });
+    // Say the word and wait for it to finish
+    await this.wordSayer.say(nextWord.word);
+
+    // Continue autoplay after the configured delay
+    if (this.autoplaying) {
+      this.autoplayTimeoutId = window.setTimeout(() => {
+        this.autoplayNext();
+      }, this.autoPlayWaitMillis);
+    }
   }
 
   // Get the autoplay action button

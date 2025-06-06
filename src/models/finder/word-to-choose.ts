@@ -22,12 +22,12 @@ export class WordToChoose {
     return this.finder.wordChangerToFind !== null;
   }
 
-  choose(): void {
+  async choose(): Promise<void> {
     if (!this.enabled || !this.finder.wordChangerToFind) return;
 
     const isCorrect = this.word === this.finder.wordChangerToFind.word;
     if (!isCorrect) {
-      this.finder.wordSayer.say(this.word);
+      await this.finder.wordSayer.say(this.word);
     }
     this.finder.wordChangerToFind.chosenAs(this.word);
   }
