@@ -55,41 +55,39 @@ export class WordSayer implements WordSayerInterface {
   /**
    * Play the audio for a word, preloading it if necessary
    * @param word The word to play
-   * @param onFinished Optional callback to call when the word finishes playing
+   * @returns Promise that resolves when the word finishes playing
    */
-  say(word: string, onFinished?: () => void): void {
-    // Preload the word if it's not already loaded
-    if (!this.loadedWords.has(word)) {
-      this.preload(word);
-    }
+  say(word: string): Promise<void> {
+    return new Promise<void>((resolve) => {
+      // Preload the word if it's not already loaded
+      if (!this.loadedWords.has(word)) {
+        this.preload(word);
+      }
 
-    // Get the audio element
-    const audio = this.loadedWords.get(word);
+      // Get the audio element
+      const audio = this.loadedWords.get(word);
 
-    if (audio) {
-      // Set the volume using instance volume
-      audio.volume = Math.max(0.0, Math.min(1.0, this.volume));
+      if (audio) {
+        // Set the volume using instance volume
+        audio.volume = Math.max(0.0, Math.min(1.0, this.volume));
 
-      // If there's an onFinished callback, add the event listener
-      if (onFinished) {
+        // Add event listener for when audio ends
         const handleEnded = () => {
-          onFinished();
+          resolve();
           audio.removeEventListener('ended', handleEnded);
         };
         audio.addEventListener('ended', handleEnded);
-      }
 
-      // Play the audio
-      audio.play().catch(error => {
-        console.error(`Error playing word audio for "${word}":`, error);
-        // If there was an error, still call the callback
-        if (onFinished) {
-          onFinished();
-        }
-      });
-    } else if (onFinished) {
-      // If no audio available, still call the callback
-      onFinished();
-    }
+        // Play the audio
+        audio.play().catch(error => {
+          console.error(`Error playing word audio for "${word}":`, error);
+          // If there was an error, still resolve the promise
+          resolve();
+        });
+      } else {
+        // If no audio available, resolve immediately
+        resolve();
+      }
+    });
   }
 }

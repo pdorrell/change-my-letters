@@ -168,15 +168,15 @@ export class AppState {
   /**
    * Get a handler function for setting new words
    */
-  get newWordHandler(): (word: Word) => void {
-    return (word: Word) => this.setNewWord(word);
+  get newWordHandler(): (word: Word) => Promise<void> {
+    return async (word: Word) => await this.setNewWord(word);
   }
 
   /**
    * Set the word changer without adding to history
    * @param wordObj The Word object to set as the word changer
    */
-  setWordChanger(wordObj: Word): void {
+  async setWordChanger(wordObj: Word): Promise<void> {
     // Get the word string value
     const word = wordObj.word;
 
@@ -224,20 +224,18 @@ export class AppState {
       // Play a random celebration word for successful Make Me
       const randomIndex = Math.floor(Math.random() * this.celebrationWords.length);
       const celebrationWord = this.celebrationWords[randomIndex];
-      this.happyWordSayer.say(celebrationWord);
+      await this.happyWordSayer.say(celebrationWord);
     } else if (hadMakeMeWord && !isCorrectMakeMeWord) {
       // Play a random negative phrase followed by the new word after 0.2 seconds
       const randomIndex = Math.floor(Math.random() * this.negativePhrases.length);
       const negativePhrase = this.negativePhrases[randomIndex];
-      this.sadWordSayer.say(negativePhrase, () => {
-        // Wait 0.2 seconds then say the new word
-        setTimeout(() => {
-          this.wordChanger.say();
-        }, 200);
-      });
+      await this.sadWordSayer.say(negativePhrase);
+      // Wait 0.2 seconds then say the new word
+      await new Promise(resolve => setTimeout(resolve, 200));
+      await this.wordChanger.say();
     } else if (this.sayImmediately.value) {
       // Play the new word changer
-      this.wordChanger.say();
+      await this.wordChanger.say();
     }
   }
 
@@ -245,12 +243,12 @@ export class AppState {
    * Set a new word and add it to history
    * @param wordObj The Word object to set as the new word changer
    */
-  setNewWord(wordObj: Word): void {
+  async setNewWord(wordObj: Word): Promise<void> {
     // Add the new word to history first
     this.history.addWord(wordObj);
 
     // Then set it as the word changer
-    this.setWordChanger(wordObj);
+    await this.setWordChanger(wordObj);
   }
 
   // Note: The deleteLetter, insertLetter, and replaceLetter methods have been removed
@@ -396,10 +394,10 @@ export class AppState {
   /**
    * Choose a random word from possible next words and say it, or repeat the current Make Me word
    */
-  makeMeSay(): void {
+  async makeMeSay(): Promise<void> {
     // If makeMeWord already exists, just say it again
     if (this.makeMeWord) {
-      this.wordSayer.say(this.makeMeWord.word);
+      await this.wordSayer.say(this.makeMeWord.word);
       return;
     }
 
@@ -427,7 +425,7 @@ export class AppState {
       this.makeMeWord = selectedWord;
 
       // Say the selected word
-      this.wordSayer.say(selectedWordString);
+      await this.wordSayer.say(selectedWordString);
     }
   }
 

@@ -115,9 +115,9 @@ export class WordInteraction {
   /**
    * Say the word changer using the wordSayer
    */
-  say(): void {
+  async say(): Promise<void> {
     // Use the wordSayer to play the audio for this word
-    this.wordSayer.say(this.word.word);
+    await this.wordSayer.say(this.word.word);
   }
 
   /**
