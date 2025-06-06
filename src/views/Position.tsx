@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { PositionInteraction } from '@/models/interaction/position-interaction';
-import { LetterChoiceMenu } from '@/views/current-word';
+import { LetterChoiceMenu } from '@/views/word-changer';
 import { ActionButton } from '@/lib/views/action-button';
 
 /**

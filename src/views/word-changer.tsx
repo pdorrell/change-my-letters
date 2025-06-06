@@ -22,18 +22,18 @@ import {
 } from '@floating-ui/react';
 
 /**
- * View component for displaying the current word
+ * View component for displaying the word changer
  */
-interface CurrentWordViewProps { currentWord: WordInteraction; maxWordLength?: number; }
+interface WordChangerViewProps { wordChanger: WordInteraction; maxWordLength?: number; }
 
-export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ currentWord, maxWordLength }) => {
+export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordChanger, maxWordLength }) => {
 
   // Add a document-wide click handler to close menus when clicking outside
   React.useEffect(() => {
     const handleGlobalClick = (e: MouseEvent) => {
       // Check if there are any open menus by examining the interactions
-      const hasOpenMenus = currentWord.letterInteractions.some(li => li.isReplaceMenuOpen) ||
-                          currentWord.positionInteractions.some(pi => pi.isInsertMenuOpen);
+      const hasOpenMenus = wordChanger.letterInteractions.some(li => li.isReplaceMenuOpen) ||
+                          wordChanger.positionInteractions.some(pi => pi.isInsertMenuOpen);
 
       // If there's an active menu
       if (hasOpenMenus) {
@@ -53,7 +53,7 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
         }
 
         if (!menuClick) {
-          currentWord.menuManager.closeMenus();
+          wordChanger.menuManager.closeMenus();
         }
       }
     };
@@ -65,34 +65,34 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
     return () => {
       document.removeEventListener('click', handleGlobalClick);
     };
-  }, [currentWord.menuManager]);
+  }, [wordChanger.menuManager]);
 
   // Get maximum word length
   const getMaxWordLength = (): number => {
     return maxWordLength || 5; // Use provided maxWordLength or fallback to 5
   };
 
-  // Get the current word length
-  const currentWordLength = currentWord.value.length;
+  // Get the word changer length
+  const wordChangerLength = wordChanger.value.length;
 
   // Get the maximum word length
   const maxLength = getMaxWordLength();
 
   // Calculate placeholders needed
-  const placeholdersNeeded = Math.max(0, maxLength - currentWordLength);
+  const placeholdersNeeded = Math.max(0, maxLength - wordChangerLength);
 
   return (
     <div
-      className={`word-outer-container ${currentWord.word.previouslyVisited ? 'previously-visited' : ''}`}
+      className={`word-outer-container ${wordChanger.word.previouslyVisited ? 'previously-visited' : ''}`}
     >
-      <div className="current-word-container">
+      <div className="word-changer-container">
         <div className="word-display">
-          {/* Render alternating sequence of positions and letters for the current word */}
-          {currentWord.positionInteractions.map((positionInteraction, index) => (
+          {/* Render alternating sequence of positions and letters for the word changer */}
+          {wordChanger.positionInteractions.map((positionInteraction, index) => (
             <React.Fragment key={`position-${index}`}>
               <PositionView positionInteraction={positionInteraction} />
-              {index < currentWord.letterInteractions.length && (
-                <LetterView letterInteraction={currentWord.letterInteractions[index]} />
+              {index < wordChanger.letterInteractions.length && (
+                <LetterView letterInteraction={wordChanger.letterInteractions[index]} />
               )}
             </React.Fragment>
           ))}
@@ -225,13 +225,13 @@ export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = observer(({ wor
 });
 
 /**
- * Controls component for Current Word page
+ * Controls component for word changer page
  */
-interface CurrentWordControlsProps { appState: AppState; }
+interface WordChangerControlsProps { appState: AppState; }
 
-export const CurrentWordControls: React.FC<CurrentWordControlsProps> = observer(({ appState }) => {
+export const WordChangerControls: React.FC<WordChangerControlsProps> = observer(({ appState }) => {
   return (
-    <div className="current-word-controls">
+    <div className="word-changer-controls">
       <ActionButton action={appState.undoAction}>Undo</ActionButton>
       <ActionButton action={appState.redoAction}>Redo</ActionButton>
       <ActionButton action={appState.sayAction}>Say</ActionButton>
@@ -247,15 +247,15 @@ export const CurrentWordControls: React.FC<CurrentWordControlsProps> = observer(
 });
 
 /**
- * Full page component for Current Word page
+ * Full page component for word changer page
  */
-interface CurrentWordPageProps { appState: AppState; }
+interface WordChangerPageProps { appState: AppState; }
 
-export const CurrentWordPage: React.FC<CurrentWordPageProps> = observer(({ appState }) => {
+export const WordChangerPage: React.FC<WordChangerPageProps> = observer(({ appState }) => {
   return (
     <>
-      <CurrentWordControls appState={appState} />
-      <CurrentWordView currentWord={appState.currentWord} maxWordLength={appState.wordGraph.maxWordLength} />
+      <WordChangerControls appState={appState} />
+      <WordChangerView wordChanger={appState.wordChanger} maxWordLength={appState.wordGraph.maxWordLength} />
       <ScorePanel scoreModel={appState.makeMeScore} />
       <HistoryPanel history={appState.history} />
     </>

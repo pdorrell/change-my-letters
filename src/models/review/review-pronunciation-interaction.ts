@@ -92,13 +92,13 @@ export class ReviewPronunciationInteraction {
   get markOKAction(): ButtonAction {
     const enabled = this.currentReviewWord && this.currentReviewWord.soundsWrong;
     const handler = enabled ? () => this.markOK(this.currentReviewWord!.word) : null;
-    return new ButtonAction(handler, { tooltip: "Mark current word as sounding OK" });
+    return new ButtonAction(handler, { tooltip: "Mark word changer as sounding OK" });
   }
 
   get markSoundsWrongAction(): ButtonAction {
     const enabled = this.currentReviewWord && !this.currentReviewWord.soundsWrong;
     const handler = enabled ? () => this.markSoundsWrong(this.currentReviewWord!.word) : null;
-    return new ButtonAction(handler, { tooltip: "Mark current word as sounding wrong" });
+    return new ButtonAction(handler, { tooltip: "Mark word changer as sounding wrong" });
   }
 
   setReviewState(data: ReviewState): void {
@@ -330,14 +330,14 @@ export class ReviewPronunciationInteraction {
     if (filtered.length === 0) return;
 
     if (this.currentReviewWordIndex === null) {
-      // No current word, start with first word
+      // No word changer, start with first word
       this.reviewWord(filtered[0].word);
     } else if (this.currentReviewWordIndex < filtered.length - 1) {
       // Move to next word
       const nextIndex = this.currentReviewWordIndex + 1;
       this.reviewWord(filtered[nextIndex].word);
     } else {
-      // At end of list, repeat current word
+      // At end of list, repeat word changer
       if (this.currentReviewWord) {
         this.wordSayer.say(this.currentReviewWord.word);
       }
@@ -351,21 +351,21 @@ export class ReviewPronunciationInteraction {
     if (filtered.length === 0) return;
 
     if (this.currentReviewWordIndex === null) {
-      // No current word, start with last word
+      // No word changer, start with last word
       this.reviewWord(filtered[filtered.length - 1].word);
     } else if (this.currentReviewWordIndex > 0) {
       // Move to previous word
       const prevIndex = this.currentReviewWordIndex - 1;
       this.reviewWord(filtered[prevIndex].word);
     } else {
-      // At start of list, repeat current word
+      // At start of list, repeat word changer
       if (this.currentReviewWord) {
         this.wordSayer.say(this.currentReviewWord.word);
       }
     }
   }
 
-  // Start autoplay from next word (or first word if no current word)
+  // Start autoplay from next word (or first word if no word changer)
   @action
   startAutoplay(): void {
     this.autoplaying = true;
@@ -394,7 +394,7 @@ export class ReviewPronunciationInteraction {
 
     let nextIndex: number;
     if (this.currentReviewWordIndex === null) {
-      // No current word, start with first word
+      // No word changer, start with first word
       nextIndex = 0;
     } else if (this.currentReviewWordIndex < filtered.length - 1) {
       // Move to next word

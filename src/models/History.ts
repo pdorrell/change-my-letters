@@ -106,9 +106,9 @@ export class History {
   }
 
   /**
-   * Get the current word
+   * Get the word changer
    */
-  get currentWord(): Word {
+  get wordChanger(): Word {
     return this.entries[this.currentIndex].word;
   }
 

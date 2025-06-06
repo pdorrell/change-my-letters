@@ -308,7 +308,7 @@ describe('ReviewPronunciationInteraction', () => {
   });
 
   describe('computed button actions', () => {
-    it('should enable mark OK action when current word sounds wrong', () => {
+    it('should enable mark OK action when word changer sounds wrong', () => {
       testWords[0].soundsWrong = true;
       reviewInteraction.currentReviewWord = testWords[0];
 
@@ -316,7 +316,7 @@ describe('ReviewPronunciationInteraction', () => {
       expect(action.enabled).toBe(true);
     });
 
-    it('should disable mark OK action when current word does not sound wrong', () => {
+    it('should disable mark OK action when word changer does not sound wrong', () => {
       testWords[0].soundsWrong = false;
       reviewInteraction.currentReviewWord = testWords[0];
 
@@ -324,14 +324,14 @@ describe('ReviewPronunciationInteraction', () => {
       expect(action.enabled).toBe(false);
     });
 
-    it('should disable mark OK action when no current word', () => {
+    it('should disable mark OK action when no word changer', () => {
       reviewInteraction.currentReviewWord = null;
 
       const action = reviewInteraction.markOKAction;
       expect(action.enabled).toBe(false);
     });
 
-    it('should enable mark sounds wrong action when current word does not sound wrong', () => {
+    it('should enable mark sounds wrong action when word changer does not sound wrong', () => {
       testWords[0].soundsWrong = false;
       reviewInteraction.currentReviewWord = testWords[0];
 
@@ -339,7 +339,7 @@ describe('ReviewPronunciationInteraction', () => {
       expect(action.enabled).toBe(true);
     });
 
-    it('should disable mark sounds wrong action when current word sounds wrong', () => {
+    it('should disable mark sounds wrong action when word changer sounds wrong', () => {
       testWords[0].soundsWrong = true;
       reviewInteraction.currentReviewWord = testWords[0];
 
@@ -380,7 +380,7 @@ describe('ReviewPronunciationInteraction', () => {
     });
 
     describe('gotoNextWord', () => {
-      it('should start with first word when no current word', () => {
+      it('should start with first word when no word changer', () => {
         expect(reviewInteraction.currentReviewWord).toBeNull();
 
         reviewInteraction.gotoNextWord();
@@ -401,7 +401,7 @@ describe('ReviewPronunciationInteraction', () => {
         expect(wordSayer.playedWords).toContain('dog');
       });
 
-      it('should repeat current word when at end of list', () => {
+      it('should repeat word changer when at end of list', () => {
         reviewInteraction.reviewWord('bird'); // Last word (index 3)
         wordSayer.playedWords = []; // Clear previous calls
 
@@ -423,7 +423,7 @@ describe('ReviewPronunciationInteraction', () => {
     });
 
     describe('gotoPreviousWord', () => {
-      it('should start with last word when no current word', () => {
+      it('should start with last word when no word changer', () => {
         expect(reviewInteraction.currentReviewWord).toBeNull();
 
         reviewInteraction.gotoPreviousWord();
@@ -444,7 +444,7 @@ describe('ReviewPronunciationInteraction', () => {
         expect(wordSayer.playedWords).toContain('cat');
       });
 
-      it('should repeat current word when at start of list', () => {
+      it('should repeat word changer when at start of list', () => {
         reviewInteraction.reviewWord('cat'); // First word (index 0)
         wordSayer.playedWords = []; // Clear previous calls
 

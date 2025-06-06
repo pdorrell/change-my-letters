@@ -87,12 +87,12 @@ describe('ReviewPronunciationView', () => {
     });
   });
 
-  describe('Current Word Panel', () => {
-    it('always renders the current word panel', () => {
+  describe('word changer Panel', () => {
+    it('always renders the word changer panel', () => {
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
-      const currentWordPanel = document.querySelector('.current-word-panel');
-      expect(currentWordPanel).toBeInTheDocument();
+      const wordChangerPanel = document.querySelector('.word-changer-panel');
+      expect(wordChangerPanel).toBeInTheDocument();
       expect(screen.getByText('Sounds Wrong')).toBeInTheDocument();
       expect(screen.getByText('Sounds OK')).toBeInTheDocument();
       expect(screen.getByText('Auto')).toBeInTheDocument();
@@ -107,8 +107,8 @@ describe('ReviewPronunciationView', () => {
 
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
-      const currentWordPanel = document.querySelector('.current-word-panel');
-      expect(currentWordPanel).toContainElement(screen.getAllByText('cat')[0]);
+      const wordChangerPanel = document.querySelector('.word-changer-panel');
+      expect(wordChangerPanel).toContainElement(screen.getAllByText('cat')[0]);
       expect(screen.getByText('Sounds Wrong')).toBeInTheDocument();
       expect(screen.getByText('Sounds OK')).toBeInTheDocument();
     });
@@ -123,8 +123,8 @@ describe('ReviewPronunciationView', () => {
 
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
-      const currentWordPanel = document.querySelector('.current-word-panel');
-      const wordSpan = currentWordPanel!.querySelector('.word-span');
+      const wordChangerPanel = document.querySelector('.word-changer-panel');
+      const wordSpan = wordChangerPanel!.querySelector('.word-span');
       expect(wordSpan).toHaveClass('wrong', 'current-review');
     });
 
@@ -139,12 +139,12 @@ describe('ReviewPronunciationView', () => {
 
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
-      const currentWordPanel = document.querySelector('.current-word-panel');
-      const wordSpan = currentWordPanel!.querySelector('.word-span');
+      const wordChangerPanel = document.querySelector('.word-changer-panel');
+      const wordSpan = wordChangerPanel!.querySelector('.word-span');
       expect(wordSpan).toHaveClass('ok', 'current-review');
     });
 
-    it('enables/disables buttons based on current word state', () => {
+    it('enables/disables buttons based on word changer state', () => {
       act(() => {
         runInAction(() => {
           reviewInteraction.reviewWord('cat');
@@ -404,9 +404,9 @@ describe('ReviewPronunciationView', () => {
     it('reflects changes in interaction state', () => {
       const { rerender } = render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
-      // Initially current word panel always exists but no word shown
-      const currentWordPanel = document.querySelector('.current-word-panel');
-      expect(currentWordPanel).toBeInTheDocument();
+      // Initially word changer panel always exists but no word shown
+      const wordChangerPanel = document.querySelector('.word-changer-panel');
+      expect(wordChangerPanel).toBeInTheDocument();
 
       // Set a current review word
       act(() => {
@@ -418,7 +418,7 @@ describe('ReviewPronunciationView', () => {
       rerender(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
       // Should now show the word in the panel
-      expect(currentWordPanel).toContainElement(screen.getAllByText('cat')[0]);
+      expect(wordChangerPanel).toContainElement(screen.getAllByText('cat')[0]);
     });
 
     it('updates word count when filter changes', () => {

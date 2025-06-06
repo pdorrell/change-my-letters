@@ -47,13 +47,13 @@ export class AppState {
   // The current sub-header (null for main word view)
   subHeader: string | null = null;
 
-  // The current word interaction model
-  currentWord: WordInteraction;
+  // The word changer interaction model
+  wordChanger: WordInteraction;
 
   // The word history model
   history: History;
 
-  // Current word being visited
+  // word changer being visited
   visitingWord: Word;
 
   // Set of previously visited words
@@ -124,7 +124,7 @@ export class AppState {
       this.happyWordSayer
     );
 
-    // Initialize the current word
+    // Initialize the word changer
     const wordNode = this.wordGraph.getNode(initialWord);
     if (!wordNode) {
       throw new Error(`Word "${initialWord}" doesn't exist in the word graph`);
@@ -132,8 +132,8 @@ export class AppState {
 
     // Initialize menu manager first
     this.menuManager = new MenuManager(() => {
-      if (this.currentWord) {
-        this.currentWord.closeAllMenus();
+      if (this.wordChanger) {
+        this.wordChanger.closeAllMenus();
       }
     });
 
@@ -143,15 +143,15 @@ export class AppState {
     // Initialize history with the initial word object
     this.history = new History(this, wordNode);
 
-    // Initialize the current word with the menu manager and history
-    this.currentWord = new WordInteraction(wordNode, this.newWordHandler, this.wordSayer, this.menuManager, this.history);
+    // Initialize the word changer with the menu manager and history
+    this.wordChanger = new WordInteraction(wordNode, this.newWordHandler, this.wordSayer, this.menuManager, this.history);
 
     // Initialize Make Me score with label
     this.makeMeScore = new ScoreModel(['"Make Me"', 'Score']);
 
     // Initialize button actions
     this.resetAction = new ButtonAction(() => this.resetGame(), { tooltip: "Choose a new word" });
-    this.sayAction = new ButtonAction(() => this.currentWord.say(), { tooltip: "Say the current word" });
+    this.sayAction = new ButtonAction(() => this.wordChanger.say(), { tooltip: "Say the word changer" });
     this.reviewPronunciationAction = new ButtonAction(() => this.navigateTo('reviewPronunciationView'), { tooltip: "Review pronunciation" });
 
     // Preload the initial word's audio
@@ -173,10 +173,10 @@ export class AppState {
   }
 
   /**
-   * Set the current word without adding to history
-   * @param wordObj The Word object to set as the current word
+   * Set the word changer without adding to history
+   * @param wordObj The Word object to set as the word changer
    */
-  setCurrentWord(wordObj: Word): void {
+  setWordChanger(wordObj: Word): void {
     // Get the word string value
     const word = wordObj.word;
 
@@ -189,13 +189,13 @@ export class AppState {
     // Update visitingWord to the new word
     this.visitingWord = wordObj;
 
-    // Update the current word
-    this.currentWord.updateWord(wordObj);
+    // Update the word changer
+    this.wordChanger.updateWord(wordObj);
 
     // Close any open menus when the word changes
     this.menuManager.closeMenus();
 
-    // Preload the current word (in case it's not already loaded)
+    // Preload the word changer (in case it's not already loaded)
     this.wordSayer.preload(word);
 
     // Preload all possible next words
@@ -232,25 +232,25 @@ export class AppState {
       this.sadWordSayer.say(negativePhrase, () => {
         // Wait 0.2 seconds then say the new word
         setTimeout(() => {
-          this.currentWord.say();
+          this.wordChanger.say();
         }, 200);
       });
     } else if (this.sayImmediately.value) {
-      // Play the new current word
-      this.currentWord.say();
+      // Play the new word changer
+      this.wordChanger.say();
     }
   }
 
   /**
    * Set a new word and add it to history
-   * @param wordObj The Word object to set as the new current word
+   * @param wordObj The Word object to set as the new word changer
    */
   setNewWord(wordObj: Word): void {
     // Add the new word to history first
     this.history.addWord(wordObj);
 
-    // Then set it as the current word
-    this.setCurrentWord(wordObj);
+    // Then set it as the word changer
+    this.setWordChanger(wordObj);
   }
 
   // Note: The deleteLetter, insertLetter, and replaceLetter methods have been removed
@@ -265,8 +265,8 @@ export class AppState {
     // Get previous word from history
     const prevWordObj = this.history.undo();
     if (prevWordObj) {
-      // Set the current word without adding to history (since we're navigating through history)
-      this.setCurrentWord(prevWordObj);
+      // Set the word changer without adding to history (since we're navigating through history)
+      this.setWordChanger(prevWordObj);
     }
   }
 
@@ -277,8 +277,8 @@ export class AppState {
     // Get next word from history
     const nextWordObj = this.history.redo();
     if (nextWordObj) {
-      // Set the current word without adding to history (since we're navigating through history)
-      this.setCurrentWord(nextWordObj);
+      // Set the word changer without adding to history (since we're navigating through history)
+      this.setWordChanger(nextWordObj);
     }
   }
 
@@ -314,8 +314,8 @@ export class AppState {
     // Set visitingWord to the new initial word
     this.visitingWord = initialWord;
 
-    // Update the current word interaction
-    this.currentWord.updateWord(initialWord);
+    // Update the word changer interaction
+    this.wordChanger.updateWord(initialWord);
 
     // Also update the history model
     this.history.reset(initialWord);

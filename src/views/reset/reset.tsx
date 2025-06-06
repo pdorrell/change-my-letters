@@ -59,7 +59,7 @@ export const ResetWordChoice: React.FC<ResetWordChoiceProps> = observer(({ reset
               <span
                 className="reset-word-option"
                 onClick={() => handleWordClick(word)}
-                title={`Set current word to '${word}'`}
+                title={`Set word changer to '${word}'`}
               >
                 {word}
               </span>

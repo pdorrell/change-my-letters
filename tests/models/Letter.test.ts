@@ -4,7 +4,7 @@ import { createTestAppState } from '@/tests/utils/test-app-builder';
 
 describe('Letter', () => {
   let appState: AppState;
-  let currentWord: WordInteraction;
+  let wordChanger: WordInteraction;
 
   beforeEach(() => {
     // Create AppState with WordSayerTestDouble
@@ -12,12 +12,12 @@ describe('Letter', () => {
 
     // Create WordInteraction using Word from WordGraph
     const catWord = appState.wordGraph.getRequiredWord('cat');
-    currentWord = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
+    wordChanger = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
   });
 
   it('should initialize with the correct properties', () => {
     // Use the first letter from the word
-    const letter = currentWord.letterInteractions[0].letter;
+    const letter = wordChanger.letterInteractions[0].letter;
 
     expect(letter.value).toBe('c');
     expect(letter.position).toBe(0);
@@ -26,7 +26,7 @@ describe('Letter', () => {
   });
 
   it('should provide replacement options when replacements are possible', () => {
-    const letter = currentWord.letterInteractions[0].letter;
+    const letter = wordChanger.letterInteractions[0].letter;
 
     if (letter.canReplace) {
       expect(letter.replacements.length).toBeGreaterThan(0);
@@ -40,13 +40,13 @@ describe('Letter', () => {
 
   it('should have correct position values for all letters', () => {
     // Check all letters have correct positions
-    currentWord.letterInteractions.forEach((letterInteraction, index) => {
+    wordChanger.letterInteractions.forEach((letterInteraction, index) => {
       expect(letterInteraction.letter.position).toBe(index);
     });
   });
 
   it('should have changes property', () => {
-    const letter = currentWord.letterInteractions[0].letter;
+    const letter = wordChanger.letterInteractions[0].letter;
     expect(letter.changes).toBeDefined();
     expect(letter.changes.deleteChange).toBeDefined();
     expect(letter.changes.replaceChanges).toBeDefined();

@@ -131,30 +131,30 @@ export class Word {
    */
   get possibleNextWords(): string[] {
     const possibleWords: Set<string> = new Set();
-    const currentWord = this.word;
+    const wordChanger = this.word;
 
     // Words from letter deletions
-    for (let i = 0; i < currentWord.length; i++) {
+    for (let i = 0; i < wordChanger.length; i++) {
       if (this.canDelete(i)) {
-        const newWord = currentWord.substring(0, i) + currentWord.substring(i + 1);
+        const newWord = wordChanger.substring(0, i) + wordChanger.substring(i + 1);
         possibleWords.add(newWord);
       }
     }
 
     // Words from letter replacements
-    for (let i = 0; i < currentWord.length; i++) {
+    for (let i = 0; i < wordChanger.length; i++) {
       const replacements = this.getPossibleReplacements(i);
       for (const letter of replacements) {
-        const newWord = currentWord.substring(0, i) + letter + currentWord.substring(i + 1);
+        const newWord = wordChanger.substring(0, i) + letter + wordChanger.substring(i + 1);
         possibleWords.add(newWord);
       }
     }
 
     // Words from letter insertions
-    for (let i = 0; i <= currentWord.length; i++) {
+    for (let i = 0; i <= wordChanger.length; i++) {
       const insertions = this.getPossibleInsertions(i);
       for (const letter of insertions) {
-        const newWord = currentWord.substring(0, i) + letter + currentWord.substring(i);
+        const newWord = wordChanger.substring(0, i) + letter + wordChanger.substring(i);
         possibleWords.add(newWord);
       }
     }
@@ -264,26 +264,26 @@ export class Word {
    * @param wordGetter Interface for retrieving Word objects by string
    */
   populateChanges(wordGetter: WordGetter): void {
-    const currentWord = this.word;
+    const wordChanger = this.word;
     const deleteChanges: (DeleteChange | null)[] = [];
     const insertChanges: InsertChange[][] = [];
     const replaceChanges: ReplaceChange[][] = [];
 
     // Initialize arrays - create a proper initialization for all arrays
-    for (let i = 0; i < currentWord.length; i++) {
+    for (let i = 0; i < wordChanger.length; i++) {
       deleteChanges[i] = null; // Initialize with null for letters that can't be deleted
       replaceChanges[i] = [];
     }
 
-    for (let i = 0; i <= currentWord.length; i++) {
+    for (let i = 0; i <= wordChanger.length; i++) {
       insertChanges[i] = [];
     }
 
     // Populate deletion changes
-    for (let i = 0; i < currentWord.length; i++) {
+    for (let i = 0; i < wordChanger.length; i++) {
 
       if (this.canDelete(i)) {
-        const newWordStr = currentWord.substring(0, i) + currentWord.substring(i + 1);
+        const newWordStr = wordChanger.substring(0, i) + wordChanger.substring(i + 1);
         const resultWord = wordGetter.getRequiredWord(newWordStr);
         const change = new DeleteChange(resultWord);
         deleteChanges[i] = change;
@@ -291,11 +291,11 @@ export class Word {
     }
 
     // Populate replacement changes
-    for (let i = 0; i < currentWord.length; i++) {
+    for (let i = 0; i < wordChanger.length; i++) {
       const replacements = this.getPossibleReplacements(i);
 
       for (const letter of replacements) {
-        const newWordStr = currentWord.substring(0, i) + letter + currentWord.substring(i + 1);
+        const newWordStr = wordChanger.substring(0, i) + letter + wordChanger.substring(i + 1);
         const resultWord = wordGetter.getRequiredWord(newWordStr);
         const change = new ReplaceChange(resultWord, letter);
         replaceChanges[i].push(change);
@@ -303,11 +303,11 @@ export class Word {
     }
 
     // Populate insertion changes
-    for (let i = 0; i <= currentWord.length; i++) {
+    for (let i = 0; i <= wordChanger.length; i++) {
       const insertions = this.getPossibleInsertions(i);
 
       for (const letter of insertions) {
-        const newWordStr = currentWord.substring(0, i) + letter + currentWord.substring(i);
+        const newWordStr = wordChanger.substring(0, i) + letter + wordChanger.substring(i);
         const resultWord = wordGetter.getRequiredWord(newWordStr);
         const change = new InsertChange(resultWord, letter);
         insertChanges[i].push(change);

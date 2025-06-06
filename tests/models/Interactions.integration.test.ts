@@ -12,7 +12,7 @@ describe('Interaction Classes Integration', () => {
     appState = createTestAppState();
 
     // Use the WordInteraction that's already created by AppState
-    wordInteraction = appState.currentWord;
+    wordInteraction = appState.wordChanger;
   });
 
   it('should initialize with all menus closed', () => {
@@ -108,7 +108,7 @@ describe('Interaction Classes Integration', () => {
   });
 
   it('should recreate interactions when the word changes', () => {
-    // Open a menu on the current word directly
+    // Open a menu on the word changer directly
     wordInteraction.letterInteractions[0].isReplaceMenuOpen = true;
     expect(wordInteraction.letterInteractions[0].isReplaceMenuOpen).toBe(true);
 

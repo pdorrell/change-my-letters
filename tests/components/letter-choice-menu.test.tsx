@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import { LetterChoiceMenu } from '@/views/current-word';
+import { LetterChoiceMenu } from '@/views/word-changer';
 import { createTestAppState } from '@/tests/utils/test-app-builder';
 import { MenuManager } from '@/lib/views/menu-manager';
 import { WordSelectionByLetter } from '@/models/word-selection-by-letter';

@@ -93,7 +93,7 @@ export class WordInteraction {
   }
 
   /**
-   * Get the current word value
+   * Get the word changer value
    */
   get value(): string {
     return this.word.word;
@@ -113,7 +113,7 @@ export class WordInteraction {
   }
 
   /**
-   * Say the current word using the wordSayer
+   * Say the word changer using the wordSayer
    */
   say(): void {
     // Use the wordSayer to play the audio for this word
