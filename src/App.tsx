@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { AppState } from '@/models/app-state';
-import { WordChangerPage } from 'src/views/word-changer';
+import { WordChangerPage } from '@/views/word-changer';
 import { ReviewPronunciationPage } from '@/views/review/review-pronunciation';
 import { ResetPage } from '@/views/reset/reset';
 import { FinderPage } from '@/views/finder/finder';
