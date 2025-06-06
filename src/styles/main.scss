@@ -188,7 +188,7 @@ body {
   }
 }
 
-// Current word styles
+// Word changer styles
 .word-outer-container {
   max-width: 100%;
   margin: 0 auto;
@@ -232,7 +232,7 @@ body {
   }
 }
 
-.current-word-container {
+.word-changer-container {
   border: 2px solid #cccccc; // Light grey border
   border-radius: 8px;
   background-color: white;
@@ -545,8 +545,8 @@ body {
   }
 }
 
-// Current word controls
-.current-word-controls {
+// Word changer controls
+.word-changer-controls {
   display: flex;
   justify-content: center;
   gap: 10px;
@@ -679,7 +679,7 @@ body {
     }
   }
   
-  .current-word-panel {
+  .word-changer-panel {
     background-color: #f8f9fa;
     border: 1px solid #dee2e6;
     border-radius: 8px;
