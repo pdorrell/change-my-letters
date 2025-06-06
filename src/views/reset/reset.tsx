@@ -1,10 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { ResetInteraction } from '../../models/reset/reset-interaction';
-import { ActionButton } from '../../lib/views/action-button';
-import { AppState } from '../../models/app-state';
-import { HistoryPanel } from '../history';
-import { FilterControls } from '../../lib/views/filter-controls';
+import { ResetInteraction } from '@/models/reset/reset-interaction';
+import { ActionButton } from '@/lib/views/action-button';
+import { AppState } from '@/models/app-state';
+import { HistoryPanel } from '@/views/History';
+import { FilterControls } from '@/lib/views/filter-controls';
 
 /**
  * Controls component for Reset page

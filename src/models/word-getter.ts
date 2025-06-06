@@ -1,4 +1,4 @@
-import { Word } from './word';
+import { Word } from '@/models/Word';
 
 /**
  * Interface for getting Word objects by their string representation

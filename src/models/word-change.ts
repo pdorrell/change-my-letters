@@ -1,4 +1,4 @@
-import { Word } from './word';
+import { Word } from '@/models/Word';
 
 /**
  * Base class for all types of word changes

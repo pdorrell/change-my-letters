@@ -1,6 +1,6 @@
-import { WordInteraction } from '../../src/models/interaction/word-interaction';
-import { AppState } from '../../src/models/app-state';
-import { createTestAppState } from '../utils/test-app-builder';
+import { WordInteraction } from '@/models/interaction/word-interaction';
+import { AppState } from '@/models/app-state';
+import { createTestAppState } from '@/tests/utils/test-app-builder';
 
 
 describe('Interaction Classes Integration', () => {

@@ -2,7 +2,7 @@
  * A simplified version of WordGraph model for script use
  */
 
-import { WordGraphBuilder } from '../models/word-graph-builder';
+import { WordGraphBuilder } from '@/models/word-graph-builder';
 
 export class WordGraph {
   // All words in the graph

@@ -1,6 +1,6 @@
-import { WordLoader } from '../../src/models/word-loader';
-import { DataFileFetcherTestDouble } from '../test_doubles/data-file-fetcher-test-double';
-import { WordGraph } from '../../src/models/word-graph';
+import { WordLoader } from '@/models/word-loader';
+import { DataFileFetcherTestDouble } from '@/tests/test_doubles/data-file-fetcher-test-double';
+import { WordGraph } from '@/models/word-graph';
 
 describe('WordLoader', () => {
   const expectedWordListText = 'cat\nhat\nrat\nbat';

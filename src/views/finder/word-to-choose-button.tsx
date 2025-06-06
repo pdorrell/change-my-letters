@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { WordToChoose } from '../../models/finder/word-to-choose';
+import { WordToChoose } from '@/models/finder/word-to-choose';
 
 interface WordToChooseButtonProps { wordToChoose: WordToChoose; }
 

@@ -1,8 +1,8 @@
 import { makeAutoObservable } from 'mobx';
-import { Word } from './word';
-import { WordGraphBuilder } from './word-graph-builder';
-import { WordGetter } from './word-getter';
-import { wordGraphSchema } from './word-schemas';
+import { Word } from '@/models/Word';
+import { WordGraphBuilder } from '@/models/word-graph-builder';
+import { WordGetter } from '@/models/word-getter';
+import { wordGraphSchema } from '@/models/word-schemas';
 
 /**
  * Exception thrown when a requested word is not found in the graph

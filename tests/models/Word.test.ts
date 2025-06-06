@@ -1,4 +1,4 @@
-import { Word } from '../../src/models/word';
+import { Word } from '@/models/Word';
 
 describe('Word', () => {
   it('should initialize correctly', () => {

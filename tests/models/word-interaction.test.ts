@@ -1,7 +1,7 @@
-import { WordInteraction } from '../../src/models/interaction/word-interaction';
-import { AppState } from '../../src/models/app-state';
-import { WordSayerTestDouble } from '../test_doubles/word-sayer-test-double';
-import { createTestAppState } from '../utils/test-app-builder';
+import { WordInteraction } from '@/models/interaction/word-interaction';
+import { AppState } from '@/models/app-state';
+import { WordSayerTestDouble } from '@/tests/test_doubles/word-sayer-test-double';
+import { createTestAppState } from '@/tests/utils/test-app-builder';
 
 describe('WordInteraction', () => {
   let appState: AppState;

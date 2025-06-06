@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { FinderInteraction } from '../../models/finder/finder-interaction';
+import { FinderInteraction } from '@/models/finder/finder-interaction';
 
 interface FinderMessagePanelProps { finderInteraction: FinderInteraction; }
 

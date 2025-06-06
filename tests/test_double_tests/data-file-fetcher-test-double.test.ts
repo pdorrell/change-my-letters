@@ -1,4 +1,4 @@
-import { DataFileFetcherTestDouble } from '../test_doubles/data-file-fetcher-test-double';
+import { DataFileFetcherTestDouble } from '@/tests/test_doubles/data-file-fetcher-test-double';
 import path from 'path';
 
 describe('DataFileFetcherTestDouble', () => {

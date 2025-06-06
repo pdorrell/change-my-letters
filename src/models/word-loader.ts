@@ -1,7 +1,7 @@
-import { WordGraph } from './word-graph';
-import { WordGraphBuilder } from './word-graph-builder';
-import { ParseWordGraphJsonException } from './word';
-import { DataFileFetcherInterface } from '../lib/data-fetching/data-file-fetcher-interface';
+import { WordGraph } from '@/models/word-graph';
+import { WordGraphBuilder } from '@/models/word-graph-builder';
+import { ParseWordGraphJsonException } from '@/models/Word';
+import { DataFileFetcherInterface } from '@/lib/data-fetching/data-file-fetcher-interface';
 
 /**
  * Utility for loading word lists and example graphs

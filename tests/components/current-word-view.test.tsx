@@ -1,9 +1,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { CurrentWordView } from '../../src/views/current-word';
-import { WordInteraction } from '../../src/models/interaction/word-interaction';
-import { AppState } from '../../src/models/app-state';
-import { createTestAppState } from '../utils/test-app-builder';
+import { CurrentWordView } from '@/views/current-word';
+import { WordInteraction } from '@/models/interaction/word-interaction';
+import { AppState } from '@/models/app-state';
+import { createTestAppState } from '@/tests/utils/test-app-builder';
 
 
 

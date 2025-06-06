@@ -1,8 +1,8 @@
-import { AppState } from '../../src/models/app-state';
-import { ReviewPronunciationInteraction } from '../../src/models/review/review-pronunciation-interaction';
-import { ReviewStateFilterOption } from '../../src/models/review/review-state-filter-option';
-import { WordSayerTestDouble } from '../test_doubles/word-sayer-test-double';
-import { createTestAppState } from '../utils/test-app-builder';
+import { AppState } from '@/models/app-state';
+import { ReviewPronunciationInteraction } from '@/models/review/review-pronunciation-interaction';
+import { ReviewStateFilterOption } from '@/models/review/review-state-filter-option';
+import { WordSayerTestDouble } from '@/tests/test_doubles/word-sayer-test-double';
+import { createTestAppState } from '@/tests/utils/test-app-builder';
 
 describe('Review Pronunciation Integration', () => {
   let appState: AppState;

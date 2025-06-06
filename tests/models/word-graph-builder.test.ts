@@ -1,4 +1,4 @@
-import { WordGraphBuilder } from '../../src/models/word-graph-builder';
+import { WordGraphBuilder } from '@/models/word-graph-builder';
 
 describe('WordGraphBuilder', () => {
   // Small, controlled test word list

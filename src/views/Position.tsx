@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { PositionInteraction } from '../models/interaction/position-interaction';
-import { LetterChoiceMenu } from './current-word';
-import { ActionButton } from '../lib/views/action-button';
+import { PositionInteraction } from '@/models/interaction/position-interaction';
+import { LetterChoiceMenu } from '@/views/current-word';
+import { ActionButton } from '@/lib/views/action-button';
 
 /**
  * Placeholder component that maintains the same dimensions as a position

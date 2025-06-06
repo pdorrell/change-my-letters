@@ -1,6 +1,6 @@
-import { WordGraph } from '../../src/models/word-graph';
-import { WordGraphBuilder } from '../../src/models/word-graph-builder';
-import { InsertChange, ReplaceChange } from '../../src/models/word-change';
+import { WordGraph } from '@/models/word-graph';
+import { WordGraphBuilder } from '@/models/word-graph-builder';
+import { InsertChange, ReplaceChange } from '@/models/word-change';
 
 describe('Word Changes', () => {
   // Create a simple word graph for testing

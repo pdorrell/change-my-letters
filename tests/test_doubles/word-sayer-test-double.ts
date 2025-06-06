@@ -1,4 +1,4 @@
-import { WordSayerInterface } from '../../src/models/word-sayer-interface';
+import { WordSayerInterface } from '@/models/word-sayer-interface';
 
 /**
  * A test double for WordSayer that implements WordSayerInterface with dummy methods

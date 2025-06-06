@@ -1,5 +1,5 @@
-import { ReviewStateFilterOption } from '../../src/models/review/review-state-filter-option';
-import { Word } from '../../src/models/word';
+import { ReviewStateFilterOption } from '@/models/review/review-state-filter-option';
+import { Word } from '@/models/Word';
 
 describe('ReviewStateFilterOption', () => {
   let reviewedOKWord: Word;

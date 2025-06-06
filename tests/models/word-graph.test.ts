@@ -1,4 +1,4 @@
-import { WordGraph } from '../../src/models/word-graph';
+import { WordGraph } from '@/models/word-graph';
 
 describe('WordGraph', () => {
   it('creates a word graph', () => {

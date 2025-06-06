@@ -1,10 +1,10 @@
 import { makeAutoObservable, action, computed } from 'mobx';
 import React from 'react';
-import { Position } from '../position';
-import { MenuManagerInterface } from '../../lib/views/menu-manager-interface';
-import { Word } from '../word';
-import { ButtonAction } from '../../lib/models/actions';
-import { WordSelectionByLetter } from '../word-selection-by-letter';
+import { Position } from '@/models/Position';
+import { MenuManagerInterface } from '@/lib/views/menu-manager-interface';
+import { Word } from '@/models/Word';
+import { ButtonAction } from '@/lib/models/actions';
+import { WordSelectionByLetter } from '@/models/word-selection-by-letter';
 
 /**
  * Model representing the interaction state for a position

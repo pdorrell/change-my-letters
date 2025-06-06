@@ -1,16 +1,16 @@
 import { makeAutoObservable, computed } from 'mobx';
-import { History } from './history';
-import { WordGraph } from './word-graph';
-import { WordInteraction } from './interaction/word-interaction';
-import { WordSayerInterface } from './word-sayer-interface';
-import { ResetInteraction } from './reset/reset-interaction';
-import { ReviewPronunciationInteraction } from './review/review-pronunciation-interaction';
-import { FinderInteraction } from './finder/finder-interaction';
-import { MenuManager } from '../lib/views/menu-manager';
-import { Word } from './word';
-import { ButtonAction } from '../lib/models/actions';
-import { ValueModel } from '../lib/models/value-models';
-import { ScoreModel } from '../lib/models/score-model';
+import { History } from '@/models/History';
+import { WordGraph } from '@/models/word-graph';
+import { WordInteraction } from '@/models/interaction/word-interaction';
+import { WordSayerInterface } from '@/models/word-sayer-interface';
+import { ResetInteraction } from '@/models/reset/reset-interaction';
+import { ReviewPronunciationInteraction } from '@/models/review/review-pronunciation-interaction';
+import { FinderInteraction } from '@/models/finder/finder-interaction';
+import { MenuManager } from '@/lib/views/menu-manager';
+import { Word } from '@/models/Word';
+import { ButtonAction } from '@/lib/models/actions';
+import { ValueModel } from '@/lib/models/value-models';
+import { ScoreModel } from '@/lib/models/score-model';
 
 // Type for the main application pages
 type AppPage = 'wordView' | 'resetView' | 'reviewPronunciationView' | 'finderView';

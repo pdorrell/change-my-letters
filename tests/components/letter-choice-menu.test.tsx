@@ -1,14 +1,14 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import { LetterChoiceMenu } from '../../src/views/current-word';
-import { createTestAppState } from '../utils/test-app-builder';
-import { MenuManager } from '../../src/lib/views/menu-manager';
-import { WordSelectionByLetter } from '../../src/models/word-selection-by-letter';
-import { AppState } from '../../src/models/app-state';
-import { Word } from '../../src/models/word';
-import { TestChoiceHandler } from '../utils/test-choice-handler';
-import { FreeTestWordGetter } from '../utils/free-test-word-getter';
-import { ReplaceChange } from '../../src/models/word-change';
+import { LetterChoiceMenu } from '@/views/current-word';
+import { createTestAppState } from '@/tests/utils/test-app-builder';
+import { MenuManager } from '@/lib/views/menu-manager';
+import { WordSelectionByLetter } from '@/models/word-selection-by-letter';
+import { AppState } from '@/models/app-state';
+import { Word } from '@/models/Word';
+import { TestChoiceHandler } from '@/tests/utils/test-choice-handler';
+import { FreeTestWordGetter } from '@/tests/utils/free-test-word-getter';
+import { ReplaceChange } from '@/models/word-change';
 
 describe('LetterChoiceMenu', () => {
   let appState: AppState;
