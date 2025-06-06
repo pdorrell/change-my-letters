@@ -1,10 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { AppState } from '../../models/app-state';
-import { FinderMessagePanel } from './finder-message-panel';
-import { WordToChoosePanel } from './word-to-choose-panel';
-import { WordToFindPanel } from './word-to-find-panel';
-import { FinderControls } from './finder-controls';
+import { AppState } from '@/models/app-state';
+import { FinderMessagePanel } from '@/views/finder/finder-message-panel';
+import { WordToChoosePanel } from '@/views/finder/word-to-choose-panel';
+import { WordToFindPanel } from '@/views/finder/word-to-find-panel';
+import { FinderControls } from '@/views/finder/finder-controls';
 
 interface FinderPageProps { appState: AppState; }
 

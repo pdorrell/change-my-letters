@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, fireEvent, act } from '@testing-library/react';
-import { PositionView } from '../../src/views/position';
-import { PositionInteraction } from '../../src/models/interaction/position-interaction';
-import { Word } from '../../src/models/word';
-import { FreeTestWordGetter } from '../utils/free-test-word-getter';
-import { MenuManagerTestDouble } from '../test_doubles/menu-manager-test-double';
+import { PositionView } from '@/views/Position';
+import { PositionInteraction } from '@/models/interaction/position-interaction';
+import { Word } from '@/models/Word';
+import { FreeTestWordGetter } from '@/tests/utils/free-test-word-getter';
+import { MenuManagerTestDouble } from '@/tests/test_doubles/menu-manager-test-double';
 
 
 

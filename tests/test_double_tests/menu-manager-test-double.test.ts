@@ -1,4 +1,4 @@
-import { MenuManagerTestDouble } from '../test_doubles/menu-manager-test-double';
+import { MenuManagerTestDouble } from '@/tests/test_doubles/menu-manager-test-double';
 
 describe('MenuManagerTestDouble', () => {
   it('should behave like MenuManager for basic operations', () => {

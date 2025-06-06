@@ -1,11 +1,11 @@
 import { makeAutoObservable, runInAction } from 'mobx';
-import { AppState } from './app-state';
-import { WordLoader } from './word-loader';
-import { WordSayerInterface } from './word-sayer-interface';
-import { WordSayer } from './word-sayer';
-import { DataFileFetcherInterface } from '../lib/data-fetching/data-file-fetcher-interface';
-import { WordGraph } from './word-graph';
-import localDevReviewState from '../data/local_dev/review-pronunciation-state.json';
+import { AppState } from '@/models/app-state';
+import { WordLoader } from '@/models/word-loader';
+import { WordSayerInterface } from '@/models/word-sayer-interface';
+import { WordSayer } from '@/models/word-sayer';
+import { DataFileFetcherInterface } from '@/lib/data-fetching/data-file-fetcher-interface';
+import { WordGraph } from '@/models/word-graph';
+import localDevReviewState from '@/data/local_dev/review-pronunciation-state.json';
 
 /**
  * ApplicationLoader handles asynchronous loading of application data

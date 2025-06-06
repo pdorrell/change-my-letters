@@ -1,4 +1,4 @@
-import { WordSayerTestDouble } from '../test_doubles/word-sayer-test-double';
+import { WordSayerTestDouble } from '@/tests/test_doubles/word-sayer-test-double';
 
 describe('WordSayerTestDouble', () => {
   let wordSayer: WordSayerTestDouble;

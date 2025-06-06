@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
-import { Word } from './word';
-import { LetterChanges, DeleteChange, ReplaceChange } from './word-change';
+import { Word } from '@/models/Word';
+import { LetterChanges, DeleteChange, ReplaceChange } from '@/models/word-change';
 
 /**
  * Model representing a single letter in a word

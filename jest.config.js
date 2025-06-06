@@ -13,5 +13,7 @@ export default {
   setupFilesAfterEnv: ['./tests/setup.ts'],
   moduleNameMapper: {
     '\\.(css|scss)$': '<rootDir>/tests/mocks/styleMock.js',
+    '^@/tests/(.*)$': '<rootDir>/tests/$1',
+    '^@/(.*)$': '<rootDir>/src/$1',
   }
 };

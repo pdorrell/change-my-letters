@@ -1,7 +1,7 @@
-import { WordInteraction } from '../../src/models/interaction/word-interaction';
-import { AppState } from '../../src/models/app-state';
-import { MenuManager } from '../../src/lib/views/menu-manager';
-import { createTestAppState } from '../utils/test-app-builder';
+import { WordInteraction } from '@/models/interaction/word-interaction';
+import { AppState } from '@/models/app-state';
+import { MenuManager } from '@/lib/views/menu-manager';
+import { createTestAppState } from '@/tests/utils/test-app-builder';
 
 
 describe('WordInteraction', () => {

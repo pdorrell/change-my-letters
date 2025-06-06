@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { ValueModel } from '../models/value-models';
+import { ValueModel } from '@/lib/models/value-models';
 
 /**
  * Checkbox component for ValueModel<boolean>

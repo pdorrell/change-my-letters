@@ -1,4 +1,4 @@
-import { TestChoiceHandler } from '../utils/test-choice-handler';
+import { TestChoiceHandler } from '@/tests/utils/test-choice-handler';
 
 describe('TestChoiceHandler', () => {
   describe('with string choices', () => {

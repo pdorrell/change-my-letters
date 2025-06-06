@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { FinderInteraction } from '../../models/finder/finder-interaction';
-import { WordToFindView } from './word-to-find-view';
-import { ValueCheckbox } from '../../lib/views/value-model-views';
+import { FinderInteraction } from '@/models/finder/finder-interaction';
+import { WordToFindView } from '@/views/finder/word-to-find-view';
+import { ValueCheckbox } from '@/lib/views/value-model-views';
 
 interface WordToFindPanelProps { finderInteraction: FinderInteraction; }
 

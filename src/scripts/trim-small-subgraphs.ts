@@ -11,7 +11,7 @@
  */
 import fs from 'fs';
 import path from 'path';
-import { WordGraph } from '../models/word-graph';
+import { WordGraph } from '@/models/word-graph';
 
 /**
  * Check if a file is under git source control by looking for a .git directory

@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { WordToFind } from '../../models/finder/word-to-find';
+import { WordToFind } from '@/models/finder/word-to-find';
 
 interface WordToFindViewProps { wordToFind: WordToFind; }
 

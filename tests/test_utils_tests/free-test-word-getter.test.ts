@@ -1,5 +1,5 @@
-import { Word } from '../../src/models/word';
-import { FreeTestWordGetter } from '../utils/free-test-word-getter';
+import { Word } from '@/models/Word';
+import { FreeTestWordGetter } from '@/tests/utils/free-test-word-getter';
 
 describe('FreeTestWordGetter', () => {
   describe('constructor', () => {

@@ -1,7 +1,7 @@
-import { PositionInteraction } from '../../src/models/interaction/position-interaction';
-import { Position } from '../../src/models/position';
-import { AppState } from '../../src/models/app-state';
-import { createTestAppState } from '../utils/test-app-builder';
+import { PositionInteraction } from '@/models/interaction/position-interaction';
+import { Position } from '@/models/Position';
+import { AppState } from '@/models/app-state';
+import { createTestAppState } from '@/tests/utils/test-app-builder';
 
 describe('PositionInteraction', () => {
   let positionInteraction: PositionInteraction;

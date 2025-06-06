@@ -1,7 +1,7 @@
-import { WordGraph } from '../../src/models/word-graph';
-import { Letter } from '../../src/models/letter';
-import { DeleteChange, ReplaceChange } from '../../src/models/word-change';
-import { WordGraphBuilder } from '../../src/models/word-graph-builder';
+import { WordGraph } from '@/models/word-graph';
+import { Letter } from '@/models/Letter';
+import { DeleteChange, ReplaceChange } from '@/models/word-change';
+import { WordGraphBuilder } from '@/models/word-graph-builder';
 
 describe('Word Changes Manual Test', () => {
   let wordGraph: WordGraph;

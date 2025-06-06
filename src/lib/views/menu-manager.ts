@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import React from 'react';
-import { MenuManagerInterface } from './menu-manager-interface';
+import { MenuManagerInterface } from '@/lib/views/menu-manager-interface';
 
 /**
  * MenuManager - Handles menu state and control across the application

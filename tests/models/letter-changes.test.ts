@@ -1,6 +1,6 @@
-import { Letter } from '../../src/models/letter';
-import { DeleteChange, ReplaceChange } from '../../src/models/word-change';
-import { Word } from '../../src/models/word';
+import { Letter } from '@/models/Letter';
+import { DeleteChange, ReplaceChange } from '@/models/word-change';
+import { Word } from '@/models/Word';
 
 describe('Letter Changes', () => {
   /**

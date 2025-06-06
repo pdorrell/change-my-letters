@@ -1,4 +1,4 @@
-import { ValueModel } from './models/value-models';
+import { ValueModel } from '@/lib/models/value-models';
 
 export class Filter {
   value: ValueModel<string>;

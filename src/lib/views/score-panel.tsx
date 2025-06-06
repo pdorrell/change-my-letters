@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { ScoreModel } from '../models/score-model';
+import { ScoreModel } from '@/lib/models/score-model';
 
 interface ScorePanelProps { scoreModel: ScoreModel; }
 

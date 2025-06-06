@@ -1,4 +1,4 @@
-import { DataFileFetcherInterface } from './data-file-fetcher-interface';
+import { DataFileFetcherInterface } from '@/lib/data-fetching/data-file-fetcher-interface';
 
 /**
  * Implementation of DataFileFetcherInterface that uses the global fetch API

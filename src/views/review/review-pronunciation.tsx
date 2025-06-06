@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { ReviewPronunciationInteraction } from '../../models/review/review-pronunciation-interaction';
-import { ActionButton } from '../../lib/views/action-button';
-import { AppState } from '../../models/app-state';
-import { FilterControls } from '../../lib/views/filter-controls';
+import { ReviewPronunciationInteraction } from '@/models/review/review-pronunciation-interaction';
+import { ActionButton } from '@/lib/views/action-button';
+import { AppState } from '@/models/app-state';
+import { FilterControls } from '@/lib/views/filter-controls';
 
 /**
  * Controls component for Review Pronunciation page

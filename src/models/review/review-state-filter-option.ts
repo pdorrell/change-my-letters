@@ -1,4 +1,4 @@
-import { Word } from '../word';
+import { Word } from '@/models/Word';
 
 /**
  * Filter option for review pronunciation state

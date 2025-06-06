@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import { WordSayerInterface } from '../word-sayer-interface';
+import { WordSayerInterface } from '@/models/word-sayer-interface';
 
 export type WordToFindState = 'waiting' | 'current' | 'wrong' | 'right';
 

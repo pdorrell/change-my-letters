@@ -1,7 +1,7 @@
-import { ReviewPronunciationInteraction } from '../../src/models/review/review-pronunciation-interaction';
-import { ReviewStateFilterOption } from '../../src/models/review/review-state-filter-option';
-import { Word } from '../../src/models/word';
-import { WordSayerTestDouble } from '../test_doubles/word-sayer-test-double';
+import { ReviewPronunciationInteraction } from '@/models/review/review-pronunciation-interaction';
+import { ReviewStateFilterOption } from '@/models/review/review-state-filter-option';
+import { Word } from '@/models/Word';
+import { WordSayerTestDouble } from '@/tests/test_doubles/word-sayer-test-double';
 import * as fs from 'fs';
 import * as path from 'path';
 

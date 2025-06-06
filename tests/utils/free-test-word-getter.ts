@@ -1,5 +1,5 @@
-import { Word } from '../../src/models/word';
-import { WordGetter } from '../../src/models/word-getter';
+import { Word } from '@/models/Word';
+import { WordGetter } from '@/models/word-getter';
 
 /**
  * A test implementation of WordGetter that can dynamically create Word objects as needed.

@@ -1,12 +1,12 @@
 import { makeObservable, observable, computed, action } from 'mobx';
-import { LetterInteraction } from './letter-interaction';
-import { PositionInteraction } from './position-interaction';
-import { Word } from '../word';
-import { Letter } from '../letter';
-import { Position } from '../position';
-import { MenuManager } from '../../lib/views/menu-manager';
-import { WordSayerInterface } from '../word-sayer-interface';
-import { History } from '../history';
+import { LetterInteraction } from '@/models/interaction/letter-interaction';
+import { PositionInteraction } from '@/models/interaction/position-interaction';
+import { Word } from '@/models/Word';
+import { Letter } from '@/models/Letter';
+import { Position } from '@/models/Position';
+import { MenuManager } from '@/lib/views/menu-manager';
+import { WordSayerInterface } from '@/models/word-sayer-interface';
+import { History } from '@/models/History';
 
 /**
  * Model representing the user's current interaction with a word

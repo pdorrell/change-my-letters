@@ -1,4 +1,4 @@
-import { WordSayerInterface } from './word-sayer-interface';
+import { WordSayerInterface } from '@/models/word-sayer-interface';
 
 /**
  * Class responsible for pre-loading and playing word audio

@@ -1,6 +1,6 @@
-import { ApplicationLoader } from '../../src/models/application-loader';
-import { DataFileFetcherTestDouble } from '../test_doubles/data-file-fetcher-test-double';
-import { WordSayerTestDouble } from '../test_doubles/word-sayer-test-double';
+import { ApplicationLoader } from '@/models/application-loader';
+import { DataFileFetcherTestDouble } from '@/tests/test_doubles/data-file-fetcher-test-double';
+import { WordSayerTestDouble } from '@/tests/test_doubles/word-sayer-test-double';
 
 describe('ApplicationLoader', () => {
   let dataFileFetcher: DataFileFetcherTestDouble;

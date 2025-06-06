@@ -1,5 +1,5 @@
-import { WordGraph } from '../../src/models/word-graph';
-import { WordGraphBuilder } from '../../src/models/word-graph-builder';
+import { WordGraph } from '@/models/word-graph';
+import { WordGraphBuilder } from '@/models/word-graph-builder';
 
 // Add a simple test to make Jest recognize this as a module with tests
 describe('TestWordGraphBuilder', () => {

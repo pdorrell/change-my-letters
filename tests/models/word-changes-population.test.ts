@@ -1,7 +1,7 @@
-import { Word } from '../../src/models/word';
-import { WordGetter } from '../../src/models/word-getter';
-import { InsertChange } from '../../src/models/word-change';
-import { MissingWordException } from '../../src/models/word-graph';
+import { Word } from '@/models/Word';
+import { WordGetter } from '@/models/word-getter';
+import { InsertChange } from '@/models/word-change';
+import { MissingWordException } from '@/models/word-graph';
 
 class TestWordGetter implements WordGetter {
   private words: Map<string, Word> = new Map();

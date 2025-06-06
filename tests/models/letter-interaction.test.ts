@@ -1,7 +1,7 @@
-import { LetterInteraction } from '../../src/models/interaction/letter-interaction';
-import { Letter } from '../../src/models/letter';
-import { AppState } from '../../src/models/app-state';
-import { createTestAppState } from '../utils/test-app-builder';
+import { LetterInteraction } from '@/models/interaction/letter-interaction';
+import { Letter } from '@/models/Letter';
+import { AppState } from '@/models/app-state';
+import { createTestAppState } from '@/tests/utils/test-app-builder';
 
 
 describe('LetterInteraction', () => {

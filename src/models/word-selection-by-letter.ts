@@ -1,5 +1,5 @@
-import { LetterChange } from './word-change';
-import { Word } from './word';
+import { LetterChange } from '@/models/word-change';
+import { Word } from '@/models/Word';
 
 /**
  * Represents a selection of word options by letter with associated selection logic

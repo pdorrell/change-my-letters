@@ -1,12 +1,12 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { configure } from 'mobx';
-import AppLoader from './app-loader';
-import { ErrorBoundary } from './lib/error-handling/error-boundary';
-import { ErrorHandler } from './lib/error-handling/error-handler';
-import { ApplicationLoader } from './models/application-loader';
-import { WordSayer } from './models/word-sayer';
-import { DataFileFetcher } from './lib/data-fetching/data-file-fetcher';
+import AppLoader from '@/app-loader';
+import { ErrorBoundary } from '@/lib/error-handling/error-boundary';
+import { ErrorHandler } from '@/lib/error-handling/error-handler';
+import { ApplicationLoader } from '@/models/application-loader';
+import { WordSayer } from '@/models/word-sayer';
+import { DataFileFetcher } from '@/lib/data-fetching/data-file-fetcher';
 import './styles/main.scss';
 
 

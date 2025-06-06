@@ -1,9 +1,9 @@
 import { makeAutoObservable } from 'mobx';
-import { Letter } from './letter';
-import { Position } from './position';
-import { WordChanges, DeleteChange, InsertChange, ReplaceChange } from './word-change';
-import { WordGetter } from './word-getter';
-import { wordSchema } from './word-schemas';
+import { Letter } from '@/models/Letter';
+import { Position } from '@/models/Position';
+import { WordChanges, DeleteChange, InsertChange, ReplaceChange } from '@/models/word-change';
+import { WordGetter } from '@/models/word-getter';
+import { wordSchema } from '@/models/word-schemas';
 
 /**
  * Exception thrown when there's an error parsing the JSON for a word graph

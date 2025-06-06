@@ -1,14 +1,14 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { WordInteraction } from '../models/interaction/word-interaction';
-import { LetterView, LetterPlaceholder } from './letter';
-import { PositionView, PositionPlaceholder } from './position';
-import { MenuManagerInterface } from '../lib/views/menu-manager-interface';
-import { AppState } from '../models/app-state';
-import { ActionButton } from '../lib/views/action-button';
-import { HistoryPanel } from './history';
-import { ScorePanel } from '../lib/views/score-panel';
-import { ValueCheckbox } from '../lib/views/value-model-views';
+import { WordInteraction } from '@/models/interaction/word-interaction';
+import { LetterView, LetterPlaceholder } from '@/views/Letter';
+import { PositionView, PositionPlaceholder } from '@/views/Position';
+import { MenuManagerInterface } from '@/lib/views/menu-manager-interface';
+import { AppState } from '@/models/app-state';
+import { ActionButton } from '@/lib/views/action-button';
+import { HistoryPanel } from '@/views/History';
+import { ScorePanel } from '@/lib/views/score-panel';
+import { ValueCheckbox } from '@/lib/views/value-model-views';
 import {
   useFloating,
   autoUpdate,
@@ -113,8 +113,8 @@ export const CurrentWordView: React.FC<CurrentWordViewProps> = observer(({ curre
 /**
  * View component for the letter choice menu
  */
-import { WordSelectionByLetter } from '../models/word-selection-by-letter';
-import { ButtonAction } from '../lib/models/actions';
+import { WordSelectionByLetter } from '@/models/word-selection-by-letter';
+import { ButtonAction } from '@/lib/models/actions';
 
 interface LetterChoiceMenuProps {
   wordSelectionByLetter: WordSelectionByLetter;
