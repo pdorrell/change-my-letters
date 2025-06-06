@@ -84,7 +84,7 @@ export class FinderInteraction {
     if (this.auto.value) {
       setTimeout(() => {
         this.autoChooseNextWord();
-      }, 500);
+      }, 300);
     }
   }
 
