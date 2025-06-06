@@ -4,7 +4,7 @@ import { WordToFind } from '@/models/finder/word-to-find';
 
 interface FinderInterface {
   wordSayer: WordSayerInterface;
-  currentWordToFind: WordToFind | null;
+  wordChangerToFind: WordToFind | null;
 }
 
 export class WordToChoose {
@@ -19,16 +19,16 @@ export class WordToChoose {
   }
 
   get enabled(): boolean {
-    return this.finder.currentWordToFind !== null;
+    return this.finder.wordChangerToFind !== null;
   }
 
   choose(): void {
-    if (!this.enabled || !this.finder.currentWordToFind) return;
+    if (!this.enabled || !this.finder.wordChangerToFind) return;
 
-    const isCorrect = this.word === this.finder.currentWordToFind.word;
+    const isCorrect = this.word === this.finder.wordChangerToFind.word;
     if (!isCorrect) {
       this.finder.wordSayer.say(this.word);
     }
-    this.finder.currentWordToFind.chosenAs(this.word);
+    this.finder.wordChangerToFind.chosenAs(this.word);
   }
 }

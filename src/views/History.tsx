@@ -8,7 +8,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = observer(({ history }) 
   const handleHistoryClick = (index: number) => {
     const word = history.jumpToIndex(index);
     if (word) {
-      history.appState.setCurrentWord(word);
+      history.appState.setWordChanger(word);
     }
   };
 

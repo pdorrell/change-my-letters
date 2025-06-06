@@ -152,7 +152,7 @@ describe('WordInteraction', () => {
     expect(wordInteraction.positionInteractions.length).toBe(4);
   });
 
-  it('should call the wordSayer.say method with the current word', () => {
+  it('should call the wordSayer.say method with the word changer', () => {
     const wordObj = appState.wordGraph.getRequiredWord('cat');
     const wordInteraction = new WordInteraction(wordObj, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
 

@@ -5,11 +5,11 @@ export type WordToFindState = 'waiting' | 'current' | 'wrong' | 'right';
 
 interface FinderInterface {
   wordSayer: WordSayerInterface;
-  setCurrentWordToFind(wordToFind: WordToFind): void;
+  setWordChangerToFind(wordToFind: WordToFind): void;
   setMessage(message: string): void;
   incrementCorrect(): void;
   incrementTried(): void;
-  clearCurrentWordToFind(): void;
+  clearWordChangerToFind(): void;
 }
 
 export class WordToFind {
@@ -32,7 +32,7 @@ export class WordToFind {
     if (!this.canSetToFind) return;
 
     this.finder.wordSayer.say(this.word);
-    this.finder.setCurrentWordToFind(this);
+    this.finder.setWordChangerToFind(this);
   }
 
   chosenAs(chosenWord: string): void {
@@ -48,6 +48,6 @@ export class WordToFind {
       this.finder.incrementTried();
     }
 
-    this.finder.clearCurrentWordToFind();
+    this.finder.clearWordChangerToFind();
   }
 }

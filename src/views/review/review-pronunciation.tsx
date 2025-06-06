@@ -65,8 +65,8 @@ export const ReviewPronunciationControls: React.FC<ReviewPronunciationControlsPr
         </ActionButton>
       </div>
 
-      {/* Current Word Panel - always visible */}
-      <div className="current-word-panel">
+      {/* word changer Panel - always visible */}
+      <div className="word-changer-panel">
         <div className="current-review-word">
           <span
             className={`word-span ${

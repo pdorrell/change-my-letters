@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { CurrentWordView } from '@/views/current-word';
+import { WordChangerView } from '@/views/word-changer';
 import { WordInteraction } from '@/models/interaction/word-interaction';
 import { AppState } from '@/models/app-state';
 import { createTestAppState } from '@/tests/utils/test-app-builder';
@@ -8,9 +8,9 @@ import { createTestAppState } from '@/tests/utils/test-app-builder';
 
 
 
-describe('CurrentWordView', () => {
+describe('WordChangerView', () => {
   let appState: AppState;
-  let currentWord: WordInteraction;
+  let wordChanger: WordInteraction;
 
   beforeEach(() => {
     // Create AppState with WordSayerTestDouble
@@ -18,11 +18,11 @@ describe('CurrentWordView', () => {
 
     // Create WordInteraction using Word from WordGraph
     const catWord = appState.wordGraph.getRequiredWord('cat');
-    currentWord = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
+    wordChanger = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
   });
 
-  it('renders the current word with letters and positions', () => {
-    const { container } = render(<CurrentWordView currentWord={currentWord} maxWordLength={10} />);
+  it('renders the word changer with letters and positions', () => {
+    const { container } = render(<WordChangerView wordChanger={wordChanger} maxWordLength={10} />);
 
     // Get all letter containers (LetterView components)
     const letterViews = container.querySelectorAll('.letter-container');
@@ -39,7 +39,7 @@ describe('CurrentWordView', () => {
   // previouslyVisited has been removed from WordInteraction
 
   it('alternates positions and letters correctly', () => {
-    const { container } = render(<CurrentWordView currentWord={currentWord} maxWordLength={10} />);
+    const { container } = render(<WordChangerView wordChanger={wordChanger} maxWordLength={10} />);
 
     // Get all children of the word display container
     const displayContainers = container.querySelectorAll('.word-display > *');
@@ -54,8 +54,8 @@ describe('CurrentWordView', () => {
     expect(displayContainers[6]).toHaveClass('position-container');
   });
 
-  it('renders the current word properly', () => {
-    const { container } = render(<CurrentWordView currentWord={currentWord} maxWordLength={10} />);
+  it('renders the word changer properly', () => {
+    const { container } = render(<WordChangerView wordChanger={wordChanger} maxWordLength={10} />);
 
     // Get all letter containers
     const letterViews = container.querySelectorAll('.letter-container');
@@ -75,7 +75,7 @@ describe('CurrentWordView', () => {
     const batWord = appState.wordGraph.getRequiredWord('bat');
     const batWordInteraction = new WordInteraction(batWord, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
 
-    const { container } = render(<CurrentWordView currentWord={batWordInteraction} maxWordLength={10} />);
+    const { container } = render(<WordChangerView wordChanger={batWordInteraction} maxWordLength={10} />);
 
     // Check that it renders all 3 letters of 'bat'
     const letterViews = container.querySelectorAll('.letter-container');

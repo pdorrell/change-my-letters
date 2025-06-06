@@ -285,12 +285,12 @@ describe('History', () => {
     expect(history.canRedo).toBe(true);
   });
 
-  it('should provide currentWord property', () => {
+  it('should provide wordChanger property', () => {
     const catWord = appState.wordGraph.getNode('cat')!;
     const batWord = appState.wordGraph.getNode('bat')!;
 
-    expect(history.currentWord).toBe(catWord);
-    expect(history.currentWord.word).toBe('cat');
+    expect(history.wordChanger).toBe(catWord);
+    expect(history.wordChanger.word).toBe('cat');
 
     const change: WordChange = {
       type: 'replace_letter',
@@ -299,11 +299,11 @@ describe('History', () => {
     };
 
     history.addWord(batWord, change);
-    expect(history.currentWord).toBe(batWord);
-    expect(history.currentWord.word).toBe('bat');
+    expect(history.wordChanger).toBe(batWord);
+    expect(history.wordChanger.word).toBe('bat');
 
     history.undo();
-    expect(history.currentWord).toBe(catWord);
-    expect(history.currentWord.word).toBe('cat');
+    expect(history.wordChanger).toBe(catWord);
+    expect(history.wordChanger.word).toBe('cat');
   });
 });

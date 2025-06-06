@@ -4,7 +4,7 @@ import { createTestAppState } from '@/tests/utils/test-app-builder';
 
 describe('Position', () => {
   let appState: AppState;
-  let currentWord: WordInteraction;
+  let wordChanger: WordInteraction;
 
   beforeEach(() => {
     // Create AppState with WordSayerTestDouble
@@ -12,12 +12,12 @@ describe('Position', () => {
 
     // Create WordInteraction using Word from WordGraph
     const catWord = appState.wordGraph.getRequiredWord('cat');
-    currentWord = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
+    wordChanger = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
   });
 
   it('should initialize with the correct properties', () => {
     // Use the position from the word
-    const position = currentWord.positionInteractions[1].position;
+    const position = wordChanger.positionInteractions[1].position;
 
     expect(position.index).toBe(1);
     expect(position.canInsert).toBeDefined();
@@ -25,7 +25,7 @@ describe('Position', () => {
   });
 
   it('should provide insert options when insertions are possible', () => {
-    const position = currentWord.positionInteractions[0].position;
+    const position = wordChanger.positionInteractions[0].position;
 
     if (position.canInsert) {
       expect(position.insertOptions.length).toBeGreaterThan(0);
@@ -39,13 +39,13 @@ describe('Position', () => {
 
   it('should have proper index values', () => {
     // Check all positions have correct indices
-    currentWord.positionInteractions.forEach((posInteraction, index) => {
+    wordChanger.positionInteractions.forEach((posInteraction, index) => {
       expect(posInteraction.position.index).toBe(index);
     });
   });
 
   it('should be associated with the correct word', () => {
-    const position = currentWord.positionInteractions[0].position;
+    const position = wordChanger.positionInteractions[0].position;
     // Test that position exists and has valid index, which implies it's connected to the word
     expect(position.index).toBe(0);
     expect(position).toBeDefined();

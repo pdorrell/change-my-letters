@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { AppState } from '@/models/app-state';
-import { CurrentWordPage } from '@/views/current-word';
+import { WordChangerPage } from 'src/views/word-changer';
 import { ReviewPronunciationPage } from '@/views/review/review-pronunciation';
 import { ResetPage } from '@/views/reset/reset';
 import { FinderPage } from '@/views/finder/finder';
@@ -61,7 +61,7 @@ const AppBody: React.FC<AppBodyProps> = observer(({ appState }) => {
   return (
     <main>
       {appState.currentPage === 'wordView' ? (
-        <CurrentWordPage appState={appState} />
+        <WordChangerPage appState={appState} />
       ) : appState.currentPage === 'reviewPronunciationView' ? (
         <ReviewPronunciationPage appState={appState} />
       ) : appState.currentPage === 'finderView' ? (

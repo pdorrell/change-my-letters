@@ -28,7 +28,7 @@ export class ResetInteraction {
     this.cancelAction = new ButtonAction(
       () => this.cancel(),
       {
-        tooltip: "Return to the current word without changing"
+        tooltip: "Return to the word changer without changing"
       }
     );
     this.randomAction = new ButtonAction(
@@ -79,7 +79,7 @@ export class ResetInteraction {
   }
 
   /**
-   * Set a new word as the current word and reset the history
+   * Set a new word as the word changer and reset the history
    */
   setNewWord(wordObj: Word): void {
     // Reset the app state with the new word object
@@ -94,7 +94,7 @@ export class ResetInteraction {
    * Cancel the reset operation and return to the word view
    */
   cancel(): void {
-    // Navigate back to the word view without changing the current word
+    // Navigate back to the word view without changing the word changer
     this.appState.navigateTo('wordView');
 
     // Reset the filter state for next time

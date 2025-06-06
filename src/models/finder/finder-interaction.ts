@@ -9,7 +9,7 @@ export class FinderInteraction {
   wordSayer: WordSayerInterface;
   words: string[];
   wordsToFind: WordToFind[];
-  currentWordToFind: WordToFind | null = null;
+  wordChangerToFind: WordToFind | null = null;
   wordsToChoose: WordToChoose[];
   message: string = '';
   correct: number = 0;
@@ -69,16 +69,16 @@ export class FinderInteraction {
     return new ButtonAction(handler, { tooltip: "Start with a new set of words" });
   }
 
-  setCurrentWordToFind(wordToFind: WordToFind): void {
-    if (this.currentWordToFind && this.currentWordToFind !== wordToFind) {
-      this.currentWordToFind.state = 'waiting';
+  setWordChangerToFind(wordToFind: WordToFind): void {
+    if (this.wordChangerToFind && this.wordChangerToFind !== wordToFind) {
+      this.wordChangerToFind.state = 'waiting';
     }
-    this.currentWordToFind = wordToFind;
+    this.wordChangerToFind = wordToFind;
     wordToFind.state = 'current';
   }
 
-  clearCurrentWordToFind(): void {
-    this.currentWordToFind = null;
+  clearWordChangerToFind(): void {
+    this.wordChangerToFind = null;
 
     // If auto is enabled, choose next word after delay
     if (this.auto.value) {
@@ -93,7 +93,7 @@ export class FinderInteraction {
     if (waitingWords.length > 0) {
       const randomIndex = Math.floor(Math.random() * waitingWords.length);
       const nextWord = waitingWords[randomIndex];
-      this.setCurrentWordToFind(nextWord);
+      this.setWordChangerToFind(nextWord);
       this.wordSayer.say(nextWord.word);
     }
   }
@@ -134,7 +134,7 @@ export class FinderInteraction {
   }
 
   retry(): void {
-    this.currentWordToFind = null;
+    this.wordChangerToFind = null;
     this.message = '';
     this.correct = 0;
     this.tried = 0;
