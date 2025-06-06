@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { FinderInteraction } from '../models/finder-interaction';
-import { ActionButton } from '../lib/views/action-button';
+import { FinderInteraction } from '../../models/finder/finder-interaction';
+import { ActionButton } from '../../lib/views/action-button';
 
 interface FinderControlsProps { finderInteraction: FinderInteraction; }
 

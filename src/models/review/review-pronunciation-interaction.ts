@@ -1,10 +1,10 @@
 import { makeAutoObservable, computed, action } from 'mobx';
-import { Word } from './word';
-import { WordSayerInterface } from './word-sayer-interface';
+import { Word } from '../word';
+import { WordSayerInterface } from '../word-sayer-interface';
 import { ReviewStateFilterOption } from './review-state-filter-option';
-import { ButtonAction } from '../lib/models/actions';
+import { ButtonAction } from '../../lib/models/actions';
 import { ReviewState, getReviewStateFromJson } from './review-state';
-import { Filter } from '../lib/filter';
+import { Filter } from '../../lib/filter';
 
 /**
  * Manages interactions for the Review Pronunciation page

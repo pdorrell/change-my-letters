@@ -3,14 +3,14 @@ import { History } from './history';
 import { WordGraph } from './word-graph';
 import { WordInteraction } from './interaction/word-interaction';
 import { WordSayerInterface } from './word-sayer-interface';
-import { ResetInteraction } from './reset-interaction';
-import { ReviewPronunciationInteraction } from './review-pronunciation-interaction';
-import { FinderInteraction } from './finder-interaction';
+import { ResetInteraction } from './reset/reset-interaction';
+import { ReviewPronunciationInteraction } from './review/review-pronunciation-interaction';
+import { FinderInteraction } from './finder/finder-interaction';
 import { MenuManager } from '../lib/views/menu-manager';
 import { Word } from './word';
 import { ButtonAction } from '../lib/models/actions';
 import { ValueModel } from '../lib/models/value-models';
-import { ScoreModel } from './score-model';
+import { ScoreModel } from '../lib/models/score-model';
 
 // Type for the main application pages
 type AppPage = 'wordView' | 'resetView' | 'reviewPronunciationView' | 'finderView';

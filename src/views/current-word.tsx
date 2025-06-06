@@ -7,7 +7,7 @@ import { MenuManagerInterface } from '../lib/views/menu-manager-interface';
 import { AppState } from '../models/app-state';
 import { ActionButton } from '../lib/views/action-button';
 import { HistoryPanel } from './history';
-import { ScorePanel } from './score-panel';
+import { ScorePanel } from '../lib/views/score-panel';
 import { ValueCheckbox } from '../lib/views/value-model-views';
 import {
   useFloating,

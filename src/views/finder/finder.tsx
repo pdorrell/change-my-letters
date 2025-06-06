@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { AppState } from '../models/app-state';
+import { AppState } from '../../models/app-state';
 import { FinderMessagePanel } from './finder-message-panel';
 import { WordToChoosePanel } from './word-to-choose-panel';
 import { WordToFindPanel } from './word-to-find-panel';

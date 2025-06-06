@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { FinderInteraction } from '../models/finder-interaction';
+import { FinderInteraction } from '../../models/finder/finder-interaction';
 import { WordToChooseButton } from './word-to-choose-button';
 
 interface WordToChoosePanelProps { finderInteraction: FinderInteraction; }

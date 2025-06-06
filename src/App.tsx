@@ -2,9 +2,9 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { AppState } from './models/app-state';
 import { CurrentWordPage } from './views/current-word';
-import { ReviewPronunciationPage } from './views/review-pronunciation';
-import { ResetPage } from './views/reset';
-import { FinderPage } from './views/finder';
+import { ReviewPronunciationPage } from './views/review/review-pronunciation';
+import { ResetPage } from './views/reset/reset';
+import { FinderPage } from './views/finder/finder';
 
 interface AppProps {
   appState: AppState;

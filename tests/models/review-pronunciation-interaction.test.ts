@@ -1,5 +1,5 @@
-import { ReviewPronunciationInteraction } from '../../src/models/review-pronunciation-interaction';
-import { ReviewStateFilterOption } from '../../src/models/review-state-filter-option';
+import { ReviewPronunciationInteraction } from '../../src/models/review/review-pronunciation-interaction';
+import { ReviewStateFilterOption } from '../../src/models/review/review-state-filter-option';
 import { Word } from '../../src/models/word';
 import { WordSayerTestDouble } from '../test_doubles/word-sayer-test-double';
 import * as fs from 'fs';
