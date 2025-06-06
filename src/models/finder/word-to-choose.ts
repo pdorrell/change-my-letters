@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import { WordSayerInterface } from './word-sayer-interface';
+import { WordSayerInterface } from '../word-sayer-interface';
 import { WordToFind } from './word-to-find';
 
 interface FinderInterface {

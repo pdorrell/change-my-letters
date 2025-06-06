@@ -1,6 +1,6 @@
 import { AppState } from '../../src/models/app-state';
-import { ReviewPronunciationInteraction } from '../../src/models/review-pronunciation-interaction';
-import { ReviewStateFilterOption } from '../../src/models/review-state-filter-option';
+import { ReviewPronunciationInteraction } from '../../src/models/review/review-pronunciation-interaction';
+import { ReviewStateFilterOption } from '../../src/models/review/review-state-filter-option';
 import { WordSayerTestDouble } from '../test_doubles/word-sayer-test-double';
 import { createTestAppState } from '../utils/test-app-builder';
 

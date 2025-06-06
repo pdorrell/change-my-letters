@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import { WordSayerInterface } from './word-sayer-interface';
+import { WordSayerInterface } from '../word-sayer-interface';
 
 export type WordToFindState = 'waiting' | 'current' | 'wrong' | 'right';
 
@@ -24,12 +24,12 @@ export class WordToFind {
     makeAutoObservable(this);
   }
 
-  get canChoose(): boolean {
+  get canSetToFind(): boolean {
     return this.state === 'waiting' || this.state === 'current';
   }
 
-  choose(): void {
-    if (!this.canChoose) return;
+  setToFind(): void {
+    if (!this.canSetToFind) return;
 
     this.finder.wordSayer.say(this.word);
     this.finder.setCurrentWordToFind(this);

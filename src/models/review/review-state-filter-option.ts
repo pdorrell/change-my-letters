@@ -1,4 +1,4 @@
-import { Word } from './word';
+import { Word } from '../word';
 
 /**
  * Filter option for review pronunciation state

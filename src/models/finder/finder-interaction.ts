@@ -1,9 +1,9 @@
 import { makeAutoObservable, computed } from 'mobx';
-import { WordSayerInterface } from './word-sayer-interface';
+import { WordSayerInterface } from '../word-sayer-interface';
 import { WordToFind } from './word-to-find';
 import { WordToChoose } from './word-to-choose';
-import { ButtonAction } from '../lib/models/actions';
-import { ValueModel } from '../lib/models/value-models';
+import { ButtonAction } from '../../lib/models/actions';
+import { ValueModel } from '../../lib/models/value-models';
 
 export class FinderInteraction {
   wordSayer: WordSayerInterface;

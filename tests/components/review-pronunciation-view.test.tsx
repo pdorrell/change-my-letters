@@ -2,9 +2,9 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { act } from 'react';
 import { runInAction } from 'mobx';
-import { ReviewPronunciationView, ReviewPronunciationControls } from '../../src/views/review-pronunciation';
-import { ReviewPronunciationInteraction } from '../../src/models/review-pronunciation-interaction';
-import { ReviewStateFilterOption } from '../../src/models/review-state-filter-option';
+import { ReviewPronunciationView, ReviewPronunciationControls } from '../../src/views/review/review-pronunciation';
+import { ReviewPronunciationInteraction } from '../../src/models/review/review-pronunciation-interaction';
+import { ReviewStateFilterOption } from '../../src/models/review/review-state-filter-option';
 import { Word } from '../../src/models/word';
 import { WordSayerTestDouble } from '../test_doubles/word-sayer-test-double';
 
