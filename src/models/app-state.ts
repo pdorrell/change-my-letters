@@ -315,6 +315,11 @@ export class AppState {
 
     // Also update the history model
     this.history.reset(initialWord);
+
+    // Say the new word if sayImmediately is checked
+    if (this.sayImmediately.value) {
+      this.wordChanger.say();
+    }
   }
 
 
