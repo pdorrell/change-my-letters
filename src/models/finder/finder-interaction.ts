@@ -4,6 +4,7 @@ import { WordToFind } from '@/models/finder/word-to-find';
 import { WordToChoose } from '@/models/finder/word-to-choose';
 import { ButtonAction } from '@/lib/models/actions';
 import { ValueModel } from '@/lib/models/value-models';
+import { ConfirmationModel } from '@/lib/models/confirmation';
 
 export class FinderInteraction {
   wordSayer: WordSayerInterface;
@@ -17,7 +18,7 @@ export class FinderInteraction {
   newWordsCallback?: () => string[];
   auto: ValueModel<boolean>;
   happyWordSayer?: WordSayerInterface;
-  confirmingNew: ValueModel<boolean>;
+  confirmation: ConfirmationModel;
 
   // Happy celebration words for perfect score
   private readonly celebrationWords: string[] = ['cool!!', 'wow!!', 'hooray!!', 'yes!!'];
@@ -39,8 +40,8 @@ export class FinderInteraction {
     // Initialize auto checkbox (defaulted to checked)
     this.auto = new ValueModel(true, 'Auto', 'Automatically choose next word to find');
 
-    // Initialize confirmation dialog state
-    this.confirmingNew = new ValueModel(false, 'Confirming New', 'Dialog state for confirming new words');
+    // Initialize confirmation model
+    this.confirmation = new ConfirmationModel();
 
     makeAutoObservable(this, {
       numWordsChosen: computed,
@@ -78,13 +79,16 @@ export class FinderInteraction {
     return new ButtonAction(handler, { tooltip: "Start with a new set of words" });
   }
 
-  requestNew(): void {
+  async requestNew(): Promise<void> {
     if (this.allWordsAttempted) {
       // All words have been attempted, proceed directly
       this.new();
     } else {
-      // Not all words attempted, show confirmation dialog
-      this.confirmingNew.set(true);
+      // Not all words attempted, ask for confirmation
+      await this.confirmation.askForConfirmationYesOrNo(
+        'Are you sure you want to quit and start again with new words to find?',
+        () => this.new()
+      );
     }
   }
 

@@ -1072,7 +1072,7 @@ body {
       min-width: 80px;
       transition: all 0.2s;
       
-      &.yes-button {
+      &.confirm-button {
         background-color: #4a90e2;
         color: white;
         border-color: #4a90e2;
@@ -1083,7 +1083,7 @@ body {
         }
       }
       
-      &.no-button {
+      &.cancel-button {
         background-color: white;
         color: #333;
         
