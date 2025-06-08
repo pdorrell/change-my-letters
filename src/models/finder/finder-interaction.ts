@@ -17,6 +17,7 @@ export class FinderInteraction {
   newWordsCallback?: () => string[];
   auto: ValueModel<boolean>;
   happyWordSayer?: WordSayerInterface;
+  confirmingNew: ValueModel<boolean>;
 
   // Happy celebration words for perfect score
   private readonly celebrationWords: string[] = ['cool!!', 'wow!!', 'hooray!!', 'yes!!'];
@@ -38,12 +39,16 @@ export class FinderInteraction {
     // Initialize auto checkbox (defaulted to checked)
     this.auto = new ValueModel(true, 'Auto', 'Automatically choose next word to find');
 
+    // Initialize confirmation dialog state
+    this.confirmingNew = new ValueModel(false, 'Confirming New', 'Dialog state for confirming new words');
+
     makeAutoObservable(this, {
       numWordsChosen: computed,
       finished: computed,
       scoreText: computed,
       retryAction: computed,
-      newAction: computed
+      newAction: computed,
+      allWordsAttempted: computed
     });
   }
 
@@ -59,14 +64,28 @@ export class FinderInteraction {
     return `${this.correct} / ${this.tried}`;
   }
 
+  get allWordsAttempted(): boolean {
+    return this.numWordsChosen === this.wordsToFind.length;
+  }
+
   get retryAction(): ButtonAction {
     const handler = this.finished ? () => this.retry() : null;
     return new ButtonAction(handler, { tooltip: "Retry with the same words" });
   }
 
   get newAction(): ButtonAction {
-    const handler = this.finished ? () => this.new() : null;
+    const handler = () => this.requestNew();
     return new ButtonAction(handler, { tooltip: "Start with a new set of words" });
+  }
+
+  requestNew(): void {
+    if (this.allWordsAttempted) {
+      // All words have been attempted, proceed directly
+      this.new();
+    } else {
+      // Not all words attempted, show confirmation dialog
+      this.confirmingNew.set(true);
+    }
   }
 
   setWordChangerToFind(wordToFind: WordToFind): void {
