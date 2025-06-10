@@ -8,7 +8,6 @@ export class WordSayer implements WordSayerInterface {
   private loadedWords: Map<string, HTMLAudioElement> = new Map();
 
   constructor(
-    public readonly volume: number = 1.0,
     public readonly baseMp3Url: string = '/assets/words/eleven_labs/words'
   ) {
     // No need for makeAutoObservable as this class doesn't contain observable state
@@ -68,8 +67,6 @@ export class WordSayer implements WordSayerInterface {
       const audio = this.loadedWords.get(word);
 
       if (audio) {
-        // Set the volume using instance volume
-        audio.volume = Math.max(0.0, Math.min(1.0, this.volume));
 
         // Add event listener for when audio ends
         const handleEnded = () => {
