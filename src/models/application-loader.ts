@@ -48,7 +48,7 @@ export class ApplicationLoader {
     this.wordSayer = wordSayer;
 
     // Create specialized word sayers for different audio types
-    const baseWordSayerUrl = '/assets/words/eleven_labs/';
+    const baseWordSayerUrl = '/assets/words/amazon_polly/';
     this.happyWordSayer = new WordSayer(`${baseWordSayerUrl}happy`);
     this.sadWordSayer = new WordSayer(`${baseWordSayerUrl}sad`);
 

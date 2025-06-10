@@ -8,7 +8,7 @@ export class WordSayer implements WordSayerInterface {
   private loadedWords: Map<string, HTMLAudioElement> = new Map();
 
   constructor(
-    public readonly baseMp3Url: string = '/assets/words/eleven_labs/words'
+    public readonly baseMp3Url: string
   ) {
     // No need for makeAutoObservable as this class doesn't contain observable state
   }
