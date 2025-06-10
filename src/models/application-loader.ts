@@ -49,8 +49,8 @@ export class ApplicationLoader {
 
     // Create specialized word sayers for different audio types
     const baseWordSayerUrl = '/assets/words/eleven_labs/';
-    this.happyWordSayer = new WordSayer(0.5, `${baseWordSayerUrl}happy`);
-    this.sadWordSayer = new WordSayer(0.5, `${baseWordSayerUrl}sad`);
+    this.happyWordSayer = new WordSayer(`${baseWordSayerUrl}happy`);
+    this.sadWordSayer = new WordSayer(`${baseWordSayerUrl}sad`);
 
     // Store the required data file fetcher
     this.dataFileFetcher = dataFileFetcher;
