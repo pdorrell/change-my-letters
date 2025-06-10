@@ -91,7 +91,7 @@ if (!container) {
 }
 const root = createRoot(container);
 // Create singleton instances for ApplicationLoader dependencies
-const wordSayer = new WordSayer('/assets/words/eleven_labs/words');
+const wordSayer = new WordSayer('/assets/words/amazon_polly/words');
 const dataFileFetcher = new DataFileFetcher();
 const applicationLoader = new ApplicationLoader(wordSayer, dataFileFetcher);
 

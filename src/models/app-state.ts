@@ -32,9 +32,6 @@ const PAGE_CONFIGS: Record<AppPage, PageConfig> = {
  * Main application state that manages the current page and models
  */
 export class AppState {
-  // Base URL for word sayer MP3 files
-  private readonly baseWordSayerUrl = '/assets/words/eleven_labs/';
-
   // Special celebration words for Make Me success
   private readonly celebrationWords: string[] = ['cool!!', 'wow!!', 'hooray!!', 'yes!!'];
 
