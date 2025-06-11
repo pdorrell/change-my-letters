@@ -36,3 +36,30 @@ export const TextValueInputWithPlaceholder: React.FC<TextValueInputWithPlacehold
     />
   );
 });
+
+/**
+ * Radio buttons component for ValueModel<T> where T extends string
+ */
+interface ValueRadioButtonsProps<T extends string> { value: ValueModel<T>; options: T[]; }
+
+export const ValueRadioButtons = observer(<T extends string>({ value, options }: ValueRadioButtonsProps<T>): React.ReactElement => {
+  const groupName = `radio-${value.label.replace(/\s+/g, '-').toLowerCase()}`;
+
+  return (
+    <div className="value-radio-buttons-container" title={value.tooltip}>
+      <span className="radio-label">{value.label}</span>
+      {options.map((option) => (
+        <label key={option} className="radio-option">
+          <input
+            type="radio"
+            name={groupName}
+            value={option}
+            checked={value.value === option}
+            onChange={() => value.set(option)}
+          />
+          {option}
+        </label>
+      ))}
+    </div>
+  );
+});

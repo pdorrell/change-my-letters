@@ -167,7 +167,10 @@ describe('ReviewPronunciationView', () => {
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
       expect(screen.getByPlaceholderText('Filter text...')).toBeInTheDocument();
-      expect(screen.getByLabelText('Match start only')).toBeInTheDocument();
+      expect(screen.getByText('Match')).toBeInTheDocument();
+      expect(screen.getByLabelText('start')).toBeInTheDocument();
+      expect(screen.getByLabelText('end')).toBeInTheDocument();
+      expect(screen.getByLabelText('any')).toBeInTheDocument();
       expect(screen.getByLabelText('Review state:')).toBeInTheDocument();
     });
 
@@ -184,18 +187,21 @@ describe('ReviewPronunciationView', () => {
       expect(filterInput).toHaveValue('cat');
     });
 
-    it('updates match start checkbox', () => {
+    it('updates match option radio buttons', () => {
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
-      const checkbox = screen.getByLabelText('Match start only');
-      expect(checkbox).toBeChecked(); // default true
+      const startRadio = screen.getByLabelText('start');
+      const anyRadio = screen.getByLabelText('any');
+      expect(startRadio).toBeChecked(); // default start
+      expect(anyRadio).not.toBeChecked();
 
       act(() => {
-        fireEvent.click(checkbox);
+        fireEvent.click(anyRadio);
       });
 
-      expect(reviewInteraction.filter.matchStartOnly.value).toBe(false);
-      expect(checkbox).not.toBeChecked();
+      expect(reviewInteraction.filter.matchOption.value).toBe('any');
+      expect(anyRadio).toBeChecked();
+      expect(startRadio).not.toBeChecked();
     });
 
     it('updates review state filter', () => {
@@ -239,7 +245,7 @@ describe('ReviewPronunciationView', () => {
       act(() => {
         runInAction(() => {
           reviewInteraction.filter.value.set('c');
-          reviewInteraction.filter.matchStartOnly.set(true);
+          reviewInteraction.filter.matchOption.set('start');
         });
       });
 

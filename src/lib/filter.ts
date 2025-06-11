@@ -1,12 +1,14 @@
 import { ValueModel } from '@/lib/models/value-models';
 
+export type FilterMatchOption = 'start' | 'end' | 'any';
+
 export class Filter {
   value: ValueModel<string>;
-  matchStartOnly: ValueModel<boolean>;
+  matchOption: ValueModel<FilterMatchOption>;
 
-  constructor(matchStartOnly: boolean = false) {
+  constructor(matchOption: FilterMatchOption = 'start') {
     this.value = new ValueModel('', 'Filter text', 'Text to filter the word list');
-    this.matchStartOnly = new ValueModel(matchStartOnly, 'Match start only', 'Only show words that start with the filter text');
+    this.matchOption = new ValueModel(matchOption, 'Match', 'How to match the filter text');
   }
 
   filtered(strings: string[]): string[] {
@@ -17,9 +19,16 @@ export class Filter {
     const filterValue = this.value.value.toLowerCase();
     return strings.filter(str => {
       const lowerStr = str.toLowerCase();
-      return this.matchStartOnly.value
-        ? lowerStr.startsWith(filterValue)
-        : lowerStr.includes(filterValue);
+      switch (this.matchOption.value) {
+        case 'start':
+          return lowerStr.startsWith(filterValue);
+        case 'end':
+          return lowerStr.endsWith(filterValue);
+        case 'any':
+          return lowerStr.includes(filterValue);
+        default:
+          return lowerStr.includes(filterValue);
+      }
     });
   }
 }
