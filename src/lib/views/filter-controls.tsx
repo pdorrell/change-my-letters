@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Filter, FILTER_MATCH_OPTIONS } from '@/lib/filter';
+import { Filter, FILTER_MATCH_OPTIONS } from '@/lib/models/filter';
 import { ValueRadioButtons, TextValueInputWithPlaceholder } from '@/lib/views/value-model-views';
 
 interface FilterControlsProps { filter: Filter; }
