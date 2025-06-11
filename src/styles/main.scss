@@ -26,10 +26,12 @@ body {
 }
 
 .app-container {
-  max-width: 98vw; // Almost full width of the viewport
+  width: 100vw; // Full width of the viewport
+  max-width: 100vw; // Prevent overflow
   margin: 0 auto;
   padding: 0;
   overflow: visible; // Allow menus to extend beyond container
+  box-sizing: border-box; // Include padding in width calculation
   
   header {
     text-align: center;
@@ -48,6 +50,17 @@ body {
         font-size: 2.5em;
         color: #333;
         margin: 0;
+        white-space: nowrap; // Prevent wrapping
+        overflow: hidden; // Hide overflow if necessary
+        text-overflow: ellipsis; // Show ellipsis if text is too long
+        
+        @media (max-width: 600px) {
+          font-size: 1.8em; // Smaller font on mobile
+        }
+        
+        @media (max-width: 400px) {
+          font-size: 1.4em; // Even smaller on very small screens
+        }
       }
     }
     
@@ -190,12 +203,18 @@ body {
 
 // Word changer styles
 .word-outer-container {
-  max-width: 100%;
+  width: 100%;
+  max-width: 100vw; // Prevent horizontal overflow
   margin: 0 auto;
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   overflow: visible; // Ensure the container expands to fit the content
+  box-sizing: border-box; // Include padding in width calculation
+  
+  @media (max-width: 480px) {
+    padding: 10px; // Reduce padding on small screens
+  }
   
   &.previously-visited {
     background-color: #ffe4e1; // Light pink
@@ -238,7 +257,9 @@ body {
   background-color: white;
   overflow: visible;
   width: fit-content; // Size to content instead of explicit width
+  max-width: 100%; // Prevent horizontal overflow
   margin: 0 auto; // Center horizontally
+  box-sizing: border-box; // Include border in width calculation
   
   .word-display {
     padding: 10px;
@@ -272,8 +293,8 @@ body {
     display: flex;
     align-items: flex-start; // Align to the top instead of center
     justify-content: center;
-    width: 120px; // Twice as large
-    height: 132px; // 120px base + 10% more below baseline (12px)
+    width: 120px; // Base width
+    height: 132px; // Base height (120px base + 10% more below baseline)
     border: 2px solid #000;
     border-radius: 6px;
     background-color: #ffffe0; // Light yellow
@@ -281,6 +302,24 @@ body {
     font-weight: bold;
     padding-top: 10px; // Reduced padding at top (about 10% of standard box height)
     padding-bottom: 22px; // Increased padding at bottom for descenders
+    box-sizing: border-box; // Include border and padding in dimensions
+    
+    // Responsive scaling while maintaining aspect ratio
+    @media (max-width: 768px) {
+      width: calc(120px * 0.8); // Scale down proportionally
+      height: calc(132px * 0.8);
+      font-size: calc(7.2em * 0.8);
+      padding-top: calc(10px * 0.8);
+      padding-bottom: calc(22px * 0.8);
+    }
+    
+    @media (max-width: 480px) {
+      width: calc(120px * 0.6); // Scale down more on very small screens
+      height: calc(132px * 0.6);
+      font-size: calc(7.2em * 0.6);
+      padding-top: calc(10px * 0.6);
+      padding-bottom: calc(22px * 0.6);
+    }
     
     &.clickable {
       cursor: pointer;
@@ -365,8 +404,9 @@ body {
   padding: 5px;
   z-index: 1000; // Higher z-index to ensure it's above everything
   width: 250px; // Wider to fit larger letters
-  max-width: 90vw; // Limit to viewport width
+  max-width: calc(100vw - 20px); // Limit to viewport width with margin
   overflow: visible;
+  box-sizing: border-box; // Include border and padding in width
   
   .letter-choice-option {
     display: flex;
