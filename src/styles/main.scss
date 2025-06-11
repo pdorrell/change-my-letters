@@ -222,32 +222,10 @@ body {
   
   @media (max-width: 768px) {
     padding: 10px;
-    
-    // Scale elements down on smaller screens
-    .letter {
-      transform: scale(0.85);
-      transform-origin: center center;
-    }
-    
-    .position-container {
-      transform: scale(0.85);
-      transform-origin: center center;
-    }
   }
   
   @media (max-width: 480px) {
     padding: 5px;
-    
-    // Scale elements down even more on very small screens
-    .letter {
-      transform: scale(0.7);
-      transform-origin: center center;
-    }
-    
-    .position-container {
-      transform: scale(0.7);
-      transform-origin: center center;
-    }
   }
 }
 
@@ -261,6 +239,12 @@ body {
   margin: 0 auto; // Center horizontally
   box-sizing: border-box; // Include border in width calculation
   
+  // On very small screens, ensure it can shrink more aggressively
+  @media (max-width: 480px) {
+    max-width: 98vw; // Leave small margin
+    overflow: hidden; // Hide any remaining overflow
+  }
+  
   .word-display {
     padding: 10px;
     display: flex;
@@ -269,6 +253,21 @@ body {
     flex-wrap: nowrap; // Prevent wrapping
     overflow: visible; // Allow content to overflow without scrollbars
     gap: 0; // Remove any gap between flex items
+    width: 100%; // Take full width of container
+    box-sizing: border-box;
+    
+    // On small screens, allow the flex container to shrink and scale content
+    @media (max-width: 768px) {
+      padding: 5px;
+      transform: scale(0.85);
+      transform-origin: center center;
+    }
+    
+    @media (max-width: 480px) {
+      padding: 2px;
+      transform: scale(0.7);
+      transform-origin: center center;
+    }
   }
 }
 
@@ -277,6 +276,7 @@ body {
   position: relative;
   margin: 5px;
   padding: 0;
+  flex-shrink: 0; // Prevent shrinking in flex container
   
   // Apply action-pending to the letter element when a button is pressed
   &:has(button:active) .letter {
@@ -363,6 +363,7 @@ body {
   position: relative;
   margin: 0;
   padding: 0 8px; // Add horizontal padding
+  flex-shrink: 0; // Prevent shrinking in flex container
   
   // Action pending state when button is pressed
   &:has(button:active) {
