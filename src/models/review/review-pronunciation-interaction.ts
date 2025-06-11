@@ -4,7 +4,7 @@ import { WordSayerInterface } from '@/models/word-sayer-interface';
 import { ReviewStateFilterOption } from '@/models/review/review-state-filter-option';
 import { ButtonAction } from '@/lib/models/actions';
 import { ReviewState, getReviewStateFromJson } from '@/models/review/review-state';
-import { Filter } from '@/lib/filter';
+import { Filter } from '@/lib/models/filter';
 
 /**
  * Manages interactions for the Review Pronunciation page
