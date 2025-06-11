@@ -1,6 +1,7 @@
 import { ValueModel } from '@/lib/models/value-models';
 
-export type FilterMatchOption = 'start' | 'end' | 'any';
+export const FILTER_MATCH_OPTIONS = ['start', 'end', 'any'];
+export type FilterMatchOption = typeof FILTER_MATCH_OPTIONS[number];
 
 export class Filter {
   value: ValueModel<string>;

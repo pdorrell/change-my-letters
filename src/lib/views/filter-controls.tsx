@@ -1,11 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Filter, FilterMatchOption } from '@/lib/filter';
+import { Filter, FILTER_MATCH_OPTIONS } from '@/lib/filter';
 import { ValueRadioButtons, TextValueInputWithPlaceholder } from '@/lib/views/value-model-views';
 
 interface FilterControlsProps { filter: Filter; }
 
-const FILTER_MATCH_OPTIONS: FilterMatchOption[] = ['start', 'end', 'any'];
 
 export const FilterControls: React.FC<FilterControlsProps> = observer(({ filter }) => {
   return (
