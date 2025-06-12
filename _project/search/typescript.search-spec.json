@@ -2,6 +2,6 @@
   "included_extensions":  [".sh"],
   "excluded_extensions":  [],
   "included_files":  [],
-  "excluded_files":  [],
+  "excluded_files":  ["scripts/data/cmudict-0.7b.txt"],
   "excluded_dirs": ["deploy"]
 }
