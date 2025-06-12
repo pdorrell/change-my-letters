@@ -51,8 +51,6 @@ body {
         color: #333;
         margin: 0;
         white-space: nowrap; // Prevent wrapping
-        overflow: hidden; // Hide overflow if necessary
-        text-overflow: ellipsis; // Show ellipsis if text is too long
         
         @media (max-width: 600px) {
           font-size: 1.8em; // Smaller font on mobile
@@ -242,7 +240,6 @@ body {
   // On very small screens, ensure it can shrink more aggressively
   @media (max-width: 480px) {
     max-width: 98vw; // Leave small margin
-    overflow: hidden; // Hide any remaining overflow
   }
   
   .word-display {
