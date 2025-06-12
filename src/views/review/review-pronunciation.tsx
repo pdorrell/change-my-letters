@@ -6,14 +6,14 @@ import { AppState } from '@/models/app-state';
 import { FilterControls } from '@/lib/views/filter-controls';
 
 /**
- * Controls component for Review Pronunciation page
+ * Action controls component for Review Pronunciation page
  */
-interface ReviewPronunciationControlsProps {
+interface ReviewActionControlsProps {
   reviewInteraction: ReviewPronunciationInteraction;
   reviewStateFileLoader: (file: File) => void;
 }
 
-export const ReviewPronunciationControls: React.FC<ReviewPronunciationControlsProps> = observer(({ reviewInteraction, reviewStateFileLoader }) => {
+export const ReviewActionControls: React.FC<ReviewActionControlsProps> = observer(({ reviewInteraction, reviewStateFileLoader }) => {
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -32,82 +32,90 @@ export const ReviewPronunciationControls: React.FC<ReviewPronunciationControlsPr
   };
 
   return (
-    <div className="review-pronunciation-controls">
-      <div className="action-buttons-panel">
-        <div
-          className="load-state-button-container"
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-        >
-          <ActionButton action={reviewInteraction.loadStateAction}>
-            + Load State
-          </ActionButton>
-        </div>
-
-        <ActionButton action={reviewInteraction.saveStateAction}>
-          Save State
-        </ActionButton>
-
-        <ActionButton action={reviewInteraction.downloadWrongWordsAction}>
-          Download Wrong Words
-        </ActionButton>
-
-        <ActionButton action={reviewInteraction.resetAllToUnreviewedAction}>
-          Reset All to Unreviewed
-        </ActionButton>
-
-        <ActionButton action={reviewInteraction.resetAllToOKAction}>
-          Reset All to OK
-        </ActionButton>
-
-        <ActionButton action={reviewInteraction.reviewWrongWordsAction}>
-          Review Wrong Words
+    <div className="action-buttons-panel">
+      <div
+        className="load-state-button-container"
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+      >
+        <ActionButton action={reviewInteraction.loadStateAction}>
+          + Load State
         </ActionButton>
       </div>
 
-      {/* word changer Panel - always visible */}
-      <div className="word-changer-panel">
-        <div className="current-review-word">
-          <span
-            className={`word-span ${
-              reviewInteraction.currentReviewWord
-                ? (reviewInteraction.currentReviewWord.soundsWrong ? 'wrong' : 'ok') + ' current-review'
-                : 'no-word'
-            }`}
+      <ActionButton action={reviewInteraction.saveStateAction}>
+        Save State
+      </ActionButton>
+
+      <ActionButton action={reviewInteraction.downloadWrongWordsAction}>
+        Download Wrong Words
+      </ActionButton>
+
+      <ActionButton action={reviewInteraction.resetAllToUnreviewedAction}>
+        Reset All to Unreviewed
+      </ActionButton>
+
+      <ActionButton action={reviewInteraction.resetAllToOKAction}>
+        Reset All to OK
+      </ActionButton>
+
+      <ActionButton action={reviewInteraction.reviewWrongWordsAction}>
+        Review Wrong Words
+      </ActionButton>
+    </div>
+  );
+});
+
+/**
+ * State controls component for Review Pronunciation page
+ */
+interface ReviewStateControlsProps {
+  reviewInteraction: ReviewPronunciationInteraction;
+}
+
+export const ReviewStateControls: React.FC<ReviewStateControlsProps> = observer(({ reviewInteraction }) => {
+  return (
+    <div className="word-changer-panel">
+      <div className="current-review-word">
+        <span
+          className={`word-span ${
+            reviewInteraction.currentReviewWord
+              ? (reviewInteraction.currentReviewWord.soundsWrong ? 'wrong' : 'ok') + ' current-review'
+              : 'no-word'
+          }`}
+        >
+          {reviewInteraction.currentReviewWord ? reviewInteraction.currentReviewWord.word : '\u00A0'}
+        </span>
+
+        <div className="review-buttons">
+          <ActionButton action={reviewInteraction.markSoundsWrongAction}>
+            Sounds Wrong
+          </ActionButton>
+
+          <ActionButton action={reviewInteraction.markOKAction}>
+            Sounds OK
+          </ActionButton>
+        </div>
+
+        <div className="autoplay-controls">
+          <ActionButton action={reviewInteraction.autoplayAction}>
+            {reviewInteraction.autoplaying ? 'Stop' : 'Auto'}
+          </ActionButton>
+
+          <select
+            value={reviewInteraction.autoPlayWaitMillis}
+            onChange={(e) => {
+              reviewInteraction.stopAutoplay();
+              reviewInteraction.setAutoPlayWaitMillis(parseInt(e.target.value));
+            }}
+            className="autoplay-interval-select"
           >
-            {reviewInteraction.currentReviewWord ? reviewInteraction.currentReviewWord.word : '\u00A0'}
-          </span>
-
-          <div className="review-buttons">
-            <ActionButton action={reviewInteraction.markSoundsWrongAction}>
-              Sounds Wrong
-            </ActionButton>
-
-            <ActionButton action={reviewInteraction.markOKAction}>
-              Sounds OK
-            </ActionButton>
-          </div>
-
-          <div className="autoplay-controls">
-            <ActionButton action={reviewInteraction.autoplayAction}>
-              {reviewInteraction.autoplaying ? 'Stop' : 'Auto'}
-            </ActionButton>
-
-            <select
-              value={reviewInteraction.autoPlayWaitMillis}
-              onChange={(e) => {
-                reviewInteraction.stopAutoplay();
-                reviewInteraction.setAutoPlayWaitMillis(parseInt(e.target.value));
-              }}
-              className="autoplay-interval-select"
-            >
-              <option value={100}>100ms</option>
-              <option value={200}>200ms</option>
-              <option value={300}>300ms</option>
-              <option value={400}>400ms</option>
-              <option value={500}>500ms</option>
-            </select>
-          </div>
+            <option value={100}>100ms</option>
+            <option value={200}>200ms</option>
+            <option value={300}>300ms</option>
+            <option value={400}>400ms</option>
+            <option value={500}>500ms</option>
+          </select>
         </div>
       </div>
     </div>
@@ -256,10 +264,13 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
 
   return (
     <div className="review-pronunciation-container">
-      <ReviewPronunciationControls
-        reviewInteraction={reviewInteraction}
-        reviewStateFileLoader={(file: File) => reviewInteraction.loadReviewStateFromFile(file)}
-      />
+      <div className="review-pronunciation-controls">
+        <ReviewActionControls
+          reviewInteraction={reviewInteraction}
+          reviewStateFileLoader={(file: File) => reviewInteraction.loadReviewStateFromFile(file)}
+        />
+        <ReviewStateControls reviewInteraction={reviewInteraction} />
+      </div>
       <ReviewPronunciationFilters reviewInteraction={reviewInteraction} />
       <ReviewPronunciationWordChoice reviewInteraction={reviewInteraction} />
     </div>
