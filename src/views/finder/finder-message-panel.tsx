@@ -10,9 +10,6 @@ export const FinderMessagePanel: React.FC<FinderMessagePanelProps> = observer(({
       <div className="finder-message">
         {finderInteraction.message || '\u00A0'}
       </div>
-      <div className="finder-score">
-        {finderInteraction.scoreText}
-      </div>
     </div>
   );
 });
