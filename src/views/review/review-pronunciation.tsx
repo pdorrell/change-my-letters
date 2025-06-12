@@ -264,14 +264,12 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
 
   return (
     <div className="review-pronunciation-container">
-      <div className="review-pronunciation-controls">
-        <ReviewActionControls
-          reviewInteraction={reviewInteraction}
-          reviewStateFileLoader={(file: File) => reviewInteraction.loadReviewStateFromFile(file)}
-        />
-        <ReviewStateControls reviewInteraction={reviewInteraction} />
-      </div>
+      <ReviewActionControls
+        reviewInteraction={reviewInteraction}
+        reviewStateFileLoader={(file: File) => reviewInteraction.loadReviewStateFromFile(file)}
+      />
       <ReviewPronunciationFilters reviewInteraction={reviewInteraction} />
+      <ReviewStateControls reviewInteraction={reviewInteraction} />
       <ReviewPronunciationWordChoice reviewInteraction={reviewInteraction} />
     </div>
   );

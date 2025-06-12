@@ -682,111 +682,108 @@ body {
   }
 }
 
-// Review Pronunciation controls
-.review-pronunciation-controls {
+// Review Pronunciation action controls
+.action-buttons-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
+  justify-content: center;
   
-  .action-buttons-panel {
+  .load-state-button-container {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 30px;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    border: 2px dashed #ccc;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
     
-    .load-state-button-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      border: 2px dashed #ccc;
-      padding: 10px;
-      border-radius: 8px;
-      background-color: #f9f9f9;
-      
-      &:hover {
-        border-color: #999;
-        background-color: #f0f0f0;
-      }
-      
-      .drop-hint {
-        font-size: 0.8em;
-        color: #666;
-      }
+    &:hover {
+      border-color: #999;
+      background-color: #f0f0f0;
+    }
+    
+    .drop-hint {
+      font-size: 0.8em;
+      color: #666;
     }
   }
+}
+
+// Review Pronunciation state controls
+.word-changer-panel {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
   
-  .word-changer-panel {
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 30px;
+  .current-review-word {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    justify-content: space-between;
+  }
+  
+  .word-span {
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    min-width: 10ch;
     
-    .current-review-word {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      justify-content: space-between;
+    &.no-word {
+      background-color: transparent;
+      border: 1px solid #ccc;
+      color: transparent;
     }
     
-    .word-span {
-      font-size: 1.5em;
-      font-weight: bold;
-      padding: 10px 15px;
-      border-radius: 6px;
-      border: 2px solid transparent;
-      min-width: 10ch;
+    &.ok {
+      background-color: #e3f2fd;
       
-      &.no-word {
-        background-color: transparent;
-        border: 1px solid #ccc;
-        color: transparent;
-      }
-      
-      &.ok {
-        background-color: #e3f2fd;
-        
-        &.current-review {
-          background-color: #2196f3;
-          color: white;
-          border-color: #000;
-        }
-      }
-      
-      &.wrong {
-        background-color: #ffebee;
-        
-        &.current-review {
-          background-color: #f44336;
-          color: white;
-          border-color: #000;
-        }
-      }
-      
-      &.current-review:not(.ok):not(.wrong) {
+      &.current-review {
+        background-color: #2196f3;
+        color: white;
         border-color: #000;
       }
     }
     
-    .review-buttons {
-      display: flex;
-      gap: 10px;
+    &.wrong {
+      background-color: #ffebee;
+      
+      &.current-review {
+        background-color: #f44336;
+        color: white;
+        border-color: #000;
+      }
     }
     
-    .autoplay-controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      
-      .autoplay-interval-select {
-        padding: 4px 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 14px;
-        min-width: 80px;
-      }
+    &.current-review:not(.ok):not(.wrong) {
+      border-color: #000;
     }
   }
   
+  .review-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .autoplay-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    .autoplay-interval-select {
+      padding: 4px 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      min-width: 80px;
+    }
+  }
 }
 
 // Review Pronunciation filters
