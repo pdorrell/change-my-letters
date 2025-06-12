@@ -358,12 +358,11 @@ body {
     padding: 5px;
     font-size: 2.4em; // Twice as big (was 1.2em)
     
-    &:hover {
-      transform: scale(1.2);
-    }
-    
     &.previously-visited {
       background-color: #ffe4e1; // Light pink
+    }
+    &:hover {
+        background-color: #ffff00;
     }
   }
 }
