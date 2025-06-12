@@ -1,5 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { range } from '@/lib/util';
+import { PositionInteraction } from '@/models/interaction/position-interaction';
 import { WordInteraction } from '@/models/interaction/word-interaction';
 import { LetterView, LetterPlaceholder } from '@/views/Letter';
 import { PositionView, PositionPlaceholder } from '@/views/Position';
@@ -72,14 +74,18 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordC
     return maxWordLength || 5; // Use provided maxWordLength or fallback to 5
   };
 
-  // Get the word changer length
-  const wordChangerLength = wordChanger.value.length;
-
   // Get the maximum word length
   const maxLength = getMaxWordLength();
 
-  // Calculate placeholders needed
-  const placeholdersNeeded = Math.max(0, maxLength - wordChangerLength);
+  function getPositionView(index : number): React.ReactElement {
+    const positionInteraction: PositionInteraction | null = wordChanger.getActivePositionInteraction(index);
+    return positionInteraction ? <PositionView positionInteraction={positionInteraction} /> : <PositionPlaceholder/>;
+  }
+
+  function getLetterView(index : number): React.ReactElement {
+    const letterInteraction = wordChanger.getActiveLetterInteraction(index);
+    return letterInteraction ? <LetterView letterInteraction={letterInteraction} /> : <LetterPlaceholder/>;
+  }
 
   return (
     <div
@@ -88,20 +94,10 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordC
       <div className="word-changer-container">
         <div className="word-display">
           {/* Render alternating sequence of positions and letters for the word changer */}
-          {wordChanger.positionInteractions.map((positionInteraction, index) => (
-            <React.Fragment key={`position-${index}`}>
-              <PositionView positionInteraction={positionInteraction} />
-              {index < wordChanger.letterInteractions.length && (
-                <LetterView letterInteraction={wordChanger.letterInteractions[index]} />
-              )}
-            </React.Fragment>
-          ))}
-
-          {/* Add placeholders to fill up to max word length */}
-          {placeholdersNeeded > 0 && Array(placeholdersNeeded).fill(0).map((_, index) => (
-            <React.Fragment key={`placeholder-${index}`}>
-              <LetterPlaceholder />
-              <PositionPlaceholder />
+          { range(maxLength).map(index => (
+            <React.Fragment key={`position--${index}`}>
+              { getPositionView(index) }
+              { getLetterView(index) }
             </React.Fragment>
           ))}
         </div>
