@@ -112,6 +112,21 @@ export class WordInteraction {
     });
   }
 
+  getActivePositionInteraction(index : number): PositionInteraction | null {
+    let positionInteraction: PositionInteraction | null = null;
+    if (index < this.positionInteractions.length) {
+      positionInteraction = this.positionInteractions[index];
+      if (!positionInteraction.position.canInsert) {
+        positionInteraction = null;
+      }
+    }
+    return positionInteraction;
+  }
+
+  getActiveLetterInteraction(index : number): LetterInteraction | null {
+    return index < this.letterInteractions.length ? this.letterInteractions[index] : null;
+  }
+
   /**
    * Say the word changer using the wordSayer
    */
