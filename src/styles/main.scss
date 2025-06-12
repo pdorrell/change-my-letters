@@ -960,6 +960,24 @@ body {
   }
 }
 
+.finder-score-and-controls-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px auto;
+  max-width: 800px;
+  padding: 10px 20px;
+  background-color: white;
+  border: 2px solid #cccccc;
+  border-radius: 8px;
+  
+  .finder-score {
+    font-size: 1.1em;
+    color: #666;
+    font-weight: bold;
+  }
+}
+
 .finder-message-panel {
   text-align: center;
   margin: 20px auto;
@@ -971,12 +989,6 @@ body {
     font-weight: bold;
     color: #333;
     padding: 10px;
-  }
-  
-  .finder-score {
-    font-size: 1.1em;
-    color: #666;
-    font-weight: bold;
   }
 }
 
