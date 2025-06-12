@@ -201,28 +201,29 @@ body {
   width: 100%;
   max-width: 100vw; // Prevent horizontal overflow
   margin: 0 auto;
-  padding: 20px;
-  border-radius: 12px;
+  padding: 1.25em;
+  border-radius: 0.75em;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   overflow: visible; // Ensure the container expands to fit the content
   box-sizing: border-box; // Include padding in width calculation
+  font-size: 16px; // Base font size for desktop
   
   &.previously-visited {
     background-color: #ffe4e1; // Light pink
   }
   
   @media (max-width: 768px) {
-    /* font-size for mobile landscape */
+    font-size: 14px; // Smaller font size for mobile landscape
   }
   
   @media (max-width: 480px) {
-    /* font-size for mobile portrait */
+    font-size: 12px; // Even smaller font size for mobile portrait
   }
 }
 
 .word-changer-container {
   border: 2px solid #cccccc; // Light grey border
-  border-radius: 8px;
+  border-radius: 0.5em;
   background-color: white;
   overflow: visible;
   width: fit-content; // Size to content instead of explicit width
@@ -231,7 +232,7 @@ body {
   box-sizing: border-box; // Include border in width calculation
   
   .word-display {
-    padding: 10px;
+    padding: 0.625em;
     display: flex;
     align-items: center;
     justify-content: center; // Center contents
@@ -247,7 +248,7 @@ body {
 // Letter styles
 .letter-container {
   position: relative;
-  margin: 5px;
+  margin: 0.3125em;
   padding: 0;
   flex-shrink: 0; // Prevent shrinking in flex container
   
@@ -266,15 +267,15 @@ body {
     display: flex;
     align-items: flex-start; // Align to the top instead of center
     justify-content: center;
-    width: 110px; // Base width
-    height: 132px; // Base height (120px base + 10% more below baseline)
+    width: 0.982em; // 6.875em ÷ 7 = 0.982em (110px equivalent)
+    height: 1.179em; // 8.25em ÷ 7 = 1.179em (132px equivalent)
     border: 2px solid #000;
-    border-radius: 6px;
+    border-radius: 0.0536em; // 0.375em ÷ 7 = 0.0536em (6px equivalent)
     background-color: #ffffe0; // Light yellow
-    font-size: 7em; // 4 times larger
+    font-size: 7em; // Main letter font size
     font-weight: bold;
-    padding-top: 10px; // Reduced padding at top (about 10% of standard box height)
-    padding-bottom: 22px; // Increased padding at bottom for descenders
+    padding-top: 0.0893em; // 0.625em ÷ 7 = 0.0893em (10px equivalent)
+    padding-bottom: 0.196em; // 1.375em ÷ 7 = 0.196em (22px equivalent)
     box-sizing: border-box; // Include border and padding in dimensions
     
     &.clickable {
@@ -295,8 +296,8 @@ body {
     
     .delete-icon-inside {
       position: absolute;
-      bottom: 4px;
-      left: 4px;
+      bottom: 0.0357em; // 0.25em ÷ 7 = 0.0357em (4px equivalent)
+      left: 0.0357em; // 0.25em ÷ 7 = 0.0357em (4px equivalent)
       font-size: 0.15em; // 60% of 0.25em = 0.15em
       opacity: 0.7;
       cursor: inherit; // Inherit cursor from parent letter
@@ -305,8 +306,8 @@ body {
     
     .replace-icon-inside {
       position: absolute;
-      bottom: 4px;
-      right: 4px;
+      bottom: 0.0357em; // 0.25em ÷ 7 = 0.0357em (4px equivalent)
+      right: 0.0357em; // 0.25em ÷ 7 = 0.0357em (4px equivalent)
       font-size: 0.15em; // 60% of 0.25em = 0.15em
       opacity: 0.7;
       cursor: inherit; // Inherit cursor from parent letter
@@ -319,27 +320,27 @@ body {
 .position-container {
   position: relative;
   margin: 0;
-  padding: 0 8px; // Add horizontal padding
+  padding: 0 0.5em; // Add horizontal padding in em
   flex-shrink: 0; // Prevent shrinking in flex container
   
   // Action pending state when button is pressed
   &:has(button:active) {
     background-color: #ffd580; // Orangey-yellow
-    border-radius: 8px;
+    border-radius: 0.5em;
   }
   
   // Action pending state from model
   &.action-pending {
     background-color: #ffd580; // Orangey-yellow
-    border-radius: 8px;
+    border-radius: 0.5em;
   }
   
   .insert-icon {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 5px;
-    font-size: 2.4em; // Twice as big (was 1.2em)
+    padding: 0.3125em;
+    font-size: 2.4em; // Insert icon font size
     
     &.previously-visited {
       background-color: #ffe4e1; // Light pink
@@ -356,12 +357,12 @@ body {
   flex-wrap: wrap;
   background-color: white;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 0.25em;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 5px;
+  padding: 0.3125em;
   z-index: 1000; // Higher z-index to ensure it's above everything
-  width: 250px; // Wider to fit larger letters
-  max-width: calc(100vw - 20px); // Limit to viewport width with margin
+  width: 15.625em; // Wider to fit larger letters
+  max-width: calc(100vw - 1.25em); // Limit to viewport width with margin
   overflow: visible;
   box-sizing: border-box; // Include border and padding in width
   
@@ -369,14 +370,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 50px; // Larger option boxes
-    height: 50px;
+    width: 3.125em; // Larger option boxes
+    height: 3.125em;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 0.25em;
     background-color: #e6ffe6; // Light green
-    margin: 3px;
+    margin: 0.1875em;
     cursor: pointer;
-    font-size: 1.5em; // Larger font
+    font-size: 1.5em; // Font size for options
     
     &:hover {
       background-color: #d6ffd6;
