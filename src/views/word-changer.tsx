@@ -100,6 +100,7 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordC
               { getLetterView(index) }
             </React.Fragment>
           ))}
+          <PositionPlaceholder/>
         </div>
       </div>
     </div>

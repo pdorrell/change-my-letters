@@ -29,6 +29,7 @@ export const TextValueInputWithPlaceholder: React.FC<TextValueInputWithPlacehold
   return (
     <input
       type="text"
+      autoCapitalize="none"
       placeholder={`${value.label}...`}
       value={value.value}
       onChange={(e) => value.set(e.target.value)}
