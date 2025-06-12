@@ -18,16 +18,7 @@ export const ResetControls: React.FC<ResetControlsProps> = observer(({ resetInte
         <FilterControls filter={resetInteraction.filter} />
       </div>
       <div className="reset-controls-right">
-        <ActionButton
-          action={resetInteraction.randomAction}
-        >
-          Choose Random
-        </ActionButton>
-        <ActionButton
-          action={resetInteraction.cancelAction}
-        >
-          Cancel
-        </ActionButton>
+        <ActionButton action={resetInteraction.randomAction}>Choose Random</ActionButton>
       </div>
     </div>
   );
