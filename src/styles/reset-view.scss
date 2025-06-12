@@ -102,7 +102,7 @@
   padding: 20px;
   max-height: 400px;
   overflow-y: auto;
-  overflow-x: hidden; // Prevent horizontal scrolling
+  // Allow horizontal scrolling if needed
   line-height: 2;
   box-sizing: border-box;
   
