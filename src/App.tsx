@@ -46,11 +46,9 @@ interface AppHeaderProps { appState: AppState; }
 const AppHeader: React.FC<AppHeaderProps> = observer(({ appState }) => {
   return (
     <header>
+      <h1>Change My Letters</h1>
+      <PageNavigation appState={appState} />
       <AppVersion version={appState.version} />
-      <div className="header-with-navigation">
-        <h1>Change My Letters</h1>
-        <PageNavigation appState={appState} />
-      </div>
     </header>
   );
 });
