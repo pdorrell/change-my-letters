@@ -207,10 +207,6 @@ body {
   overflow: visible; // Ensure the container expands to fit the content
   box-sizing: border-box; // Include padding in width calculation
   
-  @media (max-width: 480px) {
-    padding: 10px; // Reduce padding on small screens
-  }
-  
   &.previously-visited {
     background-color: #ffe4e1; // Light pink
   }
@@ -236,7 +232,6 @@ body {
   
   // On very small screens, ensure it can shrink more aggressively
   @media (max-width: 480px) {
-    max-width: 98vw; // Leave small margin
   }
   
   .word-display {
@@ -252,15 +247,9 @@ body {
     
     // On small screens, allow the flex container to shrink and scale content
     @media (max-width: 768px) {
-      padding: 5px;
-      transform: scale(0.85);
-      transform-origin: center center;
     }
     
     @media (max-width: 480px) {
-      padding: 2px;
-      transform: scale(0.7);
-      transform-origin: center center;
     }
   }
 }
@@ -287,12 +276,12 @@ body {
     display: flex;
     align-items: flex-start; // Align to the top instead of center
     justify-content: center;
-    width: 120px; // Base width
+    width: 110px; // Base width
     height: 132px; // Base height (120px base + 10% more below baseline)
     border: 2px solid #000;
     border-radius: 6px;
     background-color: #ffffe0; // Light yellow
-    font-size: 7.2em; // 4 times larger
+    font-size: 7em; // 4 times larger
     font-weight: bold;
     padding-top: 10px; // Reduced padding at top (about 10% of standard box height)
     padding-bottom: 22px; // Increased padding at bottom for descenders
@@ -300,19 +289,9 @@ body {
     
     // Responsive scaling while maintaining aspect ratio
     @media (max-width: 768px) {
-      width: calc(120px * 0.8); // Scale down proportionally
-      height: calc(132px * 0.8);
-      font-size: calc(7.2em * 0.8);
-      padding-top: calc(10px * 0.8);
-      padding-bottom: calc(22px * 0.8);
-    }
+     }
     
     @media (max-width: 480px) {
-      width: calc(120px * 0.6); // Scale down more on very small screens
-      height: calc(132px * 0.6);
-      font-size: calc(7.2em * 0.6);
-      padding-top: calc(10px * 0.6);
-      padding-bottom: calc(22px * 0.6);
     }
     
     &.clickable {
@@ -328,6 +307,7 @@ body {
       // The actual letter text
       cursor: inherit; // Inherit cursor from parent letter
       z-index: 1; // Ensure text appears above icons
+      line-height: 0.8;
     }
     
     .delete-icon-inside {
