@@ -212,11 +212,11 @@ body {
   }
   
   @media (max-width: 768px) {
-    padding: 10px;
+    /* font-size for mobile landscape */
   }
   
   @media (max-width: 480px) {
-    padding: 5px;
+    /* font-size for mobile portrait */
   }
 }
 
@@ -230,10 +230,6 @@ body {
   margin: 0 auto; // Center horizontally
   box-sizing: border-box; // Include border in width calculation
   
-  // On very small screens, ensure it can shrink more aggressively
-  @media (max-width: 480px) {
-  }
-  
   .word-display {
     padding: 10px;
     display: flex;
@@ -245,12 +241,6 @@ body {
     width: 100%; // Take full width of container
     box-sizing: border-box;
     
-    // On small screens, allow the flex container to shrink and scale content
-    @media (max-width: 768px) {
-    }
-    
-    @media (max-width: 480px) {
-    }
   }
 }
 
@@ -286,13 +276,6 @@ body {
     padding-top: 10px; // Reduced padding at top (about 10% of standard box height)
     padding-bottom: 22px; // Increased padding at bottom for descenders
     box-sizing: border-box; // Include border and padding in dimensions
-    
-    // Responsive scaling while maintaining aspect ratio
-    @media (max-width: 768px) {
-     }
-    
-    @media (max-width: 480px) {
-    }
     
     &.clickable {
       cursor: pointer;
