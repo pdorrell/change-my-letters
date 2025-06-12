@@ -12,7 +12,6 @@ export class ResetInteraction {
   filter: Filter;
 
   // Button actions
-  cancelAction: ButtonAction;
   randomAction: ButtonAction;
 
   // Reference to the app state
@@ -24,13 +23,6 @@ export class ResetInteraction {
     // Initialize filter
     this.filter = new Filter('start');
 
-    // Initialize button actions with tooltips
-    this.cancelAction = new ButtonAction(
-      () => this.cancel(),
-      {
-        tooltip: "Return to the word changer without changing"
-      }
-    );
     this.randomAction = new ButtonAction(
       () => this.chooseRandom(),
       {
@@ -40,7 +32,6 @@ export class ResetInteraction {
 
     makeAutoObservable(this, {
       filteredWords: computed,
-      cancelAction: false,
       randomAction: false
     });
   }
@@ -90,14 +81,4 @@ export class ResetInteraction {
     this.appState.navigateTo('wordView');
   }
 
-  /**
-   * Cancel the reset operation and return to the word view
-   */
-  cancel(): void {
-    // Navigate back to the word view without changing the word changer
-    this.appState.navigateTo('wordView');
-
-    // Reset the filter state for next time
-    this.reset();
-  }
 }
