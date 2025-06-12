@@ -1,24 +1,15 @@
 // Reset controls styles
 .reset-controls {
   width: 100%;
-  max-width: min(800px, 100vw); // Prevent horizontal overflow
   margin: 0 auto;
   padding: 20px;
   box-sizing: border-box; // Include padding in width calculation
-  
-  @media (max-width: 480px) {
-    padding: 10px; // Reduce padding on small screens
-  }
-  
+
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
   flex-wrap: wrap;
   gap: 15px;
-  
-  @media (max-width: 600px) {
-    flex-direction: column;
-  }
   
   .reset-controls-left {
     display: flex;
@@ -87,7 +78,6 @@
 // Reset word choice styles
 .reset-word-choice {
   width: 100%;
-  max-width: min(800px, 100vw); // Prevent horizontal overflow
   margin: 0 auto;
   padding: 0 20px 20px 20px;
   box-sizing: border-box; // Include padding in width calculation
