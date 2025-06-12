@@ -1,4 +1,5 @@
 import { makeAutoObservable } from 'mobx';
+import { range } from '@/lib/util';
 import { Letter } from '@/models/Letter';
 import { Position } from '@/models/Position';
 import { WordChanges, DeleteChange, InsertChange, ReplaceChange } from '@/models/word-change';
@@ -74,9 +75,7 @@ export class Word {
    */
   get positions(): Position[] {
     if (!this._positions) {
-      this._positions = Array(this.word.length + 1)
-        .fill(0)
-        .map((_, index) => new Position(this, index));
+      this._positions = range(this.word.length + 1).map(index => new Position(this,  index));
     }
     return this._positions;
   }
