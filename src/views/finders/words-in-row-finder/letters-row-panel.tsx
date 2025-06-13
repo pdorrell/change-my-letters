@@ -6,16 +6,6 @@ import { LettersRowView } from './letters-row-view';
 interface LettersRowPanelProps { finder: WordsInRowFinder; }
 
 export const LettersRowPanel: React.FC<LettersRowPanelProps> = observer(({ finder }) => {
-  if (!finder.lettersRow.letters) {
-    return (
-      <div className="letters-row-panel">
-        <div className="letters-row-placeholder">
-          Click on a word above to start
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="letters-row-panel">
       <LettersRowView

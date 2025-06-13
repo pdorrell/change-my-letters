@@ -11,8 +11,8 @@ export const WordsInRowFinderPage: React.FC<WordsInRowFinderPageProps> = observe
   return (
     <>
       <FinderControls finder={wordsInRowFinder} />
-      <WordsToFindPanel finder={wordsInRowFinder} />
       <LettersRowPanel finder={wordsInRowFinder} />
+      <WordsToFindPanel finder={wordsInRowFinder} />
     </>
   );
 });

@@ -74,7 +74,7 @@ export class LettersRow {
   }
 
   get lettersArray(): string[] {
-    return this.letters ? this.letters.split('') : [];
+    return this.letters ? this.letters.split('') : Array(this.rowLength).fill('');
   }
 }
 
