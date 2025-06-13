@@ -29,7 +29,7 @@ export class WordsToFind {
   markActiveWordCorrect(): void {
     if (this.activeWord) {
       this.activeWord.setFound(true);
-      this.clearActiveWord();
+      // Keep the word active until the next word is chosen
     }
   }
 

@@ -31,7 +31,8 @@ export class WordToFind {
     return this.found !== true;
   }
 
-  get displayState(): 'waiting' | 'active' | 'correct' | 'wrong' {
+  get displayState(): 'waiting' | 'active' | 'correct' | 'correct-active' | 'wrong' {
+    if (this.found === true && this.active) return 'correct-active';
     if (this.found === true) return 'correct';
     if (this.found === false) return 'wrong';
     if (this.active) return 'active';

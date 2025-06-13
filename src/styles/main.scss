@@ -1146,10 +1146,16 @@ body {
     border-color: #28a745;
   }
   
+  &--correct-active {
+    background-color: #28a745;
+    color: white;
+    border-color: #1e7e34;
+  }
+  
   &--wrong {
-    background-color: #f8d7da;
-    color: #721c24;
-    border-color: #dc3545;
+    background-color: #dc3545;
+    color: white;
+    border-color: #c82333;
   }
   
   &--clickable {
