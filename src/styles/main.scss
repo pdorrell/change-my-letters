@@ -1197,7 +1197,7 @@ body {
     user-select: none;
     transition: all 0.1s;
     
-    &:hover {
+    &:hover:not(.letters-row-cell--dragging) {
       background-color: #e8e8e8;
     }
     
