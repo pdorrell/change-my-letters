@@ -1122,11 +1122,10 @@ body {
 }
 
 .word-to-find {
-  padding: 8px 16px;
+  width: 40px;
+  height: 40px;
   border: 2px solid #333;
   border-radius: 6px;
-  font-size: 18px;
-  font-weight: bold;
   transition: all 0.2s;
   user-select: none;
   
