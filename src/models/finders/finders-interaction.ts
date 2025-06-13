@@ -23,7 +23,7 @@ export class FindersInteraction {
    * Get all finder types with their config and active status
    */
   get allFinderTypes(): Array<{ finderType: FinderType; label: string; shortLabel: string; isActive: boolean }> {
-    const finderTypeOrder: FinderType[] = ['word-choice'];
+    const finderTypeOrder: FinderType[] = ['word-choice', 'words-in-row'];
     return finderTypeOrder.map(finderType => ({
       finderType,
       label: FINDER_CONFIGS[finderType].label,
