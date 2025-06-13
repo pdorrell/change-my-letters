@@ -4,14 +4,14 @@ export class WordDragState {
   start: number;
   direction: number;
   length: number;
-  maxLength: number;
+  maxRowLength: number;
   possibleDirections: number[];
 
-  constructor(start: number, direction: number, maxLength: number, forwardsOnly: boolean) {
+  constructor(start: number, direction: number, maxRowLength: number, forwardsOnly: boolean) {
     this.start = start;
     this.direction = direction;
     this.length = 1;
-    this.maxLength = maxLength;
+    this.maxRowLength = maxRowLength;
     this.possibleDirections = forwardsOnly ? [1] : [1, -1];
 
     makeAutoObservable(this);
@@ -30,7 +30,12 @@ export class WordDragState {
   }
 
   updateLength(newLength: number): void {
-    this.length = Math.max(1, Math.min(newLength, this.maxLength));
+    // Ensure the selection stays within the row bounds
+    const maxForwards = this.maxRowLength - this.start;
+    const maxBackwards = this.start + 1;
+    const maxAllowedLength = this.direction === 1 ? maxForwards : maxBackwards;
+
+    this.length = Math.max(1, Math.min(newLength, maxAllowedLength));
   }
 
   updateDirection(newDirection: number): void {

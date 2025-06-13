@@ -28,7 +28,7 @@ export class LettersRow {
     this.dragState = new WordDragState(
       position,
       1, // Initial direction
-      this.word.length,
+      this.rowLength, // Allow selection to extend to end of row
       forwardsOnly
     );
   }
@@ -37,11 +37,17 @@ export class LettersRow {
     if (!this.dragState) return;
 
     const start = this.dragState.start;
-    const direction = endPosition >= start ? 1 : -1;
-    const length = Math.abs(endPosition - start) + 1;
+    const requestedDirection = endPosition >= start ? 1 : -1;
 
-    this.dragState.updateDirection(direction);
-    this.dragState.updateLength(length);
+    // In forwards-only mode, don't allow backwards direction
+    if (this.dragState.possibleDirections.includes(requestedDirection)) {
+      const length = Math.abs(endPosition - start) + 1;
+      this.dragState.updateDirection(requestedDirection);
+      this.dragState.updateLength(length);
+    } else {
+      // In forwards-only mode trying to go backwards, keep length at 1
+      this.dragState.updateLength(1);
+    }
   }
 
   clearDragState(): void {
