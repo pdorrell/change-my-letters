@@ -5,7 +5,8 @@ import { WordInteraction } from '@/models/interaction/word-interaction';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
 import { ResetInteraction } from '@/models/reset/reset-interaction';
 import { ReviewPronunciationInteraction } from '@/models/review/review-pronunciation-interaction';
-import { FinderInteraction } from '@/models/finder/finder-interaction';
+import { FindersInteraction } from '@/models/finders/finders-interaction';
+import { WordChoiceFinderInteraction } from '@/models/finders/word-choice-finder/word-choice-finder-interaction';
 import { MenuManager } from '@/lib/views/menu-manager';
 import { Word } from '@/models/Word';
 import { ButtonAction } from '@/lib/models/actions';
@@ -13,7 +14,7 @@ import { ValueModel } from '@/lib/models/value-models';
 import { ScoreModel } from '@/lib/models/score-model';
 
 // Type for the main application pages
-type AppPage = 'wordView' | 'resetView' | 'reviewPronunciationView' | 'finderView';
+type AppPage = 'wordView' | 'resetView' | 'reviewPronunciationView' | 'findersView';
 
 // Page configuration with labels for navigation
 interface PageConfig {
@@ -25,7 +26,7 @@ const PAGE_CONFIGS: Record<AppPage, PageConfig> = {
   wordView: { label: 'Word', tooltip: 'Change letters of a word' },
   resetView: { label: 'Reset...', tooltip: 'Choose a new word to start again' },
   reviewPronunciationView: { label: 'Pronunciation', tooltip: 'Review pronunciation of words' },
-  finderView: { label: 'Finder', tooltip: 'Find words by listening to them' }
+  findersView: { label: 'Finders', tooltip: 'Find words by listening to them' }
 };
 
 /**
@@ -62,8 +63,11 @@ export class AppState {
   // Review pronunciation interaction model
   reviewPronunciationInteraction: ReviewPronunciationInteraction;
 
-  // Finder interaction model
-  finderInteraction: FinderInteraction;
+  // Finders interaction model
+  findersInteraction: FindersInteraction;
+
+  // Word Choice Finder interaction model
+  wordChoiceFinderInteraction: WordChoiceFinderInteraction;
 
   // Menu state management
   menuManager: MenuManager;
@@ -111,13 +115,21 @@ export class AppState {
       this.wordSayer
     );
 
-    // Initialize finder interaction with random words
+    // Initialize finders interaction
     const allWords = this.wordGraph.sortedWords.map(word => word.word);
-    const randomWords = this.getRandomWords(allWords, 10);
-    this.finderInteraction = new FinderInteraction(
+    const getRandomWords = () => this.getRandomWords(allWords, 10);
+    this.findersInteraction = new FindersInteraction(
+      this.wordSayer,
+      this.happyWordSayer,
+      getRandomWords
+    );
+
+    // Initialize word choice finder interaction with random words
+    const randomWords = getRandomWords();
+    this.wordChoiceFinderInteraction = new WordChoiceFinderInteraction(
       this.wordSayer,
       randomWords,
-      () => this.getRandomWords(allWords, 10),
+      getRandomWords,
       this.happyWordSayer
     );
 
@@ -347,9 +359,9 @@ export class AppState {
       this.reviewPronunciationInteraction.reset();
     }
 
-    // If navigating to the finder view, reset the interaction state
-    if (page === 'finderView') {
-      // Note: we don't reset the finder interaction to preserve the current game state
+    // If navigating to the finders view, reset the interaction state
+    if (page === 'findersView') {
+      // Note: we don't reset the finder interactions to preserve the current game state
     }
   }
 
@@ -357,7 +369,7 @@ export class AppState {
    * Get all pages in navigation order with their config
    */
   get allPages(): Array<{ page: AppPage; label: string; tooltip: string; isActive: boolean }> {
-    const pageOrder: AppPage[] = ['wordView', 'resetView', 'reviewPronunciationView', 'finderView'];
+    const pageOrder: AppPage[] = ['wordView', 'resetView', 'reviewPronunciationView', 'findersView'];
     return pageOrder.map(page => ({
       page,
       label: PAGE_CONFIGS[page].label,

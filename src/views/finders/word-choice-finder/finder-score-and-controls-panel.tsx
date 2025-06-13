@@ -1,10 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { FinderInteraction } from '@/models/finder/finder-interaction';
-import { FinderScoreView } from '@/views/finder/finder-score-view';
-import { FinderControls } from '@/views/finder/finder-controls';
+import { WordChoiceFinderInteraction } from '@/models/finders/word-choice-finder/word-choice-finder-interaction';
+import { FinderScoreView } from './finder-score-view';
+import { FinderControls } from './finder-controls';
 
-interface FinderScoreAndControlsPanelProps { finderInteraction: FinderInteraction; }
+interface FinderScoreAndControlsPanelProps { finderInteraction: WordChoiceFinderInteraction; }
 
 export const FinderScoreAndControlsPanel: React.FC<FinderScoreAndControlsPanelProps> = observer(({ finderInteraction }) => {
   return (

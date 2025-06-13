@@ -4,7 +4,7 @@ import { AppState } from '@/models/app-state';
 import { WordChangerPage } from '@/views/word-changer';
 import { ReviewPronunciationPage } from '@/views/review/review-pronunciation';
 import { ResetPage } from '@/views/reset/reset';
-import { FinderPage } from '@/views/finder/finder';
+import { FindersPage } from '@/views/finders/finders-page';
 
 interface AppProps {
   appState: AppState;
@@ -62,8 +62,8 @@ const AppBody: React.FC<AppBodyProps> = observer(({ appState }) => {
         <WordChangerPage appState={appState} />
       ) : appState.currentPage === 'reviewPronunciationView' ? (
         <ReviewPronunciationPage appState={appState} />
-      ) : appState.currentPage === 'finderView' ? (
-        <FinderPage appState={appState} />
+      ) : appState.currentPage === 'findersView' ? (
+        <FindersPage appState={appState} />
       ) : (
         <ResetPage appState={appState} />
       )}
