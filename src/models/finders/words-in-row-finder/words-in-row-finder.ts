@@ -62,14 +62,18 @@ export class WordsInRowFinder {
       this.taskStarted = true;
     }
 
+    const wasAlreadyActive = this.wordsToFind.activeWord === wordToFind;
     this.wordsToFind.setActiveWord(wordToFind);
     await this.wordSayer.say(wordToFind.word);
 
-    this.lettersRow.populate(
-      wordToFind.word,
-      this.difficulty.value,
-      this.forwardsOnly.value
-    );
+    // Only populate the letters row if this is a new active word
+    if (!wasAlreadyActive) {
+      this.lettersRow.populate(
+        wordToFind.word,
+        this.difficulty.value,
+        this.forwardsOnly.value
+      );
+    }
   }
 
   startDrag(position: number): void {
