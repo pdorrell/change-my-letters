@@ -380,10 +380,22 @@ Suggested names of new view class -
 
 * ScorePanel, taking scoreModel: ScoreModel as a prop
 
-## Word Finder
+## Finders page & sub-pages
 
-`Word Finder` is a separate page that provides an alternative activity using the same word list and MP3 files.
-It has a short label "Finder"
+The *Finders* page is a page which is intended to contain multiple "word finding" sub-pages.
+
+Currently there is only one finder sub-page (Word Choice). Each sub-page is routed to by a 
+finderType value of type finderType which is one of a set of possible values (currently only 'word-choice').
+
+Even when navigated away from, the Finders page will remember which sub-page was showing, and each
+sub-page will remember it's own current state.
+
+Individual models and views for the different finders are in sub-directories of `models/finders` and `view/finders`.
+
+### Word-Choice Finder
+
+`Word Choice Finder` is a sub-page of FindersPage that provides an alternative activity using the same word list and MP3 files.
+It has a short label "Word Choice"
 
 An overview of the page is:
 
@@ -409,12 +421,12 @@ An overview of the page is:
    * Retry - retry with the same set of words
    * New - start with a new set of words
    
-Suggested model classes:
+Suggested model classes (in files in /models/finders/word-choice-finder/) -
 
 * WordToFindState - literal union of waiting, current, wrong, right
  
 * WordToFind with attributes & methods, representing the buttons
-  * finder: FinderInteraction (parent object)
+  * finder: WordChoiceFinder (parent object)
   * word: str
   * state: WordToFindState = initial state = waiting
   * canChoose - if state = waiting or current
@@ -423,12 +435,12 @@ Suggested model classes:
   * chosenAs(word: str)
      
 * WordToChoose
-  * finder: FinderInteraction (parent object)
+  * finder: WordChoiceFinder (parent object)
   * word: str
   * enabled: boolean - only if the finder.currentWordToFind is not null
   * choose() - call finder.currentWordToFind.chosenAs(this.word)
 
-The model class FinderInteraction will have attributes & methods:
+The model class WordChoiceFinder will have attributes & methods:
 
 * public constructor param wordSayer: WordSayer
 * words: str[]
@@ -440,13 +452,14 @@ The model class FinderInteraction will have attributes & methods:
 * retry() - restart with the same wordsToFind & wordsToChoose
 * new() - make a new random choice of words, and restart
 
-Suggested view classes, in suggested vertical order:
+Suggested view classes (in /views/finders/word-choice-finder/):
 
-* FinderMessagePanel - where messages get displayed
-* WordToChooseButton - because it is a button
-* WordToFindView - just a rectangle with colour indicating it's current state
-* WordToChoosePanel - panel showing WordToChooseButton's
-* WordToFindPanel - panel of Words to Find
-* FinderControls - panel with buttons for Retry & New buttons
-   * Retry button
-   * New button
+* WordChoiceFinderPage - the Word Choice sub-page of FindersPage, with panels in this vertical order:
+  * WordToChoosePanel - panel showing WordToChooseButton's
+    * WordToChooseButton - because it is a button
+  * WordToFindPanel - panel of Words to Find
+    * WordToFindView - just a rectangle with colour indicating it's current state
+  * FinderScoreAndControlsPanel - panel with buttons for Retry & New buttons
+    * Retry button
+    * New button
+  * FinderMessagePanel - where messages get displayed
