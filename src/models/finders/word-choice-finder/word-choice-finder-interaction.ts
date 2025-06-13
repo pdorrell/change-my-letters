@@ -1,12 +1,12 @@
 import { makeAutoObservable, computed } from 'mobx';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
-import { WordToFind } from '@/models/finder/word-to-find';
-import { WordToChoose } from '@/models/finder/word-to-choose';
+import { WordToFind } from './word-to-find';
+import { WordToChoose } from './word-to-choose';
 import { ButtonAction } from '@/lib/models/actions';
 import { ValueModel } from '@/lib/models/value-models';
 import { ConfirmationModel } from '@/lib/models/confirmation';
 
-export class FinderInteraction {
+export class WordChoiceFinderInteraction {
   wordSayer: WordSayerInterface;
   words: string[];
   wordsToFind: WordToFind[];
