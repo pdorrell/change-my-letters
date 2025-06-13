@@ -471,7 +471,7 @@ Suggested view classes (in /views/finders/word-choice-finder/):
 ### Words In Row Finder
 
 "Words In Rows" is a bit like a classic word search in a grid, except it is very simple
-(because it is intended for young children learning to read) -
+because it is intended for young children learning to read -
 
 * You search for just one word at a time
 * The word is "hidden" in a single row of letters, possibly written backwards.
@@ -493,7 +493,7 @@ The basic user interaction is -
 * The application says the word
 * The row of letters is populated, and the word to find is somewhere in the row - possibly backwards
   if the "Forward only" control is unchecked.
-* The user is now committed to finding that word. The choice of word to find is
+* The user is now committed to finding that word. The choice of word to find button is
   highlighted (in light yellow) as being the current word. The user can click on the word to find
   again to hear it again, but they can't change their mind and click on a different
   word to find.
@@ -524,14 +524,14 @@ The controls are -
   the set of letters of the word itself.
 * "Forwards only" checkbox. If checked, the word will only be placed in the forwards
   direction in the row. If not checked, then there is a 50% chance it will be placed backwards.
-* "New" button (placed to at the right end of the control panel) - starts with a new set of
+* "New" button (placed at the right end of the control panel) - starts with a new set of
   words to find.
 
 The task is deemed to be started once the user has clicked on the first word to find.
 Once the task is started, the difficulty and forwards-only settings are locked in.
 The "New" button is only enabled at the end of a task when all the words to find have
-been found. (So the user will have the change to change the difficulty & forwards-only
-setting after clicking New and before choosing the first word to find.)
+been found. (So the user will have the chance to change the difficulty & forwards-only
+settings after clicking New and before choosing the first word to find.)
 
 #### Letters Row
 
@@ -552,7 +552,7 @@ The rules for population of the letters row are:
 ##### Drag interaction
 
 When the user is dragging to specify where they think the word to find is, the current
-dragged location is specified by a light orange background and a thicker black border
+dragged location is specified by a light orange background and a black border
 around the rectangle defined by the current selection of letters, with the first
 letter set to bold. (Where "first" means where the drag starts, corresponding to the
 first letter of the actual word.)
@@ -577,19 +577,19 @@ Attributes:
 
 ###### LettersRow
 
-* letters: string
-* word: str
-* wordStart: int
-* wordDirection: int - 1 or -1
+* letters: string | null
+* word: string
+* wordStart: number
+* wordDirection: number,  1 or -1
 
 Populate the letters row using a separate utility 
-function populateLettersRow(word: string, rowLength: int, difficult: DifficultyType, forwardsOnly: bool): string[];
+function populateLettersRow(word: string, rowLength: int, difficult: DifficultyType, forwardsOnly: bool): string;
 
 ###### WordsToFind
 
 Attributes:
 
-* words: WordsToFind
+* words: WordToFind[]
 * activeWord: WordToFind | null
 
 ###### WordToFind
