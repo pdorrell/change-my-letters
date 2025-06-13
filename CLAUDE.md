@@ -382,10 +382,14 @@ Suggested names of new view class -
 
 ## Finders page & sub-pages
 
-The *Finders* page is a page which is intended to contain multiple "word finding" sub-pages.
+The *Finders* page is a page that contains multiple "word finding" sub-pages.
 
-Currently there is only one finder sub-page (Word Choice). Each sub-page is routed to by a 
-finderType value of type finderType which is one of a set of possible values (currently only 'word-choice').
+Each sub-page is routed to by a finderType value of type finderType which is one of a set of possible values.
+
+Currently these sub-pages are:
+
+* Word Choice - 'word-choice'
+* Words In Row - 'words-in-row'
 
 Even when navigated away from, the Finders page will remember which sub-page was showing, and each
 sub-page will remember it's own current state.
@@ -463,3 +467,148 @@ Suggested view classes (in /views/finders/word-choice-finder/):
     * Retry button
     * New button
   * FinderMessagePanel - where messages get displayed
+
+### Words In Row Finder
+
+"Words In Rows" is a bit like a classic word search in a grid, except it is very simple
+(because it is intended for young children learning to read) -
+
+* You search for just one word at a time
+* The word is "hidden" in a single row of letters, possibly written backwards.
+
+The words to find are randomly chosen from the application's word graph.
+
+This finder is a completion task, so there is no score. You start the task, and you
+proceed until it is completed.
+
+The UI consists of three panels -
+
+* Controls - to determining difficulty, and also a New button to start with a new set of words.
+* Words to Find (similar to what's in the Word Choice Finder, but not exactly the same)
+* A row of 12 letters in which to find the current word
+
+The basic user interaction is -
+
+* The user clicks on a word to find
+* The application says the word
+* The row of letters is populated, and the word to find is somewhere in the row - possibly backwards
+  if the "Forward only" control is unchecked.
+* The user is now committed to finding that word. The choice of word to find is
+  highlighted (in light yellow) as being the current word. The user can click on the word to find
+  again to hear it again, but they can't change their mind and click on a different
+  word to find.
+* The user can select a candidate word location by starting a drag on where they think
+  the first letter is and dragging until they reach where they think the last letter is
+  and then letting go. While dragging the application will highlight the current selection.
+* When the user lets go, either -
+   * The word is correct, so the application changes the highlight to light green background
+     for correct, and the word to find button changes to green meaning correct.
+   * The word is wrong, so the application changes the highlight to light red background
+     and the word to find button changes to red meaning wrong.
+* If the word was correct, then the user can move on to the next word. When they click 
+  on the next word to find, the row is re-populated with the new word and other letters.
+* If the word was wrong, then the user still has to find the correct location of the word.
+  They can click on the same word-to-find button to make it say again. The highlight of
+  the wrong location will disappear when the first of these happens -
+  * The user clicks on that word-to-find
+  * After 5 seconds pass
+  * The user starts dragging to set a new attempted location
+  
+#### Controls
+
+The controls are -
+
+* Radio buttons for "Difficulty" - "easy" and "hard". This setting determines how letters
+  which are not from the word are chosen. With "easy" they are chosen randomly from the alphabet.
+  With "hard" they are chosen 40% of the time from the alphabet and 60% of the time from
+  the set of letters of the word itself.
+* "Forwards only" checkbox. If checked, the word will only be placed in the forwards
+  direction in the row. If not checked, then there is a 50% chance it will be placed backwards.
+* "New" button (placed to at the right end of the control panel) - starts with a new set of
+  words to find.
+
+The task is deemed to be started once the user has clicked on the first word to find.
+Once the task is started, the difficulty and forwards-only settings are locked in.
+The "New" button is only enabled at the end of a task when all the words to find have
+been found. (So the user will have the change to change the difficulty & forwards-only
+setting after clicking New and before choosing the first word to find.)
+
+#### Letters Row
+
+##### Population
+
+The rules for population of the letters row are:
+
+* Place the word to find in a random position in the letters row. If "forwards-only" 
+  then place it in the forwards direction, otherwise randomly place it forwards or backwards.
+* Populate the rest of the letters by choosing one letter at a time -
+  * If "easy" then randomly from the a-z alphabet
+  * If "hard" then randomly 40% of the time from the a-z alphabet and 60% of the time from
+    the set of unique letters in the word itself.
+* For each letter chosen, make sure that the word itself does not appear a second time
+  other than it's original chosen location. If "forwards-only" is not checked, make sure
+  that it does not appear either forwards or backwards in a second location.
+
+##### Drag interaction
+
+When the user is dragging to specify where they think the word to find is, the current
+dragged location is specified by a light orange background and a thicker black border
+around the rectangle defined by the current selection of letters, with the first
+letter set to bold. (Where "first" means where the drag starts, corresponding to the
+first letter of the actual word.)
+
+
+#### Suggested implementation and names of classes etc.
+
+##### Model components
+
+* WordsInRowFinder class
+  * LettersRow
+  * WordsToFind - a list of WordToFind's
+  
+###### WordsInRowFinder -
+
+Attributes:
+
+* difficulty - ValueModel<DifficultyType> one of 'easy' or 'hard'
+* forwardsOnly: ValueModel<bool>
+* lettersRow: LettersRow
+* wordsToFind: WordsToFind
+
+###### LettersRow
+
+* letters: string
+* word: str
+* wordStart: int
+* wordDirection: int - 1 or -1
+
+Populate the letters row using a separate utility 
+function populateLettersRow(word: string, rowLength: int, difficult: DifficultyType, forwardsOnly: bool): string[];
+
+###### WordsToFind
+
+Attributes:
+
+* words: WordsToFind
+* activeWord: WordToFind | null
+
+###### WordToFind
+
+Attributes:
+
+* active: bool - if it's the current active word to find
+* found: bool | null - true if it has been found, false if it's the current active word and the user set the wrong location.
+
+###### parent attributes
+
+Most of the model classes will also have parent attributes, for example clicking on the word to find will cause the
+WordToFind model to set itself to be active which means the parent WordsToFind has to set itself as active and the
+parent WordsInRowFinder has to tell the LettersRow to be repopulated and reset to starting state etc.
+
+##### View components
+
+* WordsInRowFinderPage
+  * FinderControls
+  * WordsToFindPanel - containing multiple WordsToFindView
+  * LettersRowPanel - containing
+    * LettersRowView - use a <table>
