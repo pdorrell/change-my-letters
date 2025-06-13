@@ -7,6 +7,7 @@ import { ResetInteraction } from '@/models/reset/reset-interaction';
 import { ReviewPronunciationInteraction } from '@/models/review/review-pronunciation-interaction';
 import { FindersInteraction } from '@/models/finders/finders-interaction';
 import { WordChoiceFinderInteraction } from '@/models/finders/word-choice-finder/word-choice-finder-interaction';
+import { WordsInRowFinder } from '@/models/finders/words-in-row-finder/words-in-row-finder';
 import { MenuManager } from '@/lib/views/menu-manager';
 import { Word } from '@/models/Word';
 import { ButtonAction } from '@/lib/models/actions';
@@ -68,6 +69,9 @@ export class AppState {
 
   // Word Choice Finder interaction model
   wordChoiceFinderInteraction: WordChoiceFinderInteraction;
+
+  // Words In Row Finder interaction model
+  wordsInRowFinder: WordsInRowFinder;
 
   // Menu state management
   menuManager: MenuManager;
@@ -131,6 +135,13 @@ export class AppState {
       randomWords,
       getRandomWords,
       this.happyWordSayer
+    );
+
+    // Initialize words in row finder with random words
+    this.wordsInRowFinder = new WordsInRowFinder(
+      this.wordSayer,
+      randomWords,
+      getRandomWords
     );
 
     // Initialize the word changer
