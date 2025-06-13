@@ -470,7 +470,7 @@ Suggested view classes (in /views/finders/word-choice-finder/):
 
 ### Words In Row Finder
 
-"Words In Rows" is a bit like a classic word search in a grid, except it is very simple
+"Words In Row" is a bit like a classic word search in a grid, except it is very simple
 because it is intended for young children learning to read -
 
 * You search for just one word at a time
@@ -560,6 +560,8 @@ first letter of the actual word.)
 
 #### Suggested implementation and names of classes etc.
 
+**Note**: These suggested implementation details do not preclude the inclusion of attributes & methods not specified that are obviously required by the spec. For example, timing functionality will naturally use setTimeout, drag interactions will need event handlers, etc. The main intention is to pre-determine names and structures of key implementation artifacts for code readability and understanding.
+
 ##### Model components
 
 * WordsInRowFinder class
@@ -570,8 +572,9 @@ first letter of the actual word.)
 
 Attributes:
 
-* difficulty - ValueModel<DifficultyType> one of 'easy' or 'hard'
-* forwardsOnly: ValueModel<bool>
+* public constructor param wordSayer: WordSayer
+* difficulty: ValueModel<DifficultyType> one of 'easy' or 'hard'
+* forwardsOnly: ValueModel<boolean>
 * lettersRow: LettersRow
 * wordsToFind: WordsToFind
 
@@ -581,9 +584,27 @@ Attributes:
 * word: string
 * wordStart: number
 * wordDirection: number,  1 or -1
+* dragState: WordDragState | null
 
-Populate the letters row using a separate utility 
-function populateLettersRow(word: string, rowLength: int, difficult: DifficultyType, forwardsOnly: bool): string;
+Populate the letters row using a separate utility function:
+```typescript
+populateLettersRow(word: string, rowLength: number, difficulty: DifficultyType, forwardsOnly: boolean): PopulatedLettersRow
+```
+
+Where PopulatedLettersRow is a type with:
+* letters: string
+* wordStart: number  
+* wordDirection: number
+
+###### WordDragState
+
+Attributes for managing drag interactions:
+
+* start: number - starting position of drag
+* direction: number - 1 for forward, -1 for backward
+* length: number - current length of selection
+* maxLength: number - maximum possible length (based on word length)
+* possibleDirections: number[] - [1] if forwardsOnly, [1, -1] otherwise
 
 ###### WordsToFind
 
@@ -591,18 +612,20 @@ Attributes:
 
 * words: WordToFind[]
 * activeWord: WordToFind | null
+* get completed(): boolean - true when all words have found = true
 
 ###### WordToFind
 
 Attributes:
 
-* active: bool - if it's the current active word to find
-* found: bool | null - true if it has been found, false if it's the current active word and the user set the wrong location.
+* word: string - the word to find
+* active: boolean - if it's the current active word to find
+* found: boolean | null - true if it has been found, false if it's the current active word and the user set the wrong location, null if not yet attempted
 
 ###### parent attributes
 
 Most of the model classes will also have parent attributes, for example clicking on the word to find will cause the
-WordToFind model to set itself to be active which means the parent WordsToFind has to set itself as active and the
+WordToFind model to set itself to be active which means the parent WordsToFind has to set activeWord and the
 parent WordsInRowFinder has to tell the LettersRow to be repopulated and reset to starting state etc.
 
 ##### View components
