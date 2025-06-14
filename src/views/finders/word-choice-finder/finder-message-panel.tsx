@@ -7,9 +7,7 @@ interface FinderMessagePanelProps { finderInteraction: WordChoiceFinderInteracti
 export const FinderMessagePanel: React.FC<FinderMessagePanelProps> = observer(({ finderInteraction }) => {
   return (
     <div className="finder-message-panel">
-      <div className="finder-message">
-        {finderInteraction.message || '\u00A0'}
-      </div>
+      <div className="finder-message">{finderInteraction.message || '\u00A0'}</div>
     </div>
   );
 });

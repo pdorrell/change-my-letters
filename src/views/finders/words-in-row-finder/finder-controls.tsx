@@ -12,17 +12,10 @@ export const FinderControls: React.FC<FinderControlsProps> = observer(({ finder 
 
   return (
     <div className="word-changer-controls">
-      <ValueRadioButtons
-        value={finder.difficulty}
-        options={difficultyOptions}
-      />
-      <ValueCheckbox
-        value={finder.forwardsOnly}
-      />
+      <ValueRadioButtons value={finder.difficulty} options={difficultyOptions} />
+      <ValueCheckbox value={finder.forwardsOnly} />
       <div style={{ marginLeft: 'auto' }}>
-        <ActionButton action={finder.newAction}>
-          New
-        </ActionButton>
+        <ActionButton action={finder.newAction}>New</ActionButton>
       </div>
     </div>
   );
