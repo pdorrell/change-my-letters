@@ -1221,6 +1221,10 @@ body {
       &.letters-row-cell--drag-end {
         border-right-color: #ffc107;
       }
+      
+      &.letters-row-cell--word-first {
+        background-color: #ffeaa7;
+      }
     }
     
     &--correct {
@@ -1235,6 +1239,10 @@ body {
       &.letters-row-cell--drag-end {
         border-right-color: #28a745;
       }
+      
+      &.letters-row-cell--word-first {
+        background-color: #c3e6cb;
+      }
     }
     
     &--wrong {
@@ -1248,6 +1256,10 @@ body {
       
       &.letters-row-cell--drag-end {
         border-right-color: #dc3545;
+      }
+      
+      &.letters-row-cell--word-first {
+        background-color: #f5c6cb;
       }
     }
   }

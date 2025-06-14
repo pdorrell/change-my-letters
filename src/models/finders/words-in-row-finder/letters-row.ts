@@ -11,6 +11,8 @@ export class LettersRow {
   dragState: WordDragState | null = null;
   correctSelection: { start: number; end: number } | null = null;
   wrongSelection: { start: number; end: number } | null = null;
+  correctSelectionStart: number | null = null;
+  wrongSelectionStart: number | null = null;
   private rowLength: number = 12;
 
   constructor() {
@@ -26,6 +28,8 @@ export class LettersRow {
     this.clearDragState();
     this.correctSelection = null;
     this.wrongSelection = null;
+    this.correctSelectionStart = null;
+    this.wrongSelectionStart = null;
   }
 
   startDrag(position: number, forwardsOnly: boolean): void {
@@ -67,6 +71,7 @@ export class LettersRow {
         start: this.dragState.startIndex,
         end: this.dragState.endIndex
       };
+      this.correctSelectionStart = this.dragState.start;
       this.clearDragState();
     }
   }
@@ -77,6 +82,7 @@ export class LettersRow {
         start: this.dragState.startIndex,
         end: this.dragState.endIndex
       };
+      this.wrongSelectionStart = this.dragState.start;
       this.clearDragState();
     }
   }
