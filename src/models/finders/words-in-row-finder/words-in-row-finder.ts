@@ -77,28 +77,28 @@ export class WordsInRowFinder {
     await this.wordSayer.say(wordToFind.word);
   }
 
-  startDrag(position: number): void {
+  startSelection(position: number): void {
     if (!this.wordsToFind.activeWord) return;
 
-    // Clear wrong state when starting a new drag
+    // Clear wrong state when starting a new selection
     if (this.wordsToFind.activeWord.found === false) {
       this.wordsToFind.activeWord.found = null;
     }
 
-    this.lettersRow.startDrag(position, this.forwardsOnly.value);
+    this.lettersRow.startSelection(position, this.forwardsOnly.value);
   }
 
-  updateDrag(endPosition: number): void {
-    this.lettersRow.updateDrag(endPosition);
+  updateSelection(endPosition: number): void {
+    this.lettersRow.updateSelection(endPosition);
   }
 
   finishDrag(): void {
-    if (!this.lettersRow.dragState || !this.wordsToFind.activeWord) {
-      this.lettersRow.clearDragState();
+    if (!this.lettersRow.selectionState || !this.wordsToFind.activeWord) {
+      this.lettersRow.clearSelection();
       return;
     }
 
-    const isCorrect = this.lettersRow.checkDraggedWord();
+    const isCorrect = this.lettersRow.checkSelectedWord();
 
     if (isCorrect) {
       this.wordsToFind.markActiveWordCorrect();
@@ -109,8 +109,8 @@ export class WordsInRowFinder {
     }
   }
 
-  clearDragSelection(): void {
-    this.lettersRow.clearDragState();
+  clearSelection(): void {
+    this.lettersRow.clearSelection();
   }
 
   new(): void {
@@ -131,7 +131,7 @@ export class WordsInRowFinder {
   reset(): void {
     this.taskStarted = false;
     this.wordsToFind.reset();
-    this.lettersRow.clearDragState();
+    this.lettersRow.clearSelection();
     this.lettersRow.letters = null;
     this.lettersRow.word = '';
     this.lettersRow.correctSelection = null;

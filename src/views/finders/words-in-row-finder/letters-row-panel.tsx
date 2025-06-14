@@ -10,10 +10,10 @@ export const LettersRowPanel: React.FC<LettersRowPanelProps> = observer(({ finde
     <div className="letters-row-panel">
       <LettersRowView
         lettersRow={finder.lettersRow}
-        onStartDrag={finder.startDrag.bind(finder)}
-        onUpdateDrag={finder.updateDrag.bind(finder)}
+        onStartDrag={finder.startSelection.bind(finder)}
+        onUpdateDrag={finder.updateSelection.bind(finder)}
         onFinishDrag={finder.finishDrag.bind(finder)}
-        onClearSelection={finder.clearDragSelection.bind(finder)}
+        onClearSelection={finder.clearSelection.bind(finder)}
       />
     </div>
   );

@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 
-export class WordDragState {
+export class WordSelectionState {
   start: number;
   direction: number;
   length: number;
