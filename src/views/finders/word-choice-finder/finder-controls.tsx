@@ -8,12 +8,8 @@ interface FinderControlsProps { finderInteraction: WordChoiceFinderInteraction; 
 export const FinderControls: React.FC<FinderControlsProps> = observer(({ finderInteraction }) => {
   return (
     <div className="word-changer-controls">
-      <ActionButton action={finderInteraction.retryAction}>
-        Retry
-      </ActionButton>
-      <ActionButton action={finderInteraction.newAction}>
-        New
-      </ActionButton>
+      <ActionButton action={finderInteraction.retryAction}>Retry</ActionButton>
+      <ActionButton action={finderInteraction.newAction}>New</ActionButton>
     </div>
   );
 });

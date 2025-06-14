@@ -16,8 +16,7 @@ export const WordChoiceFinderPage: React.FC<WordChoiceFinderPageProps> = observe
       <WordToFindPanel finderInteraction={wordChoiceFinderInteraction} />
       <FinderScoreAndControlsPanel finderInteraction={wordChoiceFinderInteraction} />
       <FinderMessagePanel finderInteraction={wordChoiceFinderInteraction} />
-      <ConfirmationView
-        confirmationModel={wordChoiceFinderInteraction.confirmation}
+      <ConfirmationView confirmationModel={wordChoiceFinderInteraction.confirmation}
       />
     </>
   );

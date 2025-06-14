@@ -6,8 +6,6 @@ interface FinderScoreViewProps { finderInteraction: WordChoiceFinderInteraction;
 
 export const FinderScoreView: React.FC<FinderScoreViewProps> = observer(({ finderInteraction }) => {
   return (
-    <div className="finder-score">
-      {finderInteraction.scoreText}
-    </div>
+    <div className="finder-score">{finderInteraction.scoreText}</div>
   );
 });
