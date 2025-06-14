@@ -172,10 +172,11 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
 
   return (
     <div className="letters-row-view">
-      <table
-        className="letters-row-table"
-        onTouchMove={handleTouchMove}
-      >
+      <div className="letters-row-wrapper">
+        <table
+          className="letters-row-table"
+          onTouchMove={handleTouchMove}
+        >
         <tbody>
           <tr>
             {lettersRow.lettersArray.map((letter, index) => (
@@ -194,7 +195,8 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
             ))}
           </tr>
         </tbody>
-      </table>
+        </table>
+      </div>
     </div>
   );
 });
