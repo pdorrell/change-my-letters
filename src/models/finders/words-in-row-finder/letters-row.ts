@@ -100,5 +100,9 @@ export class LettersRow {
   get lettersArray(): string[] {
     return this.letters ? this.letters.split('') : Array(this.rowLength).fill('');
   }
+
+  get interactionsDisabled(): boolean {
+    return this.correctSelection !== null;
+  }
 }
 

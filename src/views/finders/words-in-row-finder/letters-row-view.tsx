@@ -39,25 +39,33 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
 
   // Mouse event handlers
   const handleMouseDown = useCallback((position: number) => {
-    startDrag(position);
-  }, [startDrag]);
+    if (!lettersRow.interactionsDisabled) {
+      startDrag(position);
+    }
+  }, [startDrag, lettersRow.interactionsDisabled]);
 
   const handleMouseEnter = useCallback((position: number) => {
-    updateDrag(position);
-  }, [updateDrag]);
+    if (!lettersRow.interactionsDisabled) {
+      updateDrag(position);
+    }
+  }, [updateDrag, lettersRow.interactionsDisabled]);
 
   const handleMouseUp = useCallback(() => {
-    finishDrag();
-  }, [finishDrag]);
+    if (!lettersRow.interactionsDisabled) {
+      finishDrag();
+    }
+  }, [finishDrag, lettersRow.interactionsDisabled]);
 
   // Touch event handlers
   const handleTouchStart = useCallback((e: React.TouchEvent, position: number) => {
-    e.preventDefault(); // Prevent scrolling
-    startDrag(position);
-  }, [startDrag]);
+    if (!lettersRow.interactionsDisabled) {
+      e.preventDefault(); // Prevent scrolling
+      startDrag(position);
+    }
+  }, [startDrag, lettersRow.interactionsDisabled]);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (!isDragging) return;
+    if (!isDragging || lettersRow.interactionsDisabled) return;
 
     e.preventDefault(); // Prevent scrolling
     const touch = e.touches[0];
@@ -83,14 +91,20 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
   }, [isDragging, updateDrag]);
 
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    e.preventDefault();
-    finishDrag();
-  }, [finishDrag]);
+    if (!lettersRow.interactionsDisabled) {
+      e.preventDefault();
+      finishDrag();
+    }
+  }, [finishDrag, lettersRow.interactionsDisabled]);
 
   const getCellClassName = (index: number): string => {
     const baseClass = 'letters-row-cell';
     const selection = lettersRow.draggedSelection;
     const classes = [baseClass];
+
+    if (lettersRow.interactionsDisabled) {
+      classes.push('letters-row-cell--disabled');
+    }
 
     if (selection && index >= selection.start && index <= selection.end) {
       if (lettersRow.dragState) {

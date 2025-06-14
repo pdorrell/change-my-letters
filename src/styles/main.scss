@@ -1198,8 +1198,12 @@ body {
     user-select: none;
     transition: all 0.1s;
     
-    &:hover:not(.letters-row-cell--dragging) {
+    &:hover:not(.letters-row-cell--dragging):not(.letters-row-cell--disabled) {
       background-color: #e8e8e8;
+    }
+
+    &--disabled {
+      cursor: default;
     }
     
     &--dragging {
