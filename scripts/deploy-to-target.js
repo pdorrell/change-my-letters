@@ -43,13 +43,13 @@ try {
   for (const item of deployContents) {
     const itemPath = path.join(deployPath, item);
     const isDirectory = fs.statSync(itemPath).isDirectory();
-    
+
     // Skip .git and assets directories
     if (isDirectory && (item === '.git' || item === 'assets')) {
       console.log(`  ⏩ Preserving ${item}/ directory`);
       continue;
     }
-    
+
     // Remove file or directory
     if (isDirectory) {
       if (item === 'data') {
