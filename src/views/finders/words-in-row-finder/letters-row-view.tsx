@@ -109,8 +109,10 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
     if (selection && index >= selection.start && index <= selection.end) {
       if (lettersRow.dragState) {
         classes.push('letters-row-cell--dragging');
-      } else {
+      } else if (lettersRow.correctSelection) {
         classes.push('letters-row-cell--correct');
+      } else if (lettersRow.wrongSelection) {
+        classes.push('letters-row-cell--wrong');
       }
 
       // Add border classes for start and end of selection

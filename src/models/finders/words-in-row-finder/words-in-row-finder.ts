@@ -79,6 +79,11 @@ export class WordsInRowFinder {
   startDrag(position: number): void {
     if (!this.wordsToFind.activeWord) return;
 
+    // Clear wrong state when starting a new drag
+    if (this.wordsToFind.activeWord.found === false) {
+      this.wordsToFind.activeWord.found = null;
+    }
+
     this.lettersRow.startDrag(position, this.forwardsOnly.value);
   }
 
@@ -99,14 +104,12 @@ export class WordsInRowFinder {
       this.lettersRow.markSelectionCorrect();
     } else {
       this.wordsToFind.markActiveWordWrong();
+      this.lettersRow.markSelectionWrong();
     }
   }
 
   clearDragSelection(): void {
     this.lettersRow.clearDragState();
-    if (this.wordsToFind.activeWord && this.wordsToFind.activeWord.found === false) {
-      this.wordsToFind.activeWord.found = null;
-    }
   }
 
   new(): void {
