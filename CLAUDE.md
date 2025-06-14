@@ -528,10 +528,8 @@ The controls are -
   words to find.
 
 The task is deemed to be started once the user has clicked on the first word to find.
-Once the task is started, the difficulty and forwards-only settings are locked in.
 The "New" button is only enabled at the end of a task when all the words to find have
-been found. (So the user will have the chance to change the difficulty & forwards-only
-settings after clicking New and before choosing the first word to find.)
+been found.
 
 #### Letters Row
 
