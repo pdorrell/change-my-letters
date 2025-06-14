@@ -19,7 +19,7 @@ const getFormattedDateTime = () => {
   const day = String(now.getDate()).padStart(2, '0');
   const hours = String(now.getHours()).padStart(2, '0');
   const minutes = String(now.getMinutes()).padStart(2, '0');
-  
+
   return `${year}/${month}/${day} ${hours}:${minutes}`;
 };
 
@@ -95,9 +95,9 @@ export default (env, argv) => {
       // Handle version information
       new webpack.DefinePlugin({
         'process.env.APP_VERSION': JSON.stringify(
-          fs.existsSync(path.resolve(__dirname, 'version.txt')) 
-            ? (isDevelopment 
-                ? fs.readFileSync(path.resolve(__dirname, 'version.txt'), 'utf-8').trim() + '+' 
+          fs.existsSync(path.resolve(__dirname, 'version.txt'))
+            ? (isDevelopment
+                ? fs.readFileSync(path.resolve(__dirname, 'version.txt'), 'utf-8').trim() + '+'
                 : getFormattedDateTime())
             : getFormattedDateTime()
         )
@@ -153,7 +153,7 @@ export default (env, argv) => {
             middleware: (req, res) => {
               res.writeHead(200, {'Content-Type': 'text/plain'});
               res.end('Server shutting down...\n');
-              
+
               // Shutdown the server after a brief delay to allow response to be sent
               setTimeout(() => {
                 console.log('Received kill request, shutting down server...');

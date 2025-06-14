@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint --format ./eslint-relative-formatter.cjs '{src,tests}/**/*.{ts,tsx}'",
     "lint:fix": "eslint --format ./eslint-relative-formatter.cjs '{src,tests}/**/*.{ts,tsx}' --fix",
+    "lint:fix-whitespace": "eslint --format ./eslint-relative-formatter.cjs '{src,tests}/**/*.{ts,tsx}' --fix --rule 'no-trailing-spaces: error' --rule 'eol-last: error'",
     "check-code": "npm run typecheck && npm run lint",
     "test": "jest",
     "test:full": "npm run typecheck && npm run lint && npm run test",
