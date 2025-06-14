@@ -96,7 +96,7 @@ export class WordsInRowFinder {
 
     if (isCorrect) {
       this.wordsToFind.markActiveWordCorrect();
-      this.lettersRow.clearDragState();
+      this.lettersRow.markSelectionCorrect();
     } else {
       this.wordsToFind.markActiveWordWrong();
     }
