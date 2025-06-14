@@ -19,23 +19,73 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
 }) => {
   const [isDragging, setIsDragging] = useState(false);
 
-  const handleMouseDown = useCallback((position: number) => {
+  const startDrag = useCallback((position: number) => {
     setIsDragging(true);
     onStartDrag(position);
   }, [onStartDrag]);
 
-  const handleMouseEnter = useCallback((position: number) => {
+  const updateDrag = useCallback((position: number) => {
     if (isDragging) {
       onUpdateDrag(position);
     }
   }, [isDragging, onUpdateDrag]);
 
-  const handleMouseUp = useCallback(() => {
+  const finishDrag = useCallback(() => {
     if (isDragging) {
       setIsDragging(false);
       onFinishDrag();
     }
   }, [isDragging, onFinishDrag]);
+
+  // Mouse event handlers
+  const handleMouseDown = useCallback((position: number) => {
+    startDrag(position);
+  }, [startDrag]);
+
+  const handleMouseEnter = useCallback((position: number) => {
+    updateDrag(position);
+  }, [updateDrag]);
+
+  const handleMouseUp = useCallback(() => {
+    finishDrag();
+  }, [finishDrag]);
+
+  // Touch event handlers
+  const handleTouchStart = useCallback((e: React.TouchEvent, position: number) => {
+    e.preventDefault(); // Prevent scrolling
+    startDrag(position);
+  }, [startDrag]);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!isDragging) return;
+
+    e.preventDefault(); // Prevent scrolling
+    const touch = e.touches[0];
+    if (!touch) return;
+
+    // Find the element under the touch point
+    const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+    if (!elementBelow) return;
+
+    // Find the closest td with letters-row-cell class
+    const cell = elementBelow.closest('td.letters-row-cell');
+    if (!cell) return;
+
+    // Get the index from the cell's position in the row
+    const row = cell.parentElement;
+    if (!row) return;
+
+    const cells = Array.from(row.children);
+    const cellIndex = cells.indexOf(cell as Element);
+    if (cellIndex >= 0) {
+      updateDrag(cellIndex);
+    }
+  }, [isDragging, updateDrag]);
+
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    e.preventDefault();
+    finishDrag();
+  }, [finishDrag]);
 
   const getCellClassName = (index: number): string => {
     const baseClass = 'letters-row-cell';
@@ -79,6 +129,13 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
       }
     };
 
+    const handleGlobalTouchEnd = () => {
+      if (isDragging) {
+        setIsDragging(false);
+        onFinishDrag();
+      }
+    };
+
     const handleGlobalClick = (e: MouseEvent) => {
       const target = e.target as Element;
       if (!target.closest('.letters-row-view')) {
@@ -87,17 +144,22 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
     };
 
     document.addEventListener('mouseup', handleGlobalMouseUp);
+    document.addEventListener('touchend', handleGlobalTouchEnd);
     document.addEventListener('click', handleGlobalClick);
 
     return () => {
       document.removeEventListener('mouseup', handleGlobalMouseUp);
+      document.removeEventListener('touchend', handleGlobalTouchEnd);
       document.removeEventListener('click', handleGlobalClick);
     };
   }, [isDragging, onFinishDrag, onClearSelection]);
 
   return (
     <div className="letters-row-view">
-      <table className="letters-row-table">
+      <table
+        className="letters-row-table"
+        onTouchMove={handleTouchMove}
+      >
         <tbody>
           <tr>
             {lettersRow.lettersArray.map((letter, index) => (
@@ -108,6 +170,8 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
                 onMouseDown={() => handleMouseDown(index)}
                 onMouseEnter={() => handleMouseEnter(index)}
                 onMouseUp={handleMouseUp}
+                onTouchStart={(e) => handleTouchStart(e, index)}
+                onTouchEnd={handleTouchEnd}
               >
                 {letter}
               </td>
