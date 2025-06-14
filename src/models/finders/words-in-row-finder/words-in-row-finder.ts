@@ -134,6 +134,8 @@ export class WordsInRowFinder {
     this.lettersRow.clearDragState();
     this.lettersRow.letters = null;
     this.lettersRow.word = '';
+    this.lettersRow.correctSelection = null;
+    this.lettersRow.wrongSelection = null;
   }
 
   destroy(): void {
