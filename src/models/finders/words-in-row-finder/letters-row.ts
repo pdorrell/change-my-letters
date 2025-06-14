@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import { WordDragState } from './word-drag-state';
+import { WordSelectionState } from './word-selection-state';
 import { populateLettersRow } from './populate-letters-row';
 import { DifficultyType } from './types';
 
@@ -8,7 +8,7 @@ export class LettersRow {
   word: string = '';
   wordStart: number = 0;
   wordDirection: number = 1;
-  dragState: WordDragState | null = null;
+  selectionState: WordSelectionState | null = null;
   correctSelection: { start: number; end: number } | null = null;
   wrongSelection: { start: number; end: number } | null = null;
   correctSelectionStart: number | null = null;
@@ -25,18 +25,18 @@ export class LettersRow {
     this.word = word;
     this.wordStart = result.wordStart;
     this.wordDirection = result.wordDirection;
-    this.clearDragState();
+    this.clearSelection();
     this.correctSelection = null;
     this.wrongSelection = null;
     this.correctSelectionStart = null;
     this.wrongSelectionStart = null;
   }
 
-  startDrag(position: number, forwardsOnly: boolean): void {
-    // Clear wrong selection when starting a new drag
+  startSelection(position: number, forwardsOnly: boolean): void {
+    // Clear wrong selection when starting a new selection
     this.wrongSelection = null;
 
-    this.dragState = new WordDragState(
+    this.selectionState = new WordSelectionState(
       position,
       1, // Initial direction
       this.rowLength, // Allow selection to extend to end of row
@@ -44,70 +44,70 @@ export class LettersRow {
     );
   }
 
-  updateDrag(endPosition: number): void {
-    if (!this.dragState) return;
+  updateSelection(endPosition: number): void {
+    if (!this.selectionState) return;
 
-    const start = this.dragState.start;
+    const start = this.selectionState.start;
     const requestedDirection = endPosition >= start ? 1 : -1;
 
     // In forwards-only mode, don't allow backwards direction
-    if (this.dragState.possibleDirections.includes(requestedDirection)) {
+    if (this.selectionState.possibleDirections.includes(requestedDirection)) {
       const length = Math.abs(endPosition - start) + 1;
-      this.dragState.updateDirection(requestedDirection);
-      this.dragState.updateLength(length);
+      this.selectionState.updateDirection(requestedDirection);
+      this.selectionState.updateLength(length);
     } else {
       // In forwards-only mode trying to go backwards, keep length at 1
-      this.dragState.updateLength(1);
+      this.selectionState.updateLength(1);
     }
   }
 
-  clearDragState(): void {
-    this.dragState = null;
+  clearSelection(): void {
+    this.selectionState = null;
   }
 
   markSelectionCorrect(): void {
-    if (this.dragState) {
+    if (this.selectionState) {
       this.correctSelection = {
-        start: this.dragState.startIndex,
-        end: this.dragState.endIndex
+        start: this.selectionState.startIndex,
+        end: this.selectionState.endIndex
       };
-      this.correctSelectionStart = this.dragState.start;
-      this.clearDragState();
+      this.correctSelectionStart = this.selectionState.start;
+      this.clearSelection();
     }
   }
 
   markSelectionWrong(): void {
-    if (this.dragState) {
+    if (this.selectionState) {
       this.wrongSelection = {
-        start: this.dragState.startIndex,
-        end: this.dragState.endIndex
+        start: this.selectionState.startIndex,
+        end: this.selectionState.endIndex
       };
-      this.wrongSelectionStart = this.dragState.start;
-      this.clearDragState();
+      this.wrongSelectionStart = this.selectionState.start;
+      this.clearSelection();
     }
   }
 
-  checkDraggedWord(): boolean {
-    if (!this.dragState || !this.letters) return false;
+  checkSelectedWord(): boolean {
+    if (!this.selectionState || !this.letters) return false;
 
-    const dragStart = this.dragState.startIndex;
-    const dragEnd = this.dragState.endIndex;
-    const draggedLength = dragEnd - dragStart + 1;
+    const selectionStart = this.selectionState.startIndex;
+    const selectionEnd = this.selectionState.endIndex;
+    const selectedLength = selectionEnd - selectionStart + 1;
 
-    if (draggedLength !== this.word.length) return false;
+    if (selectedLength !== this.word.length) return false;
 
-    const draggedText = this.letters.slice(dragStart, dragEnd + 1);
-    const expectedText = this.dragState.direction === 1 ?
+    const selectedText = this.letters.slice(selectionStart, selectionEnd + 1);
+    const expectedText = this.selectionState.direction === 1 ?
       this.word : this.word.split('').reverse().join('');
 
-    return draggedText.toLowerCase() === expectedText.toLowerCase();
+    return selectedText.toLowerCase() === expectedText.toLowerCase();
   }
 
-  get draggedSelection(): { start: number; end: number } | null {
-    if (this.dragState) {
+  get selection(): { start: number; end: number } | null {
+    if (this.selectionState) {
       return {
-        start: this.dragState.startIndex,
-        end: this.dragState.endIndex
+        start: this.selectionState.startIndex,
+        end: this.selectionState.endIndex
       };
     }
 

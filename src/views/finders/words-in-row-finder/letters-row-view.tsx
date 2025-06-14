@@ -111,7 +111,7 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
 
   const getCellClassName = (index: number): string => {
     const baseClass = 'letters-row-cell';
-    const selection = lettersRow.draggedSelection;
+    const selection = lettersRow.selection;
     const classes = [baseClass];
 
     if (lettersRow.interactionsDisabled) {
@@ -119,7 +119,7 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
     }
 
     if (selection && index >= selection.start && index <= selection.end) {
-      if (lettersRow.dragState) {
+      if (lettersRow.selectionState) {
         classes.push('letters-row-cell--dragging');
       } else if (lettersRow.correctSelection) {
         classes.push('letters-row-cell--correct');
@@ -136,9 +136,9 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
       }
 
       // Add class for the first letter of the word (where user started dragging)
-      if (lettersRow.dragState && index === lettersRow.dragState.start) {
+      if (lettersRow.selectionState && index === lettersRow.selectionState.start) {
         classes.push('letters-row-cell--word-first');
-      } else if ((lettersRow.correctSelection || lettersRow.wrongSelection) && lettersRow.dragState === null) {
+      } else if ((lettersRow.correctSelection || lettersRow.wrongSelection) && lettersRow.selectionState === null) {
         // For completed selections, we need to determine the first letter based on the stored drag direction
         // We'll need to access this information from the LettersRow model
         const wordStart = getWordFirstPosition();
@@ -152,9 +152,9 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
   };
 
   const getFirstLetterStyle = (index: number): React.CSSProperties => {
-    const selection = lettersRow.draggedSelection;
+    const selection = lettersRow.selection;
 
-    if (selection && index === selection.start && lettersRow.dragState) {
+    if (selection && index === selection.start && lettersRow.selectionState) {
       return { fontWeight: 'bold' };
     }
 
