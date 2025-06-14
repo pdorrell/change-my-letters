@@ -19,7 +19,7 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
 }) => {
   const [isDragging, setIsDragging] = useState(false);
 
-  const getWordFirstPosition = (selection: { start: number; end: number }): number | null => {
+  const getWordFirstPosition = (): number | null => {
     // For completed selections, we need to determine which end was the starting position
     // We can use the stored drag direction information from the LettersRow
     if (lettersRow.correctSelection) {
@@ -134,14 +134,14 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
       if (index === selection.end) {
         classes.push('letters-row-cell--drag-end');
       }
-      
+
       // Add class for the first letter of the word (where user started dragging)
       if (lettersRow.dragState && index === lettersRow.dragState.start) {
         classes.push('letters-row-cell--word-first');
       } else if ((lettersRow.correctSelection || lettersRow.wrongSelection) && lettersRow.dragState === null) {
         // For completed selections, we need to determine the first letter based on the stored drag direction
         // We'll need to access this information from the LettersRow model
-        const wordStart = getWordFirstPosition(selection);
+        const wordStart = getWordFirstPosition();
         if (wordStart !== null && index === wordStart) {
           classes.push('letters-row-cell--word-first');
         }
