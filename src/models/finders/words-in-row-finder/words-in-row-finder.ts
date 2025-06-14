@@ -64,7 +64,6 @@ export class WordsInRowFinder {
 
     const wasAlreadyActive = this.wordsToFind.activeWord === wordToFind;
     this.wordsToFind.setActiveWord(wordToFind);
-    await this.wordSayer.say(wordToFind.word);
 
     // Only populate the letters row if this is a new active word
     if (!wasAlreadyActive) {
@@ -74,6 +73,8 @@ export class WordsInRowFinder {
         this.forwardsOnly.value
       );
     }
+
+    await this.wordSayer.say(wordToFind.word);
   }
 
   startDrag(position: number): void {
