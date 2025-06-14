@@ -1179,11 +1179,15 @@ body {
   justify-content: center;
 }
 
-.letters-row-table {
-  border-collapse: separate;
-  border-spacing: 0;
+.letters-row-wrapper {
   border: 2px solid #333;
   border-radius: 4px;
+  overflow: hidden;
+}
+
+.letters-row-table {
+  border-collapse: collapse;
+  border-spacing: 0;
   
   td.letters-row-cell {
     width: 40px;
