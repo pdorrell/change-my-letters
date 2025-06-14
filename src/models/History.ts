@@ -7,7 +7,7 @@ import { Word } from '@/models/Word';
  */
 export type WordChange = {
   type: 'delete_letter' | 'insert_letter' | 'replace_letter' | 'upper_case_letter' | 'lower_case_letter';
-  position: number;
+  position: number;    
   letter?: string; // For insert and replace
 };
 
@@ -19,7 +19,7 @@ export type HistoryEntry = {
   wordString: string; // Keep string representation for compatibility
   change?: WordChange; // No change for the initial word
 };
-
+    
 /**
  * Model for tracking the history of word changes
  */
