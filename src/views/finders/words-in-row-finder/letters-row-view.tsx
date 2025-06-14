@@ -40,16 +40,25 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
   const getCellClassName = (index: number): string => {
     const baseClass = 'letters-row-cell';
     const selection = lettersRow.draggedSelection;
+    const classes = [baseClass];
 
     if (selection && index >= selection.start && index <= selection.end) {
       if (lettersRow.dragState) {
-        return `${baseClass} letters-row-cell--dragging`;
+        classes.push('letters-row-cell--dragging');
       } else {
-        return `${baseClass} letters-row-cell--correct`;
+        classes.push('letters-row-cell--correct');
+      }
+
+      // Add border classes for start and end of selection
+      if (index === selection.start) {
+        classes.push('letters-row-cell--drag-start');
+      }
+      if (index === selection.end) {
+        classes.push('letters-row-cell--drag-end');
       }
     }
 
-    return baseClass;
+    return classes.join(' ');
   };
 
   const getFirstLetterStyle = (index: number): React.CSSProperties => {
