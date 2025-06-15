@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
-import { RangeSelectable } from '@/libs/models/range-selectable';
+import { RangeSelectable } from '@/lib/models/range-selectable';
 import { LettersRow } from '@/models/finders/words-in-row-finder/letters-row';
 
 // Generic drag selection interfaces and types

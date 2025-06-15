@@ -2,7 +2,7 @@ import { makeAutoObservable, computed } from 'mobx';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
 import { ValueModel } from '@/lib/models/value-models';
 import { ButtonAction } from '@/lib/models/actions';
-import { RangeSelectable } from '@/libs/models/range-selectable';
+import { RangeSelectable } from '@/lib/models/range-selectable';
 import { LettersRow } from './letters-row';
 import { WordsToFind } from './words-to-find';
 import { WordToFind } from './word-to-find';
@@ -150,4 +150,3 @@ export class WordsInRowFinder implements RangeSelectable {
     this.wordsToFind.destroy();
   }
 }
-
