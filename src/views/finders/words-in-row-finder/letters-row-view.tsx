@@ -4,12 +4,34 @@ import { RangeSelectable } from '@/libs/models/range-selectable';
 import { LettersRow } from '@/models/finders/words-in-row-finder/letters-row';
 
 // Generic drag selection interfaces and types
+function findChildUnderTouch(parentRef: React.RefObject<HTMLElement>, touchX: number, touchY: number): Element | null {
+  if (!parentRef.current) return null;
+
+  const selectableChildren = Array.from(
+    parentRef.current.querySelectorAll('[data-selection-index]')
+  );
+
+  // Find the child that contains the touch point
+  for (const child of selectableChildren) {
+    const rect = child.getBoundingClientRect();
+
+    if (touchX >= rect.left &&
+        touchX <= rect.right &&
+        touchY >= rect.top &&
+        touchY <= rect.bottom) {
+      return child;
+    }
+  }
+
+  return null; // No child contains the touch point
+}
 
 interface DragSelectionResult {
   isDragging: boolean;
   onPointerDown: (position: number) => void;
   onPointerEnter: (position: number) => void;
   onPointerUp: () => void;
+  onTouchMove: (e: React.TouchEvent) => void;
 }
 
 // Generic drag selection hook
@@ -56,6 +78,26 @@ function useDragSelection(
     }
   }, [finishDrag, selectable]);
 
+  // Touch move handler for iOS Safari where onPointerEnter doesn't work
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (!isDragging || !selectable.canSelect) return;
+
+    e.preventDefault(); // Prevent scrolling
+    const touch = e.touches[0];
+    if (!touch) return;
+
+    const childUnderTouch = findChildUnderTouch(containerRef, touch.clientX, touch.clientY);
+
+    if (childUnderTouch) {
+      const selectionIndex = parseInt(
+        childUnderTouch.getAttribute('data-selection-index') || '0',
+        10
+      );
+
+      updateDrag(selectionIndex);
+    }
+  }, [isDragging, selectable, containerRef, updateDrag]);
+
   // Global event handlers
   React.useEffect(() => {
     const handleGlobalPointerUp = () => {
@@ -86,6 +128,7 @@ function useDragSelection(
     onPointerDown: handlePointerDown,
     onPointerEnter: handlePointerEnter,
     onPointerUp: handlePointerUp,
+    onTouchMove: handleTouchMove,
   };
 }
 
@@ -105,6 +148,7 @@ const DragSelectableTd: React.FC<DragSelectableTdProps> = observer(({
 }) => (
   <td
     className={className}
+    data-selection-index={index}
     onPointerDown={() => dragSelection.onPointerDown(index)}
     onPointerEnter={() => dragSelection.onPointerEnter(index)}
     onPointerUp={dragSelection.onPointerUp}
@@ -190,6 +234,7 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
       <div className="letters-row-wrapper">
         <table
           className="letters-row-table"
+          onTouchMove={dragSelection.onTouchMove}
         >
         <tbody>
           <tr>
