@@ -15,7 +15,7 @@ interface DragSelectionResult {
 // Generic drag selection hook
 function useDragSelection(
   selectable: RangeSelectable,
-  containerSelector: string
+  containerRef: React.RefObject<HTMLElement>
 ): DragSelectionResult {
   const [isDragging, setIsDragging] = useState(false);
 
@@ -67,7 +67,7 @@ function useDragSelection(
 
     const handleGlobalClick = (e: MouseEvent) => {
       const target = e.target as Element;
-      if (!target.closest(containerSelector)) {
+      if (containerRef.current && !containerRef.current.contains(target)) {
         selectable.clearSelection();
       }
     };
@@ -79,7 +79,7 @@ function useDragSelection(
       document.removeEventListener('pointerup', handleGlobalPointerUp);
       document.removeEventListener('click', handleGlobalClick);
     };
-  }, [isDragging, selectable, containerSelector]);
+  }, [isDragging, selectable, containerRef]);
 
   return {
     isDragging,
@@ -122,10 +122,12 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
   selectable,
   lettersRow
 }) => {
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
   // Use the generic drag selection hook
   const dragSelection = useDragSelection(
     selectable,
-    '.letters-row-view'
+    containerRef
   );
 
   const getWordFirstPosition = (): number | null => {
@@ -184,7 +186,7 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
 
 
   return (
-    <div className="letters-row-view">
+    <div className="letters-row-view" ref={containerRef}>
       <div className="letters-row-wrapper">
         <table
           className="letters-row-table"
