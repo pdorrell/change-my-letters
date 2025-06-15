@@ -7,18 +7,14 @@ import { LettersRow } from '@/models/finders/words-in-row-finder/letters-row';
 
 interface DragSelectionResult {
   isDragging: boolean;
-  onMouseDown: (position: number) => void;
-  onMouseEnter: (position: number) => void;
-  onMouseUp: () => void;
-  onTouchStart: (e: React.TouchEvent, position: number) => void;
-  onTouchMove: (e: React.TouchEvent) => void;
-  onTouchEnd: (e: React.TouchEvent) => void;
+  onPointerDown: (position: number) => void;
+  onPointerEnter: (position: number) => void;
+  onPointerUp: () => void;
 }
 
 // Generic drag selection hook
 function useDragSelection(
   selectable: RangeSelectable,
-  cellSelector: string,
   containerSelector: string
 ): DragSelectionResult {
   const [isDragging, setIsDragging] = useState(false);
@@ -41,76 +37,28 @@ function useDragSelection(
     }
   }, [isDragging, selectable]);
 
-  // Mouse event handlers
-  const handleMouseDown = useCallback((position: number) => {
+  // Pointer event handlers
+  const handlePointerDown = useCallback((position: number) => {
     if (selectable.canSelect) {
       startDrag(position);
     }
   }, [startDrag, selectable]);
 
-  const handleMouseEnter = useCallback((position: number) => {
+  const handlePointerEnter = useCallback((position: number) => {
     if (selectable.canSelect) {
       updateDrag(position);
     }
   }, [updateDrag, selectable]);
 
-  const handleMouseUp = useCallback(() => {
+  const handlePointerUp = useCallback(() => {
     if (selectable.canSelect) {
-      finishDrag();
-    }
-  }, [finishDrag, selectable]);
-
-  // Touch event handlers
-  const handleTouchStart = useCallback((e: React.TouchEvent, position: number) => {
-    if (selectable.canSelect) {
-      e.preventDefault(); // Prevent scrolling
-      startDrag(position);
-    }
-  }, [startDrag, selectable]);
-
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (!isDragging || !selectable.canSelect) return;
-
-    e.preventDefault(); // Prevent scrolling
-    const touch = e.touches[0];
-    if (!touch) return;
-
-    // Find the element under the touch point
-    const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
-    if (!elementBelow) return;
-
-    // Find the closest cell with the specified selector
-    const cell = elementBelow.closest(cellSelector);
-    if (!cell) return;
-
-    // Get the index from the cell's position in the row
-    const row = cell.parentElement;
-    if (!row) return;
-
-    const cells = Array.from(row.children);
-    const cellIndex = cells.indexOf(cell as Element);
-    if (cellIndex >= 0) {
-      updateDrag(cellIndex);
-    }
-  }, [isDragging, updateDrag, cellSelector, selectable]);
-
-  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    if (selectable.canSelect) {
-      e.preventDefault();
       finishDrag();
     }
   }, [finishDrag, selectable]);
 
   // Global event handlers
   React.useEffect(() => {
-    const handleGlobalMouseUp = () => {
-      if (isDragging) {
-        setIsDragging(false);
-        selectable.finishSelection();
-      }
-    };
-
-    const handleGlobalTouchEnd = () => {
+    const handleGlobalPointerUp = () => {
       if (isDragging) {
         setIsDragging(false);
         selectable.finishSelection();
@@ -124,25 +72,20 @@ function useDragSelection(
       }
     };
 
-    document.addEventListener('mouseup', handleGlobalMouseUp);
-    document.addEventListener('touchend', handleGlobalTouchEnd);
+    document.addEventListener('pointerup', handleGlobalPointerUp);
     document.addEventListener('click', handleGlobalClick);
 
     return () => {
-      document.removeEventListener('mouseup', handleGlobalMouseUp);
-      document.removeEventListener('touchend', handleGlobalTouchEnd);
+      document.removeEventListener('pointerup', handleGlobalPointerUp);
       document.removeEventListener('click', handleGlobalClick);
     };
   }, [isDragging, selectable, containerSelector]);
 
   return {
     isDragging,
-    onMouseDown: handleMouseDown,
-    onMouseEnter: handleMouseEnter,
-    onMouseUp: handleMouseUp,
-    onTouchStart: handleTouchStart,
-    onTouchMove: handleTouchMove,
-    onTouchEnd: handleTouchEnd,
+    onPointerDown: handlePointerDown,
+    onPointerEnter: handlePointerEnter,
+    onPointerUp: handlePointerUp,
   };
 }
 
@@ -162,11 +105,9 @@ const DragSelectableTd: React.FC<DragSelectableTdProps> = observer(({
 }) => (
   <td
     className={className}
-    onMouseDown={() => dragSelection.onMouseDown(index)}
-    onMouseEnter={() => dragSelection.onMouseEnter(index)}
-    onMouseUp={dragSelection.onMouseUp}
-    onTouchStart={(e) => dragSelection.onTouchStart(e, index)}
-    onTouchEnd={dragSelection.onTouchEnd}
+    onPointerDown={() => dragSelection.onPointerDown(index)}
+    onPointerEnter={() => dragSelection.onPointerEnter(index)}
+    onPointerUp={dragSelection.onPointerUp}
   >
     {children}
   </td>
@@ -184,7 +125,6 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
   // Use the generic drag selection hook
   const dragSelection = useDragSelection(
     selectable,
-    'td.letters-row-cell',
     '.letters-row-view'
   );
 
@@ -248,7 +188,6 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
       <div className="letters-row-wrapper">
         <table
           className="letters-row-table"
-          onTouchMove={dragSelection.onTouchMove}
         >
         <tbody>
           <tr>
