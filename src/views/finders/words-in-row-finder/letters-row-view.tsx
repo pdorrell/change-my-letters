@@ -1,20 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import { observer } from 'mobx-react-lite';
+import { RangeSelectable } from '@/libs/models/range-selectable';
 import { LettersRow } from '@/models/finders/words-in-row-finder/letters-row';
 
 // Generic drag selection interfaces and types
-interface DragSelectionCallbacks {
-  onStartDrag: (position: number) => void;
-  onUpdateDrag: (position: number) => void;
-  onFinishDrag: () => void;
-  onClearSelection: () => void;
-}
-
-interface DragSelectionOptions {
-  isDisabled: () => boolean;
-  cellSelector: string;
-  containerSelector: string;
-}
 
 interface DragSelectionResult {
   isDragging: boolean;
@@ -28,58 +17,59 @@ interface DragSelectionResult {
 
 // Generic drag selection hook
 function useDragSelection(
-  callbacks: DragSelectionCallbacks,
-  options: DragSelectionOptions
+  selectable: RangeSelectable,
+  cellSelector: string,
+  containerSelector: string
 ): DragSelectionResult {
   const [isDragging, setIsDragging] = useState(false);
 
   const startDrag = useCallback((position: number) => {
     setIsDragging(true);
-    callbacks.onStartDrag(position);
-  }, [callbacks.onStartDrag]);
+    selectable.startSelection(position);
+  }, [selectable]);
 
   const updateDrag = useCallback((position: number) => {
     if (isDragging) {
-      callbacks.onUpdateDrag(position);
+      selectable.updateSelection(position);
     }
-  }, [isDragging, callbacks.onUpdateDrag]);
+  }, [isDragging, selectable]);
 
   const finishDrag = useCallback(() => {
     if (isDragging) {
       setIsDragging(false);
-      callbacks.onFinishDrag();
+      selectable.finishSelection();
     }
-  }, [isDragging, callbacks.onFinishDrag]);
+  }, [isDragging, selectable]);
 
   // Mouse event handlers
   const handleMouseDown = useCallback((position: number) => {
-    if (!options.isDisabled()) {
+    if (selectable.canSelect) {
       startDrag(position);
     }
-  }, [startDrag, options.isDisabled]);
+  }, [startDrag, selectable]);
 
   const handleMouseEnter = useCallback((position: number) => {
-    if (!options.isDisabled()) {
+    if (selectable.canSelect) {
       updateDrag(position);
     }
-  }, [updateDrag, options.isDisabled]);
+  }, [updateDrag, selectable]);
 
   const handleMouseUp = useCallback(() => {
-    if (!options.isDisabled()) {
+    if (selectable.canSelect) {
       finishDrag();
     }
-  }, [finishDrag, options.isDisabled]);
+  }, [finishDrag, selectable]);
 
   // Touch event handlers
   const handleTouchStart = useCallback((e: React.TouchEvent, position: number) => {
-    if (!options.isDisabled()) {
+    if (selectable.canSelect) {
       e.preventDefault(); // Prevent scrolling
       startDrag(position);
     }
-  }, [startDrag, options.isDisabled]);
+  }, [startDrag, selectable]);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (!isDragging || options.isDisabled()) return;
+    if (!isDragging || !selectable.canSelect) return;
 
     e.preventDefault(); // Prevent scrolling
     const touch = e.touches[0];
@@ -90,7 +80,7 @@ function useDragSelection(
     if (!elementBelow) return;
 
     // Find the closest cell with the specified selector
-    const cell = elementBelow.closest(options.cellSelector);
+    const cell = elementBelow.closest(cellSelector);
     if (!cell) return;
 
     // Get the index from the cell's position in the row
@@ -102,35 +92,35 @@ function useDragSelection(
     if (cellIndex >= 0) {
       updateDrag(cellIndex);
     }
-  }, [isDragging, updateDrag, options.cellSelector, options.isDisabled]);
+  }, [isDragging, updateDrag, cellSelector, selectable]);
 
   const handleTouchEnd = useCallback((e: React.TouchEvent) => {
-    if (!options.isDisabled()) {
+    if (selectable.canSelect) {
       e.preventDefault();
       finishDrag();
     }
-  }, [finishDrag, options.isDisabled]);
+  }, [finishDrag, selectable]);
 
   // Global event handlers
   React.useEffect(() => {
     const handleGlobalMouseUp = () => {
       if (isDragging) {
         setIsDragging(false);
-        callbacks.onFinishDrag();
+        selectable.finishSelection();
       }
     };
 
     const handleGlobalTouchEnd = () => {
       if (isDragging) {
         setIsDragging(false);
-        callbacks.onFinishDrag();
+        selectable.finishSelection();
       }
     };
 
     const handleGlobalClick = (e: MouseEvent) => {
       const target = e.target as Element;
-      if (!target.closest(options.containerSelector)) {
-        callbacks.onClearSelection();
+      if (!target.closest(containerSelector)) {
+        selectable.clearSelection();
       }
     };
 
@@ -143,7 +133,7 @@ function useDragSelection(
       document.removeEventListener('touchend', handleGlobalTouchEnd);
       document.removeEventListener('click', handleGlobalClick);
     };
-  }, [isDragging, callbacks.onFinishDrag, callbacks.onClearSelection, options.containerSelector]);
+  }, [isDragging, selectable, containerSelector]);
 
   return {
     isDragging,
@@ -183,33 +173,19 @@ const DragSelectableTd: React.FC<DragSelectableTdProps> = observer(({
 ));
 
 interface LettersRowViewProps {
+  selectable: RangeSelectable;
   lettersRow: LettersRow;
-  onStartDrag: (position: number) => void;
-  onUpdateDrag: (position: number) => void;
-  onFinishDrag: () => void;
-  onClearSelection: () => void;
 }
 
 export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
-  lettersRow,
-  onStartDrag,
-  onUpdateDrag,
-  onFinishDrag,
-  onClearSelection
+  selectable,
+  lettersRow
 }) => {
   // Use the generic drag selection hook
   const dragSelection = useDragSelection(
-    {
-      onStartDrag,
-      onUpdateDrag,
-      onFinishDrag,
-      onClearSelection,
-    },
-    {
-      isDisabled: () => lettersRow.interactionsDisabled,
-      cellSelector: 'td.letters-row-cell',
-      containerSelector: '.letters-row-view',
-    }
+    selectable,
+    'td.letters-row-cell',
+    '.letters-row-view'
   );
 
   const getWordFirstPosition = (): number | null => {

@@ -9,11 +9,8 @@ export const LettersRowPanel: React.FC<LettersRowPanelProps> = observer(({ finde
   return (
     <div className="letters-row-panel">
       <LettersRowView
+        selectable={finder}
         lettersRow={finder.lettersRow}
-        onStartDrag={finder.startSelection.bind(finder)}
-        onUpdateDrag={finder.updateSelection.bind(finder)}
-        onFinishDrag={finder.finishDrag.bind(finder)}
-        onClearSelection={finder.clearSelection.bind(finder)}
       />
     </div>
   );
