@@ -156,6 +156,32 @@ function useDragSelection(
   };
 }
 
+// Reusable draggable table cell component
+interface DragSelectableTdProps {
+  index: number;
+  className: string;
+  dragSelection: DragSelectionResult;
+  children: React.ReactNode;
+}
+
+const DragSelectableTd: React.FC<DragSelectableTdProps> = observer(({
+  index,
+  className,
+  dragSelection,
+  children
+}) => (
+  <td
+    className={className}
+    onMouseDown={() => dragSelection.onMouseDown(index)}
+    onMouseEnter={() => dragSelection.onMouseEnter(index)}
+    onMouseUp={dragSelection.onMouseUp}
+    onTouchStart={(e) => dragSelection.onTouchStart(e, index)}
+    onTouchEnd={dragSelection.onTouchEnd}
+  >
+    {children}
+  </td>
+));
+
 interface LettersRowViewProps {
   lettersRow: LettersRow;
   onStartDrag: (position: number) => void;
@@ -251,17 +277,14 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
         <tbody>
           <tr>
             {lettersRow.lettersArray.map((letter, index) => (
-              <td
+              <DragSelectableTd
                 key={index}
+                index={index}
                 className={getCellClassName(index)}
-                onMouseDown={() => dragSelection.onMouseDown(index)}
-                onMouseEnter={() => dragSelection.onMouseEnter(index)}
-                onMouseUp={dragSelection.onMouseUp}
-                onTouchStart={(e) => dragSelection.onTouchStart(e, index)}
-                onTouchEnd={dragSelection.onTouchEnd}
+                dragSelection={dragSelection}
               >
                 {letter}
-              </td>
+              </DragSelectableTd>
             ))}
           </tr>
         </tbody>
