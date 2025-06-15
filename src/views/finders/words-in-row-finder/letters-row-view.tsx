@@ -18,16 +18,12 @@ interface DragSelectionOptions {
 
 interface DragSelectionResult {
   isDragging: boolean;
-  mouseHandlers: {
-    onMouseDown: (position: number) => void;
-    onMouseEnter: (position: number) => void;
-    onMouseUp: () => void;
-  };
-  touchHandlers: {
-    onTouchStart: (e: React.TouchEvent, position: number) => void;
-    onTouchMove: (e: React.TouchEvent) => void;
-    onTouchEnd: (e: React.TouchEvent) => void;
-  };
+  onMouseDown: (position: number) => void;
+  onMouseEnter: (position: number) => void;
+  onMouseUp: () => void;
+  onTouchStart: (e: React.TouchEvent, position: number) => void;
+  onTouchMove: (e: React.TouchEvent) => void;
+  onTouchEnd: (e: React.TouchEvent) => void;
 }
 
 // Generic drag selection hook
@@ -151,16 +147,12 @@ function useDragSelection(
 
   return {
     isDragging,
-    mouseHandlers: {
-      onMouseDown: handleMouseDown,
-      onMouseEnter: handleMouseEnter,
-      onMouseUp: handleMouseUp,
-    },
-    touchHandlers: {
-      onTouchStart: handleTouchStart,
-      onTouchMove: handleTouchMove,
-      onTouchEnd: handleTouchEnd,
-    },
+    onMouseDown: handleMouseDown,
+    onMouseEnter: handleMouseEnter,
+    onMouseUp: handleMouseUp,
+    onTouchStart: handleTouchStart,
+    onTouchMove: handleTouchMove,
+    onTouchEnd: handleTouchEnd,
   };
 }
 
@@ -234,13 +226,13 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
 
       // Add class for the first letter of the word (where user started dragging)
       if (lettersRow.selectionState && index === lettersRow.selectionState.start) {
-        classes.push('letters-row-cell--word-first');
+        classes.push('letters-row-cell--first-letter');
       } else if ((lettersRow.correctSelection || lettersRow.wrongSelection) && lettersRow.selectionState === null) {
         // For completed selections, we need to determine the first letter based on the stored drag direction
         // We'll need to access this information from the LettersRow model
         const wordStart = getWordFirstPosition();
         if (wordStart !== null && index === wordStart) {
-          classes.push('letters-row-cell--word-first');
+          classes.push('letters-row-cell--first-letter');
         }
       }
     }
@@ -248,22 +240,13 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
     return classes.join(' ');
   };
 
-  const getFirstLetterStyle = (index: number): React.CSSProperties => {
-    const selection = lettersRow.selection;
-
-    if (selection && index === selection.start && lettersRow.selectionState) {
-      return { fontWeight: 'bold' };
-    }
-
-    return {};
-  };
 
   return (
     <div className="letters-row-view">
       <div className="letters-row-wrapper">
         <table
           className="letters-row-table"
-          onTouchMove={dragSelection.touchHandlers.onTouchMove}
+          onTouchMove={dragSelection.onTouchMove}
         >
         <tbody>
           <tr>
@@ -271,12 +254,11 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
               <td
                 key={index}
                 className={getCellClassName(index)}
-                style={getFirstLetterStyle(index)}
-                onMouseDown={() => dragSelection.mouseHandlers.onMouseDown(index)}
-                onMouseEnter={() => dragSelection.mouseHandlers.onMouseEnter(index)}
-                onMouseUp={dragSelection.mouseHandlers.onMouseUp}
-                onTouchStart={(e) => dragSelection.touchHandlers.onTouchStart(e, index)}
-                onTouchEnd={dragSelection.touchHandlers.onTouchEnd}
+                onMouseDown={() => dragSelection.onMouseDown(index)}
+                onMouseEnter={() => dragSelection.onMouseEnter(index)}
+                onMouseUp={dragSelection.onMouseUp}
+                onTouchStart={(e) => dragSelection.onTouchStart(e, index)}
+                onTouchEnd={dragSelection.onTouchEnd}
               >
                 {letter}
               </td>
