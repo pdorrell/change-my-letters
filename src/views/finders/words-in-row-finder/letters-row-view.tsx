@@ -32,6 +32,7 @@ interface DragSelectionResult {
   onPointerEnter: (position: number) => void;
   onPointerUp: () => void;
   onTouchMove: (e: React.TouchEvent) => void;
+  onTouchEnd: (e: React.TouchEvent) => void;
 }
 
 // Generic drag selection hook
@@ -98,6 +99,14 @@ function useDragSelection(
     }
   }, [isDragging, selectable, containerRef, updateDrag]);
 
+  // Touch end handler for iOS Safari where onPointerUp doesn't work
+  const handleTouchEnd = useCallback((e: React.TouchEvent) => {
+    if (selectable.canSelect) {
+      e.preventDefault();
+      finishDrag();
+    }
+  }, [finishDrag, selectable]);
+
   // Global event handlers
   React.useEffect(() => {
     const handleGlobalPointerUp = () => {
@@ -129,6 +138,7 @@ function useDragSelection(
     onPointerEnter: handlePointerEnter,
     onPointerUp: handlePointerUp,
     onTouchMove: handleTouchMove,
+    onTouchEnd: handleTouchEnd,
   };
 }
 
@@ -152,6 +162,7 @@ const DragSelectableTd: React.FC<DragSelectableTdProps> = observer(({
     onPointerDown={() => dragSelection.onPointerDown(index)}
     onPointerEnter={() => dragSelection.onPointerEnter(index)}
     onPointerUp={dragSelection.onPointerUp}
+    onTouchEnd={dragSelection.onTouchEnd}
   >
     {children}
   </td>
