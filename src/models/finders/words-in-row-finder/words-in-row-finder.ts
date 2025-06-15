@@ -2,12 +2,13 @@ import { makeAutoObservable, computed } from 'mobx';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
 import { ValueModel } from '@/lib/models/value-models';
 import { ButtonAction } from '@/lib/models/actions';
+import { RangeSelectable } from '@/libs/models/range-selectable';
 import { LettersRow } from './letters-row';
 import { WordsToFind } from './words-to-find';
 import { WordToFind } from './word-to-find';
 import { DifficultyType } from './types';
 
-export class WordsInRowFinder {
+export class WordsInRowFinder implements RangeSelectable {
   wordSayer: WordSayerInterface;
   difficulty: ValueModel<DifficultyType>;
   forwardsOnly: ValueModel<boolean>;
@@ -38,12 +39,17 @@ export class WordsInRowFinder {
     makeAutoObservable(this, {
       canChangeSettings: computed,
       newAction: computed,
-      showNewButton: computed
+      showNewButton: computed,
+      canSelect: computed
     });
   }
 
   get canChangeSettings(): boolean {
     return !this.taskStarted || this.wordsToFind.completed;
+  }
+
+  get canSelect(): boolean {
+    return !this.lettersRow.interactionsDisabled;
   }
 
   get newAction(): ButtonAction {
@@ -92,7 +98,7 @@ export class WordsInRowFinder {
     this.lettersRow.updateSelection(endPosition);
   }
 
-  finishDrag(): void {
+  finishSelection(): void {
     if (!this.lettersRow.selectionState || !this.wordsToFind.activeWord) {
       this.lettersRow.clearSelection();
       return;
