@@ -37,6 +37,14 @@ export const FinderControls: React.FC<FinderControlsProps> = observer(({ finder 
         />
         {finder.forwardsOnly.label}
       </label>
+      <label className="value-checkbox-container" title={finder.auto.tooltip}>
+        <input
+          type="checkbox"
+          checked={finder.auto.value}
+          onChange={(e) => finder.auto.set(e.target.checked)}
+        />
+        {finder.auto.label}
+      </label>
       <div style={{ marginLeft: 'auto' }}>
         <ActionButton action={finder.newAction}>New</ActionButton>
       </div>
