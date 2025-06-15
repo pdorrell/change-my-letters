@@ -45,7 +45,19 @@ export class WordsInRowFinder implements RangeSelectable {
   }
 
   get canChangeSettings(): boolean {
-    return !this.taskStarted || this.wordsToFind.completed;
+    // Can change settings before task starts or after completion
+    if (!this.taskStarted || this.wordsToFind.completed) {
+      return true;
+    }
+
+    // During task: can't change settings if user is actively trying to find a word
+    const activeWord = this.wordsToFind.activeWord;
+    if (activeWord && activeWord.found !== true) {
+      return false;
+    }
+
+    // During task: can change settings if no active word or active word was found
+    return true;
   }
 
   get canSelect(): boolean {
