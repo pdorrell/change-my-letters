@@ -12,10 +12,12 @@ export class WordsInRowFinder implements RangeSelectable {
   wordSayer: WordSayerInterface;
   difficulty: ValueModel<DifficultyType>;
   forwardsOnly: ValueModel<boolean>;
+  auto: ValueModel<boolean>;
   lettersRow: LettersRow;
   wordsToFind: WordsToFind;
   taskStarted: boolean = false;
   newWordsCallback?: () => string[];
+  autoTimeoutId: number | null = null;
 
   constructor(wordSayer: WordSayerInterface, words: string[] = [], newWordsCallback?: () => string[]) {
     this.wordSayer = wordSayer;
@@ -31,6 +33,12 @@ export class WordsInRowFinder implements RangeSelectable {
       true,
       'Forwards only',
       'If checked, words only appear forwards. If unchecked, words can appear backwards too'
+    );
+
+    this.auto = new ValueModel<boolean>(
+      false,
+      'Auto',
+      'If checked, automatically selects the next word after finding one correctly'
     );
 
     this.lettersRow = new LettersRow();
@@ -75,6 +83,9 @@ export class WordsInRowFinder implements RangeSelectable {
 
   async selectWordToFind(wordToFind: WordToFind): Promise<void> {
     if (!wordToFind.canClick) return;
+
+    // Clear any pending auto-selection since user is manually selecting
+    this.clearAutoSelection();
 
     if (!this.taskStarted) {
       this.taskStarted = true;
@@ -121,6 +132,7 @@ export class WordsInRowFinder implements RangeSelectable {
     if (isCorrect) {
       this.wordsToFind.markActiveWordCorrect();
       this.lettersRow.markSelectionCorrect();
+      this.scheduleAutoSelection();
     } else {
       this.wordsToFind.markActiveWordWrong();
       this.lettersRow.markSelectionWrong();
@@ -129,6 +141,35 @@ export class WordsInRowFinder implements RangeSelectable {
 
   clearSelection(): void {
     this.lettersRow.clearSelection();
+  }
+
+  private scheduleAutoSelection(): void {
+    // Clear any existing timeout
+    this.clearAutoSelection();
+
+    // Only schedule if auto is enabled and there are more words to find
+    if (!this.auto.value || this.wordsToFind.completed) {
+      return;
+    }
+
+    this.autoTimeoutId = window.setTimeout(() => {
+      this.autoTimeoutId = null;
+      this.performAutoSelection();
+    }, 1000);
+  }
+
+  private clearAutoSelection(): void {
+    if (this.autoTimeoutId !== null) {
+      clearTimeout(this.autoTimeoutId);
+      this.autoTimeoutId = null;
+    }
+  }
+
+  private async performAutoSelection(): Promise<void> {
+    const randomWord = this.wordsToFind.randomUnfoundWord;
+    if (randomWord) {
+      await this.selectWordToFind(randomWord);
+    }
   }
 
   new(): void {
@@ -147,6 +188,7 @@ export class WordsInRowFinder implements RangeSelectable {
   }
 
   reset(): void {
+    this.clearAutoSelection();
     this.taskStarted = false;
     this.wordsToFind.reset();
     this.lettersRow.clearSelection();
@@ -159,6 +201,7 @@ export class WordsInRowFinder implements RangeSelectable {
   }
 
   destroy(): void {
+    this.clearAutoSelection();
     this.wordsToFind.destroy();
   }
 }

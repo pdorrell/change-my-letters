@@ -47,6 +47,14 @@ export class WordsToFind {
     return this.words.find(word => word.found !== true) || null;
   }
 
+  get randomUnfoundWord(): WordToFind | null {
+    const unfoundWords = this.words.filter(word => word.found !== true);
+    if (unfoundWords.length === 0) return null;
+
+    const randomIndex = Math.floor(Math.random() * unfoundWords.length);
+    return unfoundWords[randomIndex];
+  }
+
   reset(): void {
     this.words.forEach(word => {
       word.setActive(false);
