@@ -2,18 +2,41 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { WordsInRowFinder } from '@/models/finders/words-in-row-finder/words-in-row-finder';
 import { ActionButton } from '@/lib/views/action-button';
-import { ValueRadioButtons, ValueCheckbox } from '@/lib/views/value-model-views';
 import { DifficultyType } from '@/models/finders/words-in-row-finder/types';
 
 interface FinderControlsProps { finder: WordsInRowFinder; }
 
 export const FinderControls: React.FC<FinderControlsProps> = observer(({ finder }) => {
   const difficultyOptions: DifficultyType[] = ['easy', 'hard'];
+  const settingsDisabled = !finder.canChangeSettings;
 
   return (
     <div className="word-changer-controls">
-      <ValueRadioButtons value={finder.difficulty} options={difficultyOptions} />
-      <ValueCheckbox value={finder.forwardsOnly} />
+      <div className={`value-radio-buttons-container ${settingsDisabled ? 'disabled' : ''}`} title={finder.difficulty.tooltip}>
+        <span className="radio-label">{finder.difficulty.label}</span>
+        {difficultyOptions.map((option) => (
+          <label key={option} className="radio-option">
+            <input
+              type="radio"
+              name="difficulty"
+              value={option}
+              checked={finder.difficulty.value === option}
+              disabled={settingsDisabled}
+              onChange={() => !settingsDisabled && finder.difficulty.set(option)}
+            />
+            {option}
+          </label>
+        ))}
+      </div>
+      <label className={`value-checkbox-container ${settingsDisabled ? 'disabled' : ''}`} title={finder.forwardsOnly.tooltip}>
+        <input
+          type="checkbox"
+          checked={finder.forwardsOnly.value}
+          disabled={settingsDisabled}
+          onChange={(e) => !settingsDisabled && finder.forwardsOnly.set(e.target.checked)}
+        />
+        {finder.forwardsOnly.label}
+      </label>
       <div style={{ marginLeft: 'auto' }}>
         <ActionButton action={finder.newAction}>New</ActionButton>
       </div>
