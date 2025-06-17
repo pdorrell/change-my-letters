@@ -752,7 +752,7 @@ correct result word changes to the current word.
 
 #### Suggested Naming
 
-Put model files in `src/models/make/` and `src/views/make/` directories.
+Put files in `src/models/make/` and `src/views/make/` directories.
 
 (Note: the following does not necessarily include everything required, but I 
 suggest names for things that I think are required so I can more easily
@@ -775,12 +775,14 @@ Models -
       
 It should be possible for MakeWordsHistory, MakeCurrentWord & MakeWordResult
 to re-use the existing LetterInteraction and PositionInteraction by adding
-an extra `options` constructor param with fields:
+extra `options` constructor params with fields to those classes:
 
-* `disabled` - default False, True for the history & result.
+* `disabled` - default False, True for positions & letters in the history & result - prevents any interaction
 * `showChangeHints`- True only for positions & letters in word-changer, so that delete & replace icons
   show when applicable
 * `alwaysInteract` - True only for positions & leters in MakeCurrentWord, so that 
   even if no changes are available, the menu still pops up showing that the choices are empty.
+  For the "+" position buttons, they will always be visible (including even the last "+" after
+  a maximum length word).
 
 The views for letters and positions can then render accordingly.
