@@ -210,9 +210,6 @@ body {
   box-sizing: border-box; // Include padding in width calculation
   font-size: clamp(0px, 1.5vw, 16px); // Base font size for desktop
   
-  &.previously-visited {
-    background-color: #ffe4e1; // Light pink
-  }
   
 }
 
@@ -232,6 +229,10 @@ body {
   justify-content: center; // Center contents
   flex-wrap: nowrap; // Prevent wrapping
   gap: 0; // Remove any gap between flex items
+  
+  &.previously-visited {
+    background-color: #ffe4e1; // Light pink
+  }
 }
 
 // Letter styles
