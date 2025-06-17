@@ -91,17 +91,15 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordC
     <div
       className={`word-outer-container ${wordChanger.word.previouslyVisited ? 'previously-visited' : ''}`}
     >
-      <div className="word-changer-container">
-        <div className="word-display">
-          {/* Render alternating sequence of positions and letters for the word changer */}
-          { range(maxLength).map(index => (
-            <React.Fragment key={`position--${index}`}>
-              { getPositionView(index) }
-              { getLetterView(index) }
-            </React.Fragment>
-          ))}
-          <PositionPlaceholder/>
-        </div>
+      <div className="word-display">
+        {/* Render alternating sequence of positions and letters for the word changer */}
+        { range(maxLength).map(index => (
+          <React.Fragment key={`position--${index}`}>
+            { getPositionView(index) }
+            { getLetterView(index) }
+          </React.Fragment>
+        ))}
+        <PositionPlaceholder/>
       </div>
     </div>
   );

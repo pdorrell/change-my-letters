@@ -102,17 +102,15 @@ export const MakeWordView: React.FC<MakeWordViewProps> = observer(({
   return (
     <div className={`make-word-row ${backgroundClass}`}>
       <div className="word-outer-container">
-        <div className="word-changer-container">
-          <div className="word-display">
-            {/* Render alternating sequence of positions and letters */}
-            {range(maxWordLength).map(index => (
-              <React.Fragment key={`position--${index}`}>
-                {getPositionView(index)}
-                {getLetterView(index)}
-              </React.Fragment>
-            ))}
-            <PositionPlaceholder/>
-          </div>
+        <div className="word-display">
+          {/* Render alternating sequence of positions and letters */}
+          {range(maxWordLength).map(index => (
+            <React.Fragment key={`position--${index}`}>
+              {getPositionView(index)}
+              {getLetterView(index)}
+            </React.Fragment>
+          ))}
+          <PositionPlaceholder/>
         </div>
       </div>
 
