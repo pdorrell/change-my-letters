@@ -633,3 +633,154 @@ parent WordsInRowFinder has to tell the LettersRow to be repopulated and reset t
   * WordsToFindPanel - containing multiple WordsToFindView
   * LettersRowPanel - containing
     * LettersRowView - use a <table>
+ Words
+ 
+## Make Page
+
+The `Make` page provides a function where:
+
+* There is a current word
+* The user clicks on "New Word" button
+* The app says the new word 
+* The user attempts to create the word by making one change to the current word
+
+The UI is similar to the Word Changer page, but it differs in a few ways. (The Make page
+duplicates some of the function of the "Make Me" button in the Word Changer page,
+and that button will eventually be deleted.)
+
+The Make page UI consists multiple rows where each row displays one word in the history
+of the user's interaction. Each row displays a word that is derived from the
+previous word by a single letter change.
+
+These rows consist of -
+
+* Previous words in the history, which can no longer be interacted with.
+* The current word in the history.
+* If created, the result word that is the result of the user making a change to the current word.
+
+#### UI States
+
+The very initial state of the page consists of zero previous words and one randomly chosen
+current word, with a "New Word" button next to the current word.
+
+The page can be in one of four states:
+
+* `awaiting-new-word` There is no result word and the app is waiting for the user to press "New Word".
+  The letters of the current word are non-interactive, indicated by a light yellow background.
+* `awaiting-change` The user has pressed "New Word" and the current word becomes interactive, waiting for the user
+  to attempt to make the new word by changing one letter. The letters of the current word
+  have a light orange background. (The user can still press "New Word" if they want to hear it again.)
+* The user has created a result word, and either:
+  * `incorrect-result` The result word is incorrect, so it displays letters with a light red background
+    and a large X button beside it (which the user can press to delete the wrong word result and
+    make another attempt to create the correct result). The current word becomes non-interactive
+    because the user has to delete the wrong result first (by pressing the X) before they
+    can try again.
+  * `correct-result` The result word is correct, so it displays letters with a light green background. 
+    The current word goes back to being non-interactive.
+    
+(Controls "beside" the words are shown to the right.)
+
+#### Interactions
+
+These are the possible interactions for each state.
+
+##### awaiting-new-word
+
+The only available user interaction is to press "New Word" which will cause the app to choose
+a word one step away from the current word, giving preference to words not yet visited in
+the current "Make" interaction. The app says the new word and enters the `awaiting-change` state.
+
+##### awaiting-change
+
+The user can press "New Word" again, and the app will say the (same) new word again.
+
+The current word is interactive, which means that the user can change one letter of
+the current word to generate a new result word.
+
+This is similar to the main "Word Changer" page, but there are some differences -
+
+* The current word view does not give any indication of which changes are possible -
+   * All insert positions are shown with "+" buttons (including the last position in
+     a maximum length word, even though that is never a possible interaction).
+   * No delete or replace icons are shown in the letters, and if the user clicks on
+     a letter or a "+" insert button where no changes are possible, an empty 
+     letter-choice-menu pops up.
+   * When a change is made, it does not change the current word to the new word,
+     rather it creates a new result word.
+   * When the change is made, the app says the result word.
+     
+When the user makes a change, the app goes into `correct-result` or `incorrect-result`
+state depending on whether the result word matches the chosen new word.
+
+##### incorrect-result
+
+The only available user interaction is to click the "X" button besides the result word,
+to delete the incorrect result and go back to `awaiting-change` state.
+
+The "New Word" button still displays beside the current word, but it is disabled.
+
+##### correct-result
+
+In this state there is no user interaction possible. (The "New Word" button still displays 
+beside the current word, but it is disabled.)
+
+After the correct result word is created, and after the app finishes saying the correct
+result word, it waits for 1 second and then goes into `awaiting-new-word` as follows:
+
+* The current word gets added to the existing history.
+* The correct result word becomes the new current word.
+
+
+#### Reset
+
+The "Make" page activity can continue indefinitely, and the page needs to auto-scroll
+as the history grows longer.
+
+There is always a Reset button in a separate panel at the bottom on the page which restarts the page
+with a new randomly chosen word and an empty history. The Reset button is always
+enabled regardless of current state.
+
+
+#### Styling and Layout
+
+As much as possible the styling should be the same as for Word Changer especially for the 
+display of the words. The history words, current word and result words should all be displayed
+with the same size and separation of individual letters (so use placeholders where required),
+and there should be no jumping when the current word changes to a history word and the 
+correct result word changes to the current word.
+
+#### Suggested Naming
+
+Put model files in `src/models/make/` and `src/views/make/` directories.
+
+(Note: the following does not necessarily include everything required, but I 
+suggest names for things that I think are required so I can more easily
+read generated code.)
+
+Models -
+
+* type `MakeState` = 'awaiting-new-word' or 'awaiting-change' or 'incorrect-result' or 'correct-result'
+* class `MakeInteraction` with params, attributes & methods
+   * constructor params
+      * wordSayer: WordSayer
+   * attributes
+      * history: MakeWordsHistory
+      * currentWord: MakeCurrentWord
+      * result: MakeWordResult | null
+      
+* class `MakeWordsHistory`
+   * methods
+      * addWord(word: Word)
+      
+It should be possible for MakeWordsHistory, MakeCurrentWord & MakeWordResult
+to re-use the existing LetterInteraction and PositionInteraction by adding
+an extra `options` constructor param with fields:
+
+* `disabled` - default False, True for the history & result.
+* `showChangeHints`- True only for positions & letters in word-changer, so that delete & replace icons
+  show when applicable
+* `alwaysInteract` - True only for positions & leters in MakeCurrentWord, so that 
+  even if no changes are available, the menu still pops up showing that the choices are empty.
+
+The views for letters and positions can then render accordingly.
