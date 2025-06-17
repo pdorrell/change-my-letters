@@ -8,6 +8,7 @@ import { ReviewPronunciationInteraction } from '@/models/review/review-pronuncia
 import { FindersInteraction } from '@/models/finders/finders-interaction';
 import { WordChoiceFinderInteraction } from '@/models/finders/word-choice-finder/word-choice-finder-interaction';
 import { WordsInRowFinder } from '@/models/finders/words-in-row-finder/words-in-row-finder';
+import { MakeInteraction } from '@/models/make/make-interaction';
 import { MenuManager } from '@/lib/views/menu-manager';
 import { Word } from '@/models/Word';
 import { ButtonAction } from '@/lib/models/actions';
@@ -15,7 +16,7 @@ import { ValueModel } from '@/lib/models/value-models';
 import { ScoreModel } from '@/lib/models/score-model';
 
 // Type for the main application pages
-type AppPage = 'wordView' | 'resetView' | 'reviewPronunciationView' | 'findersView';
+type AppPage = 'wordView' | 'resetView' | 'reviewPronunciationView' | 'findersView' | 'makeView';
 
 // Page configuration with labels for navigation
 interface PageConfig {
@@ -27,7 +28,8 @@ const PAGE_CONFIGS: Record<AppPage, PageConfig> = {
   wordView: { label: 'Word', tooltip: 'Change letters of a word' },
   resetView: { label: 'Reset...', tooltip: 'Choose a new word to start again' },
   reviewPronunciationView: { label: 'Pronunciation', tooltip: 'Review pronunciation of words' },
-  findersView: { label: 'Finders', tooltip: 'Find words by listening to them' }
+  findersView: { label: 'Finders', tooltip: 'Find words by listening to them' },
+  makeView: { label: 'Make', tooltip: 'Practice making specific words' }
 };
 
 /**
@@ -72,6 +74,9 @@ export class AppState {
 
   // Words In Row Finder interaction model
   wordsInRowFinder: WordsInRowFinder;
+
+  // Make interaction model
+  makeInteraction: MakeInteraction;
 
   // Menu state management
   menuManager: MenuManager;
@@ -149,6 +154,13 @@ export class AppState {
     if (!wordNode) {
       throw new Error(`Word "${initialWord}" doesn't exist in the word graph`);
     }
+
+    // Initialize make interaction
+    this.makeInteraction = new MakeInteraction(
+      this.wordSayer,
+      this.wordGraph,
+      wordNode
+    );
 
     // Initialize menu manager first
     this.menuManager = new MenuManager(() => {
@@ -380,7 +392,7 @@ export class AppState {
    * Get all pages in navigation order with their config
    */
   get allPages(): Array<{ page: AppPage; label: string; tooltip: string; isActive: boolean }> {
-    const pageOrder: AppPage[] = ['wordView', 'resetView', 'reviewPronunciationView', 'findersView'];
+    const pageOrder: AppPage[] = ['wordView', 'makeView', 'resetView', 'reviewPronunciationView', 'findersView'];
     return pageOrder.map(page => ({
       page,
       label: PAGE_CONFIGS[page].label,

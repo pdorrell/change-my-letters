@@ -5,6 +5,7 @@ import { MenuManagerInterface } from '@/lib/views/menu-manager-interface';
 import { Word } from '@/models/Word';
 import { ButtonAction } from '@/lib/models/actions';
 import { WordSelectionByLetter } from '@/models/word-selection-by-letter';
+import { InteractionOptions, DEFAULT_INTERACTION_OPTIONS } from './interaction-options';
 
 /**
  * Model representing the interaction state for a letter
@@ -27,7 +28,10 @@ export class LetterInteraction {
     public readonly newWordHandler: (word: Word) => void,
 
     // Reference to the menu manager
-    public readonly menuManager: MenuManagerInterface
+    public readonly menuManager: MenuManagerInterface,
+
+    // Interaction options
+    public readonly options: InteractionOptions = DEFAULT_INTERACTION_OPTIONS
   ) {
     makeAutoObservable(this, {
       setNewWord: action,
@@ -49,9 +53,21 @@ export class LetterInteraction {
   }
 
   /**
+   * Whether to show change hints (delete/replace icons)
+   */
+  get showChangeHints(): boolean {
+    return this.options.showChangeHints !== false;
+  }
+
+  /**
    * Get the delete action for this letter
    */
   get deleteAction(): ButtonAction {
+    // If disabled, return a disabled action
+    if (this.options.disabled) {
+      return new ButtonAction(null, { tooltip: "Delete this letter" });
+    }
+
     // If the letter can't be deleted, return a disabled action
     if (!this.letter.canDelete || !this.letter.changes.deleteChange) {
       return new ButtonAction(null, { tooltip: "Delete this letter" });
@@ -72,6 +88,25 @@ export class LetterInteraction {
    * Get the action for clicking on the letter (opens menu if delete or replace is available)
    */
   get letterClickAction(): ButtonAction {
+    // If disabled, return a disabled action
+    if (this.options.disabled) {
+      return new ButtonAction(null, { tooltip: "Click to change this letter" });
+    }
+
+    // If alwaysInteract is true, always return an enabled action even if no changes are possible
+    if (this.options.alwaysInteract) {
+      return new ButtonAction(() => {
+        this.menuManager.toggleMenu(
+          this.isReplaceMenuOpen,
+          action(() => { this.isReplaceMenuOpen = true; }),
+          this.menuRef
+        );
+      }, {
+        tooltip: "Click to change this letter",
+        onPress: () => this.menuManager.closeMenus()
+      });
+    }
+
     // If the letter can't be replaced and can't be deleted, return a disabled action
     if (!this.letter.canReplace && !this.letter.canDelete) {
       return new ButtonAction(null, { tooltip: "Click to change this letter" });
@@ -94,6 +129,11 @@ export class LetterInteraction {
    * Get the action that opens the replace menu for this letter
    */
   get openReplaceMenuAction(): ButtonAction {
+    // If disabled, return a disabled action
+    if (this.options.disabled) {
+      return new ButtonAction(null, { tooltip: "Replace this letter" });
+    }
+
     // If the letter can't be replaced, return a disabled action
     if (!this.letter.canReplace) {
       return new ButtonAction(null, { tooltip: "Replace this letter" });

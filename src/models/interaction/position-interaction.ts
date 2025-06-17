@@ -5,6 +5,7 @@ import { MenuManagerInterface } from '@/lib/views/menu-manager-interface';
 import { Word } from '@/models/Word';
 import { ButtonAction } from '@/lib/models/actions';
 import { WordSelectionByLetter } from '@/models/word-selection-by-letter';
+import { InteractionOptions, DEFAULT_INTERACTION_OPTIONS } from './interaction-options';
 
 /**
  * Model representing the interaction state for a position
@@ -27,7 +28,10 @@ export class PositionInteraction {
     public readonly newWordHandler: (word: Word) => void,
 
     // Reference to the menu manager
-    public readonly menuManager: MenuManagerInterface
+    public readonly menuManager: MenuManagerInterface,
+
+    // Interaction options
+    public readonly options: InteractionOptions = DEFAULT_INTERACTION_OPTIONS
   ) {
     makeAutoObservable(this, {
       setNewWord: action,
@@ -47,9 +51,35 @@ export class PositionInteraction {
   }
 
   /**
+   * Whether to always show the "+" button regardless of whether insertion is possible
+   */
+  get alwaysShowInsertButton(): boolean {
+    return this.options.alwaysInteract === true;
+  }
+
+  /**
    * Get the action that opens the insert menu for this position
    */
   get openInsertMenuAction(): ButtonAction {
+    // If disabled, return a disabled action
+    if (this.options.disabled) {
+      return new ButtonAction(null, { tooltip: "Insert a letter here" });
+    }
+
+    // If alwaysInteract is true, always return an enabled action even if no insertions are possible
+    if (this.options.alwaysInteract) {
+      return new ButtonAction(() => {
+        this.menuManager.toggleMenu(
+          this.isInsertMenuOpen,
+          action(() => { this.isInsertMenuOpen = true; }),
+          this.insertButtonRef
+        );
+      }, {
+        tooltip: "Insert a letter here",
+        onPress: () => this.menuManager.closeMenus()
+      });
+    }
+
     // If insertion is not possible at this position, return a disabled action
     if (!this.position.canInsert) {
       return new ButtonAction(null, { tooltip: "Insert a letter here" });

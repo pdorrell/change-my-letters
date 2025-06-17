@@ -7,6 +7,7 @@ import { Position } from '@/models/Position';
 import { MenuManager } from '@/lib/views/menu-manager';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
 import { History } from '@/models/History';
+import { InteractionOptions, DEFAULT_INTERACTION_OPTIONS } from './interaction-options';
 
 /**
  * Model representing the user's current interaction with a word
@@ -44,7 +45,10 @@ export class WordInteraction {
     public readonly menuManager: MenuManager,
 
     // History model for compact history view
-    public readonly history: History
+    public readonly history: History | null,
+
+    // Interaction options
+    public readonly options: InteractionOptions = DEFAULT_INTERACTION_OPTIONS
   ) {
     // Initialize letter and position interactions
     this.initializeInteractions();
@@ -74,11 +78,11 @@ export class WordInteraction {
 
     // Create interaction wrappers for each
     this.letterInteractions = letters.map(
-      letter => new LetterInteraction(letter, this.newWordHandler, this.menuManager)
+      letter => new LetterInteraction(letter, this.newWordHandler, this.menuManager, this.options)
     );
 
     this.positionInteractions = positions.map(
-      position => new PositionInteraction(position, this.newWordHandler, this.menuManager)
+      position => new PositionInteraction(position, this.newWordHandler, this.menuManager, this.options)
     );
   }
 
