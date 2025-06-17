@@ -216,7 +216,7 @@ body {
   
 }
 
-.word-changer-container {
+.word-display {
   border: 2px solid #cccccc; // Light grey border
   border-radius: 0.5em;
   background-color: white;
@@ -225,19 +225,13 @@ body {
   max-width: 100%; // Prevent horizontal overflow
   margin: 0 auto; // Center horizontally
   box-sizing: border-box; // Include border in width calculation
-  
-  .word-display {
-    padding: 0.625em;
-    display: flex;
-    align-items: center;
-    justify-content: center; // Center contents
-    flex-wrap: nowrap; // Prevent wrapping
-    overflow: visible; // Allow content to overflow without scrollbars
-    gap: 0; // Remove any gap between flex items
-    width: 100%; // Take full width of container
-    box-sizing: border-box;
-    
-  }
+
+  padding: 0.625em;
+  display: flex;
+  align-items: center;
+  justify-content: center; // Center contents
+  flex-wrap: nowrap; // Prevent wrapping
+  gap: 0; // Remove any gap between flex items
 }
 
 // Letter styles
