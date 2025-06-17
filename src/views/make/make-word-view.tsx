@@ -7,6 +7,7 @@ import { PositionView, PositionPlaceholder } from '@/views/Position';
 import { ActionButton } from '@/lib/views/action-button';
 import { ButtonAction } from '@/lib/models/actions';
 import { MakeCurrentWord } from '@/models/make/make-current-word';
+import { Panel } from '@/lib/views/panel';
 
 interface MakeWordViewProps {
   word: Word;
@@ -101,7 +102,7 @@ export const MakeWordView: React.FC<MakeWordViewProps> = observer(({
 
   return (
     <div className={`make-word-row ${backgroundClass}`}>
-      <div className="word-outer-container">
+      <Panel>
         <div className="word-display">
           {/* Render alternating sequence of positions and letters */}
           {range(maxWordLength).map(index => (
@@ -112,7 +113,7 @@ export const MakeWordView: React.FC<MakeWordViewProps> = observer(({
           ))}
           <PositionPlaceholder/>
         </div>
-      </div>
+      </Panel>
 
       {/* Controls */}
       {showControls && (

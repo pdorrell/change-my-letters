@@ -11,6 +11,7 @@ import { ActionButton } from '@/lib/views/action-button';
 import { HistoryPanel } from '@/views/History';
 import { ScorePanel } from '@/lib/views/score-panel';
 import { ValueCheckbox } from '@/lib/views/value-model-views';
+import { Panel } from '@/lib/views/panel';
 import {
   useFloating,
   autoUpdate,
@@ -88,7 +89,7 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordC
   }
 
   return (
-    <div className="word-outer-container">
+    <Panel>
       <div className={`word-display ${wordChanger.word.previouslyVisited ? 'previously-visited' : ''}`}>
         {/* Render alternating sequence of positions and letters for the word changer */}
         { range(maxLength).map(index => (
@@ -99,7 +100,7 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordC
         ))}
         <PositionPlaceholder/>
       </div>
-    </div>
+    </Panel>
   );
 });
 
