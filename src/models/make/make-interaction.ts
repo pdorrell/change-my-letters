@@ -48,9 +48,6 @@ export class MakeInteraction {
     return new ButtonAction(handler, { tooltip: 'Delete incorrect result' });
   }
 
-  get resetAction(): ButtonAction {
-    return new ButtonAction(() => this.reset(), { tooltip: 'Start over with a new random word' });
-  }
 
   async chooseNewWord(): Promise<void> {
     if (this.state === 'awaiting-change' && this.newWordToMake) {
@@ -145,17 +142,4 @@ export class MakeInteraction {
     this.currentWord.setInteractive(false);
   }
 
-  reset(): void {
-    // Choose a random word from the word graph
-    const allWords = this.wordGraph.sortedWords;
-    const randomIndex = Math.floor(Math.random() * allWords.length);
-    const randomWord = allWords[randomIndex];
-
-    // Reset state
-    this.history = new MakeWordsHistory();
-    this.currentWord = new MakeCurrentWord(randomWord, (word: Word) => this.handleWordChange(word), this.wordSayer);
-    this.result = null;
-    this.newWordToMake = null;
-    this.state = 'awaiting-new-word';
-  }
 }

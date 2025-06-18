@@ -59,10 +59,6 @@ export const MakePage: React.FC<MakePageProps> = observer(({ makeInteraction, ma
         )}
       </div>
 
-      {/* Reset button panel */}
-      <div className="make-reset-panel">
-        <ActionButton action={makeInteraction.resetAction}>Reset</ActionButton>
-      </div>
     </div>
   );
 });
