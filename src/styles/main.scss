@@ -1167,6 +1167,22 @@ body {
     
     .make-new-word-button {
       // Use same styling as word-changer controls
+      padding: 8px 16px;
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9em;
+      
+      &:hover {
+        background-color: #3a80d2;
+      }
+      
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
     }
     
     .make-delete-button {
@@ -1190,12 +1206,46 @@ body {
   }
 }
 
+// Make history container - single border around all history words
+.make-history-container {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.25em;
+  background-color: white;
+  margin-bottom: 10px;
+  
+  .make-history {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
 .make-reset-panel {
   display: flex;
   justify-content: center;
   margin-top: 30px;
   padding-top: 20px;
   border-top: 1px solid #eee;
+  
+  button {
+    padding: 8px 16px;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    
+    &:hover {
+      background-color: #3a80d2;
+    }
+    
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  }
 }
 
 // Finders page header
