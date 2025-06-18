@@ -14,18 +14,16 @@ export const MakePage: React.FC<MakePageProps> = observer(({ makeInteraction, ma
     <div className="make-page">
       {/* History words */}
       {makeInteraction.history.historyWords.length > 0 && (
-        <div className="make-history-container">
-          <div className="make-history">
-            {makeInteraction.history.historyWords.map((word, index) => (
-              <MakeWordView
-                key={`history-${index}`}
-                word={word}
-                maxWordLength={maxWordLength}
-                backgroundClass=""
-                showControls={false}
-              />
-            ))}
-          </div>
+        <div className="make-history">
+          {makeInteraction.history.historyWords.map((word, index) => (
+            <MakeWordView
+              key={`history-${index}`}
+              word={word}
+              maxWordLength={maxWordLength}
+              backgroundClass=""
+              showControls={false}
+            />
+          ))}
         </div>
       )}
 

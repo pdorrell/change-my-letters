@@ -1206,19 +1206,16 @@ body {
   }
 }
 
-// Make history container - single border around all history words
-.make-history-container {
+// Make history - single border around all history words
+.make-history {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 1.25em;
   background-color: white;
   margin-bottom: 10px;
-  
-  .make-history {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .make-reset-panel {
