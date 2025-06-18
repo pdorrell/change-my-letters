@@ -5,7 +5,7 @@ import { MenuManagerInterface } from '@/lib/views/menu-manager-interface';
 import { Word } from '@/models/Word';
 import { ButtonAction } from '@/lib/models/actions';
 import { WordSelectionByLetter } from '@/models/word-selection-by-letter';
-import { InteractionOptions, DEFAULT_INTERACTION_OPTIONS } from './interaction-options';
+import { InteractionOptions } from './interaction-options';
 
 /**
  * Model representing the interaction state for a position
@@ -31,7 +31,7 @@ export class PositionInteraction {
     public readonly menuManager: MenuManagerInterface,
 
     // Interaction options
-    public readonly options: InteractionOptions = DEFAULT_INTERACTION_OPTIONS
+    public readonly options: InteractionOptions = { disabled: false, showChangeHints: false, alwaysInteract: false }
   ) {
     makeAutoObservable(this, {
       setNewWord: action,

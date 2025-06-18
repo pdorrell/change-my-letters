@@ -7,7 +7,7 @@ import { Position } from '@/models/Position';
 import { MenuManager } from '@/lib/views/menu-manager';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
 import { History } from '@/models/History';
-import { InteractionOptions, DEFAULT_INTERACTION_OPTIONS } from './interaction-options';
+import { InteractionOptions } from './interaction-options';
 
 /**
  * Model representing the user's current interaction with a word
@@ -48,7 +48,7 @@ export class WordInteraction {
     public readonly history: History | null,
 
     // Interaction options
-    public readonly options: InteractionOptions = DEFAULT_INTERACTION_OPTIONS
+    public readonly options: InteractionOptions = { disabled: false, showChangeHints: true, alwaysInteract: false }
   ) {
     // Initialize letter and position interactions
     this.initializeInteractions();
