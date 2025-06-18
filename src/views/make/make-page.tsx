@@ -39,9 +39,9 @@ export const MakePage: React.FC<MakePageProps> = observer(({ makeInteraction, ma
         />
       </div>
 
-      {/* Result word (if exists) */}
-      {makeInteraction.result && (
-        <div className="make-result-word">
+      {/* Result word (always shown) */}
+      <div className="make-result-word">
+        {makeInteraction.result ? (
           <MakeWordView
             word={makeInteraction.result.word}
             maxWordLength={maxWordLength}
@@ -49,8 +49,15 @@ export const MakePage: React.FC<MakePageProps> = observer(({ makeInteraction, ma
             showControls={makeInteraction.result.showDeleteButton}
             deleteAction={makeInteraction.deleteResultAction}
           />
-        </div>
-      )}
+        ) : (
+          <MakeWordView
+            word={null}
+            maxWordLength={maxWordLength}
+            backgroundClass={makeInteraction.resultDisplay.backgroundClass}
+            showControls={false}
+          />
+        )}
+      </div>
 
       {/* Reset button panel */}
       <div className="make-reset-panel">

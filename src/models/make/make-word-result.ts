@@ -26,3 +26,17 @@ export class MakeWordResult {
     this.isCorrect = correct;
   }
 }
+
+export class MakeWordResultPlaceholder {
+  constructor() {
+    makeAutoObservable(this);
+  }
+
+  get backgroundClass(): string {
+    return 'make-result-placeholder'; // White background for empty placeholder
+  }
+
+  get showDeleteButton(): boolean {
+    return false;
+  }
+}

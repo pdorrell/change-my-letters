@@ -3,7 +3,7 @@ import { Word } from '@/models/Word';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
 import { MakeWordsHistory } from './make-words-history';
 import { MakeCurrentWord } from './make-current-word';
-import { MakeWordResult } from './make-word-result';
+import { MakeWordResult, MakeWordResultPlaceholder } from './make-word-result';
 import { ButtonAction } from '@/lib/models/actions';
 import { WordGraph } from '@/models/word-graph';
 
@@ -15,6 +15,7 @@ export class MakeInteraction {
   result: MakeWordResult | null = null;
   newWordToMake: Word | null = null;
   state: MakeState = 'awaiting-new-word';
+  private readonly resultPlaceholder = new MakeWordResultPlaceholder();
 
   constructor(
     private readonly wordSayer: WordSayerInterface,
@@ -25,6 +26,10 @@ export class MakeInteraction {
     this.currentWord = new MakeCurrentWord(initialWord, (word: Word) => this.handleWordChange(word), this.wordSayer);
 
     makeAutoObservable(this);
+  }
+
+  get resultDisplay(): MakeWordResult | MakeWordResultPlaceholder {
+    return this.result || this.resultPlaceholder;
   }
 
   get newWordAction(): ButtonAction {

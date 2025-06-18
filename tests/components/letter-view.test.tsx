@@ -25,7 +25,7 @@ describe('LetterView', () => {
 
     // Create LetterInteraction directly with just the required parameters
     const firstLetter = catWord.letters[0];
-    letterInteraction = new LetterInteraction(firstLetter, newWordHandler, menuManager);
+    letterInteraction = new LetterInteraction(firstLetter, newWordHandler, menuManager, { disabled: false, showChangeHints: true, alwaysInteract: false });
   });
 
   it('renders a letter with its value', () => {

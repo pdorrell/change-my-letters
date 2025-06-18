@@ -1144,6 +1144,11 @@ body {
       border-radius: 8px;
     }
     
+    &.make-result-placeholder {
+      background-color: white; // White background for empty result placeholder
+      border-radius: 8px;
+    }
+    
     &.make-current-waiting {
       background-color: #fff3cd; // Light yellow background for waiting state
       border-radius: 8px;

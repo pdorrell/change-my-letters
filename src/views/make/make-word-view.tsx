@@ -9,7 +9,7 @@ import { ButtonAction } from '@/lib/models/actions';
 import { MakeCurrentWord } from '@/models/make/make-current-word';
 
 interface MakeWordViewProps {
-  word: Word;
+  word: Word | null;
   maxWordLength: number;
   backgroundClass: string;
   showControls: boolean;
@@ -88,7 +88,7 @@ export const MakeWordView: React.FC<MakeWordViewProps> = observer(({
       const letterInteraction = index < wordInteraction.wordInteraction.letterInteractions.length ?
         wordInteraction.wordInteraction.letterInteractions[index] : null;
       return letterInteraction ? <LetterView letterInteraction={letterInteraction} /> : <LetterPlaceholder/>;
-    } else {
+    } else if (word) {
       // For non-interactive words, show static letters with proper styling
       const letter = word.letters[index];
       return letter ? (
@@ -98,6 +98,9 @@ export const MakeWordView: React.FC<MakeWordViewProps> = observer(({
           </div>
         </div>
       ) : <LetterPlaceholder/>;
+    } else {
+      // For null word (placeholder), always show empty placeholders
+      return <LetterPlaceholder/>;
     }
   }
 
