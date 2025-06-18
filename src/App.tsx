@@ -41,6 +41,27 @@ const PageNavigation: React.FC<PageNavigationProps> = observer(({ appState }) =>
   );
 });
 
+interface ResetButtonProps { appState: AppState; }
+
+const ResetButton: React.FC<ResetButtonProps> = observer(({ appState }) => {
+  const resetAction = appState.resetButtonAction;
+
+  if (!resetAction) {
+    return null;
+  }
+
+  return (
+    <button
+      className="reset-button"
+      onClick={resetAction.enabled ? () => resetAction.doAction() : undefined}
+      disabled={!resetAction.enabled}
+      title={resetAction.tooltip}
+    >
+      Reset
+    </button>
+  );
+});
+
 
 interface AppHeaderProps { appState: AppState; }
 
@@ -49,6 +70,7 @@ const AppHeader: React.FC<AppHeaderProps> = observer(({ appState }) => {
     <header>
       <h1>Change My Letters</h1>
       <PageNavigation appState={appState} />
+      <ResetButton appState={appState} />
       <AppVersion version={appState.version} />
     </header>
   );
@@ -59,19 +81,21 @@ interface AppBodyProps { appState: AppState; }
 const AppBody: React.FC<AppBodyProps> = observer(({ appState }) => {
   return (
     <main>
-      {appState.currentPage === 'wordView' ? (
+      {appState.currentPage === 'word' ? (
         <WordChangerPage appState={appState} />
-      ) : appState.currentPage === 'makeView' ? (
+      ) : appState.currentPage === 'make' ? (
         <MakePage
           makeInteraction={appState.makeInteraction}
           maxWordLength={appState.wordGraph.maxWordLength}
         />
-      ) : appState.currentPage === 'reviewPronunciationView' ? (
+      ) : appState.currentPage === 'reviewPronunciation' ? (
         <ReviewPronunciationPage appState={appState} />
-      ) : appState.currentPage === 'findersView' ? (
+      ) : appState.currentPage === 'finders' ? (
         <FindersPage appState={appState} />
-      ) : (
+      ) : appState.currentPage.startsWith('reset') ? (
         <ResetPage appState={appState} />
+      ) : (
+        <WordChangerPage appState={appState} />
       )}
     </main>
   );

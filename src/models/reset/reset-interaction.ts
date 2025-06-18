@@ -3,6 +3,7 @@ import { AppState } from '@/models/app-state';
 import { ButtonAction } from '@/lib/models/actions';
 import { Word } from '@/models/Word';
 import { Filter } from '@/lib/models/filter';
+import { MakeInteraction } from '@/models/make/make-interaction';
 
 /**
  * Model for the Reset page interaction
@@ -16,6 +17,9 @@ export class ResetInteraction {
 
   // Reference to the app state
   appState: AppState;
+
+  // Target page for reset ('word' or 'make')
+  targetPage: 'word' | 'make' = 'word';
 
   constructor(appState: AppState) {
     this.appState = appState;
@@ -58,6 +62,13 @@ export class ResetInteraction {
   }
 
   /**
+   * Set the target page for reset
+   */
+  setTargetPage(targetPage: 'word' | 'make'): void {
+    this.targetPage = targetPage;
+  }
+
+  /**
    * Choose a random word from the full word list, ignoring current filtering
    */
   chooseRandom(): void {
@@ -73,12 +84,22 @@ export class ResetInteraction {
    * Set a new word as the word changer and reset the history
    */
   setNewWord(wordObj: Word): void {
-    // Reset the app state with the new word object
-    // This already sets the word as the current visiting word and resets history
-    this.appState.reset(wordObj);
-
-    // Navigate back to the word view
-    this.appState.navigateTo('wordView');
+    if (this.targetPage === 'make') {
+      // Reset the make interaction with the new word
+      this.appState.makeInteraction = new MakeInteraction(
+        this.appState.wordSayer,
+        this.appState.wordGraph,
+        wordObj
+      );
+      // Navigate back to the make view
+      this.appState.navigateTo('make');
+    } else {
+      // Reset the app state with the new word object
+      // This already sets the word as the current visiting word and resets history
+      this.appState.reset(wordObj);
+      // Navigate back to the word view
+      this.appState.navigateTo('word');
+    }
   }
 
 }

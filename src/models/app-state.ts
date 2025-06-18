@@ -16,7 +16,7 @@ import { ValueModel } from '@/lib/models/value-models';
 import { ScoreModel } from '@/lib/models/score-model';
 
 // Type for the main application pages
-type AppPage = 'wordView' | 'resetView' | 'reviewPronunciationView' | 'findersView' | 'makeView';
+type AppPage = 'word' | 'reset' | 'reviewPronunciation' | 'finders' | 'make' | 'reset/word' | 'reset/make';
 
 // Page configuration with labels for navigation
 interface PageConfig {
@@ -25,11 +25,13 @@ interface PageConfig {
 }
 
 const PAGE_CONFIGS: Record<AppPage, PageConfig> = {
-  wordView: { label: 'Word', tooltip: 'Change letters of a word' },
-  resetView: { label: 'Reset...', tooltip: 'Choose a new word to start again' },
-  reviewPronunciationView: { label: 'Pronunciation', tooltip: 'Review pronunciation of words' },
-  findersView: { label: 'Finders', tooltip: 'Find words by listening to them' },
-  makeView: { label: 'Make', tooltip: 'Practice making specific words' }
+  word: { label: 'Word', tooltip: 'Change letters of a word' },
+  reset: { label: 'Reset...', tooltip: 'Choose a new word to start again' },
+  reviewPronunciation: { label: 'Pronunciation', tooltip: 'Review pronunciation of words' },
+  finders: { label: 'Finders', tooltip: 'Find words by listening to them' },
+  make: { label: 'Make', tooltip: 'Practice making specific words' },
+  'reset/word': { label: 'Reset Word', tooltip: 'Choose a new word for the Word page' },
+  'reset/make': { label: 'Reset Make', tooltip: 'Choose a new word for the Make page' }
 };
 
 /**
@@ -43,7 +45,7 @@ export class AppState {
   private readonly negativePhrases: string[] = ['oh dear!', 'oh no!', 'whoops!'];
 
   // The current page being displayed
-  currentPage: AppPage = 'wordView';
+  currentPage: AppPage = 'word';
 
   // The current sub-header (null for main word view)
   subHeader: string | null = null;
@@ -184,7 +186,7 @@ export class AppState {
     // Initialize button actions
     this.resetAction = new ButtonAction(() => this.resetGame(), { tooltip: "Choose a new word" });
     this.sayAction = new ButtonAction(() => this.wordChanger.say(), { tooltip: "Say the word changer" });
-    this.reviewPronunciationAction = new ButtonAction(() => this.navigateTo('reviewPronunciationView'), { tooltip: "Review pronunciation" });
+    this.reviewPronunciationAction = new ButtonAction(() => this.navigateTo('reviewPronunciation'), { tooltip: "Review pronunciation" });
 
     // Preload the initial word's audio
     this.wordSayer.preload(initialWord);
@@ -316,7 +318,7 @@ export class AppState {
   resetGame(): void {
     // Navigate to the reset view
     // (The filter reset happens in navigateTo)
-    this.navigateTo('resetView');
+    this.navigateTo('reset');
   }
 
   /**
@@ -373,32 +375,50 @@ export class AppState {
     this.subHeader = null;
 
     // If navigating to the reset view, reset the interaction state
-    if (page === 'resetView') {
+    if (page === 'reset' || page.startsWith('reset/')) {
       this.resetInteraction.reset();
+      // Set the target page based on the route
+      if (page === 'reset/word') {
+        this.resetInteraction.setTargetPage('word');
+      } else if (page === 'reset/make') {
+        this.resetInteraction.setTargetPage('make');
+      }
     }
 
     // If navigating to the review pronunciation view, reset the interaction state
-    if (page === 'reviewPronunciationView') {
+    if (page === 'reviewPronunciation') {
       this.reviewPronunciationInteraction.reset();
     }
 
     // If navigating to the finders view, reset the interaction state
-    if (page === 'findersView') {
+    if (page === 'finders') {
       // Note: we don't reset the finder interactions to preserve the current game state
     }
   }
 
   /**
-   * Get all pages in navigation order with their config
+   * Get all pages in navigation order with their config (excluding reset routes)
    */
   get allPages(): Array<{ page: AppPage; label: string; tooltip: string; isActive: boolean }> {
-    const pageOrder: AppPage[] = ['wordView', 'makeView', 'resetView', 'reviewPronunciationView', 'findersView'];
+    const pageOrder: AppPage[] = ['word', 'make', 'reviewPronunciation', 'finders'];
     return pageOrder.map(page => ({
       page,
       label: PAGE_CONFIGS[page].label,
       tooltip: PAGE_CONFIGS[page].tooltip,
       isActive: page === this.currentPage
     }));
+  }
+
+  /**
+   * Get the reset button action for the current page
+   */
+  get resetButtonAction(): ButtonAction | null {
+    if (this.currentPage === 'word') {
+      return new ButtonAction(() => this.navigateTo('reset/word'), { tooltip: 'Reset the Word page with a new word' });
+    } else if (this.currentPage === 'make') {
+      return new ButtonAction(() => this.navigateTo('reset/make'), { tooltip: 'Reset the Make page with a new word' });
+    }
+    return null;
   }
 
 

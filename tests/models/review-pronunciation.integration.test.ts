@@ -22,9 +22,9 @@ describe('Review Pronunciation Integration', () => {
     });
 
     it('should navigate to review pronunciation view', () => {
-      appState.navigateTo('reviewPronunciationView');
+      appState.navigateTo('reviewPronunciation');
 
-      expect(appState.currentPage).toBe('reviewPronunciationView');
+      expect(appState.currentPage).toBe('reviewPronunciation');
     });
 
     it('should reset review interaction when navigating to review pronunciation view', () => {
@@ -32,7 +32,7 @@ describe('Review Pronunciation Integration', () => {
       reviewInteraction.filter.value.set('test');
       reviewInteraction.filter.matchOption.set('any');
 
-      appState.navigateTo('reviewPronunciationView');
+      appState.navigateTo('reviewPronunciation');
 
       expect(reviewInteraction.filter.value.value).toBe('');
       expect(reviewInteraction.filter.matchOption.value).toBe('start');
@@ -46,7 +46,7 @@ describe('Review Pronunciation Integration', () => {
     it('should navigate to review pronunciation when action is triggered', () => {
       appState.reviewPronunciationAction.doAction();
 
-      expect(appState.currentPage).toBe('reviewPronunciationView');
+      expect(appState.currentPage).toBe('reviewPronunciation');
     });
   });
 

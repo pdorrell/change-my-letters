@@ -59,7 +59,28 @@ body {
     
     // Second item: page navigation (styles defined globally below)
     
-    // Third item: version display (justified to the right)
+    // Third item: reset button
+    .reset-button {
+      padding: 8px 16px;
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9em;
+      white-space: nowrap;
+      
+      &:hover {
+        background-color: #c82333;
+      }
+      
+      &:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+    }
+    
+    // Fourth item: version display (justified to the right)
     .version-display {
       margin-left: auto; // Push to the right
       font-size: 0.8em;
@@ -1242,6 +1263,25 @@ body {
       background-color: #ccc;
       cursor: not-allowed;
     }
+  }
+}
+
+// Reset page header
+.reset-page-header {
+  text-align: center;
+  margin: 20px auto 30px;
+  max-width: 800px;
+  
+  h2 {
+    color: #333;
+    font-size: 1.8em;
+    margin: 0 0 10px 0;
+  }
+  
+  p {
+    color: #666;
+    font-size: 1.1em;
+    margin: 0;
   }
 }
 

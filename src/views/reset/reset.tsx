@@ -73,10 +73,17 @@ export const ResetWordChoice: React.FC<ResetWordChoiceProps> = observer(({ reset
 interface ResetPageProps { appState: AppState; }
 
 export const ResetPage: React.FC<ResetPageProps> = observer(({ appState }) => {
+  const resetInteraction = appState.resetInteraction;
+  const targetPageLabel = resetInteraction.targetPage === 'make' ? 'Make' : 'Word';
+
   return (
     <>
-      <ResetControls resetInteraction={appState.resetInteraction} />
-      <ResetWordChoice resetInteraction={appState.resetInteraction} />
+      <div className="reset-page-header">
+        <h2>Reset initial word for {targetPageLabel} page</h2>
+        <p>Choose a new word to start with on the {targetPageLabel} page.</p>
+      </div>
+      <ResetControls resetInteraction={resetInteraction} />
+      <ResetWordChoice resetInteraction={resetInteraction} />
       <HistoryPanel history={appState.history} />
     </>
   );
