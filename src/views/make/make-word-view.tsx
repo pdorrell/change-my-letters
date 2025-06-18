@@ -90,11 +90,13 @@ export const MakeWordView: React.FC<MakeWordViewProps> = observer(({
         wordInteraction.wordInteraction.letterInteractions[index] : null;
       return letterInteraction ? <LetterView letterInteraction={letterInteraction} /> : <LetterPlaceholder/>;
     } else {
-      // For non-interactive words, show static letters
+      // For non-interactive words, show static letters with proper styling
       const letter = word.letters[index];
       return letter ? (
-        <div className="letter static">
-          <span className="letter-text">{letter.value}</span>
+        <div className="letter-container">
+          <div className="letter static">
+            <span className="letter-text">{letter.value}</span>
+          </div>
         </div>
       ) : <LetterPlaceholder/>;
     }
