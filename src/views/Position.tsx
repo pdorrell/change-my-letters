@@ -27,7 +27,7 @@ export const PositionView: React.FC<PositionViewProps> = observer(({ positionInt
       <ActionButton
         ref={positionInteraction.insertButtonRef}
         action={positionInteraction.openInsertMenuAction}
-        className={`insert-icon ${!positionInteraction.openInsertMenuAction.enabled ? 'hidden' : ''}`}
+        className={`insert-icon ${!positionInteraction.openInsertMenuAction.enabled && !positionInteraction.alwaysShowInsertButton ? 'hidden' : ''}`}
         data-testid="position-view"
       >
         ➕

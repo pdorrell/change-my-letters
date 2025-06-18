@@ -48,9 +48,9 @@ export class MakeCurrentWord {
 
   get backgroundClass(): string {
     if (!this.isInteractive) {
-      return 'bg-yellow-100'; // Non-interactive: light yellow
+      return 'make-current-waiting'; // Non-interactive: light yellow
     }
-    return 'bg-orange-100'; // Interactive: light orange
+    return 'make-current-interactive'; // Interactive: light orange
   }
 
   setInteractive(interactive: boolean): void {

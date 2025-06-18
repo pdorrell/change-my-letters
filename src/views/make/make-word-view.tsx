@@ -102,27 +102,36 @@ export const MakeWordView: React.FC<MakeWordViewProps> = observer(({
 
   return (
     <div className={`make-word-row ${backgroundClass}`}>
-      <Panel>
-        <div className="word-display">
-          {/* Render alternating sequence of positions and letters */}
-          {range(maxWordLength).map(index => (
-            <React.Fragment key={`position--${index}`}>
-              {getPositionView(index)}
-              {getLetterView(index)}
-            </React.Fragment>
-          ))}
-          <PositionPlaceholder/>
-        </div>
-      </Panel>
+      <div className="make-word-content">
+        <Panel>
+          <div className="word-display">
+            {/* Render alternating sequence of positions and letters */}
+            {range(maxWordLength).map(index => (
+              <React.Fragment key={`position--${index}`}>
+                {getPositionView(index)}
+                {getLetterView(index)}
+              </React.Fragment>
+            ))}
+            <PositionPlaceholder/>
+          </div>
+        </Panel>
+      </div>
 
       {/* Controls */}
       {showControls && (
         <div className="make-word-controls">
           {newWordAction && (
-            <ActionButton action={newWordAction}>New Word</ActionButton>
+            <ActionButton action={newWordAction} className="make-new-word-button">New Word</ActionButton>
           )}
           {deleteAction && (
-            <ActionButton action={deleteAction}>✕</ActionButton>
+            <button
+              onClick={deleteAction.enabled ? () => deleteAction.doAction() : undefined}
+              disabled={!deleteAction.enabled}
+              className="make-delete-button"
+              title={deleteAction.tooltip}
+            >
+              ✕
+            </button>
           )}
         </div>
       )}

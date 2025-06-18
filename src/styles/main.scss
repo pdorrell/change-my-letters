@@ -368,6 +368,7 @@ body {
   max-width: calc(100vw - 1.25em); // Limit to viewport width with margin
   overflow: visible;
   box-sizing: border-box; // Include border and padding in width
+  min-height: 4.0625em; // Minimum height equivalent to one option (3.125em + 2 * 0.1875em margin + 2 * 0.3125em padding)
   
   .letter-choice-option {
     display: flex;
@@ -1103,6 +1104,96 @@ body {
       }
     }
   }
+}
+
+// Make page styles
+.make-page {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.make-word-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 10px;
+  
+  &.make-result-correct {
+    background-color: #d4edda; // Light green background for correct results
+    border-radius: 8px;
+    padding: 5px;
+  }
+  
+  &.make-result-incorrect {
+    background-color: #f8d7da; // Light red background for incorrect results
+    border-radius: 8px;
+    padding: 5px;
+  }
+  
+  &.make-current-waiting {
+    background-color: #fff3cd; // Light yellow background for waiting state
+    border-radius: 8px;
+    padding: 5px;
+  }
+  
+  &.make-current-interactive {
+    background-color: #ffeaa7; // Light orange background for interactive state
+    border-radius: 8px;
+    padding: 5px;
+  }
+  
+  &.make-history-word {
+    background-color: #f8f9fa; // Light gray background for history words
+    border-radius: 8px;
+    padding: 5px;
+  }
+  
+  .make-word-content {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start; // Align word to the left
+  }
+  
+  .make-word-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    
+    .make-new-word-button {
+      // Use same styling as word-changer controls
+    }
+    
+    .make-delete-button {
+      background: transparent;
+      border: none;
+      font-size: 2em;
+      font-weight: bold;
+      color: black;
+      cursor: pointer;
+      padding: 5px 10px;
+      
+      &:hover {
+        color: #666;
+      }
+      
+      &:disabled {
+        color: #ccc;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+.make-reset-panel {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
 }
 
 // Finders page header

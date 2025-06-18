@@ -58,7 +58,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
         </span>
 
         <div
-          className={`delete-icon-inside ${!letterInteraction.deleteAction.enabled ? 'hidden' : ''}`}
+          className={`delete-icon-inside ${!letterInteraction.deleteAction.enabled || !letterInteraction.showChangeHints ? 'hidden' : ''}`}
           onClick={letterInteraction.letterClickAction.enabled ? (e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -69,7 +69,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
         </div>
 
         <div
-          className={`replace-icon-inside ${!letterInteraction.openReplaceMenuAction.enabled ? 'hidden' : ''}`}
+          className={`replace-icon-inside ${!letterInteraction.openReplaceMenuAction.enabled || !letterInteraction.showChangeHints ? 'hidden' : ''}`}
           onClick={letterInteraction.letterClickAction.enabled ? (e) => {
             e.preventDefault();
             e.stopPropagation();

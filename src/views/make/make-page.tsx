@@ -19,7 +19,7 @@ export const MakePage: React.FC<MakePageProps> = observer(({ makeInteraction, ma
             key={`history-${index}`}
             word={word}
             maxWordLength={maxWordLength}
-            backgroundClass="bg-gray-100"
+            backgroundClass="make-history-word"
             showControls={false}
           />
         ))}

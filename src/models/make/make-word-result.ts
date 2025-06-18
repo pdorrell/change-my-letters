@@ -10,10 +10,10 @@ export class MakeWordResult {
 
   get backgroundClass(): string {
     if (this.isCorrect === true) {
-      return 'bg-green-100'; // Correct: light green
+      return 'make-result-correct'; // Correct: light green
     }
     if (this.isCorrect === false) {
-      return 'bg-red-100'; // Incorrect: light red
+      return 'make-result-incorrect'; // Incorrect: light red
     }
     return ''; // No background if not yet determined
   }
