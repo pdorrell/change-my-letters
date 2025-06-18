@@ -7,7 +7,6 @@ import { PositionView, PositionPlaceholder } from '@/views/Position';
 import { ActionButton } from '@/lib/views/action-button';
 import { ButtonAction } from '@/lib/models/actions';
 import { MakeCurrentWord } from '@/models/make/make-current-word';
-import { Panel } from '@/lib/views/panel';
 
 interface MakeWordViewProps {
   word: Word;
@@ -103,20 +102,16 @@ export const MakeWordView: React.FC<MakeWordViewProps> = observer(({
   }
 
   return (
-    <div className={`make-word-row ${backgroundClass}`}>
-      <div className="make-word-content">
-        <Panel>
-          <div className="word-display">
-            {/* Render alternating sequence of positions and letters */}
-            {range(maxWordLength).map(index => (
-              <React.Fragment key={`position--${index}`}>
-                {getPositionView(index)}
-                {getLetterView(index)}
-              </React.Fragment>
-            ))}
-            <PositionPlaceholder/>
-          </div>
-        </Panel>
+    <div className="make-word-row">
+      <div className={`word-display ${backgroundClass}`}>
+        {/* Render alternating sequence of positions and letters */}
+        {range(maxWordLength).map(index => (
+          <React.Fragment key={`position--${index}`}>
+            {getPositionView(index)}
+            {getLetterView(index)}
+          </React.Fragment>
+        ))}
+        <PositionPlaceholder/>
       </div>
 
       {/* Controls */}
