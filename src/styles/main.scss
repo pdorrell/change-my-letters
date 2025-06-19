@@ -942,7 +942,7 @@ body {
       &.activity-mode {
         .word-span {
           font-size: 3em; // 3x larger than default 1em
-          // padding stays the same in em units, so it scales proportionally
+          padding: 0.190em 0.286em; // 3x smaller padding (0.571/3 = 0.190, 0.857/3 = 0.286)
           
           &.ellipsis {
             font-size: 4.5em; // 3x larger than 1.5em
