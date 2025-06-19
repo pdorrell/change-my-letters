@@ -11,7 +11,7 @@ interface MakePageProps {
 
 export const MakePage: React.FC<MakePageProps> = observer(({ makeInteraction, maxWordLength }) => {
   const { containerRef, bottomElementRef } = useScrollOnResize(20); // 20px margin from bottom
-  
+
   return (
     <div className="make-page" ref={containerRef}>
       {/* History words */}

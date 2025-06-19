@@ -1,5 +1,15 @@
 import { useRef, useEffect } from 'react';
 
+function getScrollContainer(): Element {
+  // Test if the body element scrolls
+  const bodyScrollable = document.body.scrollHeight > document.body.clientHeight;
+
+  if (bodyScrollable && document.body.scrollTop >= 0) {
+    return document.body;
+  }
+  return document.documentElement;
+}
+
 export const useScrollOnResize = (bottomMargin: number = 20) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const bottomElementRef = useRef<HTMLDivElement>(null);
@@ -25,24 +35,17 @@ export const useScrollOnResize = (bottomMargin: number = 20) => {
         const scrollAmount = bottomMargin - currentBottomSpace;
         console.log(`   scrolling ...`);
         console.debug("    scrollAmount = ", scrollAmount);
-        
+
         // Try multiple scroll targets to ensure it works
         const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
         const newScrollTop = currentScrollTop + scrollAmount;
-        
-        // Use document.documentElement.scrollTo for better browser compatibility
-        if (document.documentElement.scrollTo) {
-          document.documentElement.scrollTo({
-            top: newScrollTop,
-            behavior: 'smooth'
-          });
-        } else {
-          // Fallback to window.scrollTo
-          window.scrollTo({
-            top: newScrollTop,
-            behavior: 'smooth'
-          });
-        }
+
+        // Usage
+        const scrollContainer = getScrollContainer();
+        scrollContainer.scrollTo({
+          top: newScrollTop,
+          behavior: 'smooth'
+        });
       }
     });
 
