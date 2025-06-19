@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { MakeInteraction } from '@/models/make/make-interaction';
 import { MakeWordView } from './make-word-view';
-import { useAutoScrollWithMargin } from '@/hooks/useAutoScrollWithMargin';
+import { useScrollOnResize } from '@/hooks/useScrollOnResize';
 
 interface MakePageProps {
   makeInteraction: MakeInteraction;
@@ -10,10 +10,10 @@ interface MakePageProps {
 }
 
 export const MakePage: React.FC<MakePageProps> = observer(({ makeInteraction, maxWordLength }) => {
-  const autoScrollRef = useAutoScrollWithMargin(60); // 60px margin from bottom
+  const { containerRef, bottomElementRef } = useScrollOnResize(20); // 20px margin from bottom
   
   return (
-    <div className="make-page">
+    <div className="make-page" ref={containerRef}>
       {/* History words */}
       {makeInteraction.history.historyWords.length > 0 && (
         <div className="make-history">
@@ -42,7 +42,7 @@ export const MakePage: React.FC<MakePageProps> = observer(({ makeInteraction, ma
       </div>
 
       {/* Result word (always shown) */}
-      <div className="make-result-word" ref={autoScrollRef}>
+      <div className="make-result-word" ref={bottomElementRef}>
         {makeInteraction.result ? (
           <MakeWordView
             word={makeInteraction.result.word}
