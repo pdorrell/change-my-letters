@@ -21,9 +21,9 @@ export class MakeCurrentWord {
 
     // Create word interaction with special options for Make page
     const options: InteractionOptions = {
-      disabled: false,
+      disabled: true,  // Start as disabled until setInteractive(true) is called
       showChangeHints: false,
-      alwaysInteract: true
+      alwaysInteract: false  // Start as non-interactive
     };
 
     this.wordInteraction = new WordInteraction(
@@ -60,7 +60,7 @@ export class MakeCurrentWord {
     const options: InteractionOptions = {
       disabled: !interactive,
       showChangeHints: false,
-      alwaysInteract: true
+      alwaysInteract: interactive  // Only show interactions when actually interactive
     };
 
     this.wordInteraction = new WordInteraction(

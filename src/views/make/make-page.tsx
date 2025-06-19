@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { MakeInteraction } from '@/models/make/make-interaction';
-import { ActionButton } from '@/lib/views/action-button';
 import { MakeWordView } from './make-word-view';
 
 interface MakePageProps {

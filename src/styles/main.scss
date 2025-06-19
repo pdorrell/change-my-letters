@@ -369,8 +369,11 @@ body {
     &.previously-visited {
       background-color: #ffe4e1; // Light pink
     }
-    &:hover {
+    &:hover:not(:disabled) {
         background-color: #ffd580;
+    }
+    &:disabled {
+      cursor: default;
     }
   }
 }

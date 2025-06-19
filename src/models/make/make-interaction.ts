@@ -140,6 +140,23 @@ export class MakeInteraction {
     this.newWordToMake = null;
     this.state = 'awaiting-new-word';
     this.currentWord.setInteractive(false);
+
+    // Auto-scroll to show the new result placeholder
+    this.scrollToNewResult();
+  }
+
+  private scrollToNewResult(): void {
+    // Use requestAnimationFrame to ensure the DOM has been updated
+    requestAnimationFrame(() => {
+      // Find the result word element (the last word row in the make page)
+      const resultWordElement = document.querySelector('.make-result-word .word-display');
+      if (resultWordElement) {
+        resultWordElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest'
+        });
+      }
+    });
   }
 
 }
