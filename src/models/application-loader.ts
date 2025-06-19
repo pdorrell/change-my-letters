@@ -37,8 +37,6 @@ export class ApplicationLoader {
   // Happy word sayer for celebration sounds
   public readonly happyWordSayer: WordSayerInterface;
 
-  // Sad word sayer for negative sounds
-  public readonly sadWordSayer: WordSayerInterface;
 
   constructor(wordSayer: WordSayerInterface, dataFileFetcher: DataFileFetcherInterface) {
     // Set version from environment or fallback
@@ -50,7 +48,6 @@ export class ApplicationLoader {
     // Create specialized word sayers for different audio types
     const baseWordSayerUrl = '/assets/words/amazon_polly/';
     this.happyWordSayer = new WordSayer(`${baseWordSayerUrl}happy`);
-    this.sadWordSayer = new WordSayer(`${baseWordSayerUrl}sad`);
 
     // Store the required data file fetcher
     this.dataFileFetcher = dataFileFetcher;
@@ -107,7 +104,7 @@ export class ApplicationLoader {
           const initialWordString = this.getInitialWord(wordGraph);
 
           // Create the app state with the loaded data and the injected WordSayers
-          this.appState = new AppState(initialWordString, wordGraph, this.version, this.wordSayer, this.happyWordSayer, this.sadWordSayer);
+          this.appState = new AppState(initialWordString, wordGraph, this.version, this.wordSayer, this.happyWordSayer);
 
           // In local dev mode, load the review pronunciation state
           this.loadLocalDevReviewState();

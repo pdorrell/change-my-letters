@@ -25,7 +25,7 @@ describe('History', () => {
     const wordSayerTestDouble = new WordSayerTestDouble();
 
     // Create an AppState instance with the word graph and test double
-    appState = new AppState('cat', wordGraph, 'test-version', wordSayerTestDouble, wordSayerTestDouble, wordSayerTestDouble);
+    appState = new AppState('cat', wordGraph, 'test-version', wordSayerTestDouble, wordSayerTestDouble);
 
     // Get the Word object
     const catWord = wordGraph.getNode('cat');

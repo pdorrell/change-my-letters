@@ -9,7 +9,6 @@ import { MenuManagerInterface } from '@/lib/views/menu-manager-interface';
 import { AppState } from '@/models/app-state';
 import { ActionButton } from '@/lib/views/action-button';
 import { HistoryPanel } from '@/views/History';
-import { ScorePanel } from '@/lib/views/score-panel';
 import { ValueCheckbox } from '@/lib/views/value-model-views';
 import { Panel } from '@/lib/views/panel';
 import {
@@ -229,12 +228,6 @@ export const WordChangerControls: React.FC<WordChangerControlsProps> = observer(
       <ActionButton action={appState.undoAction}>Undo</ActionButton>
       <ActionButton action={appState.redoAction}>Redo</ActionButton>
       <ActionButton action={appState.sayAction}>Say</ActionButton>
-      <ActionButton
-        action={appState.makeMeButtonAction}
-        className={appState.makeMeWord ? 'make-me-active' : ''}
-      >
-        Make Me
-      </ActionButton>
       <ValueCheckbox value={appState.sayImmediately} />
     </div>
   );
@@ -250,7 +243,6 @@ export const WordChangerPage: React.FC<WordChangerPageProps> = observer(({ appSt
     <>
       <WordChangerControls appState={appState} />
       <WordChangerView wordChanger={appState.wordChanger} maxWordLength={appState.wordGraph.maxWordLength} />
-      <ScorePanel scoreModel={appState.makeMeScore} />
       <HistoryPanel history={appState.history} />
     </>
   );

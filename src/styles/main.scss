@@ -619,13 +619,6 @@ body {
       visibility: hidden;
     }
     
-    &.make-me-active {
-      background-color: #8b5cf6; // Purple background when Make Me word is active
-      
-      &:hover {
-        background-color: #7c3aed; // Darker purple on hover
-      }
-    }
   }
   
   .show-history-container {

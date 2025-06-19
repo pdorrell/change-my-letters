@@ -13,5 +13,5 @@ export function createTestAppState(wordSayer?: WordSayerInterface): AppState {
   // Get the first word from the test word graph as initial word
   const initialWord = Array.from(wordGraph.words)[0];
 
-  return new AppState(initialWord, wordGraph, 'test-version', wordSayerToUse, wordSayerToUse, wordSayerToUse);
+  return new AppState(initialWord, wordGraph, 'test-version', wordSayerToUse, wordSayerToUse);
 }
