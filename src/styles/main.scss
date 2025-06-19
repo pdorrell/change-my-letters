@@ -943,6 +943,7 @@ body {
         .word-span {
           font-size: 3em; // 3x larger than default 1em
           padding: 0.190em 0.286em; // 3x smaller padding (0.571/3 = 0.190, 0.857/3 = 0.286)
+          border-color: #ccc; // Light grey border to distinguish from background
           
           &.ellipsis {
             font-size: 4.5em; // 3x larger than 1.5em
