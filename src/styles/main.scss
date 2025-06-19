@@ -830,6 +830,25 @@ body {
           min-width: 150px;
         }
       }
+      
+      .review-mode-filter {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: auto; // Push to the right
+        
+        label {
+          font-weight: 500;
+          display: flex;
+          align-items: center;
+          gap: 5px;
+          cursor: pointer;
+        }
+        
+        input[type="checkbox"] {
+          transform: scale(1.2);
+        }
+      }
     }
   }
 }
@@ -907,6 +926,27 @@ body {
         &.current-review:not(.ok):not(.wrong) {
           border-color: #000;
           background-color: #e0e0e0;
+        }
+      }
+      
+      &.ellipsis {
+        background-color: transparent;
+        border: none;
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #666;
+        cursor: default;
+      }
+    }
+    
+    // Activity mode styling - 3x larger words
+    &.activity-mode {
+      .word-span {
+        font-size: 42px; // 3x larger than default 14px
+        padding: 24px 36px; // 3x larger padding
+        
+        &.ellipsis {
+          font-size: 4.5em; // 3x larger than 1.5em
         }
       }
     }

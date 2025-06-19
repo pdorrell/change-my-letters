@@ -87,15 +87,17 @@ export const ReviewStateControls: React.FC<ReviewStateControlsProps> = observer(
           {reviewInteraction.currentReviewWord ? reviewInteraction.currentReviewWord.word : '\u00A0'}
         </span>
 
-        <div className="review-buttons">
-          <ActionButton action={reviewInteraction.markSoundsWrongAction}>
-            Sounds Wrong
-          </ActionButton>
+        {reviewInteraction.reviewMode && (
+          <div className="review-buttons">
+            <ActionButton action={reviewInteraction.markSoundsWrongAction}>
+              Sounds Wrong
+            </ActionButton>
 
-          <ActionButton action={reviewInteraction.markOKAction}>
-            Sounds OK
-          </ActionButton>
-        </div>
+            <ActionButton action={reviewInteraction.markOKAction}>
+              Sounds OK
+            </ActionButton>
+          </div>
+        )}
 
         <div className="autoplay-controls">
           <ActionButton action={reviewInteraction.autoplayAction}>
@@ -136,22 +138,36 @@ export const ReviewPronunciationFilters: React.FC<ReviewPronunciationFiltersProp
         <div className="filter-controls">
           <FilterControls filter={reviewInteraction.filter} />
 
-          <div className="review-state-filter">
-            <label htmlFor="review-state-select">Review state:</label>
-            <select
-              id="review-state-select"
-              value={reviewInteraction.reviewStateFilterOptions.indexOf(reviewInteraction.reviewStateFilter)}
-              onChange={(e) => {
-                const index = parseInt(e.target.value);
-                reviewInteraction.setReviewStateFilter(reviewInteraction.reviewStateFilterOptions[index]);
-              }}
-            >
-              {reviewInteraction.reviewStateFilterOptions.map((option, index) => (
-                <option key={index} value={index}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+          {reviewInteraction.reviewMode && (
+            <div className="review-state-filter">
+              <label htmlFor="review-state-select">Review state:</label>
+              <select
+                id="review-state-select"
+                value={reviewInteraction.reviewStateFilterOptions.indexOf(reviewInteraction.reviewStateFilter)}
+                onChange={(e) => {
+                  const index = parseInt(e.target.value);
+                  reviewInteraction.setReviewStateFilter(reviewInteraction.reviewStateFilterOptions[index]);
+                }}
+              >
+                {reviewInteraction.reviewStateFilterOptions.map((option, index) => (
+                  <option key={index} value={index}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <div className="review-mode-filter">
+            <label htmlFor="review-mode-checkbox">
+              <input
+                id="review-mode-checkbox"
+                type="checkbox"
+                checked={reviewInteraction.reviewMode}
+                onChange={(e) => reviewInteraction.setReviewMode(e.target.checked)}
+              />
+              Review mode
+            </label>
           </div>
         </div>
       </div>
@@ -167,6 +183,10 @@ interface ReviewPronunciationWordChoiceProps {
 }
 
 export const ReviewPronunciationWordChoice: React.FC<ReviewPronunciationWordChoiceProps> = observer(({ reviewInteraction }) => {
+  const keyboardHint = reviewInteraction.reviewMode
+    ? "Use ← → arrow keys to navigate, Alt+→ to start autoplay, space bar to toggle sounds wrong"
+    : "Use ← → arrow keys to navigate, Alt+→ to start autoplay";
+
   return (
     <div className="review-pronunciation-word-choice">
       {/* Filtered Words */}
@@ -174,23 +194,30 @@ export const ReviewPronunciationWordChoice: React.FC<ReviewPronunciationWordChoi
         <div className="words-header">
           <span className="words-count">Words: {reviewInteraction.filteredWords.length}</span>
           <div className="keyboard-shortcuts">
-            <span className="shortcut-hint">Use ← → arrow keys to navigate, Alt+→ to start autoplay, space bar to toggle sounds wrong</span>
+            <span className="shortcut-hint">{keyboardHint}</span>
           </div>
         </div>
 
-        <div className="words-grid">
-          {reviewInteraction.filteredWords.map(word => {
+        <div className={`words-grid ${reviewInteraction.reviewMode ? '' : 'activity-mode'}`}>
+          {reviewInteraction.displayedWords.map(word => {
             const isCurrentReview = word.currentReview;
             const isReviewed = word.reviewed && !word.soundsWrong;
             const isWrong = word.soundsWrong;
 
             let className = 'word-span';
-            if (isWrong) {
-              className += isCurrentReview ? ' wrong current-review' : ' wrong';
-            } else if (isReviewed) {
-              className += isCurrentReview ? ' ok current-review' : ' ok';
-            } else if (isCurrentReview) {
-              className += ' current-review';
+            if (reviewInteraction.reviewMode) {
+              if (isWrong) {
+                className += isCurrentReview ? ' wrong current-review' : ' wrong';
+              } else if (isReviewed) {
+                className += isCurrentReview ? ' ok current-review' : ' ok';
+              } else if (isCurrentReview) {
+                className += ' current-review';
+              }
+            } else {
+              // In activity mode, only show current review styling
+              if (isCurrentReview) {
+                className += ' current-review';
+              }
             }
 
             return (
@@ -203,6 +230,10 @@ export const ReviewPronunciationWordChoice: React.FC<ReviewPronunciationWordChoi
               </span>
             );
           })}
+
+          {reviewInteraction.hasMoreWords && (
+            <span className="word-span ellipsis">...</span>
+          )}
         </div>
       </div>
     </div>
@@ -237,7 +268,7 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
           reviewInteraction.stopAutoplay();
         }
         reviewInteraction.gotoPreviousWord();
-      } else if (e.key === ' ' && reviewInteraction.currentReviewWord) {
+      } else if (e.key === ' ' && reviewInteraction.currentReviewWord && reviewInteraction.reviewMode) {
         e.preventDefault();
         if (reviewInteraction.autoplaying) {
           reviewInteraction.stopAutoplay();
@@ -264,10 +295,12 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
 
   return (
     <div className="review-pronunciation-container">
-      <ReviewActionControls
-        reviewInteraction={reviewInteraction}
-        reviewStateFileLoader={(file: File) => reviewInteraction.loadReviewStateFromFile(file)}
-      />
+      {reviewInteraction.reviewMode && (
+        <ReviewActionControls
+          reviewInteraction={reviewInteraction}
+          reviewStateFileLoader={(file: File) => reviewInteraction.loadReviewStateFromFile(file)}
+        />
+      )}
       <ReviewPronunciationFilters reviewInteraction={reviewInteraction} />
       <ReviewStateControls reviewInteraction={reviewInteraction} />
       <ReviewPronunciationWordChoice reviewInteraction={reviewInteraction} />

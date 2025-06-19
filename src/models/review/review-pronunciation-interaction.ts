@@ -10,6 +10,9 @@ import { Filter } from '@/lib/models/filter';
  * Manages interactions for the Review Pronunciation page
  */
 export class ReviewPronunciationInteraction {
+  // Mode setting - review mode (developer tool) vs activity mode (for children)
+  reviewMode: boolean = true;
+
   // Filter settings
   filter: Filter;
   reviewStateFilter: ReviewStateFilterOption = ReviewStateFilterOption.ALL;
@@ -56,6 +59,8 @@ export class ReviewPronunciationInteraction {
 
     makeAutoObservable(this, {
       filteredWords: computed,
+      displayedWords: computed,
+      hasMoreWords: computed,
       reviewStateFilterOptions: computed,
       currentReviewWordIndex: computed,
       markOKAction: computed,
@@ -69,8 +74,10 @@ export class ReviewPronunciationInteraction {
   }
 
   get filteredWords(): Word[] {
-    // Apply review state filter first
-    const stateFiltered = this.sortedWords.filter(word => this.reviewStateFilter.include(word));
+    // Apply review state filter first (only in review mode)
+    const stateFiltered = this.reviewMode
+      ? this.sortedWords.filter(word => this.reviewStateFilter.include(word))
+      : this.sortedWords;
 
     // Get word strings and apply text filter
     const wordStrings = stateFiltered.map(word => word.word);
@@ -78,6 +85,17 @@ export class ReviewPronunciationInteraction {
 
     // Return Word objects that match the text filter
     return stateFiltered.filter(word => textFiltered.includes(word.word));
+  }
+
+  get displayedWords(): Word[] {
+    const filtered = this.filteredWords;
+    // In activity mode, limit to 20 words
+    return this.reviewMode ? filtered : filtered.slice(0, 20);
+  }
+
+  get hasMoreWords(): boolean {
+    // True if there are more words beyond the displayed limit (activity mode only)
+    return !this.reviewMode && this.filteredWords.length > 20;
   }
 
   // Computed property for currentReviewWordIndex
@@ -320,6 +338,12 @@ export class ReviewPronunciationInteraction {
   @action
   setAutoPlayWaitMillis(millis: number): void {
     this.autoPlayWaitMillis = millis;
+  }
+
+  @action
+  setReviewMode(reviewMode: boolean): void {
+    this.stopAutoplay();
+    this.reviewMode = reviewMode;
   }
 
 
