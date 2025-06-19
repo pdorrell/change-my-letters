@@ -11,7 +11,7 @@ import { Filter } from '@/lib/models/filter';
  */
 export class ReviewPronunciationInteraction {
   // Mode setting - review mode (developer tool) vs activity mode (for children)
-  reviewMode: boolean = true;
+  reviewMode: boolean = false;
 
   // Filter settings
   filter: Filter;
