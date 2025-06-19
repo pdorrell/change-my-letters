@@ -937,16 +937,16 @@ body {
           cursor: default;
         }
       }
-    }
-    
-    // Activity mode styling - 3x larger words
-    &.activity-mode {
-      .word-span {
-        font-size: 3em; // 3x larger than default 1em
-        // padding stays the same in em units, so it scales proportionally
-        
-        &.ellipsis {
-          font-size: 4.5em; // 3x larger than 1.5em
+      
+      // Activity mode styling - 3x larger words
+      &.activity-mode {
+        .word-span {
+          font-size: 3em; // 3x larger than default 1em
+          // padding stays the same in em units, so it scales proportionally
+          
+          &.ellipsis {
+            font-size: 4.5em; // 3x larger than 1.5em
+          }
         }
       }
     }
