@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, when } from 'mobx';
 import { Word } from '@/models/Word';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
 import { MakeWordsHistory } from './make-words-history';
@@ -26,6 +26,9 @@ export class MakeInteraction {
     this.currentWord = new MakeCurrentWord(initialWord, (word: Word) => this.handleWordChange(word), this.wordSayer);
 
     makeAutoObservable(this);
+    
+    // Auto-scroll when Make page is initialized
+    this.scrollToNewResult();
   }
 
   get resultDisplay(): MakeWordResult | MakeWordResultPlaceholder {
@@ -146,17 +149,26 @@ export class MakeInteraction {
   }
 
   private scrollToNewResult(): void {
-    // Use requestAnimationFrame to ensure the DOM has been updated
-    requestAnimationFrame(() => {
-      // Find the result word element (the last word row in the make page)
-      const resultWordElement = document.querySelector('.make-result-word .word-display');
-      if (resultWordElement) {
-        resultWordElement.scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest'
+    // Wait for the next MobX reaction cycle, then use requestAnimationFrame for DOM update
+    when(
+      () => true, // Always true, just waits for next reaction cycle
+      () => {
+        requestAnimationFrame(() => {
+          // Find the result word element (the last word row in the make page)
+          const resultWordElement = document.querySelector('.make-result-word .word-display');
+          if (resultWordElement) {
+            // Get the element's position
+            const elementRect = resultWordElement.getBoundingClientRect();
+            const scrollTop = window.pageYOffset + elementRect.bottom - window.innerHeight + 60; // 60px margin from bottom
+            
+            window.scrollTo({
+              top: Math.max(0, scrollTop),
+              behavior: 'smooth'
+            });
+          }
         });
       }
-    });
+    );
   }
 
 }
