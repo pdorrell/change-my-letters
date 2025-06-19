@@ -361,7 +361,6 @@ export class AppState {
    * Set the sayImmediately setting
    */
   setSayImmediately(value: boolean): void {
-    console.debug("setSayImmediately value = ", value);
     this.sayImmediately.set(value);
   }
 

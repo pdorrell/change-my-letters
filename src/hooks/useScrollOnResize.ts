@@ -15,7 +15,6 @@ export const useScrollOnResize = (bottomMargin: number = 20) => {
   const bottomElementRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log(`useScrollOnResize effect ...`);
     if (!containerRef.current || !bottomElementRef.current) return;
 
     const container = containerRef.current;
@@ -23,18 +22,13 @@ export const useScrollOnResize = (bottomMargin: number = 20) => {
 
     const resizeObserver = new ResizeObserver(() => {
       // Container size changed, check if bottom element needs scrolling
-      console.log(`resizeObserver`);
       const rect = bottomElement.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
       const elementBottom = rect.bottom;
-      console.debug("  elementBottom = ", elementBottom);
       const currentBottomSpace = viewportHeight - elementBottom;
-      console.debug("  currentBottomSpace = ", currentBottomSpace);
 
       if (currentBottomSpace < bottomMargin) {
         const scrollAmount = bottomMargin - currentBottomSpace;
-        console.log(`   scrolling ...`);
-        console.debug("    scrollAmount = ", scrollAmount);
 
         // Try multiple scroll targets to ensure it works
         const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
