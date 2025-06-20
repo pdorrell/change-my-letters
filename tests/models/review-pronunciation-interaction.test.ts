@@ -80,6 +80,8 @@ describe('ReviewPronunciationInteraction', () => {
     });
 
     it('should filter words by review state - unreviewed', () => {
+      // Set to review mode for filtering to work
+      reviewInteraction.setReviewMode(true);
       // Mark some words as reviewed
       testWords[0].reviewed = true;
       testWords[1].reviewed = true;
@@ -93,6 +95,8 @@ describe('ReviewPronunciationInteraction', () => {
     });
 
     it('should filter words by review state - wrong', () => {
+      // Set to review mode for filtering to work
+      reviewInteraction.setReviewMode(true);
       // Mark some words as wrong
       testWords[0].soundsWrong = true;
       testWords[2].soundsWrong = true;
@@ -106,6 +110,8 @@ describe('ReviewPronunciationInteraction', () => {
     });
 
     it('should filter words by review state - unreviewed or wrong', () => {
+      // Set to review mode for filtering to work
+      reviewInteraction.setReviewMode(true);
       // Mark some words as reviewed and OK
       testWords[0].reviewed = true;
       testWords[0].soundsWrong = false;
@@ -126,6 +132,8 @@ describe('ReviewPronunciationInteraction', () => {
     });
 
     it('should combine text and review state filters', () => {
+      // Set to review mode for filtering to work
+      reviewInteraction.setReviewMode(true);
       testWords[0].reviewed = true; // cat reviewed
       testWords[2].soundsWrong = true; // fish wrong
 

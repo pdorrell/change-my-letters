@@ -35,6 +35,11 @@ describe('ReviewPronunciationView', () => {
   });
 
   describe('Action Buttons Panel', () => {
+    beforeEach(() => {
+      // Set to review mode to show action buttons panel
+      reviewInteraction.setReviewMode(true);
+    });
+
     it('renders all action buttons', () => {
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
@@ -89,7 +94,8 @@ describe('ReviewPronunciationView', () => {
 
   describe('word changer Panel', () => {
     it('always renders the word changer panel', () => {
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      // Set to review mode to show sounds wrong/OK buttons
+      reviewInteraction.setReviewMode(true);render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
       const wordChangerPanel = document.querySelector('.word-changer-panel');
       expect(wordChangerPanel).toBeInTheDocument();
@@ -99,6 +105,8 @@ describe('ReviewPronunciationView', () => {
     });
 
     it('shows word when there is a current review word', () => {
+      // Set to review mode to show sounds wrong/OK buttons
+      reviewInteraction.setReviewMode(true);
       act(() => {
         runInAction(() => {
           reviewInteraction.reviewWord('cat');
@@ -145,6 +153,8 @@ describe('ReviewPronunciationView', () => {
     });
 
     it('enables/disables buttons based on word changer state', () => {
+      // Set to review mode to show sounds wrong/OK buttons
+      reviewInteraction.setReviewMode(true);
       act(() => {
         runInAction(() => {
           reviewInteraction.reviewWord('cat');
@@ -164,6 +174,8 @@ describe('ReviewPronunciationView', () => {
 
   describe('Filter Panel', () => {
     it('renders filter controls', () => {
+      // Set to review mode to show review state filter
+      reviewInteraction.setReviewMode(true);
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
       expect(screen.getByPlaceholderText('Filter text...')).toBeInTheDocument();
@@ -205,6 +217,8 @@ describe('ReviewPronunciationView', () => {
     });
 
     it('updates review state filter', () => {
+      // Set to review mode to show review state filter
+      reviewInteraction.setReviewMode(true);
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
       const select = screen.getByLabelText('Review state:');
@@ -217,6 +231,8 @@ describe('ReviewPronunciationView', () => {
     });
 
     it('shows all review state options in select', () => {
+      // Set to review mode to show review state filter
+      reviewInteraction.setReviewMode(true);
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
       const select = screen.getByLabelText('Review state:');
@@ -257,6 +273,8 @@ describe('ReviewPronunciationView', () => {
     });
 
     it('applies correct CSS classes based on word state', () => {
+      // Set to review mode to see CSS classes
+      reviewInteraction.setReviewMode(true);
       act(() => {
         runInAction(() => {
           testWords[0].reviewed = true; // cat - reviewed OK
@@ -300,6 +318,11 @@ describe('ReviewPronunciationView', () => {
   });
 
   describe('Drag and Drop', () => {
+    beforeEach(() => {
+      // Set to review mode to show action buttons panel
+      reviewInteraction.setReviewMode(true);
+    });
+
     it('handles drag over event', () => {
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
@@ -344,10 +367,18 @@ describe('ReviewPronunciationView', () => {
   });
 
   describe('Keyboard Navigation', () => {
-    it('shows keyboard shortcuts hint', () => {
+    it('shows keyboard shortcuts hint for review mode', () => {
+      reviewInteraction.setReviewMode(true);
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
       expect(screen.getByText('Use ← → arrow keys to navigate, Alt+→ to start autoplay, space bar to toggle sounds wrong')).toBeInTheDocument();
+    });
+
+    it('shows keyboard shortcuts hint for activity mode', () => {
+      reviewInteraction.setReviewMode(false);
+      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+
+      expect(screen.getByText('Use ← → arrow keys to navigate, Alt+→ to start autoplay')).toBeInTheDocument();
     });
 
     it('handles right arrow key for next word navigation', () => {

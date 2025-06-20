@@ -151,6 +151,8 @@ describe('Review Pronunciation Integration', () => {
     });
 
     it('should filter by review state correctly', () => {
+      // Set to review mode for filtering to work
+      reviewInteraction.setReviewMode(true);
       const words = appState.wordGraph.sortedWords.slice(0, 5);
 
       // Mark some words as reviewed
