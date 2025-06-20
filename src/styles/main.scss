@@ -940,12 +940,8 @@ body {
         &.ellipsis-button {
           background-color: transparent;
           border: 1px solid #ccc;
-          font-size: 1.5em;
-          font-weight: bold;
           color: #666;
           cursor: pointer;
-          height: auto;
-          line-height: 1;
           
           &:hover {
             background-color: #f0f0f0;
@@ -966,9 +962,7 @@ body {
           }
           
           &.ellipsis-button {
-            font-size: 4.5em; // 3x larger than 1.5em
-            height: auto;
-            line-height: 1;
+            // Keep default size in activity mode too
           }
         }
       }
