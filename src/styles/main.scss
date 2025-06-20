@@ -787,7 +787,7 @@ body {
         border: 1px solid #ccc;
         border-radius: 4px;
         font-size: 0.88em;
-        min-width: 7em;
+        min-width: 6em;
       }
       
       .radio-group {
@@ -838,7 +838,7 @@ body {
           border: none;
           border-radius: 8px;
           cursor: pointer;
-          min-width: 7.5em;
+          width: 5em;
           
           &:hover {
             background-color: #0056b3;
@@ -879,7 +879,7 @@ body {
     input[type="text"] {
       font-size: 1.75em;
       padding: 0.4em 0.5em;
-      width: 6em;
+      width: 5em;
     }
     
     .radio-group {
@@ -888,13 +888,13 @@ body {
       
       span {
         font-size: 1em; // Relative to radio-group
-        margin-right: 0.3em;
+        margin-right: 0.2em;
       }
       
       label {
         font-size: 1.2em;
         gap: 0.05em;
-        margin-right: 0.3em;
+        margin-right: 0.2em;
         display: flex;
         align-items: center;
         
@@ -978,12 +978,12 @@ body {
         margin: 0;
         font-weight: bold;
         color: #555;
-        font-size: 1.2em;
+        font-size: 1.6em;
       }
       
       .keyboard-shortcuts {
         .shortcut-hint {
-          font-size: 0.9em;
+          font-size: 1em;
           color: #666;
           background-color: #f5f5f5;
           padding: 0.25em 0.5em;
@@ -1065,7 +1065,7 @@ body {
       &.activity-mode {
         .word-span {
           font-size: 3em;
-          padding: 0.19em 0.29em;
+          padding: 0.1em 0.25em;
           border-color: #ccc; // Light grey border to distinguish from background
           
           &.ellipsis {
