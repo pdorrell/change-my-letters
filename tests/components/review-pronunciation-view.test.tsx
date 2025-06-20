@@ -190,7 +190,7 @@ describe('ReviewPronunciationView', () => {
       reviewInteraction.setReviewMode(true);
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
-      expect(screen.getByPlaceholderText('Filter text...')).toBeInTheDocument();
+      expect(screen.getByPlaceholderText('Filter...')).toBeInTheDocument();
       expect(screen.getByText('Match')).toBeInTheDocument();
       expect(screen.getByLabelText('start')).toBeInTheDocument();
       expect(screen.getByLabelText('end')).toBeInTheDocument();
@@ -238,7 +238,7 @@ describe('ReviewPronunciationView', () => {
     it('updates filter text when typing', () => {
       render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
-      const filterInput = screen.getByPlaceholderText('Filter text...');
+      const filterInput = screen.getByPlaceholderText('Filter...');
 
       act(() => {
         fireEvent.change(filterInput, { target: { value: 'cat' } });
