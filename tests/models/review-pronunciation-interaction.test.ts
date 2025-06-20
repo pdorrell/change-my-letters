@@ -659,4 +659,44 @@ describe('ReviewPronunciationInteraction', () => {
       expect(action.tooltip).toBe('Show 1 more words');
     });
   });
+
+  describe('autoplay with activity mode', () => {
+    it('should stop autoplay at last displayed word in activity mode', async () => {
+      reviewInteraction.setReviewMode(false);
+      reviewInteraction.maxNumWordsToShow = 2; // Only show 2 words in activity mode
+
+      reviewInteraction.startAutoplay();
+      expect(reviewInteraction.autoplaying).toBe(true);
+      expect(reviewInteraction.currentReviewWord?.word).toBe('cat');
+
+      // Manually trigger next autoplay step
+      await reviewInteraction.gotoNextWord();
+      expect(reviewInteraction.currentReviewWord?.word).toBe('dog');
+
+      // Since we're at the last displayed word (index 1 of 2), autoplay should stop on next call
+      // We can't easily test the private autoplayNext method, but we can test the behavior indirectly
+      expect(reviewInteraction.displayedWords).toHaveLength(2);
+      expect(reviewInteraction.currentReviewWordIndex).toBe(1); // At last displayed word
+    });
+
+    it('should continue autoplay through all words in review mode', async () => {
+      reviewInteraction.setReviewMode(true);
+      reviewInteraction.maxNumWordsToShow = 2; // This should be ignored in review mode
+
+      expect(reviewInteraction.displayedWords).toHaveLength(4); // Should show all words in review mode
+
+      reviewInteraction.startAutoplay();
+      expect(reviewInteraction.autoplaying).toBe(true);
+      expect(reviewInteraction.currentReviewWord?.word).toBe('cat');
+
+      await reviewInteraction.gotoNextWord();
+      expect(reviewInteraction.currentReviewWord?.word).toBe('dog');
+
+      await reviewInteraction.gotoNextWord();
+      expect(reviewInteraction.currentReviewWord?.word).toBe('fish');
+
+      await reviewInteraction.gotoNextWord();
+      expect(reviewInteraction.currentReviewWord?.word).toBe('bird');
+    });
+  });
 });

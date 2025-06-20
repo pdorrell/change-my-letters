@@ -853,6 +853,76 @@ body {
   }
 }
 
+// Activity mode styling for larger controls
+.review-pronunciation-container.activity-mode {
+  .review-pronunciation-filters .filter-panel .filter-controls {
+    input[type="text"] {
+      font-size: 28px;
+      padding: 16px 24px;
+      min-width: 400px;
+    }
+    
+    .radio-group {
+      font-size: 28px;
+      gap: 20px;
+      
+      span {
+        font-size: 28px;
+      }
+      
+      label {
+        font-size: 28px;
+        gap: 10px;
+        
+        input[type="radio"] {
+          transform: scale(2);
+          margin-right: 10px;
+        }
+      }
+    }
+    
+    .review-state-filter {
+      font-size: 28px;
+      
+      select {
+        font-size: 28px;
+        padding: 16px 24px;
+        min-width: 300px;
+      }
+    }
+    
+    .review-mode-filter {
+      font-size: 28px;
+      
+      label {
+        font-size: 28px;
+        gap: 10px;
+        
+        input[type="checkbox"] {
+          transform: scale(2);
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+  
+  .word-changer-panel .autoplay-controls {
+    font-size: 28px;
+    gap: 20px;
+    
+    button {
+      font-size: 28px;
+      padding: 16px 24px;
+    }
+    
+    .autoplay-interval-select {
+      font-size: 28px;
+      padding: 16px 24px;
+      min-width: 160px;
+    }
+  }
+}
+
 // Review Pronunciation word choice
 .review-pronunciation-word-choice {
   

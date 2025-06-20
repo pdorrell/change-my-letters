@@ -319,7 +319,7 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
   }, [reviewInteraction]);
 
   return (
-    <div className="review-pronunciation-container">
+    <div className={`review-pronunciation-container ${reviewInteraction.reviewMode ? '' : 'activity-mode'}`}>
       {reviewInteraction.reviewMode && (
         <ReviewActionControls
           reviewInteraction={reviewInteraction}

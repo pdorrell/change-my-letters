@@ -441,26 +441,35 @@ export class ReviewPronunciationInteraction {
   private async autoplayNext(): Promise<void> {
     if (!this.autoplaying) return;
 
-    const filtered = this.filteredWords;
-    if (filtered.length === 0) {
+    const wordsToAutoplay = this.displayedWords; // Use displayedWords instead of filteredWords
+    if (wordsToAutoplay.length === 0) {
       this.stopAutoplay();
       return;
+    }
+
+    // Find current word index in the displayed words
+    let currentIndexInDisplayed: number | null = null;
+    if (this.currentReviewWord) {
+      currentIndexInDisplayed = wordsToAutoplay.findIndex(word => word === this.currentReviewWord);
+      if (currentIndexInDisplayed === -1) {
+        currentIndexInDisplayed = null; // Current word not in displayed list
+      }
     }
 
     let nextIndex: number;
-    if (this.currentReviewWordIndex === null) {
-      // No word changer, start with first word
+    if (currentIndexInDisplayed === null) {
+      // No word changer in displayed list, start with first displayed word
       nextIndex = 0;
-    } else if (this.currentReviewWordIndex < filtered.length - 1) {
-      // Move to next word
-      nextIndex = this.currentReviewWordIndex + 1;
+    } else if (currentIndexInDisplayed < wordsToAutoplay.length - 1) {
+      // Move to next displayed word
+      nextIndex = currentIndexInDisplayed + 1;
     } else {
-      // Reached end of list, stop autoplay
+      // Reached end of displayed list, stop autoplay
       this.stopAutoplay();
       return;
     }
 
-    const nextWord = filtered[nextIndex];
+    const nextWord = wordsToAutoplay[nextIndex];
 
     // Mark current review word as reviewed if it exists
     if (this.currentReviewWord) {
