@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
 import { WordToFind } from './word-to-find';
+import { getRandomNegativeWord } from '@/lib/util';
 
 interface FinderInterface {
   wordSayer: WordSayerInterface;
@@ -27,6 +28,11 @@ export class WordToChoose {
 
     const isCorrect = this.word === this.finder.wordChangerToFind.word;
     if (!isCorrect) {
+      // Say negative word first, then the chosen word
+      const negativeWord = getRandomNegativeWord();
+      await this.finder.wordSayer.say(negativeWord);
+      // Wait a moment before saying the chosen word
+      await new Promise(resolve => setTimeout(resolve, 200));
       await this.finder.wordSayer.say(this.word);
     }
     this.finder.wordChangerToFind.chosenAs(this.word);

@@ -7,6 +7,7 @@ import { LettersRow } from './letters-row';
 import { WordsToFind } from './words-to-find';
 import { WordToFind } from './word-to-find';
 import { DifficultyType } from './types';
+import { getRandomNegativeWord } from '@/lib/util';
 
 export class WordsInRowFinder implements RangeSelectable {
   wordSayer: WordSayerInterface;
@@ -121,7 +122,7 @@ export class WordsInRowFinder implements RangeSelectable {
     this.lettersRow.updateSelection(endPosition);
   }
 
-  finishSelection(): void {
+  async finishSelection(): Promise<void> {
     if (!this.lettersRow.selectionState || !this.wordsToFind.activeWord) {
       this.lettersRow.clearSelection();
       return;
@@ -136,6 +137,9 @@ export class WordsInRowFinder implements RangeSelectable {
     } else {
       this.wordsToFind.markActiveWordWrong();
       this.lettersRow.markSelectionWrong();
+      // Say a negative word for incorrect selection
+      const negativeWord = getRandomNegativeWord();
+      await this.wordSayer.say(negativeWord);
     }
   }
 

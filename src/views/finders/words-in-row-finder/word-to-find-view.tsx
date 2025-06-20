@@ -30,7 +30,7 @@ export const WordToFindView: React.FC<WordToFindViewProps> = observer(({ wordToF
         cursor: wordToFind.canClick ? 'pointer' : 'default'
       }}
     >
-      {/* No text displayed - only background color shows the state */}
+      {wordToFind.displayState === 'waiting' || wordToFind.displayState === 'active' || wordToFind.displayState === 'correct-active' ? '?' : ''}
     </div>
   );
 });

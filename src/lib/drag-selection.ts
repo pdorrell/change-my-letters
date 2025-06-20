@@ -51,10 +51,10 @@ export function useDragSelection(
     }
   }, [isDragging, selectable]);
 
-  const finishDrag = useCallback(() => {
+  const finishDrag = useCallback(async () => {
     if (isDragging) {
       setIsDragging(false);
-      selectable.finishSelection();
+      await selectable.finishSelection();
     }
   }, [isDragging, selectable]);
 
@@ -107,10 +107,10 @@ export function useDragSelection(
 
   // Global event handlers
   React.useEffect(() => {
-    const handleGlobalPointerUp = () => {
+    const handleGlobalPointerUp = async () => {
       if (isDragging) {
         setIsDragging(false);
-        selectable.finishSelection();
+        await selectable.finishSelection();
       }
     };
 
