@@ -878,29 +878,28 @@ body {
   .review-pronunciation-filters .filter-panel .filter-controls {
     input[type="text"] {
       font-size: 1.75em; // 28px / 16px = 1.75em
-      padding: 1em 1.5em; // 16px 24px = 1em 1.5em
+      padding: 0.4em 0.5em; // 16px 24px = 1em 1.5em
       width: 6em;
     }
     
     .radio-group {
       font-size: 1.75em;
-      gap: 1.88em; // 30px / 16px = 1.875em
+      gap: 0.1em; // 30px / 16px = 1.875em
       
       span {
         font-size: 1em; // Relative to radio-group
-        margin-right: 1.25em; // 20px / 16px = 1.25em
+        margin-right: 0.3em; // 20px / 16px = 1.25em
       }
       
       label {
-        font-size: 1em;
-        gap: 0.94em; // 15px / 16px = 0.9375em
-        margin-right: 1.56em; // 25px / 16px = 1.5625em
+        font-size: 1.2em;
+        gap: 0.05em;
+        margin-right: 0.3em;
         display: flex;
         align-items: center;
         
         input[type="radio"] {
-          transform: scale(2);
-          margin-right: 0.94em;
+          margin-right: 0.2em;
         }
       }
     }
