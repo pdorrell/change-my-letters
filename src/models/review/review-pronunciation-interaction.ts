@@ -13,6 +13,9 @@ export class ReviewPronunciationInteraction {
   // Mode setting - review mode (developer tool) vs activity mode (for children)
   reviewMode: boolean = false;
 
+  // Activity mode word display limit
+  maxNumWordsToShow: number = 20;
+
   // Filter settings
   filter: Filter;
   reviewStateFilter: ReviewStateFilterOption = ReviewStateFilterOption.ALL;
@@ -61,6 +64,7 @@ export class ReviewPronunciationInteraction {
       filteredWords: computed,
       displayedWords: computed,
       hasMoreWords: computed,
+      showMoreWordsAction: computed,
       reviewStateFilterOptions: computed,
       currentReviewWordIndex: computed,
       markOKAction: computed,
@@ -89,13 +93,21 @@ export class ReviewPronunciationInteraction {
 
   get displayedWords(): Word[] {
     const filtered = this.filteredWords;
-    // In activity mode, limit to 20 words
-    return this.reviewMode ? filtered : filtered.slice(0, 20);
+    // In activity mode, limit to maxNumWordsToShow
+    return this.reviewMode ? filtered : filtered.slice(0, this.maxNumWordsToShow);
   }
 
   get hasMoreWords(): boolean {
     // True if there are more words beyond the displayed limit (activity mode only)
-    return !this.reviewMode && this.filteredWords.length > 20;
+    return !this.reviewMode && this.filteredWords.length > this.maxNumWordsToShow;
+  }
+
+  get showMoreWordsAction(): ButtonAction {
+    const additionalWords = this.filteredWords.length - this.maxNumWordsToShow;
+    const wordsToShow = Math.min(additionalWords, this.maxNumWordsToShow);
+    const tooltip = `Show ${wordsToShow} more words`;
+    const handler = this.hasMoreWords ? () => this.showMoreWords() : null;
+    return new ButtonAction(handler, { tooltip });
   }
 
   // Computed property for currentReviewWordIndex
@@ -260,6 +272,7 @@ export class ReviewPronunciationInteraction {
     this.filter.value.set('');
     this.filter.matchOption.set('start');
     this.setReviewStateFilter(ReviewStateFilterOption.ALL);
+    this.maxNumWordsToShow = 20; // Reset to initial value
 
     // Clear current review word
     if (this.currentReviewWord) {
@@ -333,6 +346,7 @@ export class ReviewPronunciationInteraction {
   setReviewStateFilter(filter: ReviewStateFilterOption): void {
     this.stopAutoplay();
     this.reviewStateFilter = filter;
+    this.maxNumWordsToShow = 20; // Reset to initial value when filtering changes
   }
 
   @action
@@ -344,6 +358,23 @@ export class ReviewPronunciationInteraction {
   setReviewMode(reviewMode: boolean): void {
     this.stopAutoplay();
     this.reviewMode = reviewMode;
+  }
+
+  @action
+  showMoreWords(): void {
+    this.maxNumWordsToShow = this.maxNumWordsToShow * 2;
+  }
+
+  @action
+  setFilterValue(value: string): void {
+    this.filter.value.set(value);
+    this.maxNumWordsToShow = 20; // Reset to initial value when filtering changes
+  }
+
+  @action
+  setFilterMatchOption(option: 'start' | 'end' | 'any'): void {
+    this.filter.matchOption.set(option);
+    this.maxNumWordsToShow = 20; // Reset to initial value when filtering changes
   }
 
 

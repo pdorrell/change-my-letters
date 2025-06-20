@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import { ReviewPronunciationInteraction } from '@/models/review/review-pronunciation-interaction';
 import { ActionButton } from '@/lib/views/action-button';
 import { AppState } from '@/models/app-state';
-import { FilterControls } from '@/lib/views/filter-controls';
 
 /**
  * Action controls component for Review Pronunciation page
@@ -136,7 +135,27 @@ export const ReviewPronunciationFilters: React.FC<ReviewPronunciationFiltersProp
     <div className="review-pronunciation-filters">
       <div className="filter-panel">
         <div className="filter-controls">
-          <FilterControls filter={reviewInteraction.filter} />
+          <input
+            type="text"
+            placeholder="Filter text..."
+            value={reviewInteraction.filter.value.value}
+            onChange={(e) => reviewInteraction.setFilterValue(e.target.value)}
+          />
+          <div className="radio-group">
+            <span>Match</span>
+            {['start', 'end', 'any'].map((option) => (
+              <label key={option}>
+                <input
+                  type="radio"
+                  name="match-option"
+                  value={option}
+                  checked={reviewInteraction.filter.matchOption.value === option}
+                  onChange={(e) => reviewInteraction.setFilterMatchOption(e.target.value as 'start' | 'end' | 'any')}
+                />
+                {option}
+              </label>
+            ))}
+          </div>
 
           {reviewInteraction.reviewMode && (
             <div className="review-state-filter">
@@ -232,7 +251,13 @@ export const ReviewPronunciationWordChoice: React.FC<ReviewPronunciationWordChoi
           })}
 
           {reviewInteraction.hasMoreWords && (
-            <span className="word-span ellipsis">...</span>
+            <button
+              className="word-span ellipsis-button"
+              title={reviewInteraction.showMoreWordsAction.tooltip}
+              onClick={() => reviewInteraction.showMoreWordsAction.doAction()}
+            >
+              ...
+            </button>
           )}
         </div>
       </div>

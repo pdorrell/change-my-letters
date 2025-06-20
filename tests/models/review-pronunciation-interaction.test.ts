@@ -583,4 +583,80 @@ describe('ReviewPronunciationInteraction', () => {
       }, 50);
     });
   });
+
+  describe('maxNumWordsToShow functionality', () => {
+    it('should initialize with maxNumWordsToShow of 20', () => {
+      expect(reviewInteraction.maxNumWordsToShow).toBe(20);
+    });
+
+    it('should limit displayedWords to maxNumWordsToShow in activity mode', () => {
+      reviewInteraction.setReviewMode(false);
+      reviewInteraction.maxNumWordsToShow = 2;
+
+      const displayed = reviewInteraction.displayedWords;
+      expect(displayed).toHaveLength(2);
+      expect(displayed[0].word).toBe('cat');
+      expect(displayed[1].word).toBe('dog');
+    });
+
+    it('should show hasMoreWords as true when filteredWords exceed maxNumWordsToShow in activity mode', () => {
+      reviewInteraction.setReviewMode(false);
+      reviewInteraction.maxNumWordsToShow = 2;
+
+      expect(reviewInteraction.hasMoreWords).toBe(true);
+    });
+
+    it('should show hasMoreWords as false in review mode regardless of maxNumWordsToShow', () => {
+      reviewInteraction.setReviewMode(true);
+      reviewInteraction.maxNumWordsToShow = 2;
+
+      expect(reviewInteraction.hasMoreWords).toBe(false);
+    });
+
+    it('should double maxNumWordsToShow when showMoreWords is called', () => {
+      reviewInteraction.maxNumWordsToShow = 20;
+      reviewInteraction.showMoreWords();
+      expect(reviewInteraction.maxNumWordsToShow).toBe(40);
+    });
+
+    it('should reset maxNumWordsToShow to 20 when filter value changes', () => {
+      reviewInteraction.maxNumWordsToShow = 40;
+      reviewInteraction.setFilterValue('test');
+      expect(reviewInteraction.maxNumWordsToShow).toBe(20);
+    });
+
+    it('should reset maxNumWordsToShow to 20 when filter match option changes', () => {
+      reviewInteraction.maxNumWordsToShow = 40;
+      reviewInteraction.setFilterMatchOption('any');
+      expect(reviewInteraction.maxNumWordsToShow).toBe(20);
+    });
+
+    it('should reset maxNumWordsToShow to 20 when review state filter changes', () => {
+      reviewInteraction.maxNumWordsToShow = 40;
+      reviewInteraction.setReviewStateFilter(ReviewStateFilterOption.UNREVIEWED);
+      expect(reviewInteraction.maxNumWordsToShow).toBe(20);
+    });
+
+    it('should reset maxNumWordsToShow to 20 when reset is called', () => {
+      reviewInteraction.maxNumWordsToShow = 40;
+      reviewInteraction.reset();
+      expect(reviewInteraction.maxNumWordsToShow).toBe(20);
+    });
+
+    it('should provide correct tooltip for showMoreWordsAction', () => {
+      reviewInteraction.setReviewMode(false);
+      reviewInteraction.maxNumWordsToShow = 2; // Should show 2 words, with 2 more available
+
+      const action = reviewInteraction.showMoreWordsAction;
+      expect(action.tooltip).toBe('Show 2 more words');
+    });
+
+    it('should calculate tooltip correctly when fewer additional words than maxNumWordsToShow', () => {
+      reviewInteraction.setReviewMode(false);
+      reviewInteraction.maxNumWordsToShow = 3; // Should show 3 words, with 1 more available
+
+      const action = reviewInteraction.showMoreWordsAction;
+      expect(action.tooltip).toBe('Show 1 more words');
+    });
+  });
 });

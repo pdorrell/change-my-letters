@@ -315,6 +315,46 @@ describe('ReviewPronunciationView', () => {
       expect(reviewWordSpy).toHaveBeenCalledWith('cat');
       expect(wordSayer.playedWords).toContain('cat');
     });
+
+    it('shows ellipsis button when there are more words in activity mode', () => {
+      // Set to activity mode and limit words
+      reviewInteraction.setReviewMode(false);
+      reviewInteraction.maxNumWordsToShow = 2;
+
+      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+
+      const ellipsisButton = screen.getByRole('button', { name: '...' });expect(ellipsisButton).toBeInTheDocument();
+      expect(ellipsisButton).toHaveClass('ellipsis-button');
+    });
+
+    it('does not show ellipsis button when there are no more words', () => {
+      // Set to activity mode but don't limit words
+      reviewInteraction.setReviewMode(false);
+      reviewInteraction.maxNumWordsToShow = 20;
+
+      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+
+      const ellipsisButton = screen.queryByRole('button', { name: '...' });
+      expect(ellipsisButton).not.toBeInTheDocument();
+    });
+
+    it('calls showMoreWords when ellipsis button is clicked', () => {
+      // Set to activity mode and limit words
+      reviewInteraction.setReviewMode(false);
+      reviewInteraction.maxNumWordsToShow = 2;
+
+      const showMoreWordsSpy = jest.spyOn(reviewInteraction, 'showMoreWords');
+
+      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+
+      const ellipsisButton = screen.getByRole('button', { name: '...' });
+      act(() => {
+        fireEvent.click(ellipsisButton);
+      });
+
+      expect(showMoreWordsSpy).toHaveBeenCalled();
+      expect(reviewInteraction.maxNumWordsToShow).toBe(4);
+    });
   });
 
   describe('Drag and Drop', () => {
