@@ -27,18 +27,19 @@ body {
 
 .app-container {
   width: 100%;
-  max-width: 1200px; // Limit width on large screens
+  max-width: 75em; // 1200px / 16px = 75em
   margin: 0 auto;
   padding: 0;
   overflow: visible; // Allow menus to extend beyond container
   box-sizing: border-box; // Include padding in width calculation
+  font-size: clamp(0px, 1.5vw, 16px); // Base font size definition - only place with clamp
   
   header {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 10px;
-    margin: 10px;
+    gap: 0.63em; // 10px / 16px = 0.625em
+    margin: 0.63em;
     overflow: visible;
     
     // First item: heading
@@ -61,7 +62,7 @@ body {
     
     // Third item: reset button
     .reset-button {
-      padding: 8px 16px;
+      padding: 0.5em 1em; // 8px 16px = 0.5em 1em
       background-color: #dc3545;
       color: white;
       border: none;
@@ -91,7 +92,7 @@ body {
   }
   
   main {
-    padding: 0 10px;
+    padding: 0 0.63em; // 0 10px = 0 0.625em
     overflow: visible; // Allow menus to extend beyond container
   }
 }
@@ -102,7 +103,7 @@ body {
   gap: 0;
   
   .page-tab {
-    padding: 8px 16px;
+    padding: 0.5em 1em; // 8px 16px = 0.5em 1em
     border: 1px solid #ccc;
     background-color: white;
     color: #666;
@@ -141,12 +142,12 @@ body {
 .app-controls {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 0.63em; // 10px / 16px = 0.625em
+  margin-top: 1.25em; // 20px / 16px = 1.25em
   flex-wrap: wrap;
   
   button {
-    padding: 8px 16px;
+    padding: 0.5em 1em; // 8px 16px = 0.5em 1em
     background-color: #4a90e2;
     color: white;
     border: none;
@@ -172,7 +173,7 @@ body {
 // Loading styles  
 .loading {
   text-align: center;
-  padding: 40px;
+  padding: 2.5em; // 40px / 16px = 2.5em
   font-size: 1.2em;
   color: #666;
 }
@@ -195,7 +196,7 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  gap: 20px;
+  gap: 1.25em; // 20px / 16px = 1.25em
   
   .error-text {
     font-size: 1.2em;
@@ -205,7 +206,7 @@ body {
   }
   
   .retry-button {
-    padding: 8px 16px;
+    padding: 0.5em 1em; // 8px 16px = 0.5em 1em
     background-color: #4a90e2;
     color: white;
     border: none;
@@ -227,7 +228,6 @@ body {
   padding: 1.25em;
   overflow: visible; // Ensure the container expands to fit the content
   box-sizing: border-box; // Include padding in width calculation
-  font-size: clamp(0px, 1.5vw, 16px); // Base font size for desktop
   background-color: transparent; // Transparent background
 }
 
@@ -237,18 +237,15 @@ body {
   max-width: 100vw; // Prevent horizontal overflow
   margin: 0 auto;
   padding: 1.25em;
-  border-radius: 0.75em;
+  border-radius: 12px; // 0.75em * 16px = 12px
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   overflow: visible; // Ensure the container expands to fit the content
   box-sizing: border-box; // Include padding in width calculation
-  font-size: clamp(0px, 1.5vw, 16px); // Base font size for desktop
-  
-  
 }
 
 .word-display {
   border: 2px solid #cccccc; // Light grey border
-  border-radius: 0.5em;
+  border-radius: 8px; // 0.5em * 16px = 8px
   background-color: white;
   overflow: visible;
   width: fit-content; // Size to content instead of explicit width
@@ -256,7 +253,7 @@ body {
   margin: 0 auto; // Center horizontally
   box-sizing: border-box; // Include border in width calculation
 
-  padding: 0.625em;
+  padding: 0.63em; // 10px / 16px = 0.625em
   display: flex;
   align-items: center;
   justify-content: center; // Center contents
@@ -290,15 +287,15 @@ body {
     display: flex;
     align-items: flex-start; // Align to the top instead of center
     justify-content: center;
-    width: 0.982em; // 6.875em ÷ 7 = 0.982em (110px equivalent)
-    height: 1.179em; // 8.25em ÷ 7 = 1.179em (132px equivalent)
+    width: 0.98em; // 110px / 112px ≈ 0.98em (simplified from 6.875em ÷ 7)
+    height: 1.18em; // 132px / 112px ≈ 1.18em (simplified from 8.25em ÷ 7)
     border: 2px solid #000;
-    border-radius: 0.0536em; // 0.375em ÷ 7 = 0.0536em (6px equivalent)
+    border-radius: 6px; // Simplified from 0.054em
     background-color: #ffffe0; // Light yellow
     font-size: 7em; // Main letter font size
     font-weight: bold;
-    padding-top: 0.0893em; // 0.625em ÷ 7 = 0.0893em (10px equivalent)
-    padding-bottom: 0.196em; // 1.375em ÷ 7 = 0.196em (22px equivalent)
+    padding-top: 0.089em; // 10px / 112px ≈ 0.089em
+    padding-bottom: 0.2em; // 22px / 112px ≈ 0.196em
     box-sizing: border-box; // Include border and padding in dimensions
     
     &.clickable {
@@ -319,8 +316,8 @@ body {
     
     .delete-icon-inside {
       position: absolute;
-      bottom: 0.0357em; // 0.25em ÷ 7 = 0.0357em (4px equivalent)
-      left: 0.0357em; // 0.25em ÷ 7 = 0.0357em (4px equivalent)
+      bottom: 0.036em; // 4px / 112px ≈ 0.036em
+      left: 0.036em;
       font-size: 0.15em; // 60% of 0.25em = 0.15em
       opacity: 0.7;
       cursor: inherit; // Inherit cursor from parent letter
@@ -329,8 +326,8 @@ body {
     
     .replace-icon-inside {
       position: absolute;
-      bottom: 0.0357em; // 0.25em ÷ 7 = 0.0357em (4px equivalent)
-      right: 0.0357em; // 0.25em ÷ 7 = 0.0357em (4px equivalent)
+      bottom: 0.036em;
+      right: 0.036em;
       font-size: 0.15em; // 60% of 0.25em = 0.15em
       opacity: 0.7;
       cursor: inherit; // Inherit cursor from parent letter
@@ -349,13 +346,13 @@ body {
   // Action pending state when button is pressed
   &:has(button:active) {
     background-color: #ffd580; // Orangey-yellow
-    border-radius: 0.5em;
+    border-radius: 8px; // 0.5em * 16px = 8px
   }
   
   // Action pending state from model
   &.action-pending {
     background-color: #ffd580; // Orangey-yellow
-    border-radius: 0.5em;
+    border-radius: 8px;
   }
   
   .insert-icon {
@@ -384,26 +381,26 @@ body {
   flex-wrap: wrap;
   background-color: white;
   border: 1px solid #ccc;
-  border-radius: 0.25em;
+  border-radius: 4px; // 0.25em * 16px = 4px
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  padding: 0.3125em;
+  padding: 0.31em; // 5px / 16px = 0.3125em
   z-index: 1000; // Higher z-index to ensure it's above everything
-  width: 15.625em; // Wider to fit larger letters
+  width: 15.6em; // 250px / 16px = 15.625em
   max-width: calc(100vw - 1.25em); // Limit to viewport width with margin
   overflow: visible;
   box-sizing: border-box; // Include border and padding in width
-  min-height: 4.0625em; // Minimum height equivalent to one option (3.125em + 2 * 0.1875em margin + 2 * 0.3125em padding)
+  min-height: 4.1em; // 65px / 16px ≈ 4.0625em
   
   .letter-choice-option {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 3.125em; // Larger option boxes
-    height: 3.125em;
+    width: 3.1em; // 50px / 16px = 3.125em
+    height: 3.1em;
     border: 1px solid #ccc;
-    border-radius: 0.25em;
+    border-radius: 4px;
     background-color: #e6ffe6; // Light green
-    margin: 0.1875em;
+    margin: 0.19em; // 3px / 16px = 0.1875em
     cursor: pointer;
     font-size: 1.5em; // Font size for options
     
@@ -430,17 +427,17 @@ body {
 .history-view {
   h2 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 1.25em; // 20px / 16px = 1.25em
   }
   
   .history-list {
-    max-height: 500px;
+    max-height: 31.3em; // 500px / 16px = 31.25em
     overflow-y: auto;
     border: 1px solid #eee;
     border-radius: 4px;
     
     .history-item {
-      padding: 15px;
+      padding: 0.94em; // 15px / 16px = 0.9375em
       border-bottom: 1px solid #eee;
       cursor: pointer;
       
@@ -456,7 +453,7 @@ body {
       .history-word {
         font-size: 1.2em;
         font-weight: bold;
-        margin-bottom: 5px;
+        margin-bottom: 0.31em; // 5px / 16px = 0.3125em
       }
       
       .history-change {
@@ -469,8 +466,8 @@ body {
 
 // History panel
 .history-panel {
-  margin-top: 20px;
-  padding: 15px;
+  margin-top: 1.25em; // 20px / 16px = 1.25em
+  padding: 0.94em; // 15px / 16px = 0.9375em
   background-color: #f9f9f9;
   border: 1px solid #eee;
   border-radius: 4px;
@@ -478,17 +475,17 @@ body {
   .history-panel-title {
     font-size: 0.9em;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 0.63em; // 10px / 16px = 0.625em
     color: #666;
   }
   
   .history-panel-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 0.5em; // 8px / 16px = 0.5em
     
     .history-panel-word {
-      padding: 4px 8px;
+      padding: 0.25em 0.5em; // 4px 8px = 0.25em 0.5em
       background-color: white;
       border: 1px solid #ddd;
       border-radius: 3px;
@@ -511,24 +508,24 @@ body {
 
 // Score panel for Make Me feature
 .score-panel {
-  margin-top: 20px;
-  padding: 15px;
+  margin-top: 1.25em; // 20px / 16px = 1.25em
+  padding: 0.94em; // 15px / 16px = 0.9375em
   background-color: #f9f9f9;
   border: 1px solid #eee;
   border-radius: 4px;
   display: flex;
-  gap: 15px;
+  gap: 0.94em;
   align-items: flex-start;
   
   .score-label-box {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 8px 12px;
+    padding: 0.5em 0.75em; // 8px 12px = 0.5em 0.75em
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 3px;
-    min-height: 48px; // Roughly matches height of two rows of squares with gap
+    min-height: 3em; // 48px / 16px = 3em
     
     .score-label-line {
       font-size: 0.9em;
@@ -542,18 +539,18 @@ body {
   .score-rows {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0.5em; // 8px / 16px = 0.5em
     flex: 1;
     
     .score-row {
       display: flex;
-      gap: 4px;
+      gap: 0.25em; // 4px / 16px = 0.25em
       flex-wrap: wrap;
       justify-content: flex-start; // Left justify the squares
       
       .score-square {
-        width: 20px;
-        height: 20px;
+        width: 1.25em; // 20px / 16px = 1.25em
+        height: 1.25em;
         border: 1px solid #ddd;
         border-radius: 3px;
         
@@ -575,30 +572,30 @@ body {
 .word-changer-controls {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 0.63em; // 10px / 16px = 0.625em
+  margin-top: 1.25em; // 20px / 16px = 1.25em
   flex-wrap: wrap;
   
   .say-immediately-container {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 0.31em; // 5px / 16px = 0.3125em
     font-size: 0.9em;
     cursor: pointer;
-    padding: 8px 0;
+    padding: 0.5em 0; // 8px 0 = 0.5em 0
   }
   
   .value-checkbox-container {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 0.31em;
     font-size: 0.9em;
     cursor: pointer;
-    padding: 8px 0;
+    padding: 0.5em 0;
   }
   
   button {
-    padding: 8px 16px;
+    padding: 0.5em 1em; // 8px 16px = 0.5em 1em
     background-color: #4a90e2;
     color: white;
     border: none;
@@ -624,7 +621,7 @@ body {
   .show-history-container {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
+    gap: 0.31em;
     font-size: 0.9em;
     cursor: pointer;
   }
@@ -633,22 +630,22 @@ body {
 .reset-show-history {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 0.31em;
   font-size: 0.9em;
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 0.63em; // 10px / 16px = 0.625em
 }
 
 
 // Review Pronunciation view
 .review-pronunciation-container {
-  max-width: 1200px;
+  max-width: 75em; // 1200px / 16px = 75em
   margin: 0 auto;
-  padding: 20px;
+  padding: 1.25em; // 20px / 16px = 1.25em
   
   h1 {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 1.88em; // 30px / 16px = 1.875em
     color: #333;
     font-size: 2.5em;
     
@@ -660,7 +657,7 @@ body {
   }
   
   h3 {
-    margin-bottom: 15px;
+    margin-bottom: 0.94em; // 15px / 16px = 0.9375em
     color: #555;
     font-size: 1.3em;
   }
@@ -670,17 +667,17 @@ body {
 .action-buttons-panel {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 30px;
+  gap: 0.63em; // 10px / 16px = 0.625em
+  margin-bottom: 1.88em; // 30px / 16px = 1.875em
   justify-content: center;
   
   .load-state-button-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px;
+    gap: 0.31em; // 5px / 16px = 0.3125em
     border: 2px dashed #ccc;
-    padding: 10px;
+    padding: 0.63em; // 10px / 16px = 0.625em
     border-radius: 8px;
     background-color: #f9f9f9;
     
@@ -701,20 +698,20 @@ body {
   background-color: #f8f9fa;
   border: 1px solid #dee2e6;
   border-radius: 8px;
-  padding: 20px;
-  margin-bottom: 30px;
+  padding: 1.25em; // 20px / 16px = 1.25em
+  margin-bottom: 1.88em; // 30px / 16px = 1.875em
   
   .current-review-word {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 1.25em;
     justify-content: space-between;
   }
   
   .word-span {
     font-size: 1.5em;
     font-weight: bold;
-    padding: 10px 15px;
+    padding: 0.63em 0.94em; // 10px 15px = 0.625em 0.9375em
     border-radius: 6px;
     border: 2px solid transparent;
     min-width: 10ch;
@@ -752,20 +749,20 @@ body {
   
   .review-buttons {
     display: flex;
-    gap: 10px;
+    gap: 0.63em; // 10px / 16px = 0.625em
   }
   
   .autoplay-controls {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 0.63em;
     
     .autoplay-interval-select {
-      padding: 4px 8px;
+      padding: 0.25em 0.5em; // 4px 8px = 0.25em 0.5em
       border: 1px solid #ccc;
       border-radius: 4px;
-      font-size: 14px;
-      min-width: 80px;
+      font-size: 0.88em; // 14px / 16px = 0.875em
+      min-width: 5em; // 80px / 16px = 5em
     }
   }
 }
@@ -776,72 +773,95 @@ body {
     background-color: #f8f9fa;
     border: 1px solid #dee2e6;
     border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 30px;
+    padding: 1.25em; // 20px / 16px = 1.25em
+    margin-bottom: 1.88em; // 30px / 16px = 1.875em
     
     .filter-controls {
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 1.25em;
       align-items: center;
       
-      .filter-text {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        
-        label {
-          font-weight: 500;
-        }
-        
-        input {
-          padding: 8px 12px;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          font-size: 14px;
-          min-width: 200px;
-        }
+      input[type="text"] {
+        padding: 0.5em 0.75em; // 8px 12px = 0.5em 0.75em
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 0.88em; // 14px / 16px = 0.875em
+        min-width: 12.5em; // 200px / 16px = 12.5em
       }
       
-      .match-start {
+      .radio-group {
         display: flex;
+        gap: 1.88em; // 30px / 16px = 1.875em
         align-items: center;
-        gap: 8px;
         
-        input[type="checkbox"] {
-          transform: scale(1.2);
+        span {
+          margin-right: 1.25em; // 20px / 16px = 1.25em
+        }
+        
+        label {
+          gap: 0.94em; // 15px / 16px = 0.9375em
+          margin-right: 1.56em; // 25px / 16px = 1.5625em
+          display: flex;
+          align-items: center;
+          
+          input[type="radio"] {
+            margin-right: 0.94em;
+          }
         }
       }
       
       .review-state-filter {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 0.5em; // 8px / 16px = 0.5em
         
         label {
           font-weight: 500;
         }
         
         select {
-          padding: 8px 12px;
+          padding: 0.5em 0.75em; // 8px 12px = 0.5em 0.75em
           border: 1px solid #ccc;
           border-radius: 4px;
-          font-size: 14px;
-          min-width: 150px;
+          font-size: 0.88em; // 14px / 16px = 0.875em
+          min-width: 9.4em; // 150px / 16px = 9.375em
+        }
+      }
+      
+      .auto-control {
+        button {
+          font-size: 1em;
+          padding: 0.5em 0.75em;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          min-width: 7.5em; // 120px / 16px = 7.5em
+          
+          &:hover {
+            background-color: #0056b3;
+          }
+          
+          &:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+          }
         }
       }
       
       .review-mode-filter {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 0.5em;
         margin-left: auto; // Push to the right
         
         label {
           font-weight: 500;
           display: flex;
           align-items: center;
-          gap: 5px;
+          gap: 0.31em; // 5px / 16px = 0.3125em
           cursor: pointer;
         }
         
@@ -857,56 +877,56 @@ body {
 .review-pronunciation-container.activity-mode {
   .review-pronunciation-filters .filter-panel .filter-controls {
     input[type="text"] {
-      font-size: 28px;
-      padding: 16px 24px;
+      font-size: 1.75em; // 28px / 16px = 1.75em
+      padding: 1em 1.5em; // 16px 24px = 1em 1.5em
       width: 6em;
     }
     
     .radio-group {
-      font-size: 28px;
-      gap: 30px;
+      font-size: 1.75em;
+      gap: 1.88em; // 30px / 16px = 1.875em
       
       span {
-        font-size: 28px;
-        margin-right: 20px;
+        font-size: 1em; // Relative to radio-group
+        margin-right: 1.25em; // 20px / 16px = 1.25em
       }
       
       label {
-        font-size: 28px;
-        gap: 15px;
-        margin-right: 25px;
+        font-size: 1em;
+        gap: 0.94em; // 15px / 16px = 0.9375em
+        margin-right: 1.56em; // 25px / 16px = 1.5625em
         display: flex;
         align-items: center;
         
         input[type="radio"] {
           transform: scale(2);
-          margin-right: 15px;
+          margin-right: 0.94em;
         }
       }
     }
     
     .review-state-filter {
-      font-size: 28px;
+      font-size: 1.75em;
       
       select {
-        font-size: 28px;
-        padding: 16px 24px;
-        min-width: 300px;
+        font-size: 1em; // Relative to review-state-filter
+        padding: 1em 1.5em;
+        min-width: 18.8em; // 300px / 16px = 18.75em
       }
     }
     
     .auto-control {
-      font-size: 28px;
+      font-size: 1.75em;
       
       button {
-        font-size: 28px;
-        padding: 16px 24px;
+        font-size: 1em; // Relative to auto-control
+        padding: 1em 1.5em;
         background-color: #007bff;
         color: white;
         border: none;
         border-radius: 8px;
         cursor: pointer;
-        min-width: 120px;
+        min-width: 7.5em; // 120px / 16px = 7.5em
         
         &:hover {
           background-color: #0056b3;
@@ -920,15 +940,15 @@ body {
     }
     
     .review-mode-filter {
-      font-size: 28px;
+      font-size: 1.75em;
       
       label {
-        font-size: 28px;
-        gap: 10px;
+        font-size: 1em;
+        gap: 0.63em; // 10px / 16px = 0.625em
         
         input[type="checkbox"] {
           transform: scale(2);
-          margin-right: 10px;
+          margin-right: 0.63em;
         }
       }
     }
@@ -955,7 +975,7 @@ body {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 0.94em; // 15px / 16px = 0.9375em
       
       .words-count {
         margin: 0;
@@ -969,7 +989,7 @@ body {
           font-size: 0.9em;
           color: #666;
           background-color: #f5f5f5;
-          padding: 4px 8px;
+          padding: 0.25em 0.5em; // 4px 8px = 0.25em 0.5em
           border-radius: 4px;
           border: 1px solid #ddd;
         }
@@ -979,12 +999,12 @@ body {
     .words-grid {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.571em; // 8px/14px = 0.571em
+      gap: 0.57em; // 8px / 14px ≈ 0.57em (simplified)
       
       .word-span {
-        padding: 0.571em 0.857em; // 8px/14px = 0.571em, 12px/14px = 0.857em
+        padding: 0.57em 0.86em; // 8px 12px ≈ 0.57em 0.86em
         border: 1px solid #ddd;
-        border-radius: 0.286em; // 4px/14px = 0.286em
+        border-radius: 4px; // 0.286em * 14px ≈ 4px
         cursor: pointer;
         font-size: 1em; // 14px base font size
         background-color: white;
@@ -1048,7 +1068,7 @@ body {
       &.activity-mode {
         .word-span {
           font-size: 3em; // 3x larger than default 1em
-          padding: 0.190em 0.286em; // 3x smaller padding (0.571/3 = 0.190, 0.857/3 = 0.286)
+          padding: 0.19em 0.29em; // 3x smaller padding (0.57/3 ≈ 0.19, 0.86/3 ≈ 0.29)
           border-color: #ccc; // Light grey border to distinguish from background
           
           &.ellipsis {
@@ -1069,16 +1089,16 @@ body {
   background-color: white;
   border: 2px solid #cccccc;
   border-radius: 8px;
-  padding: 20px;
-  margin: 20px auto;
-  max-width: 800px;
+  padding: 1.25em; // 20px / 16px = 1.25em
+  margin: 1.25em auto;
+  max-width: 50em; // 800px / 16px = 50em
   display: flex;
   align-items: center;
   justify-content: space-between;
   
   h3 {
       text-align: center;
-      margin: 0 10px 0 0;
+      margin: 0 0.63em 0 0; // 0 10px 0 0 = 0 0.625em 0 0
       padding: 0;
       color: #333;
       font-size: 1.3em;
@@ -1099,9 +1119,9 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 20px auto;
-  max-width: 800px;
-  padding: 10px 20px;
+  margin: 1.25em auto;
+  max-width: 50em;
+  padding: 0.63em 1.25em; // 10px 20px = 0.625em 1.25em
   background-color: white;
   border: 2px solid #cccccc;
   border-radius: 8px;
@@ -1115,15 +1135,15 @@ body {
 
 .finder-message-panel {
   text-align: center;
-  margin: 20px auto;
-  max-width: 800px;
+  margin: 1.25em auto;
+  max-width: 50em;
   
   .finder-message {
     min-height: 2em;
     font-size: 1.2em;
     font-weight: bold;
     color: #333;
-    padding: 10px;
+    padding: 0.63em; // 10px / 16px = 0.625em
   }
 }
 
@@ -1131,12 +1151,12 @@ body {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 10px;
+  gap: 0.63em; // 10px / 16px = 0.625em
   flex: 1;
   
   .word-to-find {
-    width: 40px;
-    height: 28px;
+    width: 2.5em; // 40px / 16px = 2.5em
+    height: 1.75em; // 28px / 16px = 1.75em
     border: 2px solid #000;
     border-radius: 4px;
     font-size: 1.2em;
@@ -1177,15 +1197,15 @@ body {
 }
 
 .word-to-choose-button {
-  padding: 3px 8px;
+  padding: 0.19em 0.5em; // 3px 8px = 0.1875em 0.5em
   border: 2px solid #333;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 1.25em; // 20px / 16px = 1.25em
   background-color: #f5f5f5;
   color: black;
   transition: all 0.2s;
-  margin: 4px;
+  margin: 0.25em; // 4px / 16px = 0.25em
   display: inline-block;
   
   &:hover {
@@ -1222,8 +1242,8 @@ body {
   background-color: white;
   border: 2px solid #333;
   border-radius: 8px;
-  padding: 30px;
-  max-width: 400px;
+  padding: 1.88em; // 30px / 16px = 1.875em
+  max-width: 25em; // 400px / 16px = 25em
   width: 90%;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   
@@ -1231,7 +1251,7 @@ body {
     font-size: 1.2em;
     font-weight: bold;
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 1.88em;
     color: #333;
     line-height: 1.4;
   }
@@ -1239,16 +1259,16 @@ body {
   .confirmation-buttons {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 1.25em; // 20px / 16px = 1.25em
     
     .confirmation-button {
-      padding: 10px 20px;
+      padding: 0.63em 1.25em; // 10px 20px = 0.625em 1.25em
       border: 2px solid #333;
       border-radius: 4px;
       font-size: 1em;
       font-weight: bold;
       cursor: pointer;
-      min-width: 80px;
+      min-width: 5em; // 80px / 16px = 5em
       transition: all 0.2s;
       
       &.confirm-button {
@@ -1278,17 +1298,17 @@ body {
 .make-page {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  max-width: 1200px;
+  gap: 0.63em; // 10px / 16px = 0.625em
+  max-width: 75em; // 1200px / 16px = 75em
   margin: 0 auto;
-  padding: 20px;
+  padding: 1.25em; // 20px / 16px = 1.25em
 }
 
 .make-word-row {
   display: flex;
   align-items: center;
-  gap: 20px;
-  margin-bottom: 10px;
+  gap: 1.25em;
+  margin-bottom: 0.63em;
   
   .word-display {
     // Add layout properties from Panel component
@@ -1298,7 +1318,6 @@ body {
     padding: 1.25em;
     overflow: visible;
     box-sizing: border-box;
-    font-size: clamp(0px, 1.5vw, 16px);
     flex: 0 0 auto; // Don't grow or shrink, use natural size
     
     // Background color variations for different states
@@ -1335,12 +1354,12 @@ body {
   
   .make-word-controls {
     display: flex;
-    gap: 10px;
+    gap: 0.63em;
     align-items: center;
     
     .make-new-word-button {
       // Use same styling as word-changer controls
-      padding: 8px 16px;
+      padding: 0.5em 1em; // 8px 16px = 0.5em 1em
       background-color: #4a90e2;
       color: white;
       border: none;
@@ -1365,7 +1384,7 @@ body {
       font-weight: bold;
       color: black;
       cursor: pointer;
-      padding: 5px 10px;
+      padding: 0.31em 0.63em; // 5px 10px = 0.3125em 0.625em
       
       &:hover {
         color: #666;
@@ -1383,18 +1402,18 @@ body {
 .make-history {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.63em;
 }
 
 .make-reset-panel {
   display: flex;
   justify-content: center;
-  margin-top: 30px;
-  padding-top: 20px;
+  margin-top: 1.88em; // 30px / 16px = 1.875em
+  padding-top: 1.25em; // 20px / 16px = 1.25em
   border-top: 1px solid #eee;
   
   button {
-    padding: 8px 16px;
+    padding: 0.5em 1em;
     background-color: #4a90e2;
     color: white;
     border: none;
@@ -1416,13 +1435,13 @@ body {
 // Reset page header
 .reset-page-header {
   text-align: center;
-  margin: 20px auto 30px;
-  max-width: 800px;
+  margin: 1.25em auto 1.88em; // 20px auto 30px = 1.25em auto 1.875em
+  max-width: 50em;
   
   h2 {
     color: #333;
     font-size: 1.8em;
-    margin: 0 0 10px 0;
+    margin: 0 0 0.63em 0; // 0 0 10px 0 = 0 0 0.625em 0
   }
   
   p {
@@ -1436,8 +1455,8 @@ body {
 .finders-header {
   display: flex;
   justify-content: center;
-  margin: 20px auto;
-  max-width: 800px;
+  margin: 1.25em auto;
+  max-width: 50em;
   
   .page-navigation-tabs {
     margin: 0;
@@ -1448,16 +1467,16 @@ body {
 .words-to-find-panel {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 0.63em;
   justify-content: center;
-  margin: 20px auto;
-  max-width: 800px;
-  padding: 0 20px;
+  margin: 1.25em auto;
+  max-width: 50em;
+  padding: 0 1.25em;
 }
 
 .word-to-find {
-  width: 40px;
-  height: 40px;
+  width: 2.5em; // 40px / 16px = 2.5em
+  height: 2.5em; // 40px / 16px = 2.5em
   border: 2px solid #333;
   border-radius: 6px;
   transition: all 0.2s;
@@ -1503,9 +1522,9 @@ body {
 }
 
 .letters-row-panel {
-  margin: 30px auto;
-  max-width: 800px;
-  padding: 0 20px;
+  margin: 1.88em auto; // 30px / 16px = 1.875em
+  max-width: 50em;
+  padding: 0 1.25em;
 }
 
 .letters-row-view {
@@ -1523,11 +1542,11 @@ body {
   border-spacing: 0;
   
   td.letters-row-cell {
-    width: 40px;
-    height: 40px;
+    width: 2.5em; // 40px / 16px = 2.5em
+    height: 2.5em;
     text-align: center;
     vertical-align: middle;
-    font-size: 30px;
+    font-size: 1.88em; // 30px / 16px = 1.875em
     font-weight: bold;
     border: 2px solid transparent;
     background-color: #f5f5f5;
