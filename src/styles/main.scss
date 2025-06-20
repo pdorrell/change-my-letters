@@ -25,6 +25,16 @@ body {
   pointer-events: none; // Prevent interactions with hidden elements
 }
 
+// Touch device optimizations
+@media (hover: none) and (pointer: coarse) {
+  .touch-interactive-area {
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+}
+
 .app-container {
   width: 100%;
   max-width: 75em;

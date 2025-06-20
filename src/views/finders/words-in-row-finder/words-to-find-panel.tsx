@@ -7,7 +7,7 @@ interface WordsToFindPanelProps { finder: WordsInRowFinder; }
 
 export const WordsToFindPanel: React.FC<WordsToFindPanelProps> = observer(({ finder }) => {
   return (
-    <div className="words-to-find-panel">
+    <div className="words-to-find-panel touch-interactive-area">
       {finder.wordsToFind.words.map((wordToFind, index) => (
         <WordToFindView
           key={index}

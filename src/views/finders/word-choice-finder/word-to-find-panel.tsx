@@ -10,7 +10,7 @@ export const WordToFindPanel: React.FC<WordToFindPanelProps> = observer(({ finde
   return (
     <div className="finder-panel">
       <h3 title="Click to hear a word that you have to find">Find:</h3>
-      <div className="word-to-find-buttons">
+      <div className="word-to-find-buttons touch-interactive-area">
         {finderInteraction.wordsToFind.map((wordToFind, index) => (
           <WordToFindView key={index} wordToFind={wordToFind} />
         ))}

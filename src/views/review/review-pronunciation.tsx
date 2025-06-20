@@ -228,7 +228,7 @@ export const ReviewPronunciationWordChoice: React.FC<ReviewPronunciationWordChoi
           </div>
         </div>
 
-        <div className={`words-grid ${reviewInteraction.reviewMode ? '' : 'activity-mode'}`}>
+        <div className={`words-grid touch-interactive-area ${reviewInteraction.reviewMode ? '' : 'activity-mode'}`}>
           {reviewInteraction.displayedWords.map(word => {
             const isCurrentReview = word.currentReview;
             const isReviewed = word.reviewed && !word.soundsWrong;
