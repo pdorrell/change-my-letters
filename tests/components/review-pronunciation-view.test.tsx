@@ -93,15 +93,27 @@ describe('ReviewPronunciationView', () => {
   });
 
   describe('word changer Panel', () => {
-    it('always renders the word changer panel', () => {
+    it('renders the word changer panel in review mode', () => {
       // Set to review mode to show sounds wrong/OK buttons
-      reviewInteraction.setReviewMode(true);render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      reviewInteraction.setReviewMode(true);
+      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
 
       const wordChangerPanel = document.querySelector('.word-changer-panel');
       expect(wordChangerPanel).toBeInTheDocument();
       expect(screen.getByText('Sounds Wrong')).toBeInTheDocument();
       expect(screen.getByText('Sounds OK')).toBeInTheDocument();
       expect(screen.getByText('Auto')).toBeInTheDocument();
+    });
+
+    it('hides the word changer panel in activity mode', () => {
+      // Set to activity mode
+      reviewInteraction.setReviewMode(false);
+      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+
+      const wordChangerPanel = document.querySelector('.word-changer-panel');
+      expect(wordChangerPanel).toBeInTheDocument(); // Still in DOM but styled as hidden
+      expect(screen.queryByText('Sounds Wrong')).not.toBeInTheDocument();
+      expect(screen.queryByText('Sounds OK')).not.toBeInTheDocument();
     });
 
     it('shows word when there is a current review word', () => {
@@ -184,6 +196,43 @@ describe('ReviewPronunciationView', () => {
       expect(screen.getByLabelText('end')).toBeInTheDocument();
       expect(screen.getByLabelText('any')).toBeInTheDocument();
       expect(screen.getByLabelText('Review state:')).toBeInTheDocument();
+    });
+
+    it('shows Auto button in activity mode filter controls', () => {
+      // Set to activity mode
+      reviewInteraction.setReviewMode(false);
+      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+
+      const filterPanel = document.querySelector('.filter-panel');
+      const autoButton = filterPanel?.querySelector('button[title="Start automatic word review"]');
+      expect(autoButton).toBeInTheDocument();
+      expect(autoButton).toHaveTextContent('Auto');
+    });
+
+    it('does not show Auto button in review mode filter controls', () => {
+      // Set to review mode
+      reviewInteraction.setReviewMode(true);
+      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+
+      const filterPanel = document.querySelector('.filter-panel');
+      const autoButton = filterPanel?.querySelector('button[title="Start automatic word review"]');
+      expect(autoButton).not.toBeInTheDocument();
+    });
+
+    it('calls autoplay action when Auto button in filter controls is clicked', () => {
+      // Set to activity mode
+      reviewInteraction.setReviewMode(false);
+      const startAutoplaySpy = jest.spyOn(reviewInteraction, 'startAutoplay');
+
+      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+
+      const filterPanel = document.querySelector('.filter-panel');
+      const autoButton = filterPanel?.querySelector('button[title="Start automatic word review"]') as HTMLButtonElement;
+      act(() => {
+        fireEvent.click(autoButton);
+      });
+
+      expect(startAutoplaySpy).toHaveBeenCalled();
     });
 
     it('updates filter text when typing', () => {

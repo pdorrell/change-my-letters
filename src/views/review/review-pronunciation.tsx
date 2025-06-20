@@ -137,7 +137,7 @@ export const ReviewPronunciationFilters: React.FC<ReviewPronunciationFiltersProp
         <div className="filter-controls">
           <input
             type="text"
-            placeholder="Filter text..."
+            placeholder="Filter..."
             value={reviewInteraction.filter.value.value}
             onChange={(e) => reviewInteraction.setFilterValue(e.target.value)}
           />
@@ -174,6 +174,17 @@ export const ReviewPronunciationFilters: React.FC<ReviewPronunciationFiltersProp
                   </option>
                 ))}
               </select>
+            </div>
+          )}
+
+          {!reviewInteraction.reviewMode && (
+            <div className="auto-control">
+              <button
+                title={reviewInteraction.autoplayAction.tooltip}
+                onClick={() => reviewInteraction.autoplayAction.doAction()}
+              >
+                Auto
+              </button>
             </div>
           )}
 
