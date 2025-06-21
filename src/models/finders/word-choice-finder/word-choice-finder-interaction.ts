@@ -7,6 +7,7 @@ import { ValueModel } from '@/lib/models/value-models';
 import { ConfirmationModel } from '@/lib/models/confirmation';
 import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';
 import { HappyOrSad } from '@/models/audio/emotion-types';
+import { shuffle } from '@/lib/util';
 
 export class WordChoiceFinderInteraction {
   wordSayer: WordSayerInterface;
@@ -34,7 +35,7 @@ export class WordChoiceFinderInteraction {
     }
 
     this.wordsToFind = this.words.map(word => new WordToFind(this, word));
-    this.wordsToChoose = this.words.map(word => new WordToChoose(this, word));
+    this.wordsToChoose = shuffle(this.words).map(word => new WordToChoose(this, word));
 
     // Initialize auto checkbox (defaulted to checked)
     this.auto = new ValueModel(true, 'Auto', 'Automatically choose next word to find');
@@ -176,7 +177,7 @@ export class WordChoiceFinderInteraction {
   setWords(words: string[]): void {
     this.words = words.slice();
     this.wordsToFind = this.words.map(word => new WordToFind(this, word));
-    this.wordsToChoose = this.words.map(word => new WordToChoose(this, word));
+    this.wordsToChoose = shuffle(this.words).map(word => new WordToChoose(this, word));
     // Keep the auto setting when setting new words
     this.retry();
   }
