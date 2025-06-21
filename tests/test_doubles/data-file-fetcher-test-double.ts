@@ -1,6 +1,7 @@
 import { DataFileFetcherInterface } from '@/lib/data-fetching/data-file-fetcher-interface';
 import path from 'path';
 import fs from 'fs/promises';
+import { findProjectRoot } from '@/lib/project-root-util';
 
 /**
  * Type for URL route mapping: [urlPattern, filePathPattern]
@@ -21,10 +22,10 @@ export class DataFileFetcherTestDouble implements DataFileFetcherInterface {
    */
   constructor(
     routeMappings: RouteMapping[],
-    rootPath: string = 'PROJECT_ROOT_DIR'
+    rootPath?: string
   ) {
     this.routeMappings = routeMappings;
-    this.rootPath = rootPath;
+    this.rootPath = rootPath || findProjectRoot();
   }
 
   /**

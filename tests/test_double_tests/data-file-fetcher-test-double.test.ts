@@ -1,5 +1,6 @@
 import { DataFileFetcherTestDouble } from '@/tests/test_doubles/data-file-fetcher-test-double';
 import path from 'path';
+import { findProjectRoot } from '@/lib/project-root-util';
 
 describe('DataFileFetcherTestDouble', () => {
   // Define test route mappings
@@ -30,7 +31,7 @@ describe('DataFileFetcherTestDouble', () => {
 
   describe('getAbsolutePath method', () => {
     it('should return full absolute paths', () => {
-      const rootPath = 'PROJECT_ROOT_DIR';
+      const rootPath = findProjectRoot();
 
       // Test asset path
       const assetPath = fetcher.getAbsolutePath('/assets/images/logo.png');

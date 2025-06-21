@@ -136,7 +136,8 @@ export class AppState {
     this.wordsInRowFinder = new WordsInRowFinder(
       this.wordSayer,
       randomWords,
-      getRandomWords
+      getRandomWords,
+      this.happyWordSayer
     );
 
     // Initialize the word changer
