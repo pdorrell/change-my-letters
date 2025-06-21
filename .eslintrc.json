@@ -18,8 +18,9 @@
     }
   },
   "rules": {
-    "no-trailing-spaces": "error",
-    "eol-last": "error",
+    "no-trailing-spaces": "error", // Run 'npm run lint:fix-whitespace' to fix
+    "eol-last": "error",           // Run 'npm run lint:fix-whitespace' to fix
+    
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
