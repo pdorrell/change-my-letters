@@ -1,25 +1,27 @@
 import { PositionInteraction } from '@/models/interaction/position-interaction';
 import { Position } from '@/models/Position';
-import { AppState } from '@/models/app-state';
-import { createTestAppState } from '@/tests/utils/test-app-builder';
+import { WordChanger } from '@/models/word-changer';
+import { createTestWordChanger } from '@/tests/utils/test-app-builder';
+import { createTestWordGraph, testWordLists } from '@/tests/utils/test-word-graph-builder';
 
 describe('PositionInteraction', () => {
   let positionInteraction: PositionInteraction;
   let position: Position;
-  let appState: AppState;
+  let wordChanger: WordChanger;
 
   beforeEach(() => {
-    // Create AppState with AudioFilePlayerTestDouble
-    appState = createTestAppState();
+    // Create WordChanger with AudioFilePlayerTestDouble
+    wordChanger = createTestWordChanger();
 
     // Create WordInteraction using Word from WordGraph
-    const catWord = appState.wordGraph.getRequiredWord('cat');
+    const wordGraph = createTestWordGraph(testWordLists.minimal);
+    const catWord = wordGraph.getRequiredWord('cat');
 
     // Get the first position
     position = catWord.positions[0];
 
     // Create the position interaction to test
-    positionInteraction = new PositionInteraction(position, appState.newWordHandler, appState.menuManager);
+    positionInteraction = new PositionInteraction(position, wordChanger.newWordHandler, wordChanger.menuManager);
   });
 
   it('should initialize with correct position references', () => {

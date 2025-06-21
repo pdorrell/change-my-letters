@@ -1,4 +1,4 @@
-import { History, WordChange, WordStateManager } from '@/models/History';
+import { History, WordChange } from '@/models/History';
 import { WordChanger } from '@/models/word-changer';
 import { WordGraph } from '@/models/word-graph';
 import { WordGraphBuilder } from '@/models/word-graph-builder';
@@ -33,7 +33,7 @@ describe('History', () => {
 
     // Create a mock parent with reset method
     const mockParent = {
-      async reset(_word: any): Promise<void> {
+      async reset(_word: Word): Promise<void> {
         // Mock implementation for testing
       }
     };

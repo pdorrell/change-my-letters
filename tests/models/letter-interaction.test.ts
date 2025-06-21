@@ -1,26 +1,27 @@
 import { LetterInteraction } from '@/models/interaction/letter-interaction';
 import { Letter } from '@/models/Letter';
-import { AppState } from '@/models/app-state';
-import { createTestAppState } from '@/tests/utils/test-app-builder';
-
+import { WordChanger } from '@/models/word-changer';
+import { createTestWordChanger } from '@/tests/utils/test-app-builder';
+import { createTestWordGraph, testWordLists } from '@/tests/utils/test-word-graph-builder';
 
 describe('LetterInteraction', () => {
   let letter: Letter;
-  let appState: AppState;
+  let wordChanger: WordChanger;
   let letterInteraction: LetterInteraction;
 
   beforeEach(() => {
-    // Create AppState with AudioFilePlayerTestDouble
-    appState = createTestAppState();
+    // Create WordChanger with AudioFilePlayerTestDouble
+    wordChanger = createTestWordChanger();
 
     // Create WordInteraction using Word from WordGraph
-    const catWord = appState.wordGraph.getRequiredWord('cat');
+    const wordGraph = createTestWordGraph(testWordLists.minimal);
+    const catWord = wordGraph.getRequiredWord('cat');
 
     // Get the first letter ('c')
     letter = catWord.letters[0];
 
     // Create the letter interaction to test
-    letterInteraction = new LetterInteraction(letter, appState.newWordHandler, appState.menuManager);
+    letterInteraction = new LetterInteraction(letter, wordChanger.newWordHandler, wordChanger.menuManager);
   });
 
   it('should initialize with correct letter references', () => {

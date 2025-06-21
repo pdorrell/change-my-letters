@@ -1,23 +1,20 @@
 import { WordInteraction } from '@/models/interaction/word-interaction';
-import { AppState } from '@/models/app-state';
-import { createTestAppState } from '@/tests/utils/test-app-builder';
+import { WordChanger } from '@/models/word-changer';
+import { createTestWordChanger } from '@/tests/utils/test-app-builder';
 
 describe('Position', () => {
-  let appState: AppState;
-  let wordChanger: WordInteraction;
+  let wordChanger: WordChanger;
+  let wordInteraction: WordInteraction;
 
   beforeEach(() => {
-    // Create AppState with AudioFilePlayerTestDouble
-    appState = createTestAppState();
-
-    // Create WordInteraction using Word from WordGraph
-    const catWord = appState.wordGraph.getRequiredWord('cat');
-    wordChanger = new WordInteraction(catWord, appState.newWordHandler, appState.wordSayer, appState.menuManager, appState.history);
+    // Create WordChanger with AudioFilePlayerTestDouble
+    wordChanger = createTestWordChanger();
+    wordInteraction = wordChanger.wordInteraction;
   });
 
   it('should initialize with the correct properties', () => {
     // Use the position from the word
-    const position = wordChanger.positionInteractions[1].position;
+    const position = wordInteraction.positionInteractions[1].position;
 
     expect(position.index).toBe(1);
     expect(position.canInsert).toBeDefined();
@@ -25,7 +22,7 @@ describe('Position', () => {
   });
 
   it('should provide insert options when insertions are possible', () => {
-    const position = wordChanger.positionInteractions[0].position;
+    const position = wordInteraction.positionInteractions[0].position;
 
     if (position.canInsert) {
       expect(position.insertOptions.length).toBeGreaterThan(0);
@@ -39,13 +36,13 @@ describe('Position', () => {
 
   it('should have proper index values', () => {
     // Check all positions have correct indices
-    wordChanger.positionInteractions.forEach((posInteraction, index) => {
+    wordInteraction.positionInteractions.forEach((posInteraction, index) => {
       expect(posInteraction.position.index).toBe(index);
     });
   });
 
   it('should be associated with the correct word', () => {
-    const position = wordChanger.positionInteractions[0].position;
+    const position = wordInteraction.positionInteractions[0].position;
     // Test that position exists and has valid index, which implies it's connected to the word
     expect(position.index).toBe(0);
     expect(position).toBeDefined();

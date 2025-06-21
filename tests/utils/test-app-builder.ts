@@ -4,6 +4,7 @@ import { AudioFilePlayerInterface } from '@/models/audio/audio-file-player-inter
 import { AppState } from '@/models/app-state';
 import { WordChanger } from '@/models/word-changer';
 import { WordSayer } from '@/models/word-sayer';
+import { Word } from '@/models/Word';
 
 /**
  * Creates a test AppState with AudioFilePlayerTestDouble and minimal word graph
@@ -34,7 +35,7 @@ export function createTestWordChanger(audioFilePlayer?: AudioFilePlayerInterface
 
   // Create a mock parent with reset method
   const mockParent = {
-    async reset(_word: any): Promise<void> {
+    async reset(_word: Word): Promise<void> {
       // Mock implementation for testing
     }
   };

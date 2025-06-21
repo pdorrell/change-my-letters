@@ -40,7 +40,7 @@ export class WordChanger implements WordStateManager {
     initialWord: Word,
     wordSayer: WordSayerInterface,
     // Parent reference for history callback
-    parentAppState: { reset(word: Word): Promise<void> }
+    _parentAppState: { reset(word: Word): Promise<void> }
   ) {
     this.wordSayer = wordSayer;
 

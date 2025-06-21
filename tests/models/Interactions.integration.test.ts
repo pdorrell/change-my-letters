@@ -1,18 +1,18 @@
 import { WordInteraction } from '@/models/interaction/word-interaction';
-import { AppState } from '@/models/app-state';
-import { createTestAppState } from '@/tests/utils/test-app-builder';
-
+import { WordChanger } from '@/models/word-changer';
+import { createTestWordChanger } from '@/tests/utils/test-app-builder';
+import { createTestWordGraph, testWordLists } from '@/tests/utils/test-word-graph-builder';
 
 describe('Interaction Classes Integration', () => {
-  let appState: AppState;
+  let wordChanger: WordChanger;
   let wordInteraction: WordInteraction;
 
   beforeEach(() => {
-    // Create AppState with test data
-    appState = createTestAppState();
+    // Create WordChanger with test data
+    wordChanger = createTestWordChanger();
 
-    // Use the WordInteraction that's already created by AppState
-    wordInteraction = appState.wordChanger;
+    // Use the WordInteraction that's already created by WordChanger
+    wordInteraction = wordChanger.wordInteraction;
   });
 
   it('should initialize with all menus closed', () => {
@@ -91,8 +91,8 @@ describe('Interaction Classes Integration', () => {
     expect(wordInteraction.letterInteractions[0].isReplaceMenuOpen).toBe(true);
     expect(wordInteraction.positionInteractions[0].isInsertMenuOpen).toBe(true);
 
-    // Close all menus via appState
-    appState.menuManager.closeMenus();
+    // Close all menus via wordChanger
+    wordChanger.menuManager.closeMenus();
 
     // Verify all menus are closed
     for (const letterInteraction of wordInteraction.letterInteractions) {
@@ -117,7 +117,8 @@ describe('Interaction Classes Integration', () => {
     const oldPositionInteractions = [...wordInteraction.positionInteractions];
 
     // Update the word to a different word from the graph
-    const newNode = appState.wordGraph.getRequiredWord('bat');
+    const wordGraph = createTestWordGraph(testWordLists.minimal);
+    const newNode = wordGraph.getRequiredWord('bat');
     wordInteraction.updateWord(newNode);
 
     // Verify the interactions are new objects
