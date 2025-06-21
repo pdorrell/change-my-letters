@@ -163,7 +163,7 @@ describe('WordInteraction', () => {
     wordInteraction.say();
 
     // Verify that the audio file player test double's playAudioFile method was called with 'words/cat'
-    const audioFilePlayerTestDouble = (wordChanger.wordSayer as { audioFilePlayer: unknown }).audioFilePlayer;
+    const audioFilePlayerTestDouble = (wordChanger.wordSayer as unknown as { audioFilePlayer: unknown }).audioFilePlayer;
     if (audioFilePlayerTestDouble instanceof AudioFilePlayerTestDouble) {
       expect(audioFilePlayerTestDouble.playedFiles).toEqual(['words/cat']);
     } else {

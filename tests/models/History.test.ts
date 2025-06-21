@@ -4,6 +4,7 @@ import { WordGraph } from '@/models/word-graph';
 import { WordGraphBuilder } from '@/models/word-graph-builder';
 import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
 import { WordSayer } from '@/models/word-sayer';
+import { Word } from '@/models/Word';
 
 describe('History', () => {
   let history: History;
