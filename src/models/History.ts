@@ -1,5 +1,4 @@
 import { makeAutoObservable } from 'mobx';
-import { AppState } from '@/models/app-state';
 import { Word } from '@/models/Word';
 
 /**
@@ -21,6 +20,14 @@ export type HistoryEntry = {
 };
 
 /**
+ * Interface for objects that can handle word changes and track visited words
+ */
+export interface WordStateManager {
+  setWordChanger(word: Word): Promise<void>;
+  previouslyVisitedWords: Set<string>;
+}
+
+/**
  * Model for tracking the history of word changes
  */
 export class History {
@@ -30,11 +37,11 @@ export class History {
   // Current pointer in the history (for undo/redo)
   currentIndex: number = 0;
 
-  // Reference to app state
-  appState: AppState;
+  // Reference to word state manager
+  wordStateManager: WordStateManager;
 
-  constructor(appState: AppState, initialWord: Word) {
-    this.appState = appState;
+  constructor(wordStateManager: WordStateManager, initialWord: Word) {
+    this.wordStateManager = wordStateManager;
 
     // Initialize with the starting word
     this.entries = [{ word: initialWord, wordString: initialWord.word }];
@@ -63,7 +70,7 @@ export class History {
    */
   hasVisited(word: Word | string): boolean {
     if (typeof word === 'string') {
-      return this.appState.previouslyVisitedWords.has(word);
+      return this.wordStateManager.previouslyVisitedWords.has(word);
     } else {
       return word.previouslyVisited;
     }

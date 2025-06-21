@@ -1,32 +1,32 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { LetterChoiceMenu } from '@/views/word-changer';
-import { createTestAppState } from '@/tests/utils/test-app-builder';
+import { createTestWordChanger } from '@/tests/utils/test-app-builder';
 import { MenuManager } from '@/lib/views/menu-manager';
 import { WordSelectionByLetter } from '@/models/word-selection-by-letter';
-import { AppState } from '@/models/app-state';
+import { WordChanger } from '@/models/word-changer';
 import { Word } from '@/models/Word';
 import { TestChoiceHandler } from '@/tests/utils/test-choice-handler';
 import { FreeTestWordGetter } from '@/tests/utils/free-test-word-getter';
 import { ReplaceChange } from '@/models/word-change';
 
 describe('LetterChoiceMenu', () => {
-  let appState: AppState;
+  let wordChanger: WordChanger;
   let menuManager: MenuManager;
   let options: ReplaceChange[];
   let choiceHandler: TestChoiceHandler<Word>;
   let menuRef: React.RefObject<HTMLDivElement>;
 
   beforeEach(() => {
-    // Create AppState with AudioFilePlayerTestDouble
-    appState = createTestAppState();
-    appState.menuManager.activeButtonElement = document.createElement('button');
+    // Create WordChanger with AudioFilePlayerTestDouble
+    wordChanger = createTestWordChanger();
+    wordChanger.menuManager.activeButtonElement = document.createElement('button');
     // Pre-populate visited words
-    appState.previouslyVisitedWords.add('bat');
-    appState.previouslyVisitedWords.add('rat');
+    wordChanger.previouslyVisitedWords.add('bat');
+    wordChanger.previouslyVisitedWords.add('rat');
 
     // Assign the menuManager for direct use
-    menuManager = appState.menuManager;
+    menuManager = wordChanger.menuManager;
 
 
     // Create sample letter change options using FreeTestWordGetter

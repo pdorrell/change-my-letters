@@ -82,7 +82,7 @@ const AppBody: React.FC<AppBodyProps> = observer(({ appState }) => {
   return (
     <main>
       {appState.currentPage === 'word' ? (
-        <WordChangerPage appState={appState} />
+        <WordChangerPage wordChanger={appState.wordChanger} maxWordLength={appState.wordGraph.maxWordLength} />
       ) : appState.currentPage === 'make' ? (
         <MakePage
           makeInteraction={appState.makeInteraction}
@@ -95,7 +95,7 @@ const AppBody: React.FC<AppBodyProps> = observer(({ appState }) => {
       ) : appState.currentPage.startsWith('reset') ? (
         <ResetPage appState={appState} />
       ) : (
-        <WordChangerPage appState={appState} />
+        <WordChangerPage wordChanger={appState.wordChanger} maxWordLength={appState.wordGraph.maxWordLength} />
       )}
     </main>
   );

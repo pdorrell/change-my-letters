@@ -1,7 +1,6 @@
 import { makeAutoObservable, computed } from 'mobx';
-import { History } from '@/models/History';
 import { WordGraph } from '@/models/word-graph';
-import { WordInteraction } from '@/models/interaction/word-interaction';
+import { WordChanger } from '@/models/word-changer';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
 import { ResetInteraction } from '@/models/reset/reset-interaction';
 import { ReviewPronunciationInteraction } from '@/models/review/review-pronunciation-interaction';
@@ -9,10 +8,8 @@ import { FindersInteraction } from '@/models/finders/finders-interaction';
 import { WordChoiceFinderInteraction } from '@/models/finders/word-choice-finder/word-choice-finder-interaction';
 import { WordsInRowFinder } from '@/models/finders/words-in-row-finder/words-in-row-finder';
 import { MakeInteraction } from '@/models/make/make-interaction';
-import { MenuManager } from '@/lib/views/menu-manager';
 import { Word } from '@/models/Word';
 import { ButtonAction } from '@/lib/models/actions';
-import { ValueModel } from '@/lib/models/value-models';
 import { AudioFilePlayerInterface } from '@/models/audio/audio-file-player-interface';
 import { WordSayer } from '@/models/word-sayer';
 import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';
@@ -48,20 +45,8 @@ export class AppState {
   // The current sub-header (null for main word view)
   subHeader: string | null = null;
 
-  // The word changer interaction model
-  wordChanger: WordInteraction;
-
-  // The word history model
-  history: History;
-
-  // Menu manager for closing menus when actions occur
-  menuManager: MenuManager;
-
-  // The word we're currently visiting (may differ from word changer due to undo/redo)
-  visitingWord: Word;
-
-  // Set of previously visited words
-  previouslyVisitedWords: Set<string> = new Set();
+  // The word changer model
+  wordChanger: WordChanger;
 
   // The reset interaction model
   resetInteraction: ResetInteraction;
@@ -81,11 +66,6 @@ export class AppState {
   // The make interaction model
   makeInteraction: MakeInteraction;
 
-  // Audio settings
-  sayImmediately: ValueModel<boolean>;
-
-  // Button actions
-  sayAction: ButtonAction;
 
   // Audio file player for all audio functionality
   public readonly audioFilePlayer: AudioFilePlayerInterface;
@@ -122,9 +102,6 @@ export class AppState {
       new EmotionWordSet<HappyOrSad>('sad', sadWords)
     ];
     this.emotionalWordSayer = new EmotionalWordSayer(audioFilePlayer, emotionWordSets);
-
-    // Initialize audio settings
-    this.sayImmediately = new ValueModel(true, 'Say Immediately', 'Automatically pronounce words when they change');
 
     // Initialize reset interaction
     this.resetInteraction = new ResetInteraction(this);
@@ -174,96 +151,17 @@ export class AppState {
       wordNode
     );
 
-    // Initialize menu manager first
-    this.menuManager = new MenuManager(() => {
-      if (this.wordChanger) {
-        this.wordChanger.closeAllMenus();
-      }
-    });
-
-    // Initialize visitingWord
-    this.visitingWord = wordNode;
-
-    // Initialize history with the initial word object
-    this.history = new History(this, wordNode);
-
-    // Initialize the word changer with the menu manager and history
-    this.wordChanger = new WordInteraction(wordNode, this.newWordHandler, this.wordSayer, this.menuManager, this.history);
-
-    // Initialize button actions
-    this.sayAction = new ButtonAction(() => this.wordChanger.say(), { tooltip: "Say the word changer" });
-
-    // Preload the initial word's audio
-    this.wordSayer.preload(initialWord);
+    // Initialize the word changer with the initial word
+    this.wordChanger = new WordChanger(wordNode, this.wordSayer, this);
 
     // Preload all emotional words
     this.emotionalWordSayer.preload();
 
     makeAutoObservable(this, {
-      undoAction: computed,
-      redoAction: computed,
-      resetAction: computed,
-      newWordHandler: computed
+      resetAction: computed
     });
   }
 
-  /**
-   * Get a handler function for setting new words
-   */
-  get newWordHandler(): (word: Word) => Promise<void> {
-    return async (word: Word) => await this.setNewWord(word);
-  }
-
-  /**
-   * Set the word changer without adding to history
-   * @param wordObj The Word object to set as the word changer
-   */
-  async setWordChanger(wordObj: Word): Promise<void> {
-    // Get the word string value
-    const word = wordObj.word;
-
-    // Mark current visiting word as visited and add to the set
-    if (this.visitingWord) {
-      this.visitingWord.previouslyVisited = true;
-      this.previouslyVisitedWords.add(this.visitingWord.word);
-    }
-
-    // Update visitingWord to the new word
-    this.visitingWord = wordObj;
-
-    // Update the word changer
-    this.wordChanger.updateWord(wordObj);
-
-    // Close any open menus when the word changes
-    this.menuManager.closeMenus();
-
-    // Preload the word changer (in case it's not already loaded)
-    this.wordSayer.preload(word);
-
-    // Preload all possible next words
-    const possibleNextWords = wordObj.possibleNextWords;
-    for (const nextWord of possibleNextWords) {
-      this.wordSayer.preload(nextWord);
-    }
-
-    // Handle audio playback
-    if (this.sayImmediately.value) {
-      // Play the new word changer
-      await this.wordChanger.say();
-    }
-  }
-
-  /**
-   * Set a new word and add it to history
-   * @param wordObj The Word object to set as the new word changer
-   */
-  async setNewWord(wordObj: Word): Promise<void> {
-    // Add the new word to history first
-    this.history.addWord(wordObj);
-
-    // Then set it as the word changer
-    await this.setWordChanger(wordObj);
-  }
 
   /**
    * Get random words from the word list
@@ -327,19 +225,6 @@ export class AppState {
     }));
   }
 
-  /**
-   * Get undo action (computed)
-   */
-  get undoAction(): ButtonAction | null {
-    return this.history.canUndo ? new ButtonAction(() => this.history.undo(), { tooltip: "Undo" }) : null;
-  }
-
-  /**
-   * Get redo action (computed)
-   */
-  get redoAction(): ButtonAction | null {
-    return this.history.canRedo ? new ButtonAction(() => this.history.redo(), { tooltip: "Redo" }) : null;
-  }
 
   /**
    * Get reset action (computed) - only enabled on 'word' and 'make' pages
@@ -355,13 +240,7 @@ export class AppState {
    * @param wordObj The new word to start with
    */
   async reset(wordObj: Word): Promise<void> {
-    // Clear the visited words set
-    this.previouslyVisitedWords.clear();
-
-    // Reset history with the new word
-    this.history.reset(wordObj);
-
-    // Set the new word as the current word changer
-    await this.setWordChanger(wordObj);
+    // Reset the word changer with the new word
+    await this.wordChanger.reset(wordObj);
   }
 }

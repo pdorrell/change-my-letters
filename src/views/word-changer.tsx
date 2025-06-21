@@ -3,10 +3,10 @@ import { observer } from 'mobx-react-lite';
 import { range } from '@/lib/util';
 import { PositionInteraction } from '@/models/interaction/position-interaction';
 import { WordInteraction } from '@/models/interaction/word-interaction';
+import { WordChanger } from '@/models/word-changer';
 import { LetterView, LetterPlaceholder } from '@/views/Letter';
 import { PositionView, PositionPlaceholder } from '@/views/Position';
 import { MenuManagerInterface } from '@/lib/views/menu-manager-interface';
-import { AppState } from '@/models/app-state';
 import { ActionButton } from '@/lib/views/action-button';
 import { HistoryPanel } from '@/views/History';
 import { ValueCheckbox } from '@/lib/views/value-model-views';
@@ -26,16 +26,16 @@ import {
 /**
  * View component for displaying the word changer
  */
-interface WordChangerViewProps { wordChanger: WordInteraction; maxWordLength?: number; }
+interface WordChangerViewProps { wordInteraction: WordInteraction; maxWordLength?: number; }
 
-export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordChanger, maxWordLength }) => {
+export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordInteraction, maxWordLength }) => {
 
   // Add a document-wide click handler to close menus when clicking outside
   React.useEffect(() => {
     const handleGlobalClick = (e: MouseEvent) => {
       // Check if there are any open menus by examining the interactions
-      const hasOpenMenus = wordChanger.letterInteractions.some(li => li.isReplaceMenuOpen) ||
-                          wordChanger.positionInteractions.some(pi => pi.isInsertMenuOpen);
+      const hasOpenMenus = wordInteraction.letterInteractions.some(li => li.isReplaceMenuOpen) ||
+                          wordInteraction.positionInteractions.some(pi => pi.isInsertMenuOpen);
 
       // If there's an active menu
       if (hasOpenMenus) {
@@ -55,7 +55,7 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordC
         }
 
         if (!menuClick) {
-          wordChanger.menuManager.closeMenus();
+          wordInteraction.menuManager.closeMenus();
         }
       }
     };
@@ -67,7 +67,7 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordC
     return () => {
       document.removeEventListener('click', handleGlobalClick);
     };
-  }, [wordChanger.menuManager]);
+  }, [wordInteraction.menuManager]);
 
   // Get maximum word length
   const getMaxWordLength = (): number => {
@@ -78,18 +78,18 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordC
   const maxLength = getMaxWordLength();
 
   function getPositionView(index : number): React.ReactElement {
-    const positionInteraction: PositionInteraction | null = wordChanger.getActivePositionInteraction(index);
+    const positionInteraction: PositionInteraction | null = wordInteraction.getActivePositionInteraction(index);
     return positionInteraction ? <PositionView positionInteraction={positionInteraction} /> : <PositionPlaceholder/>;
   }
 
   function getLetterView(index : number): React.ReactElement {
-    const letterInteraction = wordChanger.getActiveLetterInteraction(index);
+    const letterInteraction = wordInteraction.getActiveLetterInteraction(index);
     return letterInteraction ? <LetterView letterInteraction={letterInteraction} /> : <LetterPlaceholder/>;
   }
 
   return (
     <Panel>
-      <div className={`word-display touch-interactive-area ${wordChanger.word.previouslyVisited ? 'previously-visited' : ''}`}>
+      <div className={`word-display touch-interactive-area ${wordInteraction.word.previouslyVisited ? 'previously-visited' : ''}`}>
         {/* Render alternating sequence of positions and letters for the word changer */}
         { range(maxLength).map(index => (
           <React.Fragment key={`position--${index}`}>
@@ -220,15 +220,15 @@ export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = observer(({ wor
 /**
  * Controls component for word changer page
  */
-interface WordChangerControlsProps { appState: AppState; }
+interface WordChangerControlsProps { wordChanger: WordChanger; }
 
-export const WordChangerControls: React.FC<WordChangerControlsProps> = observer(({ appState }) => {
+export const WordChangerControls: React.FC<WordChangerControlsProps> = observer(({ wordChanger }) => {
   return (
     <div className="word-changer-controls">
-      {appState.undoAction && <ActionButton action={appState.undoAction}>Undo</ActionButton>}
-      {appState.redoAction && <ActionButton action={appState.redoAction}>Redo</ActionButton>}
-      <ActionButton action={appState.sayAction}>Say</ActionButton>
-      <ValueCheckbox value={appState.sayImmediately} />
+      {wordChanger.undoAction && <ActionButton action={wordChanger.undoAction}>Undo</ActionButton>}
+      {wordChanger.redoAction && <ActionButton action={wordChanger.redoAction}>Redo</ActionButton>}
+      <ActionButton action={wordChanger.sayAction}>Say</ActionButton>
+      <ValueCheckbox value={wordChanger.sayImmediately} />
     </div>
   );
 });
@@ -236,14 +236,14 @@ export const WordChangerControls: React.FC<WordChangerControlsProps> = observer(
 /**
  * Full page component for word changer page
  */
-interface WordChangerPageProps { appState: AppState; }
+interface WordChangerPageProps { wordChanger: WordChanger; maxWordLength: number; }
 
-export const WordChangerPage: React.FC<WordChangerPageProps> = observer(({ appState }) => {
+export const WordChangerPage: React.FC<WordChangerPageProps> = observer(({ wordChanger, maxWordLength }) => {
   return (
     <>
-      <WordChangerControls appState={appState} />
-      <WordChangerView wordChanger={appState.wordChanger} maxWordLength={appState.wordGraph.maxWordLength} />
-      <HistoryPanel history={appState.history} />
+      <WordChangerControls wordChanger={wordChanger} />
+      <WordChangerView wordInteraction={wordChanger.wordInteraction} maxWordLength={maxWordLength} />
+      <HistoryPanel history={wordChanger.history} />
     </>
   );
 });

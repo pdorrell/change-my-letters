@@ -2,6 +2,8 @@ import { createTestWordGraph, testWordLists } from '@/tests/utils/test-word-grap
 import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
 import { AudioFilePlayerInterface } from '@/models/audio/audio-file-player-interface';
 import { AppState } from '@/models/app-state';
+import { WordChanger } from '@/models/word-changer';
+import { WordSayer } from '@/models/word-sayer';
 
 /**
  * Creates a test AppState with AudioFilePlayerTestDouble and minimal word graph
@@ -11,7 +13,31 @@ export function createTestAppState(audioFilePlayer?: AudioFilePlayerInterface): 
   const audioFilePlayerToUse = audioFilePlayer || new AudioFilePlayerTestDouble('/assets/words/amazon_polly');
 
   // Get the first word from the test word graph as initial word
-  const initialWord = Array.from(wordGraph.words)[0];
+  const initialWordString = Array.from(wordGraph.words)[0];
 
-  return new AppState(initialWord, wordGraph, 'test-version', audioFilePlayerToUse);
+  return new AppState(initialWordString, wordGraph, 'test-version', audioFilePlayerToUse);
+}
+
+/**
+ * Creates a test WordChanger with AudioFilePlayerTestDouble and minimal word graph
+ */
+export function createTestWordChanger(audioFilePlayer?: AudioFilePlayerInterface): WordChanger {
+  const wordGraph = createTestWordGraph(testWordLists.minimal);
+  const audioFilePlayerToUse = audioFilePlayer || new AudioFilePlayerTestDouble('/assets/words/amazon_polly');
+
+  // Get the first word from the test word graph as initial word
+  const initialWordString = Array.from(wordGraph.words)[0];
+  const initialWord = wordGraph.getNode(initialWordString)!;
+
+  // Create a word sayer for the word changer
+  const wordSayer = new WordSayer(audioFilePlayerToUse, 'words');
+
+  // Create a mock parent with reset method
+  const mockParent = {
+    async reset(_word: any): Promise<void> {
+      // Mock implementation for testing
+    }
+  };
+
+  return new WordChanger(initialWord, wordSayer, mockParent);
 }

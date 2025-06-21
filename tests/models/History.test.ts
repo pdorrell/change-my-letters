@@ -1,12 +1,13 @@
-import { History, WordChange } from '@/models/History';
-import { AppState } from '@/models/app-state';
+import { History, WordChange, WordStateManager } from '@/models/History';
+import { WordChanger } from '@/models/word-changer';
 import { WordGraph } from '@/models/word-graph';
 import { WordGraphBuilder } from '@/models/word-graph-builder';
 import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
+import { WordSayer } from '@/models/word-sayer';
 
 describe('History', () => {
   let history: History;
-  let appState: AppState;
+  let wordChanger: WordChanger;
   let wordGraph: WordGraph;
 
   beforeEach(() => {
@@ -24,23 +25,31 @@ describe('History', () => {
     // Create an AudioFilePlayerTestDouble
     const audioFilePlayerTestDouble = new AudioFilePlayerTestDouble('/assets/words/amazon_polly');
 
-    // Create an AppState instance with the word graph and test double
-    appState = new AppState('cat', wordGraph, 'test-version', audioFilePlayerTestDouble);
-
     // Get the Word object
     const catWord = wordGraph.getNode('cat');
 
-    // Initialize the history model with AppState and the initial word
-    history = new History(appState, catWord!);
+    // Create word sayer
+    const wordSayer = new WordSayer(audioFilePlayerTestDouble, 'words');
+
+    // Create a mock parent with reset method
+    const mockParent = {
+      async reset(_word: any): Promise<void> {
+        // Mock implementation for testing
+      }
+    };
+
+    // Create WordChanger instance
+    wordChanger = new WordChanger(catWord!, wordSayer, mockParent);
+    history = wordChanger.history;
   });
 
   it('should initialize with initial word', () => {
-    const catWord = appState.wordGraph.getNode('cat')!;
+    const catWord = wordGraph.getNode('cat')!;
     expect(history.entries[0].wordString).toBe('cat');
     expect(history.entries[0].word).toBe(catWord);
     expect(history.currentIndex).toBe(0);
     expect(history.hasVisited('cat')).toBe(false);
-    expect(appState.visitingWord).toBe(catWord);
+    expect(wordChanger.visitingWord).toBe(catWord);
   });
 
   it('should add words to history with change information', () => {
@@ -50,7 +59,7 @@ describe('History', () => {
       letter: 'b'
     };
 
-    const batWord = appState.wordGraph.getNode('bat')!;
+    const batWord = wordGraph.getNode('bat')!;
     history.addWord(batWord, change);
 
     expect(history.entries.length).toBe(2);
@@ -60,9 +69,9 @@ describe('History', () => {
     expect(history.currentIndex).toBe(1);
 
     // For the test, manually mark 'cat' as visited
-    const catWordObj = appState.wordGraph.getNode('cat')!;
+    const catWordObj = wordGraph.getNode('cat')!;
     catWordObj.previouslyVisited = true;
-    appState.previouslyVisitedWords.add('cat');
+    wordChanger.previouslyVisitedWords.add('cat');
     // Now check if it's visited
     expect(history.hasVisited('cat')).toBe(true);
   });
@@ -80,9 +89,9 @@ describe('History', () => {
       letter: 'r'
     };
 
-    const batWord = appState.wordGraph.getNode('bat')!;
-    const ratWord = appState.wordGraph.getNode('rat')!;
-    const catWord = appState.wordGraph.getNode('cat')!;
+    const batWord = wordGraph.getNode('bat')!;
+    const ratWord = wordGraph.getNode('rat')!;
+    const catWord = wordGraph.getNode('cat')!;
 
     history.addWord(batWord, change1);
     history.addWord(ratWord, change2);
@@ -128,13 +137,13 @@ describe('History', () => {
       letter: 'b'
     };
 
-    const batWord = appState.wordGraph.getNode('bat')!;
+    const batWord = wordGraph.getNode('bat')!;
     history.addWord(batWord, change);
 
     // First makes 'cat' visited manually for the test
-    const catWordObj = appState.wordGraph.getNode('cat')!;
+    const catWordObj = wordGraph.getNode('cat')!;
     catWordObj.previouslyVisited = true;
-    appState.previouslyVisitedWords.add('cat');
+    wordChanger.previouslyVisitedWords.add('cat');
     // Check that 'cat' is now visited
     expect(history.hasVisited('cat')).toBe(true);
     expect(history.hasVisited('bat')).toBe(false);
@@ -154,9 +163,9 @@ describe('History', () => {
       letter: 'r'
     };
 
-    const batWord = appState.wordGraph.getNode('bat')!;
-    const ratWord = appState.wordGraph.getNode('rat')!;
-    const catWord = appState.wordGraph.getNode('cat')!;
+    const batWord = wordGraph.getNode('bat')!;
+    const ratWord = wordGraph.getNode('rat')!;
+    const catWord = wordGraph.getNode('cat')!;
 
     history.addWord(batWord, change1);
     history.addWord(ratWord, change2);
@@ -186,8 +195,8 @@ describe('History', () => {
       letter: 'b'
     };
 
-    const batWord = appState.wordGraph.getNode('bat')!;
-    const dogWord = appState.wordGraph.getNode('dog')!;
+    const batWord = wordGraph.getNode('bat')!;
+    const dogWord = wordGraph.getNode('dog')!;
 
     history.addWord(batWord, change);
 
@@ -200,16 +209,16 @@ describe('History', () => {
     expect(history.currentIndex).toBe(0);
     // After reset, all previouslyVisited flags should be reset by AppState.reset()
     // Test that our cat word isn't marked as previously visited by setting the flags directly
-    const catWord = appState.wordGraph.getNode('cat')!;
+    const catWord = wordGraph.getNode('cat')!;
     catWord.previouslyVisited = false;
     expect(history.hasVisited('cat')).toBe(false);
 
     // Same for bat and dog
-    const batWordObj = appState.wordGraph.getNode('bat')!;
+    const batWordObj = wordGraph.getNode('bat')!;
     batWordObj.previouslyVisited = false;
     expect(history.hasVisited('bat')).toBe(false);
 
-    const dogWordObj = appState.wordGraph.getNode('dog')!;
+    const dogWordObj = wordGraph.getNode('dog')!;
     dogWordObj.previouslyVisited = false;
     expect(history.hasVisited('dog')).toBe(false);
   });
@@ -233,10 +242,10 @@ describe('History', () => {
       letter: 'f'
     };
 
-    const batWord = appState.wordGraph.getNode('bat')!;
-    const ratWord = appState.wordGraph.getNode('rat')!;
-    const fatWord = appState.wordGraph.getNode('fat')!;
-    const catWord = appState.wordGraph.getNode('cat')!;
+    const batWord = wordGraph.getNode('bat')!;
+    const ratWord = wordGraph.getNode('rat')!;
+    const fatWord = wordGraph.getNode('fat')!;
+    const catWord = wordGraph.getNode('cat')!;
 
     history.addWord(batWord, change1);
     history.addWord(ratWord, change2);
@@ -272,7 +281,7 @@ describe('History', () => {
       letter: 'b'
     };
 
-    const batWord = appState.wordGraph.getNode('bat')!;
+    const batWord = wordGraph.getNode('bat')!;
     history.addWord(batWord, change);
 
     // After adding a word, can undo but can't redo
@@ -286,8 +295,8 @@ describe('History', () => {
   });
 
   it('should provide wordChanger property', () => {
-    const catWord = appState.wordGraph.getNode('cat')!;
-    const batWord = appState.wordGraph.getNode('bat')!;
+    const catWord = wordGraph.getNode('cat')!;
+    const batWord = wordGraph.getNode('bat')!;
 
     expect(history.wordChanger).toBe(catWord);
     expect(history.wordChanger.word).toBe('cat');
