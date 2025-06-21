@@ -137,15 +137,21 @@ export class WordChanger implements WordStateManager {
   /**
    * Get undo action (computed)
    */
-  get undoAction(): ButtonAction | null {
-    return this.history.canUndo ? new ButtonAction(() => this.history.undo(), { tooltip: "Undo" }) : null;
+  get undoAction(): ButtonAction {
+    return new ButtonAction(
+      this.history.canUndo ? () => this.history.undo() : null,
+      { tooltip: "Undo" }
+    );
   }
 
   /**
    * Get redo action (computed)
    */
-  get redoAction(): ButtonAction | null {
-    return this.history.canRedo ? new ButtonAction(() => this.history.redo(), { tooltip: "Redo" }) : null;
+  get redoAction(): ButtonAction {
+    return new ButtonAction(
+      this.history.canRedo ? () => this.history.redo() : null,
+      { tooltip: "Redo" }
+    );
   }
 
   /**
