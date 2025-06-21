@@ -8,6 +8,7 @@ export class FindersInteraction {
   constructor(
     public readonly wordSayer: WordSayerInterface,
     public readonly happyWordSayer: WordSayerInterface,
+    public readonly sadWordSayer: WordSayerInterface,
     public readonly getRandomWords: () => string[]
   ) {
     makeAutoObservable(this, {

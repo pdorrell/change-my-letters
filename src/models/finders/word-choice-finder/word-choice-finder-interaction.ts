@@ -18,15 +18,17 @@ export class WordChoiceFinderInteraction {
   newWordsCallback?: () => string[];
   auto: ValueModel<boolean>;
   happyWordSayer?: WordSayerInterface;
+  sadWordSayer?: WordSayerInterface;
   confirmation: ConfirmationModel;
 
   // Happy celebration words for perfect score
   private readonly celebrationWords: string[] = ['cool!!', 'wow!!', 'hooray!!', 'yes!!'];
 
-  constructor(wordSayer: WordSayerInterface, words?: string[], newWordsCallback?: () => string[], happyWordSayer?: WordSayerInterface) {
+  constructor(wordSayer: WordSayerInterface, words?: string[], newWordsCallback?: () => string[], happyWordSayer?: WordSayerInterface, sadWordSayer?: WordSayerInterface) {
     this.wordSayer = wordSayer;
     this.newWordsCallback = newWordsCallback;
     this.happyWordSayer = happyWordSayer;
+    this.sadWordSayer = sadWordSayer;
 
     if (words) {
       this.words = words.slice();

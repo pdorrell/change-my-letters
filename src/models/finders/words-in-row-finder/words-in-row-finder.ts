@@ -11,7 +11,7 @@ import { getRandomNegativeWord } from '@/lib/util';
 
 export class WordsInRowFinder implements RangeSelectable {
   wordSayer: WordSayerInterface;
-  happyWordSayer: WordSayerInterface;
+  sadWordSayer: WordSayerInterface;
   difficulty: ValueModel<DifficultyType>;
   forwardsOnly: ValueModel<boolean>;
   auto: ValueModel<boolean>;
@@ -21,9 +21,9 @@ export class WordsInRowFinder implements RangeSelectable {
   newWordsCallback?: () => string[];
   autoTimeoutId: number | null = null;
 
-  constructor(wordSayer: WordSayerInterface, words: string[] = [], newWordsCallback?: () => string[], happyWordSayer?: WordSayerInterface) {
+  constructor(wordSayer: WordSayerInterface, words: string[] = [], newWordsCallback?: () => string[], sadWordSayer?: WordSayerInterface) {
     this.wordSayer = wordSayer;
-    this.happyWordSayer = happyWordSayer || wordSayer;
+    this.sadWordSayer = sadWordSayer || wordSayer;
     this.newWordsCallback = newWordsCallback;
 
     this.difficulty = new ValueModel<DifficultyType>(
@@ -141,7 +141,7 @@ export class WordsInRowFinder implements RangeSelectable {
       this.lettersRow.markSelectionWrong();
       // Say a negative word for incorrect selection
       const negativeWord = getRandomNegativeWord();
-      await this.happyWordSayer.say(negativeWord);
+      await this.sadWordSayer.say(negativeWord);
     }
   }
 

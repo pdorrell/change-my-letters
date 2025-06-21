@@ -8,7 +8,7 @@ describe('FinderTypeNavigation', () => {
   it('renders Word Choice tab as active by default', () => {
     const wordSayer = new WordSayerTestDouble();
     const getRandomWords = () => ['cat', 'dog', 'bat'];
-    const findersInteraction = new FindersInteraction(wordSayer, wordSayer, getRandomWords);
+    const findersInteraction = new FindersInteraction(wordSayer, wordSayer, wordSayer, getRandomWords);
 
     render(<FinderTypeNavigation findersInteraction={findersInteraction} />);
 
@@ -21,7 +21,7 @@ describe('FinderTypeNavigation', () => {
   it('shows correct tooltip for Word Choice tab', () => {
     const wordSayer = new WordSayerTestDouble();
     const getRandomWords = () => ['cat', 'dog', 'bat'];
-    const findersInteraction = new FindersInteraction(wordSayer, wordSayer, getRandomWords);
+    const findersInteraction = new FindersInteraction(wordSayer, wordSayer, wordSayer, getRandomWords);
 
     render(<FinderTypeNavigation findersInteraction={findersInteraction} />);
 

@@ -5,6 +5,7 @@ import { getRandomNegativeWord } from '@/lib/util';
 
 interface FinderInterface {
   wordSayer: WordSayerInterface;
+  sadWordSayer?: WordSayerInterface;
   wordChangerToFind: WordToFind | null;
 }
 
@@ -30,7 +31,8 @@ export class WordToChoose {
     if (!isCorrect) {
       // Say negative word first, then the chosen word
       const negativeWord = getRandomNegativeWord();
-      await this.finder.wordSayer.say(negativeWord);
+      const sadSayer = this.finder.sadWordSayer || this.finder.wordSayer;
+      await sadSayer.say(negativeWord);
       // Wait a moment before saying the chosen word
       await new Promise(resolve => setTimeout(resolve, 200));
       await this.finder.wordSayer.say(this.word);

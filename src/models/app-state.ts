@@ -99,7 +99,10 @@ export class AppState {
     public readonly wordSayer: WordSayerInterface,
 
     // Audio player for celebration words
-    public readonly happyWordSayer: WordSayerInterface
+    public readonly happyWordSayer: WordSayerInterface,
+
+    // Audio player for negative feedback words
+    public readonly sadWordSayer: WordSayerInterface
   ) {
 
     // Initialize audio settings
@@ -120,6 +123,7 @@ export class AppState {
     this.findersInteraction = new FindersInteraction(
       this.wordSayer,
       this.happyWordSayer,
+      this.sadWordSayer,
       getRandomWords
     );
 
@@ -129,7 +133,8 @@ export class AppState {
       this.wordSayer,
       randomWords,
       getRandomWords,
-      this.happyWordSayer
+      this.happyWordSayer,
+      this.sadWordSayer
     );
 
     // Initialize words in row finder with random words
@@ -137,7 +142,7 @@ export class AppState {
       this.wordSayer,
       randomWords,
       getRandomWords,
-      this.happyWordSayer
+      this.sadWordSayer
     );
 
     // Initialize the word changer
