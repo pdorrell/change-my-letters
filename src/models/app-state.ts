@@ -86,7 +86,6 @@ export class AppState {
   sayImmediately: ValueModel<boolean>;
 
   // Button actions
-  resetAction: ButtonAction;
   sayAction: ButtonAction;
   reviewPronunciationAction: ButtonAction;
 
@@ -206,7 +205,6 @@ export class AppState {
     this.wordChanger = new WordInteraction(wordNode, this.newWordHandler, this.wordSayer, this.menuManager, this.history);
 
     // Initialize button actions
-    this.resetAction = new ButtonAction(() => this.resetGame(), { tooltip: "Choose a new word" });
     this.sayAction = new ButtonAction(() => this.wordChanger.say(), { tooltip: "Say the word changer" });
     this.reviewPronunciationAction = new ButtonAction(() => this.navigateTo('reviewPronunciation'), { tooltip: "Review pronunciation" });
 
@@ -219,6 +217,7 @@ export class AppState {
     makeAutoObservable(this, {
       undoAction: computed,
       redoAction: computed,
+      resetAction: computed,
       newWordHandler: computed
     });
   }
@@ -293,10 +292,15 @@ export class AppState {
   }
 
   /**
-   * Reset the game with a new word
+   * Reset the game with a new word - navigates to appropriate reset page based on current page
    */
   resetGame(): void {
-    this.navigateTo('reset');
+    if (this.currentPage === 'make') {
+      this.navigateTo('reset/make');
+    } else if (this.currentPage === 'word') {
+      this.navigateTo('reset/word');
+    }
+    // Do nothing if not on 'make' or 'word' page
   }
 
   /**
@@ -310,6 +314,13 @@ export class AppState {
     if (page === 'reviewPronunciation') {
       this.reviewPronunciationInteraction.reset();
     }
+
+    // Set reset interaction target page when navigating to reset pages
+    if (page === 'reset/word') {
+      this.resetInteraction.setTargetPage('word');
+    } else if (page === 'reset/make') {
+      this.resetInteraction.setTargetPage('make');
+    }
   }
 
   /**
@@ -320,10 +331,10 @@ export class AppState {
   }
 
   /**
-   * Get all available pages with their configuration
+   * Get pages that should appear in the navigation menu
    */
-  get allPages(): Array<{ page: AppPage; config: PageConfig; isActive: boolean }> {
-    const pages: AppPage[] = ['word', 'reset', 'reviewPronunciation', 'finders', 'make'];
+  get menuPages(): Array<{ page: AppPage; config: PageConfig; isActive: boolean }> {
+    const pages: AppPage[] = ['word', 'reviewPronunciation', 'finders', 'make'];
     return pages.map(page => ({
       page,
       config: PAGE_CONFIGS[page],
@@ -343,6 +354,15 @@ export class AppState {
    */
   get redoAction(): ButtonAction | null {
     return this.history.canRedo ? new ButtonAction(() => this.history.redo(), { tooltip: "Redo" }) : null;
+  }
+
+  /**
+   * Get reset action (computed) - only enabled on 'word' and 'make' pages
+   */
+  get resetAction(): ButtonAction {
+    const enabled = this.currentPage === 'word' || this.currentPage === 'make';
+    const handler = enabled ? () => this.resetGame() : null;
+    return new ButtonAction(handler, { tooltip: "Choose a new word" });
   }
 
   /**

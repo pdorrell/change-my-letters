@@ -26,7 +26,7 @@ interface PageNavigationProps { appState: AppState; }
 const PageNavigation: React.FC<PageNavigationProps> = observer(({ appState }) => {
   return (
     <div className="page-navigation-tabs">
-      {appState.allPages.map(({ page, config, isActive }) => (
+      {appState.menuPages.map(({ page, config, isActive }) => (
         <button
           key={page}
           className={`page-tab ${isActive ? 'active' : ''}`}
