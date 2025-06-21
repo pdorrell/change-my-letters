@@ -46,4 +46,6 @@ The application is built using:
 * Run npm command `lint:fix-whitespace` to fix all the missing eolns
 * Use the `/kill` URL to kill the webpack server
 
-[Rest of the existing content remains unchanged...]
+## Development Notes
+
+* If version.txt happens to change, it's OK to include as is in the commit for other changes
