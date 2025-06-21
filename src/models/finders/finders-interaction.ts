@@ -1,14 +1,15 @@
 import { makeAutoObservable, computed } from 'mobx';
 import { FinderType, FINDER_CONFIGS } from './finder-types';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
+import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';
+import { HappyOrSad } from '@/models/audio/emotion-types';
 
 export class FindersInteraction {
   currentFinderType: FinderType = 'word-choice';
 
   constructor(
     public readonly wordSayer: WordSayerInterface,
-    public readonly happyWordSayer: WordSayerInterface,
-    public readonly sadWordSayer: WordSayerInterface,
+    public readonly emotionalWordSayer: EmotionalWordSayer<HappyOrSad>,
     public readonly getRandomWords: () => string[]
   ) {
     makeAutoObservable(this, {

@@ -5,6 +5,8 @@ import { WordToChoose } from './word-to-choose';
 import { ButtonAction } from '@/lib/models/actions';
 import { ValueModel } from '@/lib/models/value-models';
 import { ConfirmationModel } from '@/lib/models/confirmation';
+import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';
+import { HappyOrSad } from '@/models/audio/emotion-types';
 
 export class WordChoiceFinderInteraction {
   wordSayer: WordSayerInterface;
@@ -17,18 +19,13 @@ export class WordChoiceFinderInteraction {
   tried: number = 0;
   newWordsCallback?: () => string[];
   auto: ValueModel<boolean>;
-  happyWordSayer?: WordSayerInterface;
-  sadWordSayer?: WordSayerInterface;
+  emotionalWordSayer?: EmotionalWordSayer<HappyOrSad>;
   confirmation: ConfirmationModel;
 
-  // Happy celebration words for perfect score
-  private readonly celebrationWords: string[] = ['cool!!', 'wow!!', 'hooray!!', 'yes!!'];
-
-  constructor(wordSayer: WordSayerInterface, words?: string[], newWordsCallback?: () => string[], happyWordSayer?: WordSayerInterface, sadWordSayer?: WordSayerInterface) {
+  constructor(wordSayer: WordSayerInterface, words?: string[], newWordsCallback?: () => string[], emotionalWordSayer?: EmotionalWordSayer<HappyOrSad>) {
     this.wordSayer = wordSayer;
     this.newWordsCallback = newWordsCallback;
-    this.happyWordSayer = happyWordSayer;
-    this.sadWordSayer = sadWordSayer;
+    this.emotionalWordSayer = emotionalWordSayer;
 
     if (words) {
       this.words = words.slice();
@@ -147,10 +144,8 @@ export class WordChoiceFinderInteraction {
         this.setMessage(`Congratulations you got all ${this.wordsToFind.length} words right! 😊😊`);
 
         // Play a random happy word for perfect score
-        if (this.happyWordSayer) {
-          const randomIndex = Math.floor(Math.random() * this.celebrationWords.length);
-          const celebrationWord = this.celebrationWords[randomIndex];
-          await this.happyWordSayer.say(celebrationWord);
+        if (this.emotionalWordSayer) {
+          await this.emotionalWordSayer.playRandomWord('happy');
         }
       } else {
         this.setMessage(`You got ${this.correct} out of ${this.wordsToFind.length}`);

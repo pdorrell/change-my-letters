@@ -38,16 +38,6 @@ describe('Review Pronunciation Integration', () => {
       expect(reviewInteraction.filter.matchOption.value).toBe('start');
     });
 
-    it('should have review pronunciation action button', () => {
-      expect(appState.reviewPronunciationAction).toBeDefined();
-      expect(appState.reviewPronunciationAction.enabled).toBe(true);
-    });
-
-    it('should navigate to review pronunciation when action is triggered', () => {
-      appState.reviewPronunciationAction.doAction();
-
-      expect(appState.currentPage).toBe('reviewPronunciation');
-    });
   });
 
   describe('Word Graph integration', () => {

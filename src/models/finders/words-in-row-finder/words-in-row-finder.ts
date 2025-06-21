@@ -7,11 +7,12 @@ import { LettersRow } from './letters-row';
 import { WordsToFind } from './words-to-find';
 import { WordToFind } from './word-to-find';
 import { DifficultyType } from './types';
-import { getRandomNegativeWord } from '@/lib/util';
+import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';
+import { HappyOrSad } from '@/models/audio/emotion-types';
 
 export class WordsInRowFinder implements RangeSelectable {
   wordSayer: WordSayerInterface;
-  sadWordSayer: WordSayerInterface;
+  emotionalWordSayer?: EmotionalWordSayer<HappyOrSad>;
   difficulty: ValueModel<DifficultyType>;
   forwardsOnly: ValueModel<boolean>;
   auto: ValueModel<boolean>;
@@ -21,9 +22,9 @@ export class WordsInRowFinder implements RangeSelectable {
   newWordsCallback?: () => string[];
   autoTimeoutId: number | null = null;
 
-  constructor(wordSayer: WordSayerInterface, words: string[] = [], newWordsCallback?: () => string[], sadWordSayer?: WordSayerInterface) {
+  constructor(wordSayer: WordSayerInterface, words: string[] = [], newWordsCallback?: () => string[], emotionalWordSayer?: EmotionalWordSayer<HappyOrSad>) {
     this.wordSayer = wordSayer;
-    this.sadWordSayer = sadWordSayer || wordSayer;
+    this.emotionalWordSayer = emotionalWordSayer;
     this.newWordsCallback = newWordsCallback;
 
     this.difficulty = new ValueModel<DifficultyType>(
@@ -139,9 +140,10 @@ export class WordsInRowFinder implements RangeSelectable {
     } else {
       this.wordsToFind.markActiveWordWrong();
       this.lettersRow.markSelectionWrong();
-      // Say a negative word for incorrect selection
-      const negativeWord = getRandomNegativeWord();
-      await this.sadWordSayer.say(negativeWord);
+      // Play a random sad word for incorrect selection
+      if (this.emotionalWordSayer) {
+        await this.emotionalWordSayer.playRandomWord('sad');
+      }
     }
   }
 

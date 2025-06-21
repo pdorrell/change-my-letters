@@ -1,11 +1,12 @@
 import { makeAutoObservable } from 'mobx';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
 import { WordToFind } from './word-to-find';
-import { getRandomNegativeWord } from '@/lib/util';
+import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';
+import { HappyOrSad } from '@/models/audio/emotion-types';
 
 interface FinderInterface {
   wordSayer: WordSayerInterface;
-  sadWordSayer?: WordSayerInterface;
+  emotionalWordSayer?: EmotionalWordSayer<HappyOrSad>;
   wordChangerToFind: WordToFind | null;
 }
 
@@ -29,10 +30,10 @@ export class WordToChoose {
 
     const isCorrect = this.word === this.finder.wordChangerToFind.word;
     if (!isCorrect) {
-      // Say negative word first, then the chosen word
-      const negativeWord = getRandomNegativeWord();
-      const sadSayer = this.finder.sadWordSayer || this.finder.wordSayer;
-      await sadSayer.say(negativeWord);
+      // Play a random sad word first, then the chosen word
+      if (this.finder.emotionalWordSayer) {
+        await this.finder.emotionalWordSayer.playRandomWord('sad');
+      }
       // Wait a moment before saying the chosen word
       await new Promise(resolve => setTimeout(resolve, 200));
       await this.finder.wordSayer.say(this.word);

@@ -15,9 +15,9 @@ import { ButtonAction } from '@/lib/models/actions';
 import { ValueModel } from '@/lib/models/value-models';
 import { AudioFilePlayerInterface } from '@/models/audio/audio-file-player-interface';
 import { WordSayer } from '@/models/word-sayer';
-import { EmotionalWordPlayer } from '@/models/audio/emotional-word-player';
-import { EmotionWordSet, HappyOrSad } from '@/models/audio/emotion-types';
 import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';
+import { EmotionWordSet, HappyOrSad } from '@/models/audio/emotion-types';
+import { EmotionalWordSayerWrapper } from '@/models/audio/emotional-word-sayer-wrapper';
 
 // Type for the main application pages
 type AppPage = 'word' | 'reset' | 'reviewPronunciation' | 'finders' | 'make' | 'reset/word' | 'reset/make';
@@ -87,7 +87,6 @@ export class AppState {
 
   // Button actions
   sayAction: ButtonAction;
-  reviewPronunciationAction: ButtonAction;
 
   // Audio file player for all audio functionality
   public readonly audioFilePlayer: AudioFilePlayerInterface;
@@ -95,8 +94,8 @@ export class AppState {
   // Word sayer for regular word pronunciation
   public readonly wordSayer: WordSayerInterface;
 
-  // Emotional word player for happy/sad words
-  public readonly emotionalWordPlayer: EmotionalWordPlayer<HappyOrSad>;
+  // Emotional word sayer for happy/sad words
+  public readonly emotionalWordSayer: EmotionalWordSayer<HappyOrSad>;
 
   // Happy word sayer wrapper
   public readonly happyWordSayer: WordSayerInterface;
@@ -129,11 +128,11 @@ export class AppState {
       new EmotionWordSet<HappyOrSad>('happy', happyWords),
       new EmotionWordSet<HappyOrSad>('sad', sadWords)
     ];
-    this.emotionalWordPlayer = new EmotionalWordPlayer(audioFilePlayer, emotionWordSets);
+    this.emotionalWordSayer = new EmotionalWordSayer(audioFilePlayer, emotionWordSets);
 
     // Create emotional word sayer wrappers
-    this.happyWordSayer = new EmotionalWordSayer(this.emotionalWordPlayer, 'happy');
-    this.sadWordSayer = new EmotionalWordSayer(this.emotionalWordPlayer, 'sad');
+    this.happyWordSayer = new EmotionalWordSayerWrapper(this.emotionalWordSayer, 'happy');
+    this.sadWordSayer = new EmotionalWordSayerWrapper(this.emotionalWordSayer, 'sad');
 
     // Initialize audio settings
     this.sayImmediately = new ValueModel(true, 'Say Immediately', 'Automatically pronounce words when they change');
@@ -152,8 +151,7 @@ export class AppState {
     const getRandomWords = () => this.getRandomWords(allWords, 10);
     this.findersInteraction = new FindersInteraction(
       this.wordSayer,
-      this.happyWordSayer,
-      this.sadWordSayer,
+      this.emotionalWordSayer,
       getRandomWords
     );
 
@@ -163,8 +161,7 @@ export class AppState {
       this.wordSayer,
       randomWords,
       getRandomWords,
-      this.happyWordSayer,
-      this.sadWordSayer
+      this.emotionalWordSayer
     );
 
     // Initialize words in row finder with random words
@@ -172,7 +169,7 @@ export class AppState {
       this.wordSayer,
       randomWords,
       getRandomWords,
-      this.sadWordSayer
+      this.emotionalWordSayer
     );
 
     // Initialize the word changer
@@ -206,13 +203,12 @@ export class AppState {
 
     // Initialize button actions
     this.sayAction = new ButtonAction(() => this.wordChanger.say(), { tooltip: "Say the word changer" });
-    this.reviewPronunciationAction = new ButtonAction(() => this.navigateTo('reviewPronunciation'), { tooltip: "Review pronunciation" });
 
     // Preload the initial word's audio
     this.wordSayer.preload(initialWord);
 
     // Preload all emotional words
-    this.emotionalWordPlayer.preload();
+    this.emotionalWordSayer.preload();
 
     makeAutoObservable(this, {
       undoAction: computed,
