@@ -62,6 +62,14 @@ export default (env, argv) => {
             'style-loader',
             'css-loader',
             {
+              loader: 'postcss-loader',
+              options: {
+                postcssOptions: {
+                  config: path.resolve(__dirname, 'postcss.config.cjs')
+                }
+              }
+            },
+            {
               loader: 'sass-loader',
               options: {
                 implementation: sass,

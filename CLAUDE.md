@@ -44,5 +44,6 @@ The application is built using:
 ## Deployment Commands
 
 * Run npm command `lint:fix-whitespace` to fix all the missing eolns
+* Use the `/kill` URL to kill the webpack server
 
 [Rest of the existing content remains unchanged...]
