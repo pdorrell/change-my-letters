@@ -14,7 +14,7 @@ describe('util', () => {
     it('should return an array with the same elements', () => {
       const original = ['a', 'b', 'c', 'd', 'e'];
       const shuffled = shuffle(original);
-      
+
       expect(shuffled).toHaveLength(original.length);
       expect(shuffled.sort()).toEqual(original.sort());
     });
@@ -23,7 +23,7 @@ describe('util', () => {
       const original = ['a', 'b', 'c'];
       const originalCopy = [...original];
       shuffle(original);
-      
+
       expect(original).toEqual(originalCopy);
     });
 
@@ -38,7 +38,7 @@ describe('util', () => {
     it('should produce different orders (probabilistic test)', () => {
       const original = ['a', 'b', 'c', 'd', 'e'];
       const shuffles = Array.from({ length: 20 }, () => shuffle(original));
-      
+
       // It's extremely unlikely (but theoretically possible) that all 20 shuffles
       // would produce the same order as the original, so this test should pass
       const differentOrders = shuffles.filter(s => JSON.stringify(s) !== JSON.stringify(original));
@@ -46,3 +46,4 @@ describe('util', () => {
     });
   });
 });
+
