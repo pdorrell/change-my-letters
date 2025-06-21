@@ -13,6 +13,11 @@ import { MenuManager } from '@/lib/views/menu-manager';
 import { Word } from '@/models/Word';
 import { ButtonAction } from '@/lib/models/actions';
 import { ValueModel } from '@/lib/models/value-models';
+import { AudioFilePlayerInterface } from '@/models/audio/audio-file-player-interface';
+import { WordSayer } from '@/models/word-sayer';
+import { EmotionalWordPlayer } from '@/models/audio/emotional-word-player';
+import { EmotionWordSet, HappyOrSad } from '@/models/audio/emotion-types';
+import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';
 
 // Type for the main application pages
 type AppPage = 'word' | 'reset' | 'reviewPronunciation' | 'finders' | 'make' | 'reset/word' | 'reset/make';
@@ -50,32 +55,32 @@ export class AppState {
   // The word history model
   history: History;
 
-  // word changer being visited
+  // Menu manager for closing menus when actions occur
+  menuManager: MenuManager;
+
+  // The word we're currently visiting (may differ from word changer due to undo/redo)
   visitingWord: Word;
 
   // Set of previously visited words
   previouslyVisitedWords: Set<string> = new Set();
 
-  // Reset word interaction model
+  // The reset interaction model
   resetInteraction: ResetInteraction;
 
-  // Review pronunciation interaction model
+  // The review pronunciation interaction model
   reviewPronunciationInteraction: ReviewPronunciationInteraction;
 
-  // Finders interaction model
+  // The finders interaction model
   findersInteraction: FindersInteraction;
 
-  // Word Choice Finder interaction model
+  // The word choice finder interaction model
   wordChoiceFinderInteraction: WordChoiceFinderInteraction;
 
-  // Words In Row Finder interaction model
+  // The words in row finder interaction model
   wordsInRowFinder: WordsInRowFinder;
 
-  // Make interaction model
+  // The make interaction model
   makeInteraction: MakeInteraction;
-
-  // Menu state management
-  menuManager: MenuManager;
 
   // Audio settings
   sayImmediately: ValueModel<boolean>;
@@ -85,6 +90,20 @@ export class AppState {
   sayAction: ButtonAction;
   reviewPronunciationAction: ButtonAction;
 
+  // Audio file player for all audio functionality
+  public readonly audioFilePlayer: AudioFilePlayerInterface;
+
+  // Word sayer for regular word pronunciation
+  public readonly wordSayer: WordSayerInterface;
+
+  // Emotional word player for happy/sad words
+  public readonly emotionalWordPlayer: EmotionalWordPlayer<HappyOrSad>;
+
+  // Happy word sayer wrapper
+  public readonly happyWordSayer: WordSayerInterface;
+
+  // Sad word sayer wrapper
+  public readonly sadWordSayer: WordSayerInterface;
 
   constructor(
     initialWord: string,
@@ -95,15 +114,27 @@ export class AppState {
     // Application version
     public readonly version: string,
 
-    // Audio player for word pronunciation
-    public readonly wordSayer: WordSayerInterface,
-
-    // Audio player for celebration words
-    public readonly happyWordSayer: WordSayerInterface,
-
-    // Audio player for negative feedback words
-    public readonly sadWordSayer: WordSayerInterface
+    // Audio file player for all audio functionality
+    audioFilePlayer: AudioFilePlayerInterface
   ) {
+    // Store the audio file player
+    this.audioFilePlayer = audioFilePlayer;
+
+    // Create word sayer for regular words
+    this.wordSayer = new WordSayer(audioFilePlayer, 'words');
+
+    // Create emotional word player with happy and sad word sets
+    const happyWords = ['cool!!', 'wow!!', 'hooray!!', 'yes!!'];
+    const sadWords = ['oh dear!', 'oh no!', 'whoops!'];
+    const emotionWordSets = [
+      new EmotionWordSet<HappyOrSad>('happy', happyWords),
+      new EmotionWordSet<HappyOrSad>('sad', sadWords)
+    ];
+    this.emotionalWordPlayer = new EmotionalWordPlayer(audioFilePlayer, emotionWordSets);
+
+    // Create emotional word sayer wrappers
+    this.happyWordSayer = new EmotionalWordSayer(this.emotionalWordPlayer, 'happy');
+    this.sadWordSayer = new EmotionalWordSayer(this.emotionalWordPlayer, 'sad');
 
     // Initialize audio settings
     this.sayImmediately = new ValueModel(true, 'Say Immediately', 'Automatically pronounce words when they change');
@@ -182,6 +213,9 @@ export class AppState {
     // Preload the initial word's audio
     this.wordSayer.preload(initialWord);
 
+    // Preload all emotional words
+    this.emotionalWordPlayer.preload();
+
     makeAutoObservable(this, {
       undoAction: computed,
       redoAction: computed,
@@ -247,163 +281,82 @@ export class AppState {
     await this.setWordChanger(wordObj);
   }
 
-  // Note: The deleteLetter, insertLetter, and replaceLetter methods have been removed
-  // Changes are now handled directly through LetterChange objects with direct references to resulting Word objects
-
-  // Case-change method has been removed
-
   /**
-   * Undo the last word change
+   * Get random words from the word list
+   * @param words Array of all available words
+   * @param count Number of words to return
+   * @returns Array of random words
    */
-  undo(): void {
-    // Get previous word from history
-    const prevWordObj = this.history.undo();
-    if (prevWordObj) {
-      // Set the word changer without adding to history (since we're navigating through history)
-      this.setWordChanger(prevWordObj);
-    }
+  getRandomWords(words: string[], count: number): string[] {
+    const shuffled = [...words].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
   }
 
   /**
-   * Redo a previously undone word change
-   */
-  redo(): void {
-    // Get next word from history
-    const nextWordObj = this.history.redo();
-    if (nextWordObj) {
-      // Set the word changer without adding to history (since we're navigating through history)
-      this.setWordChanger(nextWordObj);
-    }
-  }
-
-  /**
-   * Navigate to the reset word page
+   * Reset the game with a new word
    */
   resetGame(): void {
-    // Navigate to the reset view
-    // (The filter reset happens in navigateTo)
     this.navigateTo('reset');
   }
 
   /**
-   * Reset the game with a new initial word
-   * @param initialWord The new starting word
-   */
-  reset(initialWord: Word): void {
-    // For all previouslyVisitedWords, set previouslyVisited = false
-    this.previouslyVisitedWords.forEach(wordString => {
-      const wordNode = this.wordGraph.getNode(wordString);
-      if (wordNode) {
-        wordNode.previouslyVisited = false;
-      }
-    });
-
-    // Clear previouslyVisitedWords set
-    this.previouslyVisitedWords.clear();
-
-    // Set visitingWord to the new initial word
-    this.visitingWord = initialWord;
-
-    // Update the word changer interaction
-    this.wordChanger.updateWord(initialWord);
-
-    // Also update the history model
-    this.history.reset(initialWord);
-
-    // Say the new word if sayImmediately is checked
-    if (this.sayImmediately.value) {
-      this.wordChanger.say();
-    }
-  }
-
-
-  /**
-   * Set the sayImmediately setting
-   */
-  setSayImmediately(value: boolean): void {
-    this.sayImmediately.set(value);
-  }
-
-  /**
-   * Navigate to a page
+   * Navigate to a specific page
+   * @param page The page to navigate to
    */
   navigateTo(page: AppPage): void {
     this.currentPage = page;
 
-    // Remove sub-header since we're using header navigation now
-    this.subHeader = null;
-
-    // If navigating to the reset view, reset the interaction state
-    if (page === 'reset' || page.startsWith('reset/')) {
-      this.resetInteraction.reset();
-      // Set the target page based on the route
-      if (page === 'reset/word') {
-        this.resetInteraction.setTargetPage('word');
-      } else if (page === 'reset/make') {
-        this.resetInteraction.setTargetPage('make');
-      }
-    }
-
-    // If navigating to the review pronunciation view, reset the interaction state
+    // Reset review pronunciation interaction when navigating to it
     if (page === 'reviewPronunciation') {
       this.reviewPronunciationInteraction.reset();
-    }
-
-    // If navigating to the finders view, reset the interaction state
-    if (page === 'finders') {
-      // Note: we don't reset the finder interactions to preserve the current game state
     }
   }
 
   /**
-   * Get all pages in navigation order with their config (excluding reset routes)
+   * Get the current page configuration
    */
-  get allPages(): Array<{ page: AppPage; label: string; tooltip: string; isActive: boolean }> {
-    const pageOrder: AppPage[] = ['word', 'make', 'reviewPronunciation', 'finders'];
-    return pageOrder.map(page => ({
+  get currentPageConfig(): PageConfig {
+    return PAGE_CONFIGS[this.currentPage];
+  }
+
+  /**
+   * Get all available pages with their configuration
+   */
+  get allPages(): Array<{ page: AppPage; config: PageConfig; isActive: boolean }> {
+    const pages: AppPage[] = ['word', 'reset', 'reviewPronunciation', 'finders', 'make'];
+    return pages.map(page => ({
       page,
-      label: PAGE_CONFIGS[page].label,
-      tooltip: PAGE_CONFIGS[page].tooltip,
+      config: PAGE_CONFIGS[page],
       isActive: page === this.currentPage
     }));
   }
 
   /**
-   * Get the reset button action for the current page
+   * Get undo action (computed)
    */
-  get resetButtonAction(): ButtonAction | null {
-    if (this.currentPage === 'word') {
-      return new ButtonAction(() => this.navigateTo('reset/word'), { tooltip: 'Reset the Word page with a new word' });
-    } else if (this.currentPage === 'make') {
-      return new ButtonAction(() => this.navigateTo('reset/make'), { tooltip: 'Reset the Make page with a new word' });
-    }
-    return null;
-  }
-
-
-  /**
-   * Get the undo action - updating the handler based on history state
-   */
-  get undoAction(): ButtonAction {
-    const handler = this.history.canUndo ? () => this.undo() : null;
-    return new ButtonAction(handler, { tooltip: "Undo last change" });
+  get undoAction(): ButtonAction | null {
+    return this.history.canUndo ? new ButtonAction(() => this.history.undo(), { tooltip: "Undo" }) : null;
   }
 
   /**
-   * Get the redo action - updating the handler based on history state
+   * Get redo action (computed)
    */
-  get redoAction(): ButtonAction {
-    const handler = this.history.canRedo ? () => this.redo() : null;
-    return new ButtonAction(handler, { tooltip: "Redo last undone change" });
+  get redoAction(): ButtonAction | null {
+    return this.history.canRedo ? new ButtonAction(() => this.history.redo(), { tooltip: "Redo" }) : null;
   }
-
 
   /**
-   * Get a random selection of words from the word list
+   * Reset the application with a new starting word
+   * @param wordObj The new word to start with
    */
-  private getRandomWords(allWords: string[], count: number): string[] {
-    const shuffled = [...allWords].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, Math.min(count, allWords.length));
-  }
+  async reset(wordObj: Word): Promise<void> {
+    // Clear the visited words set
+    this.previouslyVisitedWords.clear();
 
+    // Reset history with the new word
+    this.history.reset(wordObj);
+
+    // Set the new word as the current word changer
+    await this.setWordChanger(wordObj);
+  }
 }

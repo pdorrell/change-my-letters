@@ -1,10 +1,10 @@
 import { ApplicationLoader } from '@/models/application-loader';
 import { DataFileFetcherTestDouble } from '@/tests/test_doubles/data-file-fetcher-test-double';
-import { WordSayerTestDouble } from '@/tests/test_doubles/word-sayer-test-double';
+import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
 
 describe('ApplicationLoader', () => {
   let dataFileFetcher: DataFileFetcherTestDouble;
-  let wordSayer: WordSayerTestDouble;
+  let audioFilePlayer: AudioFilePlayerTestDouble;
 
   beforeEach(() => {
     // Set up the data fetcher test double to serve test files
@@ -13,11 +13,11 @@ describe('ApplicationLoader', () => {
     ];
 
     dataFileFetcher = new DataFileFetcherTestDouble(routeMappings);
-    wordSayer = new WordSayerTestDouble();
+    audioFilePlayer = new AudioFilePlayerTestDouble('/assets/words/amazon_polly');
   });
 
   it('should load the application with test data files', async () => {
-    const loader = new ApplicationLoader(wordSayer, dataFileFetcher);
+    const loader = new ApplicationLoader(audioFilePlayer, dataFileFetcher);
 
     // Wait for the loading to complete
     await new Promise(resolve => setTimeout(resolve, 200));
@@ -37,8 +37,8 @@ describe('ApplicationLoader', () => {
     expect(catWord).toBeDefined();
     expect(catWord?.word).toBe('cat');
 
-    // Verify that the WordSayer test double was used
-    expect(loader.appState?.wordSayer).toBe(wordSayer);
+    // Verify that the audio file player test double was used
+    expect(loader.appState?.audioFilePlayer).toBe(audioFilePlayer);
   });
 
   it('should fall back to sample graph when data files are missing', async () => {
@@ -49,7 +49,7 @@ describe('ApplicationLoader', () => {
     ];
 
     const badDataFileFetcher = new DataFileFetcherTestDouble(badRouteMappings);
-    const loader = new ApplicationLoader(wordSayer, badDataFileFetcher);
+    const loader = new ApplicationLoader(audioFilePlayer, badDataFileFetcher);
 
     // Wait for the loading to complete
     await new Promise(resolve => setTimeout(resolve, 200));
@@ -73,7 +73,7 @@ describe('ApplicationLoader', () => {
     ];
 
     const badDataFileFetcher = new DataFileFetcherTestDouble(badRouteMappings);
-    const loader = new ApplicationLoader(wordSayer, badDataFileFetcher);
+    const loader = new ApplicationLoader(audioFilePlayer, badDataFileFetcher);
 
     // Wait for the loading to complete
     await new Promise(resolve => setTimeout(resolve, 200));
@@ -88,7 +88,7 @@ describe('ApplicationLoader', () => {
   });
 
   it('should initialize with correct loading state', () => {
-    const loader = new ApplicationLoader(wordSayer, dataFileFetcher);
+    const loader = new ApplicationLoader(audioFilePlayer, dataFileFetcher);
 
     // Initially should be loading
     expect(loader.isLoading).toBe(true);

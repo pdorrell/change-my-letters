@@ -2,7 +2,7 @@ import { History, WordChange } from '@/models/History';
 import { AppState } from '@/models/app-state';
 import { WordGraph } from '@/models/word-graph';
 import { WordGraphBuilder } from '@/models/word-graph-builder';
-import { WordSayerTestDouble } from '@/tests/test_doubles/word-sayer-test-double';
+import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
 
 describe('History', () => {
   let history: History;
@@ -21,11 +21,11 @@ describe('History', () => {
     wordGraph = new WordGraph();
     wordGraph.loadFromJson(graphJson);
 
-    // Create a WordSayerTestDouble
-    const wordSayerTestDouble = new WordSayerTestDouble();
+    // Create an AudioFilePlayerTestDouble
+    const audioFilePlayerTestDouble = new AudioFilePlayerTestDouble('/assets/words/amazon_polly');
 
     // Create an AppState instance with the word graph and test double
-    appState = new AppState('cat', wordGraph, 'test-version', wordSayerTestDouble, wordSayerTestDouble, wordSayerTestDouble);
+    appState = new AppState('cat', wordGraph, 'test-version', audioFilePlayerTestDouble);
 
     // Get the Word object
     const catWord = wordGraph.getNode('cat');

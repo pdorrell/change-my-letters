@@ -26,15 +26,15 @@ interface PageNavigationProps { appState: AppState; }
 const PageNavigation: React.FC<PageNavigationProps> = observer(({ appState }) => {
   return (
     <div className="page-navigation-tabs">
-      {appState.allPages.map(({ page, label, tooltip, isActive }) => (
+      {appState.allPages.map(({ page, config, isActive }) => (
         <button
           key={page}
           className={`page-tab ${isActive ? 'active' : ''}`}
           onClick={isActive ? undefined : () => appState.navigateTo(page)}
-          title={tooltip}
+          title={config.tooltip}
           disabled={isActive}
         >
-          {label}
+          {config.label}
         </button>
       ))}
     </div>
@@ -44,7 +44,7 @@ const PageNavigation: React.FC<PageNavigationProps> = observer(({ appState }) =>
 interface ResetButtonProps { appState: AppState; }
 
 const ResetButton: React.FC<ResetButtonProps> = observer(({ appState }) => {
-  const resetAction = appState.resetButtonAction;
+  const resetAction = appState.resetAction;
 
   if (!resetAction) {
     return null;

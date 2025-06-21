@@ -225,8 +225,8 @@ interface WordChangerControlsProps { appState: AppState; }
 export const WordChangerControls: React.FC<WordChangerControlsProps> = observer(({ appState }) => {
   return (
     <div className="word-changer-controls">
-      <ActionButton action={appState.undoAction}>Undo</ActionButton>
-      <ActionButton action={appState.redoAction}>Redo</ActionButton>
+      {appState.undoAction && <ActionButton action={appState.undoAction}>Undo</ActionButton>}
+      {appState.redoAction && <ActionButton action={appState.redoAction}>Redo</ActionButton>}
       <ActionButton action={appState.sayAction}>Say</ActionButton>
       <ValueCheckbox value={appState.sayImmediately} />
     </div>

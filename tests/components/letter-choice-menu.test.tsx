@@ -18,7 +18,7 @@ describe('LetterChoiceMenu', () => {
   let menuRef: React.RefObject<HTMLDivElement>;
 
   beforeEach(() => {
-    // Create AppState with WordSayerTestDouble
+    // Create AppState with AudioFilePlayerTestDouble
     appState = createTestAppState();
     appState.menuManager.activeButtonElement = document.createElement('button');
     // Pre-populate visited words

@@ -7,7 +7,7 @@ describe('Letter', () => {
   let wordChanger: WordInteraction;
 
   beforeEach(() => {
-    // Create AppState with WordSayerTestDouble
+    // Create AppState with AudioFilePlayerTestDouble
     appState = createTestAppState();
 
     // Create WordInteraction using Word from WordGraph

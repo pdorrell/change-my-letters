@@ -6,15 +6,18 @@ import { ReviewPronunciationView, ReviewActionControls } from '@/views/review/re
 import { ReviewPronunciationInteraction } from '@/models/review/review-pronunciation-interaction';
 import { ReviewStateFilterOption } from '@/models/review/review-state-filter-option';
 import { Word } from '@/models/Word';
-import { WordSayerTestDouble } from '@/tests/test_doubles/word-sayer-test-double';
+import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
+import { WordSayer } from '@/models/word-sayer';
 
 describe('ReviewPronunciationView', () => {
   let reviewInteraction: ReviewPronunciationInteraction;
-  let wordSayer: WordSayerTestDouble;
+  let wordSayer: WordSayer;
+  let audioFilePlayer: AudioFilePlayerTestDouble;
   let testWords: Word[];
 
   beforeEach(() => {
-    wordSayer = new WordSayerTestDouble();
+    audioFilePlayer = new AudioFilePlayerTestDouble('/assets/words/amazon_polly');
+    wordSayer = new WordSayer(audioFilePlayer, 'words');
 
     // Create test words
     testWords = [
@@ -362,7 +365,7 @@ describe('ReviewPronunciationView', () => {
       });
 
       expect(reviewWordSpy).toHaveBeenCalledWith('cat');
-      expect(wordSayer.playedWords).toContain('cat');
+      expect(audioFilePlayer.playedFiles).toContain('words/cat');
     });
 
     it('shows ellipsis button when there are more words in activity mode', () => {
@@ -567,12 +570,14 @@ describe('ReviewPronunciationView', () => {
 
 describe('ReviewActionControls', () => {
   let reviewInteraction: ReviewPronunciationInteraction;
-  let wordSayer: WordSayerTestDouble;
+  let wordSayer: WordSayer;
+  let audioFilePlayer: AudioFilePlayerTestDouble;
   let reviewStateFileLoader: jest.Mock<void, [File]>;
   let testWords: Word[];
 
   beforeEach(() => {
-    wordSayer = new WordSayerTestDouble();
+    audioFilePlayer = new AudioFilePlayerTestDouble('/assets/words/amazon_polly');
+    wordSayer = new WordSayer(audioFilePlayer, 'words');
 
     // Create test words
     testWords = [

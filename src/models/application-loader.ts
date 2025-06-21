@@ -1,10 +1,9 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { AppState } from '@/models/app-state';
 import { WordLoader } from '@/models/word-loader';
-import { WordSayerInterface } from '@/models/word-sayer-interface';
-import { WordSayer } from '@/models/word-sayer';
 import { DataFileFetcherInterface } from '@/lib/data-fetching/data-file-fetcher-interface';
 import { WordGraph } from '@/models/word-graph';
+import { AudioFilePlayerInterface } from '@/models/audio/audio-file-player-interface';
 import localDevReviewState from '@/data/local_dev/review-pronunciation-state.json';
 
 /**
@@ -31,27 +30,15 @@ export class ApplicationLoader {
   // Word loader
   private readonly wordLoader: WordLoader;
 
-  // Word sayer for audio functionality
-  public readonly wordSayer: WordSayerInterface;
+  // Audio file player for all audio functionality
+  public readonly audioFilePlayer: AudioFilePlayerInterface;
 
-  // Happy word sayer for celebration sounds
-  public readonly happyWordSayer: WordSayerInterface;
-
-  // Sad word sayer for negative feedback sounds
-  public readonly sadWordSayer: WordSayerInterface;
-
-
-  constructor(wordSayer: WordSayerInterface, dataFileFetcher: DataFileFetcherInterface) {
+  constructor(audioFilePlayer: AudioFilePlayerInterface, dataFileFetcher: DataFileFetcherInterface) {
     // Set version from environment or fallback
     this.version = process.env.APP_VERSION || 'development';
 
-    // Store the required word sayer
-    this.wordSayer = wordSayer;
-
-    // Create specialized word sayers for different audio types
-    const baseWordSayerUrl = '/assets/words/amazon_polly/';
-    this.happyWordSayer = new WordSayer(`${baseWordSayerUrl}happy`);
-    this.sadWordSayer = new WordSayer(`${baseWordSayerUrl}sad`);
+    // Store the required audio file player
+    this.audioFilePlayer = audioFilePlayer;
 
     // Store the required data file fetcher
     this.dataFileFetcher = dataFileFetcher;
@@ -107,8 +94,8 @@ export class ApplicationLoader {
         if (wordGraph.words.size > 0) {
           const initialWordString = this.getInitialWord(wordGraph);
 
-          // Create the app state with the loaded data and the injected WordSayers
-          this.appState = new AppState(initialWordString, wordGraph, this.version, this.wordSayer, this.happyWordSayer, this.sadWordSayer);
+          // Create the app state with the loaded data and the injected AudioFilePlayer
+          this.appState = new AppState(initialWordString, wordGraph, this.version, this.audioFilePlayer);
 
           // In local dev mode, load the review pronunciation state
           this.loadLocalDevReviewState();
@@ -117,47 +104,30 @@ export class ApplicationLoader {
         } else {
           // If we couldn't load any words, display an error
           this.hasError = true;
-          this.errorMessage = 'No words found in word graph';
+          this.errorMessage = 'No words were loaded from the word graph';
           this.isLoading = false;
         }
       });
     } catch (error) {
       runInAction(() => {
         this.hasError = true;
+        this.errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
         this.isLoading = false;
-
-        if (error instanceof Error) {
-          // Use the error message
-          this.errorMessage = error.message;
-        } else {
-          // Fallback for unknown error types
-          this.errorMessage = 'Unknown error loading application';
-        }
       });
     }
   }
 
   /**
-   * Load review pronunciation state in local development mode
+   * Load local dev review pronunciation state if available
    */
   private loadLocalDevReviewState(): void {
-    // Only load in local dev mode (version ends with '+' in development)
-    if (!this.version.endsWith('+') || !this.appState) {
-      return;
-    }
-
     try {
-      // Import the local dev review state directly
-      runInAction(() => {
-        if (this.appState) {
-          this.appState.reviewPronunciationInteraction.setReviewState(localDevReviewState);
-        }
-      });
-      console.log('Loaded local dev review state with', localDevReviewState.reviewed?.length || 0, 'reviewed words and', localDevReviewState.soundsWrong?.length || 0, 'wrong words');
+      // Only load in development environment
+      if (process.env.NODE_ENV === 'development' && this.appState && localDevReviewState) {
+        this.appState.reviewPronunciationInteraction.setReviewState(localDevReviewState);
+      }
     } catch (error) {
-      // Silently ignore errors loading local dev review state
-      console.log('Could not load local dev review state:', error);
+      console.warn('Could not load local dev review state:', error);
     }
   }
-
 }

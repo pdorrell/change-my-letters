@@ -1,6 +1,6 @@
 import { WordInteraction } from '@/models/interaction/word-interaction';
 import { AppState } from '@/models/app-state';
-import { WordSayerTestDouble } from '@/tests/test_doubles/word-sayer-test-double';
+import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
 import { createTestAppState } from '@/tests/utils/test-app-builder';
 
 describe('WordInteraction', () => {
@@ -159,12 +159,12 @@ describe('WordInteraction', () => {
     // Call the say method
     wordInteraction.say();
 
-    // Verify that the test double's say method was called with 'cat'
-    const wordSayerTestDouble = appState.wordSayer;
-    if (wordSayerTestDouble instanceof WordSayerTestDouble) {
-      expect(wordSayerTestDouble.playedWords).toEqual(['cat']);
+    // Verify that the audio file player test double's playAudioFile method was called with 'words/cat'
+    const audioFilePlayerTestDouble = appState.audioFilePlayer;
+    if (audioFilePlayerTestDouble instanceof AudioFilePlayerTestDouble) {
+      expect(audioFilePlayerTestDouble.playedFiles).toEqual(['words/cat']);
     } else {
-      throw new Error('Expected WordSayerTestDouble in test');
+      throw new Error('Expected AudioFilePlayerTestDouble in test');
     }
   });
 });

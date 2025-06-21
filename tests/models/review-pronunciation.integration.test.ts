@@ -1,17 +1,17 @@
 import { AppState } from '@/models/app-state';
 import { ReviewPronunciationInteraction } from '@/models/review/review-pronunciation-interaction';
 import { ReviewStateFilterOption } from '@/models/review/review-state-filter-option';
-import { WordSayerTestDouble } from '@/tests/test_doubles/word-sayer-test-double';
+import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
 import { createTestAppState } from '@/tests/utils/test-app-builder';
 
 describe('Review Pronunciation Integration', () => {
   let appState: AppState;
   let reviewInteraction: ReviewPronunciationInteraction;
-  let wordSayerTestDouble: WordSayerTestDouble;
+  let audioFilePlayerTestDouble: AudioFilePlayerTestDouble;
 
   beforeEach(() => {
-    wordSayerTestDouble = new WordSayerTestDouble();
-    appState = createTestAppState(wordSayerTestDouble);
+    audioFilePlayerTestDouble = new AudioFilePlayerTestDouble('/assets/words/amazon_polly');
+    appState = createTestAppState(audioFilePlayerTestDouble);
     reviewInteraction = appState.reviewPronunciationInteraction;
   });
 
@@ -83,7 +83,7 @@ describe('Review Pronunciation Integration', () => {
       reviewInteraction.reviewWord(wordToReview);
 
       // Verify the word sayer was called (checking through test double)
-      expect(wordSayerTestDouble.playedWords).toContain(wordToReview);
+      expect(audioFilePlayerTestDouble.playedFiles).toContain(`words/${wordToReview}`);
     });
   });
 

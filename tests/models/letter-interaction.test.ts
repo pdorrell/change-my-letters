@@ -10,7 +10,7 @@ describe('LetterInteraction', () => {
   let letterInteraction: LetterInteraction;
 
   beforeEach(() => {
-    // Create AppState with WordSayerTestDouble
+    // Create AppState with AudioFilePlayerTestDouble
     appState = createTestAppState();
 
     // Create WordInteraction using Word from WordGraph

@@ -1,7 +1,8 @@
 import { ReviewPronunciationInteraction } from '@/models/review/review-pronunciation-interaction';
 import { ReviewStateFilterOption } from '@/models/review/review-state-filter-option';
 import { Word } from '@/models/Word';
-import { WordSayerTestDouble } from '@/tests/test_doubles/word-sayer-test-double';
+import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
+import { WordSayer } from '@/models/word-sayer';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -14,11 +15,13 @@ function createFileFromTestData(filename: string, customName?: string): File {
 
 describe('ReviewPronunciationInteraction', () => {
   let reviewInteraction: ReviewPronunciationInteraction;
-  let wordSayer: WordSayerTestDouble;
+  let wordSayer: WordSayer;
+  let audioFilePlayer: AudioFilePlayerTestDouble;
   let testWords: Word[];
 
   beforeEach(() => {
-    wordSayer = new WordSayerTestDouble();
+    audioFilePlayer = new AudioFilePlayerTestDouble('/assets/words/amazon_polly');
+    wordSayer = new WordSayer(audioFilePlayer, 'words');
 
     // Create test words
     testWords = [
@@ -290,7 +293,7 @@ describe('ReviewPronunciationInteraction', () => {
 
       expect(reviewInteraction.currentReviewWord).toBe(testWords[0]);
       expect(testWords[0].currentReview).toBe(true);
-      expect(wordSayer.playedWords).toContain('cat');
+      expect(audioFilePlayer.playedFiles).toContain('words/cat');
     });
 
     it('should mark previous review word as reviewed when setting new one', () => {
@@ -395,29 +398,29 @@ describe('ReviewPronunciationInteraction', () => {
 
         expect(reviewInteraction.currentReviewWord).toBe(testWords[0]); // 'cat'
         expect(reviewInteraction.currentReviewWordIndex).toBe(0);
-        expect(wordSayer.playedWords).toContain('cat');
+        expect(audioFilePlayer.playedFiles).toContain('words/cat');
       });
 
       it('should move to next word in sequence', () => {
         reviewInteraction.reviewWord('cat'); // Start at index 0
-        wordSayer.playedWords = []; // Clear previous calls
+        audioFilePlayer.playedFiles = []; // Clear previous calls
 
         reviewInteraction.gotoNextWord();
 
         expect(reviewInteraction.currentReviewWord).toBe(testWords[1]); // 'dog'
         expect(reviewInteraction.currentReviewWordIndex).toBe(1);
-        expect(wordSayer.playedWords).toContain('dog');
+        expect(audioFilePlayer.playedFiles).toContain('words/dog');
       });
 
       it('should repeat word changer when at end of list', () => {
         reviewInteraction.reviewWord('bird'); // Last word (index 3)
-        wordSayer.playedWords = []; // Clear previous calls
+        audioFilePlayer.playedFiles = []; // Clear previous calls
 
         reviewInteraction.gotoNextWord();
 
         expect(reviewInteraction.currentReviewWord).toBe(testWords[3]); // Still 'bird'
         expect(reviewInteraction.currentReviewWordIndex).toBe(3);
-        expect(wordSayer.playedWords).toContain('bird');
+        expect(audioFilePlayer.playedFiles).toContain('words/bird');
       });
 
       it('should handle empty filtered list gracefully', () => {
@@ -438,29 +441,29 @@ describe('ReviewPronunciationInteraction', () => {
 
         expect(reviewInteraction.currentReviewWord).toBe(testWords[3]); // 'bird'
         expect(reviewInteraction.currentReviewWordIndex).toBe(3);
-        expect(wordSayer.playedWords).toContain('bird');
+        expect(audioFilePlayer.playedFiles).toContain('words/bird');
       });
 
       it('should move to previous word in sequence', () => {
         reviewInteraction.reviewWord('dog'); // Start at index 1
-        wordSayer.playedWords = []; // Clear previous calls
+        audioFilePlayer.playedFiles = []; // Clear previous calls
 
         reviewInteraction.gotoPreviousWord();
 
         expect(reviewInteraction.currentReviewWord).toBe(testWords[0]); // 'cat'
         expect(reviewInteraction.currentReviewWordIndex).toBe(0);
-        expect(wordSayer.playedWords).toContain('cat');
+        expect(audioFilePlayer.playedFiles).toContain('words/cat');
       });
 
       it('should repeat word changer when at start of list', () => {
         reviewInteraction.reviewWord('cat'); // First word (index 0)
-        wordSayer.playedWords = []; // Clear previous calls
+        audioFilePlayer.playedFiles = []; // Clear previous calls
 
         reviewInteraction.gotoPreviousWord();
 
         expect(reviewInteraction.currentReviewWord).toBe(testWords[0]); // Still 'cat'
         expect(reviewInteraction.currentReviewWordIndex).toBe(0);
-        expect(wordSayer.playedWords).toContain('cat');
+        expect(audioFilePlayer.playedFiles).toContain('words/cat');
       });
 
       it('should handle empty filtered list gracefully', () => {
