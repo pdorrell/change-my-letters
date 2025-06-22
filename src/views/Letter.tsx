@@ -11,10 +11,10 @@ import { LetterChoiceMenu } from '@/views/word-changer';
 export const LetterPlaceholder: React.FC = observer(() => {
   return (
     <div className="letter-container">
-      <div className="letter hidden" data-testid="letter-view">
+      <div className={clsx('letter', 'hidden')} data-testid="letter-view">
         <span className="letter-text">x</span>
-        <div className="delete-icon-inside hidden">🗑️</div>
-        <div className="replace-icon-inside hidden">🔄</div>
+        <div className={clsx('delete-icon-inside', 'hidden')}>🗑️</div>
+        <div className={clsx('replace-icon-inside', 'hidden')}>🔄</div>
       </div>
     </div>
   );

@@ -14,7 +14,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = observer(({ history }) 
   };
 
   return (
-    <div className="history-panel touch-interactive-area">
+    <div className={clsx('history-panel', 'touch-interactive-area')}>
       <div className="history-panel-list">
         {history.entries.map((entry, index) => (
           <span

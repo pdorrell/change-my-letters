@@ -182,7 +182,7 @@ export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = observer(({ wor
           {deleteAction && (
             <div
               key="delete-option"
-              className="letter-choice-option delete-option"
+              className={clsx('letter-choice-option', 'delete-option')}
               onClick={(e) => {
                 e.stopPropagation();
                 deleteAction.doAction();

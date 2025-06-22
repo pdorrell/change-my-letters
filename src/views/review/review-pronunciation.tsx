@@ -255,7 +255,7 @@ export const ReviewPronunciationWordChoice: React.FC<ReviewPronunciationWordChoi
 
           {reviewInteraction.hasMoreWords && (
             <button
-              className="word-span ellipsis-button"
+              className={clsx('word-span', 'ellipsis-button')}
               title={reviewInteraction.showMoreWordsAction.tooltip}
               onClick={() => reviewInteraction.showMoreWordsAction.doAction()}
             >

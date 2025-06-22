@@ -94,7 +94,7 @@ export const MakeWordView: React.FC<MakeWordViewProps> = observer(({
       const letter = word.letters[index];
       return letter ? (
         <div className="letter-container">
-          <div className="letter static">
+          <div className={clsx('letter', 'static')}>
             <span className="letter-text">{letter.value}</span>
           </div>
         </div>

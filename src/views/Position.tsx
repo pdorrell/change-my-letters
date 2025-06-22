@@ -12,7 +12,7 @@ import { ActionButton } from '@/lib/views/action-button';
 export const PositionPlaceholder: React.FC = observer(() => {
   return (
     <div className="position-container">
-      <button className="insert-icon hidden" data-testid="position-view">➕</button>
+      <button className={clsx('insert-icon', 'hidden')} data-testid="position-view">➕</button>
     </div>
   );
 });

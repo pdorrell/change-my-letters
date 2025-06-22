@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
+import clsx from 'clsx';
 import { ConfirmationModel, Confirmable } from '@/lib/models/confirmation';
 
 interface ConfirmationViewProps {
@@ -63,14 +64,14 @@ export const ConfirmationDialog: React.FC<ConfirmationDialogProps> = observer(({
         </div>
         <div className="confirmation-buttons">
           <button
-            className="confirmation-button confirm-button"
+            className={clsx('confirmation-button', 'confirm-button')}
             onClick={handleConfirm}
             autoFocus
           >
             {confirmable.confirmationRequest.confirmLabel}
           </button>
           <button
-            className="confirmation-button cancel-button"
+            className={clsx('confirmation-button', 'cancel-button')}
             onClick={handleCancel}
           >
             {confirmable.confirmationRequest.cancelLabel}
