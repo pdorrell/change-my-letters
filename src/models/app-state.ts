@@ -122,18 +122,19 @@ export class AppState {
     );
 
     // Initialize word choice finder interaction with random words
-    const randomWords = getRandomWords();
+    const wordChoiceRandomWords = getRandomWords();
     this.wordChoiceFinderInteraction = new WordChoiceFinderInteraction(
       this.wordSayer,
-      randomWords,
+      wordChoiceRandomWords,
       getRandomWords,
       this.emotionalWordSayer
     );
 
-    // Initialize words in row finder with random words
+    // Initialize words in row finder with separate random words
+    const wordsInRowRandomWords = getRandomWords();
     this.wordsInRowFinder = new WordsInRowFinder(
       this.wordSayer,
-      randomWords,
+      wordsInRowRandomWords,
       getRandomWords,
       this.emotionalWordSayer
     );
