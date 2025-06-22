@@ -148,37 +148,6 @@ body {
   }
 }
 
-// App controls (can be used anywhere)
-.app-controls {
-  display: flex;
-  justify-content: center;
-  gap: 0.63em;
-  margin-top: 1.25em;
-  flex-wrap: wrap;
-  
-  button {
-    padding: 0.5em 1em;
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9em;
-    
-    &:hover {
-      background-color: #3a80d2;
-    }
-    
-    &:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-    
-    &.hidden {
-      visibility: hidden;
-    }
-  }
-}
 
 // Loading styles  
 .loading {
@@ -242,16 +211,6 @@ body {
 }
 
 // Word changer styles
-.word-outer-container {
-  width: 100%;
-  max-width: 100vw; // Prevent horizontal overflow
-  margin: 0 auto;
-  padding: 1.25em;
-  border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  overflow: visible; // Ensure the container expands to fit the content
-  box-sizing: border-box; // Include padding in width calculation
-}
 
 .word-display {
   border: 2px solid #cccccc; // Light grey border
@@ -433,46 +392,6 @@ body {
   }
 }
 
-// History view
-.history-view {
-  h2 {
-    text-align: center;
-    margin-bottom: 1.25em;
-  }
-  
-  .history-list {
-    max-height: 31.3em;
-    overflow-y: auto;
-    border: 1px solid #eee;
-    border-radius: 4px;
-    
-    .history-item {
-      padding: 0.94em;
-      border-bottom: 1px solid #eee;
-      cursor: pointer;
-      
-      &:hover {
-        background-color: #f9f9f9;
-      }
-      
-      &.current {
-        background-color: #e6f7ff;
-        border-left: 4px solid #1890ff;
-      }
-      
-      .history-word {
-        font-size: 1.2em;
-        font-weight: bold;
-        margin-bottom: 0.31em;
-      }
-      
-      .history-change {
-        font-size: 0.9em;
-        color: #666;
-      }
-    }
-  }
-}
 
 // History panel
 .history-panel {
@@ -482,12 +401,6 @@ body {
   border: 1px solid #eee;
   border-radius: 4px;
   
-  .history-panel-title {
-    font-size: 0.9em;
-    font-weight: bold;
-    margin-bottom: 0.63em;
-    color: #666;
-  }
   
   .history-panel-list {
     display: flex;
@@ -516,67 +429,6 @@ body {
   }
 }
 
-// Score panel for Make Me feature
-.score-panel {
-  margin-top: 1.25em;
-  padding: 0.94em;
-  background-color: #f9f9f9;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  display: flex;
-  gap: 0.94em;
-  align-items: flex-start;
-  
-  .score-label-box {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0.5em 0.75em;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-    min-height: 3em;
-    
-    .score-label-line {
-      font-size: 0.9em;
-      font-weight: bold;
-      color: #666;
-      line-height: 1.2;
-      text-align: center;
-    }
-  }
-  
-  .score-rows {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5em;
-    flex: 1;
-    
-    .score-row {
-      display: flex;
-      gap: 0.25em;
-      flex-wrap: wrap;
-      justify-content: flex-start; // Left justify the squares
-      
-      .score-square {
-        width: 1.25em;
-        height: 1.25em;
-        border: 1px solid #ddd;
-        border-radius: 3px;
-        
-        &.correct-square {
-          background-color: #52c41a; // Green for correct
-          border-color: #389e0d;
-        }
-        
-        &.incorrect-square {
-          background-color: #ff4d4f; // Red for incorrect
-          border-color: #cf1322;
-        }
-      }
-    }
-  }
-}
 
 // Word changer controls
 .word-changer-controls {
@@ -586,14 +438,6 @@ body {
   margin-top: 1.25em;
   flex-wrap: wrap;
   
-  .say-immediately-container {
-    display: flex;
-    align-items: center;
-    gap: 0.31em;
-    font-size: 0.9em;
-    cursor: pointer;
-    padding: 0.5em 0;
-  }
   
   .value-checkbox-container {
     display: flex;
@@ -628,23 +472,8 @@ body {
     
   }
   
-  .show-history-container {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.31em;
-    font-size: 0.9em;
-    cursor: pointer;
-  }
 }
 
-.reset-show-history {
-  display: flex;
-  align-items: center;
-  gap: 0.31em;
-  font-size: 0.9em;
-  cursor: pointer;
-  margin-top: 0.63em;
-}
 
 
 // Review Pronunciation view
@@ -659,11 +488,6 @@ body {
     color: #333;
     font-size: 2.5em;
     
-    .sub-header {
-      font-size: 0.6em;
-      color: #666;
-      margin-left: 0.5em;
-    }
   }
   
   h3 {
@@ -696,10 +520,6 @@ body {
       background-color: #f0f0f0;
     }
     
-    .drop-hint {
-      font-size: 0.8em;
-      color: #666;
-    }
   }
 }
 
@@ -1049,14 +869,6 @@ body {
           background-color: #e0e0e0;
         }
         
-        &.ellipsis {
-          background-color: transparent;
-          border: none;
-          font-size: 1.5em;
-          font-weight: bold;
-          color: #666;
-          cursor: default;
-        }
         
         &.ellipsis-button {
           background-color: transparent;
@@ -1078,9 +890,6 @@ body {
           padding: 0.1em 0.25em;
           border-color: #ccc; // Light grey border to distinguish from background
           
-          &.ellipsis {
-            font-size: 4.5em;
-          }
           
           &.ellipsis-button {
             // Keep default size in activity mode too
@@ -1354,10 +1163,6 @@ body {
       border-radius: 8px;
     }
     
-    &.make-history-word {
-      background-color: #f8f9fa; // Light gray background for history words
-      border-radius: 8px;
-    }
   }
   
   .make-word-controls {
@@ -1413,32 +1218,6 @@ body {
   gap: 0.63em;
 }
 
-.make-reset-panel {
-  display: flex;
-  justify-content: center;
-  margin-top: 1.88em;
-  padding-top: 1.25em;
-  border-top: 1px solid #eee;
-  
-  button {
-    padding: 0.5em 1em;
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9em;
-    
-    &:hover {
-      background-color: #3a80d2;
-    }
-    
-    &:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-  }
-}
 
 // Reset page header
 .reset-page-header {
