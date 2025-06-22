@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import clsx from 'clsx';
 import { WordToFind } from '@/models/finders/words-in-row-finder/word-to-find';
 
 interface WordToFindViewProps {
@@ -9,11 +10,9 @@ interface WordToFindViewProps {
 
 export const WordToFindView: React.FC<WordToFindViewProps> = observer(({ wordToFind, onSelect }) => {
   const getClassNames = (): string => {
-    const baseClass = 'word-to-find';
-    const stateClass = `word-to-find--${wordToFind.displayState}`;
-    const clickableClass = wordToFind.canClick ? 'word-to-find--clickable' : '';
-
-    return [baseClass, stateClass, clickableClass].filter(Boolean).join(' ');
+    return clsx('word-to-find', `word-to-find--${wordToFind.displayState}`, {
+      'word-to-find--clickable': wordToFind.canClick
+    });
   };
 
   const handleClick = (): void => {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import clsx from 'clsx';
 import { range } from '@/lib/util';
 import { PositionInteraction } from '@/models/interaction/position-interaction';
 import { WordInteraction } from '@/models/interaction/word-interaction';
@@ -89,7 +90,7 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordI
 
   return (
     <Panel>
-      <div className={`word-display touch-interactive-area ${wordInteraction.word.previouslyVisited ? 'previously-visited' : ''}`}>
+      <div className={clsx('word-display', 'touch-interactive-area', { 'previously-visited': wordInteraction.word.previouslyVisited })}>
         {/* Render alternating sequence of positions and letters for the word changer */}
         { range(maxLength).map(index => (
           <React.Fragment key={`position--${index}`}>
@@ -201,7 +202,7 @@ export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = observer(({ wor
             return (
               <div
                 key={`option-${index}`}
-                className={`letter-choice-option ${isPreviouslyVisited ? 'previously-visited' : ''}`}
+                className={clsx('letter-choice-option', { 'previously-visited': isPreviouslyVisited })}
                 onClick={(e) => {
                   e.stopPropagation();
                   onSelect(resultWord);

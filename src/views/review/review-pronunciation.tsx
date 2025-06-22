@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import clsx from 'clsx';
 import { ReviewPronunciationInteraction } from '@/models/review/review-pronunciation-interaction';
 import { ActionButton } from '@/lib/views/action-button';
 import { AppState } from '@/models/app-state';
@@ -77,11 +78,11 @@ export const ReviewStateControls: React.FC<ReviewStateControlsProps> = observer(
     <div className="word-changer-panel">
       <div className="current-review-word">
         <span
-          className={`word-span ${
-            reviewInteraction.currentReviewWord
-              ? (reviewInteraction.currentReviewWord.soundsWrong ? 'wrong' : 'ok') + ' current-review'
-              : 'no-word'
-          }`}
+          className={clsx('word-span', {
+            'no-word': !reviewInteraction.currentReviewWord,
+            'wrong current-review': reviewInteraction.currentReviewWord?.soundsWrong,
+            'ok current-review': reviewInteraction.currentReviewWord && !reviewInteraction.currentReviewWord.soundsWrong
+          })}
         >
           {reviewInteraction.currentReviewWord ? reviewInteraction.currentReviewWord.word : '\u00A0'}
         </span>
@@ -228,27 +229,18 @@ export const ReviewPronunciationWordChoice: React.FC<ReviewPronunciationWordChoi
           </div>
         </div>
 
-        <div className={`words-grid touch-interactive-area ${reviewInteraction.reviewMode ? '' : 'activity-mode'}`}>
+        <div className={clsx('words-grid', 'touch-interactive-area', { 'activity-mode': !reviewInteraction.reviewMode })}>
           {reviewInteraction.displayedWords.map(word => {
             const isCurrentReview = word.currentReview;
             const isReviewed = word.reviewed && !word.soundsWrong;
             const isWrong = word.soundsWrong;
 
-            let className = 'word-span';
-            if (reviewInteraction.reviewMode) {
-              if (isWrong) {
-                className += isCurrentReview ? ' wrong current-review' : ' wrong';
-              } else if (isReviewed) {
-                className += isCurrentReview ? ' ok current-review' : ' ok';
-              } else if (isCurrentReview) {
-                className += ' current-review';
-              }
-            } else {
-              // In activity mode, only show current review styling
-              if (isCurrentReview) {
-                className += ' current-review';
-              }
-            }
+            const className = clsx('word-span', {
+              // Review mode states
+              'wrong': reviewInteraction.reviewMode && isWrong,
+              'ok': reviewInteraction.reviewMode && isReviewed && !isWrong,
+              'current-review': isCurrentReview
+            });
 
             return (
               <span
@@ -330,7 +322,7 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
   }, [reviewInteraction]);
 
   return (
-    <div className={`review-pronunciation-container ${reviewInteraction.reviewMode ? '' : 'activity-mode'}`}>
+    <div className={clsx('review-pronunciation-container', { 'activity-mode': !reviewInteraction.reviewMode })}>
       {reviewInteraction.reviewMode && (
         <ReviewActionControls
           reviewInteraction={reviewInteraction}

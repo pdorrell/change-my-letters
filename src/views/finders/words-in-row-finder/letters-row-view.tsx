@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import clsx from 'clsx';
 import { RangeSelectable } from '@/lib/models/range-selectable';
 import { useDragSelection } from '@/lib/drag-selection';
 import { DragSelectableTd } from '@/lib/views/drag-selectable';
@@ -35,45 +36,25 @@ export const LettersRowView: React.FC<LettersRowViewProps> = observer(({
   };
 
   const getCellClassName = (index: number): string => {
-    const baseClass = 'letters-row-cell';
     const selection = lettersRow.selection;
-    const classes = [baseClass];
+    const isInSelection = selection && index >= selection.start && index <= selection.end;
+    const wordStart = getWordFirstPosition();
 
-    if (lettersRow.interactionsDisabled) {
-      classes.push('letters-row-cell--disabled');
-    }
-
-    if (selection && index >= selection.start && index <= selection.end) {
-      if (lettersRow.selectionState) {
-        classes.push('letters-row-cell--dragging');
-      } else if (lettersRow.correctSelection) {
-        classes.push('letters-row-cell--correct');
-      } else if (lettersRow.wrongSelection) {
-        classes.push('letters-row-cell--wrong');
-      }
-
-      // Add border classes for start and end of selection
-      if (index === selection.start) {
-        classes.push('letters-row-cell--drag-start');
-      }
-      if (index === selection.end) {
-        classes.push('letters-row-cell--drag-end');
-      }
-
-      // Add class for the first letter of the word (where user started dragging)
-      if (lettersRow.selectionState && index === lettersRow.selectionState.start) {
-        classes.push('letters-row-cell--first-letter');
-      } else if ((lettersRow.correctSelection || lettersRow.wrongSelection) && lettersRow.selectionState === null) {
-        // For completed selections, we need to determine the first letter based on the stored drag direction
-        // We'll need to access this information from the LettersRow model
-        const wordStart = getWordFirstPosition();
-        if (wordStart !== null && index === wordStart) {
-          classes.push('letters-row-cell--first-letter');
-        }
-      }
-    }
-
-    return classes.join(' ');
+    return clsx('letters-row-cell', {
+      'letters-row-cell--disabled': lettersRow.interactionsDisabled,
+      'letters-row-cell--dragging': isInSelection && lettersRow.selectionState,
+      'letters-row-cell--correct': isInSelection && lettersRow.correctSelection,
+      'letters-row-cell--wrong': isInSelection && lettersRow.wrongSelection,
+      'letters-row-cell--drag-start': selection && index === selection.start,
+      'letters-row-cell--drag-end': selection && index === selection.end,
+      'letters-row-cell--word-first': (
+        (lettersRow.selectionState && index === lettersRow.selectionState.start) ||
+        ((lettersRow.correctSelection || lettersRow.wrongSelection) &&
+         lettersRow.selectionState === null &&
+         wordStart !== null &&
+         index === wordStart)
+      )
+    });
   };
 
 

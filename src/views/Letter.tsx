@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import clsx from 'clsx';
 import { LetterInteraction } from '@/models/interaction/letter-interaction';
 import { LetterChoiceMenu } from '@/views/word-changer';
 
@@ -34,10 +35,10 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
 
 
   return (
-    <div className={`letter-container ${letterInteraction.actionPending ? 'action-pending' : ''}`}>
+    <div className={clsx('letter-container', { 'action-pending': letterInteraction.actionPending })}>
       <div
         ref={letterInteraction.menuRef}
-        className={`letter ${letterInteraction.letterClickAction.enabled ? 'clickable' : ''}`}
+        className={clsx('letter', { clickable: letterInteraction.letterClickAction.enabled })}
         onClick={letterInteraction.letterClickAction.enabled ? (e) => {
           // Ensure the click is handled regardless of what element was clicked
           e.preventDefault();
@@ -58,7 +59,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
         </span>
 
         <div
-          className={`delete-icon-inside ${!letterInteraction.deleteAction.enabled || !letterInteraction.showChangeHints ? 'hidden' : ''}`}
+          className={clsx('delete-icon-inside', { hidden: !letterInteraction.deleteAction.enabled || !letterInteraction.showChangeHints })}
           onClick={letterInteraction.letterClickAction.enabled ? (e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -69,7 +70,7 @@ export const LetterView: React.FC<LetterViewProps> = observer(({ letterInteracti
         </div>
 
         <div
-          className={`replace-icon-inside ${!letterInteraction.openReplaceMenuAction.enabled || !letterInteraction.showChangeHints ? 'hidden' : ''}`}
+          className={clsx('replace-icon-inside', { hidden: !letterInteraction.openReplaceMenuAction.enabled || !letterInteraction.showChangeHints })}
           onClick={letterInteraction.letterClickAction.enabled ? (e) => {
             e.preventDefault();
             e.stopPropagation();

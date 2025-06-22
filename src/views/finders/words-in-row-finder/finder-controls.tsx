@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import clsx from 'clsx';
 import { WordsInRowFinder } from '@/models/finders/words-in-row-finder/words-in-row-finder';
 import { ActionButton } from '@/lib/views/action-button';
 import { DifficultyType } from '@/models/finders/words-in-row-finder/types';
@@ -12,7 +13,7 @@ export const FinderControls: React.FC<FinderControlsProps> = observer(({ finder 
 
   return (
     <div className="word-changer-controls">
-      <div className={`value-radio-buttons-container ${settingsDisabled ? 'disabled' : ''}`} title={finder.difficulty.tooltip}>
+      <div className={clsx('value-radio-buttons-container', { disabled: settingsDisabled })} title={finder.difficulty.tooltip}>
         <span className="radio-label">{finder.difficulty.label}</span>
         {difficultyOptions.map((option) => (
           <label key={option} className="radio-option">
@@ -28,7 +29,7 @@ export const FinderControls: React.FC<FinderControlsProps> = observer(({ finder 
           </label>
         ))}
       </div>
-      <label className={`value-checkbox-container ${settingsDisabled ? 'disabled' : ''}`} title={finder.forwardsOnly.tooltip}>
+      <label className={clsx('value-checkbox-container', { disabled: settingsDisabled })} title={finder.forwardsOnly.tooltip}>
         <input
           type="checkbox"
           checked={finder.forwardsOnly.value}

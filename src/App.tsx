@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import clsx from 'clsx';
 import { AppState } from '@/models/app-state';
 import { WordChangerPage } from '@/views/word-changer';
 import { ReviewPronunciationPage } from '@/views/review/review-pronunciation';
@@ -29,7 +30,7 @@ const PageNavigation: React.FC<PageNavigationProps> = observer(({ appState }) =>
       {appState.menuPages.map(({ page, config, isActive }) => (
         <button
           key={page}
-          className={`page-tab ${isActive ? 'active' : ''}`}
+          className={clsx('page-tab', { active: isActive })}
           onClick={isActive ? undefined : () => appState.navigateTo(page)}
           title={config.tooltip}
           disabled={isActive}

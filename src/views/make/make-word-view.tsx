@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import clsx from 'clsx';
 import { Word } from '@/models/Word';
 import { range } from '@/lib/util';
 import { LetterView, LetterPlaceholder } from '@/views/Letter';
@@ -106,7 +107,7 @@ export const MakeWordView: React.FC<MakeWordViewProps> = observer(({
 
   return (
     <div className="make-word-row">
-      <div className={`word-display touch-interactive-area ${backgroundClass}`}>
+      <div className={clsx('word-display', 'touch-interactive-area', backgroundClass)}>
         {/* Render alternating sequence of positions and letters */}
         {range(maxWordLength).map(index => (
           <React.Fragment key={`position--${index}`}>

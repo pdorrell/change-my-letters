@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import clsx from 'clsx';
 import { PositionInteraction } from '@/models/interaction/position-interaction';
 import { LetterChoiceMenu } from '@/views/word-changer';
 import { ActionButton } from '@/lib/views/action-button';
@@ -23,11 +24,11 @@ interface PositionViewProps { positionInteraction: PositionInteraction; }
 
 export const PositionView: React.FC<PositionViewProps> = observer(({ positionInteraction }) => {
   return (
-    <div className={`position-container ${positionInteraction.actionPending ? 'action-pending' : ''}`}>
+    <div className={clsx('position-container', { 'action-pending': positionInteraction.actionPending })}>
       <ActionButton
         ref={positionInteraction.insertButtonRef}
         action={positionInteraction.openInsertMenuAction}
-        className={`insert-icon ${!positionInteraction.openInsertMenuAction.enabled && !positionInteraction.alwaysShowInsertButton ? 'hidden' : ''}`}
+        className={clsx('insert-icon', { hidden: !positionInteraction.openInsertMenuAction.enabled && !positionInteraction.alwaysShowInsertButton })}
         data-testid="position-view"
       >
         ➕

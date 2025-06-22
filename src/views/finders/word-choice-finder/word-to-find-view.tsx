@@ -1,28 +1,18 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import clsx from 'clsx';
 import { WordToFind } from '@/models/finders/word-choice-finder/word-to-find';
 
 interface WordToFindViewProps { wordToFind: WordToFind; }
 
 export const WordToFindView: React.FC<WordToFindViewProps> = observer(({ wordToFind }) => {
   const getClassName = (): string => {
-    let className = 'word-to-find';
-    switch (wordToFind.state) {
-      case 'waiting':
-        className += ' waiting';
-        break;
-      case 'current':
-        className += ' current';
-        break;
-      case 'wrong':
-        className += ' wrong';
-        break;
-      case 'right':
-        className += ' right';
-        break;
-    }
-
-    return className;
+    return clsx('word-to-find', {
+      waiting: wordToFind.state === 'waiting',
+      current: wordToFind.state === 'current',
+      wrong: wordToFind.state === 'wrong',
+      right: wordToFind.state === 'right'
+    });
   };
 
   const getDisplayText = (): string => {
