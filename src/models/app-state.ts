@@ -16,7 +16,7 @@ import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';
 import { EmotionWordSet, HappyOrSad } from '@/models/audio/emotion-types';
 
 // Type for the main application pages
-type AppPage = 'word' | 'reset' | 'reviewPronunciation' | 'finders' | 'make' | 'reset/word' | 'reset/make';
+type AppPage = 'word' | 'reviewPronunciation' | 'finders' | 'make' | 'reset/word' | 'reset/make';
 
 // Page configuration with labels for navigation
 interface PageConfig {
@@ -26,7 +26,6 @@ interface PageConfig {
 
 const PAGE_CONFIGS: Record<AppPage, PageConfig> = {
   word: { label: 'Changer', tooltip: 'Change letters of a word' },
-  reset: { label: 'Reset...', tooltip: 'Choose a new word to start again' },
   reviewPronunciation: { label: 'Pronunciation', tooltip: 'Review pronunciation of words' },
   finders: { label: 'Finders', tooltip: 'Find words by listening to them' },
   make: { label: 'Make', tooltip: 'Practice making specific words' },
