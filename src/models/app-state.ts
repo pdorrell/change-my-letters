@@ -25,7 +25,7 @@ interface PageConfig {
 }
 
 const PAGE_CONFIGS: Record<AppPage, PageConfig> = {
-  word: { label: 'Word', tooltip: 'Change letters of a word' },
+  word: { label: 'Changer', tooltip: 'Change letters of a word' },
   reset: { label: 'Reset...', tooltip: 'Choose a new word to start again' },
   reviewPronunciation: { label: 'Pronunciation', tooltip: 'Review pronunciation of words' },
   finders: { label: 'Finders', tooltip: 'Find words by listening to them' },
