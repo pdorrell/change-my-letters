@@ -18,8 +18,8 @@ export class ResetInteraction {
   // Reference to the app state
   appState: AppState;
 
-  // Target page for reset ('word' or 'make')
-  targetPage: 'word' | 'make' = 'word';
+  // Target page for reset ('changer' or 'make')
+  targetPage: 'changer' | 'make' = 'changer';
 
   constructor(appState: AppState) {
     this.appState = appState;
@@ -64,7 +64,7 @@ export class ResetInteraction {
   /**
    * Set the target page for reset
    */
-  setTargetPage(targetPage: 'word' | 'make'): void {
+  setTargetPage(targetPage: 'changer' | 'make'): void {
     this.targetPage = targetPage;
   }
 

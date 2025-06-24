@@ -74,7 +74,7 @@ interface ResetPageProps { appState: AppState; }
 
 export const ResetPage: React.FC<ResetPageProps> = observer(({ appState }) => {
   const resetInteraction = appState.resetInteraction;
-  const targetPageLabel = resetInteraction.targetPage === 'make' ? 'Make' : 'Word';
+  const targetPageLabel = resetInteraction.targetPage === 'make' ? 'Make' : 'Changer';
 
   return (
     <>

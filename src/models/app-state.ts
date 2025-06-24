@@ -16,7 +16,7 @@ import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';
 import { EmotionWordSet, HappyOrSad } from '@/models/audio/emotion-types';
 
 // Type for the main application pages
-type AppPage = 'changer' | 'reviewPronunciation' | 'finders' | 'make' | 'reset/word' | 'reset/make';
+type AppPage = 'changer' | 'reviewPronunciation' | 'finders' | 'make' | 'reset/changer' | 'reset/make';
 
 // Page configuration with labels for navigation
 interface PageConfig {
@@ -29,7 +29,7 @@ const PAGE_CONFIGS: Record<AppPage, PageConfig> = {
   reviewPronunciation: { label: 'Pronunciation', tooltip: 'Review pronunciation of words' },
   finders: { label: 'Finders', tooltip: 'Find words by listening to them' },
   make: { label: 'Make', tooltip: 'Practice making specific words' },
-  'reset/word': { label: 'Reset Word', tooltip: 'Choose a new word for the Word page' },
+  'reset/changer': { label: 'Reset Changer', tooltip: 'Choose a new word for the Changer page' },
   'reset/make': { label: 'Reset Make', tooltip: 'Choose a new word for the Make page' }
 };
 
@@ -181,9 +181,9 @@ export class AppState {
     if (this.currentPage === 'make') {
       this.navigateTo('reset/make');
     } else if (this.currentPage === 'changer') {
-      this.navigateTo('reset/word');
+      this.navigateTo('reset/changer');
     }
-    // Do nothing if not on 'make' or 'word' page
+    // Do nothing if not on 'make' or 'changer' page
   }
 
   /**
@@ -199,8 +199,8 @@ export class AppState {
     }
 
     // Set reset interaction target page when navigating to reset pages
-    if (page === 'reset/word') {
-      this.resetInteraction.setTargetPage('word');
+    if (page === 'reset/changer') {
+      this.resetInteraction.setTargetPage('changer');
     } else if (page === 'reset/make') {
       this.resetInteraction.setTargetPage('make');
     }
@@ -227,7 +227,7 @@ export class AppState {
 
 
   /**
-   * Get reset action (computed) - only enabled on 'word' and 'make' pages
+   * Get reset action (computed) - only enabled on 'word' and 'changer' pages
    */
   get resetAction(): ButtonAction {
     const enabled = this.currentPage === 'changer' || this.currentPage === 'make';
