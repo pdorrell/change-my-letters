@@ -98,7 +98,7 @@ export class ResetInteraction {
       // This already sets the word as the current visiting word and resets history
       this.appState.reset(wordObj);
       // Navigate back to the word view
-      this.appState.navigateTo('word');
+      this.appState.navigateTo('changer');
     }
   }
 

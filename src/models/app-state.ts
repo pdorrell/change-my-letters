@@ -16,7 +16,7 @@ import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';
 import { EmotionWordSet, HappyOrSad } from '@/models/audio/emotion-types';
 
 // Type for the main application pages
-type AppPage = 'word' | 'reviewPronunciation' | 'finders' | 'make' | 'reset/word' | 'reset/make';
+type AppPage = 'changer' | 'reviewPronunciation' | 'finders' | 'make' | 'reset/word' | 'reset/make';
 
 // Page configuration with labels for navigation
 interface PageConfig {
@@ -25,7 +25,7 @@ interface PageConfig {
 }
 
 const PAGE_CONFIGS: Record<AppPage, PageConfig> = {
-  word: { label: 'Changer', tooltip: 'Change letters of a word' },
+  changer: { label: 'Changer', tooltip: 'Change letters of a word' },
   reviewPronunciation: { label: 'Pronunciation', tooltip: 'Review pronunciation of words' },
   finders: { label: 'Finders', tooltip: 'Find words by listening to them' },
   make: { label: 'Make', tooltip: 'Practice making specific words' },
@@ -39,7 +39,7 @@ const PAGE_CONFIGS: Record<AppPage, PageConfig> = {
 export class AppState {
 
   // The current page being displayed
-  currentPage: AppPage = 'word';
+  currentPage: AppPage = 'changer';
 
   // The current sub-header (null for main word view)
   subHeader: string | null = null;
@@ -180,7 +180,7 @@ export class AppState {
   resetGame(): void {
     if (this.currentPage === 'make') {
       this.navigateTo('reset/make');
-    } else if (this.currentPage === 'word') {
+    } else if (this.currentPage === 'changer') {
       this.navigateTo('reset/word');
     }
     // Do nothing if not on 'make' or 'word' page
@@ -217,7 +217,7 @@ export class AppState {
    * Get pages that should appear in the navigation menu
    */
   get menuPages(): Array<{ page: AppPage; config: PageConfig; isActive: boolean }> {
-    const pages: AppPage[] = ['word', 'reviewPronunciation', 'finders', 'make'];
+    const pages: AppPage[] = ['changer', 'reviewPronunciation', 'finders', 'make'];
     return pages.map(page => ({
       page,
       config: PAGE_CONFIGS[page],
@@ -230,7 +230,7 @@ export class AppState {
    * Get reset action (computed) - only enabled on 'word' and 'make' pages
    */
   get resetAction(): ButtonAction {
-    const enabled = this.currentPage === 'word' || this.currentPage === 'make';
+    const enabled = this.currentPage === 'changer' || this.currentPage === 'make';
     const handler = enabled ? () => this.resetGame() : null;
     return new ButtonAction(handler, { tooltip: "Choose a new word" });
   }

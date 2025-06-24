@@ -82,7 +82,7 @@ interface AppBodyProps { appState: AppState; }
 const AppBody: React.FC<AppBodyProps> = observer(({ appState }) => {
   return (
     <main>
-      {appState.currentPage === 'word' ? (
+      {appState.currentPage === 'changer' ? (
         <WordChangerPage wordChanger={appState.wordChanger} maxWordLength={appState.wordGraph.maxWordLength} />
       ) : appState.currentPage === 'make' ? (
         <MakePage
