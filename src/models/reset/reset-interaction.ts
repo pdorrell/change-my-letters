@@ -1,5 +1,5 @@
 import { makeAutoObservable, computed } from 'mobx';
-import { AppState } from '@/models/app-state';
+import { AppState, ResettableAppPage } from '@/models/app-state';
 import { ButtonAction } from '@/lib/models/actions';
 import { Word } from '@/models/Word';
 import { Filter } from '@/lib/models/filter';
@@ -19,7 +19,7 @@ export class ResetInteraction {
   appState: AppState;
 
   // Target page for reset ('changer' or 'make')
-  targetPage: 'changer' | 'make' = 'changer';
+  targetPage: ResettableAppPage = 'changer';
 
   constructor(appState: AppState) {
     this.appState = appState;
@@ -64,7 +64,7 @@ export class ResetInteraction {
   /**
    * Set the target page for reset
    */
-  setTargetPage(targetPage: 'changer' | 'make'): void {
+  setTargetPage(targetPage: ResettableAppPage): void {
     this.targetPage = targetPage;
   }
 

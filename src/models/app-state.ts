@@ -15,8 +15,11 @@ import { WordSayer } from '@/models/word-sayer';
 import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';
 import { EmotionWordSet, HappyOrSad } from '@/models/audio/emotion-types';
 
+// Type for pages that can be reset
+export type ResettableAppPage = 'make' | 'changer';
+
 // Type for the main application pages
-type AppPage = 'changer' | 'reviewPronunciation' | 'finders' | 'make' | 'reset/changer' | 'reset/make';
+type AppPage = ResettableAppPage | 'reviewPronunciation' | 'finders' | 'reset/changer' | 'reset/make';
 
 // Page configuration with labels for navigation
 interface PageConfig {
@@ -227,10 +230,11 @@ export class AppState {
 
 
   /**
-   * Get reset action (computed) - only enabled on 'word' and 'changer' pages
+   * Get reset action (computed) - only enabled on resettable pages
    */
   get resetAction(): ButtonAction {
-    const enabled = this.currentPage === 'changer' || this.currentPage === 'make';
+    const resettablePages: ResettableAppPage[] = ['changer', 'make'];
+    const enabled = resettablePages.includes(this.currentPage as ResettableAppPage);
     const handler = enabled ? () => this.resetGame() : null;
     return new ButtonAction(handler, { tooltip: "Choose a new word" });
   }
