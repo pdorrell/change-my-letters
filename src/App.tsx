@@ -94,7 +94,7 @@ const AppBody: React.FC<AppBodyProps> = observer(({ appState }) => {
       ) : appState.currentPage === 'finders' ? (
         <FindersPage appState={appState} />
       ) : appState.currentPage.startsWith('reset') ? (
-        <ResetPage appState={appState} />
+        <ResetPage resetInteraction={appState.resetInteraction} />
       ) : (
         <WordChangerPage wordChanger={appState.wordChanger} maxWordLength={appState.wordGraph.maxWordLength} />
       )}

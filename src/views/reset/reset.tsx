@@ -2,8 +2,6 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { ResetInteraction } from '@/models/reset/reset-interaction';
 import { ActionButton } from '@/lib/views/action-button';
-import { AppState } from '@/models/app-state';
-import { HistoryPanel } from '@/views/History';
 import { FilterControls } from '@/lib/views/filter-controls';
 
 /**
@@ -70,10 +68,9 @@ export const ResetWordChoice: React.FC<ResetWordChoiceProps> = observer(({ reset
 /**
  * Full page component for Reset page
  */
-interface ResetPageProps { appState: AppState; }
+interface ResetPageProps { resetInteraction: ResetInteraction; }
 
-export const ResetPage: React.FC<ResetPageProps> = observer(({ appState }) => {
-  const resetInteraction = appState.resetInteraction;
+export const ResetPage: React.FC<ResetPageProps> = observer(({ resetInteraction }) => {
   const targetPageLabel = resetInteraction.targetPage === 'make' ? 'Make' : 'Changer';
 
   return (
@@ -84,7 +81,6 @@ export const ResetPage: React.FC<ResetPageProps> = observer(({ appState }) => {
       </div>
       <ResetControls resetInteraction={resetInteraction} />
       <ResetWordChoice resetInteraction={resetInteraction} />
-      <HistoryPanel history={appState.wordChanger.history} />
     </>
   );
 });
