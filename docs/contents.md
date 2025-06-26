@@ -20,6 +20,3 @@
       * [ui/pages/words-in-row-finder.md] The Words in Row finder page
     * [ui/pages/make.md] Make page
     * [ui/pages/reset.md] Reset page
-
-
-
