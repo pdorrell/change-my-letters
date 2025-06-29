@@ -2,6 +2,7 @@
 
 * [summary.md] A summary of the application's functionality
 * [tech-stack.md] The tech stack and coding conventions and standards used in the application.
+* [architecture.md] General architectural principles
 * [development.md] Development workflow & standards
    * [todo-based-workflow.md] Todo-based workflow
 * Data structures -

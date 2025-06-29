@@ -13,6 +13,8 @@ The source layout is mostly a standard npm-based development layout.
     when the application runs in the local dev environment.
     
 * `tests` - test code
+*  `tests/test_doubles` test doubles (see in [architecture.md] for explanation of test doubles)
+*  `tests/test_double_tests` tests of test double behaviour
 * `scripts` - ad hoc scripts
 * `examples` - sample word list and word graph files.
 
