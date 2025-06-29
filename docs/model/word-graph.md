@@ -25,3 +25,24 @@ Some of the activities do not particularly depend on the words being in a graph,
 principle the word list could be extended to include sets of isolated words (or separate sub-graphs)
 that could be used in those activities.
 
+## Graph JSON Format
+
+The graph format is defined as follows:
+
+* Each word in the word list is a key in the dict, and the corresponding
+  value is a dict with the following keys and values:
+    * `delete` - a string the same length as the word, where all the deletable
+      letters are shown, and other letters are replaced with "."
+    * `replace` - a slash-separated string of sub-strings, which represents
+       an array of strings the same length as the word, where each string
+      is the set of letter values that can replace the letter in that position
+      in the word
+    * `insert` - a slash-separated string of sub-strings, which represents
+      an array of strings than the word, corresponding to the positions
+      before, between and after the letters, where each string is the set of letter
+      values that can be inserted in that position.
+    * `uppercase` - a string the same length as the word, where all the upper-caseable
+      letters are shown as upper-cased, and other letters are replaced with "."
+    * `lowercase` - a string the same length as the word, where all the lower-caseable
+      letters are shown as lower-cased, and other letters are replaced with "."
+
