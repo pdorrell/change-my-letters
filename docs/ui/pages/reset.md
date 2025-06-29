@@ -6,12 +6,11 @@ pages that support a reset function, which are:
 * Word Changer
 * Make
 
-Reset page allows the user to choose a new initial word from the page that invoked it.
+Reset page allows the user to choose a new initial word from the target page that invoked it.
 
 The page contains:
 
-* A heading indicating which page is being reset
-* Instructions on how to reset (TODO - merge the heading and the instruction)
+* An instruction telling the user to choose a new initial word to reset the target page
 * Controls panel, consisting of:
    * Filter controls, as described in [../common/filter.md].
    * A "Choose Random" button
@@ -19,9 +18,9 @@ The page contains:
 
 The user can either:
 
-* Click on "Choose Random" to reset the invoking page to a randomly chosen word.
+* Click on "Choose Random" to reset the target page to a randomly chosen word.
 * Click on a word in the list of words to reset to that word.
 
 There is currently no "Cancel" button, but the user can effectively cancel by
-by clicking on the invoking page (or any other page) in the main navigation menu.
+by clicking on the target page (or any other page) in the main navigation menu.
 

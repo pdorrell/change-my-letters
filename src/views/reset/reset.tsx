@@ -76,8 +76,7 @@ export const ResetPage: React.FC<ResetPageProps> = observer(({ resetInteraction 
   return (
     <>
       <div className="reset-page-header">
-        <h2>Reset initial word for {targetPageLabel} page</h2>
-        <p>Choose a new word to start with on the {targetPageLabel} page.</p>
+        <p>Reset <b>{targetPageLabel}</b> page by choosing a new initial word.</p>
       </div>
       <ResetControls resetInteraction={resetInteraction} />
       <ResetWordChoice resetInteraction={resetInteraction} />
