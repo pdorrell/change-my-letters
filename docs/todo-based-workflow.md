@@ -32,15 +32,17 @@ will be updated accordingly:
 * Analysis - Claude may be requested to analyse the todo (if it's sufficiently complex that such analysis
   is warranted). Claude should just respond directly in it's terminal output unless otherwise instructed
   (ie by default don't update the todo texts).
-* Start work - Claude will update the todo to be DOING, eg DOING1234, and will make required changes.
-* Once the todo is judged to be done, Claude will be instructed to update the todo to DONE, eg DONE1234.
+* Start work - Claude will make required changes, and update the todo id to be prefixed with DONE, eg DONE-TODO1234.
+* Once I have reviewed and accepted them, I will tell Claude that I accept the changes, and Claude should then 
+  change the todo to ACCEPTED, eg ACCEPTED-TODO1234.
 * Finally Claude will be instructed to update the current docs, to reflect the change, and delete 
-  the DONE texts for that id.
+  the TODO texts for that id.
   
 Claude should commit each time it makes any changes to files (ie for all items in the previous list 
 except for analysis).
   
-In some cases I may perform some of these workflow steps myself.
+In some cases I may perform some of these workflow steps myself. Also sometimes I may accept the changes
+but then do a followup TODO to fix issues with the changes.
   
 When instructed to do a specific todo, Claude should only work on that todo. This allows for the possibility
 that multiple Claudes could work on separate todos in separate local repos in parallel.
