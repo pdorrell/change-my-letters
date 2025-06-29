@@ -42,3 +42,18 @@ The application currently has six different pages:
 * *Reset* - from either *Make* or *Word Changer* page the Reset button can be clicked, which
   takes the user to a page which allows them to choose a new initial word for the page
   they came from (ie Make or Word Changer).
+
+
+# Target devices
+
+As a web application, the application is designed to run in any of -
+
+* Computer with a mouse
+* Touch-enabled tablet
+* Touch-enabled smartphone (but only usable in landscape mode)
+
+In practice it has mostly been tested on:
+
+* On a Mac desktop running Firefox
+* iPad
+* iPhone
