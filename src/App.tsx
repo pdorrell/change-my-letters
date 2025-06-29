@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 import { AppState } from '@/models/app-state';
 import { WordChangerPage } from '@/views/word-changer';
-import { ReviewPronunciationPage } from '@/views/review/review-pronunciation';
+import { ReviewPronunciationPage } from '@/views/pronunciation/pronunciation';
 import { ResetPage } from '@/views/reset/reset';
 import { FindersPage } from '@/views/finders/finders-page';
 import { MakePage } from '@/views/make/make-page';

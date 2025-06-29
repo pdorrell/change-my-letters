@@ -77,7 +77,7 @@ In auto mode, any mouse of keyboard interaction stops the auto. (In auto mode a 
 space bar to mark a word as wrong, but if they are too slow they'll mark the wrong word, so they
 will have to go back and adjust the review state of both words manually.)
 
-TODO1 - Step 1 of renaming "review pronunciation" file names & identifiers to "pronunciation".
+DONE-TODO1 - Step 1 of renaming "review pronunciation" file names & identifiers to "pronunciation".
 Originally the "Pronunciation" page was the "Review Pronunciation" page, but now "review" 
 is just on option mode of that page. 
 The first step is to rename only directories and filenames, and update all imports and other

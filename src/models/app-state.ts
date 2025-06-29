@@ -3,7 +3,7 @@ import { WordGraph } from '@/models/word-graph';
 import { WordChanger } from '@/models/word-changer';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
 import { ResetInteraction } from '@/models/reset/reset-interaction';
-import { ReviewPronunciationInteraction } from '@/models/review/review-pronunciation-interaction';
+import { ReviewPronunciationInteraction } from '@/models/pronunciation/pronunciation-interaction';
 import { FindersInteraction } from '@/models/finders/finders-interaction';
 import { WordChoiceFinderInteraction } from '@/models/finders/word-choice-finder/word-choice-finder-interaction';
 import { WordsInRowFinder } from '@/models/finders/words-in-row-finder/words-in-row-finder';

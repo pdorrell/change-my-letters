@@ -1,9 +1,9 @@
 import { makeAutoObservable, computed, action } from 'mobx';
 import { Word } from '@/models/Word';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
-import { ReviewStateFilterOption } from '@/models/review/review-state-filter-option';
+import { ReviewStateFilterOption } from '@/models/pronunciation/review-state-filter-option';
 import { ButtonAction } from '@/lib/models/actions';
-import { ReviewState, getReviewStateFromJson } from '@/models/review/review-state';
+import { ReviewState, getReviewStateFromJson } from '@/models/pronunciation/review-state';
 import { Filter } from '@/lib/models/filter';
 
 /**

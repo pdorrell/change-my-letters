@@ -1,5 +1,5 @@
-import { ReviewPronunciationInteraction } from '@/models/review/review-pronunciation-interaction';
-import { ReviewStateFilterOption } from '@/models/review/review-state-filter-option';
+import { ReviewPronunciationInteraction } from '@/models/pronunciation/pronunciation-interaction';
+import { ReviewStateFilterOption } from '@/models/pronunciation/review-state-filter-option';
 import { Word } from '@/models/Word';
 import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
 import { WordSayer } from '@/models/word-sayer';

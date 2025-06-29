@@ -1,4 +1,4 @@
-import { ReviewStateFilterOption } from '@/models/review/review-state-filter-option';
+import { ReviewStateFilterOption } from '@/models/pronunciation/review-state-filter-option';
 import { Word } from '@/models/Word';
 
 describe('ReviewStateFilterOption', () => {

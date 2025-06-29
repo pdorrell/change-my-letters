@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
-import { ReviewPronunciationInteraction } from '@/models/review/review-pronunciation-interaction';
+import { ReviewPronunciationInteraction } from '@/models/pronunciation/pronunciation-interaction';
 import { ActionButton } from '@/lib/views/action-button';
 import { AppState } from '@/models/app-state';
 

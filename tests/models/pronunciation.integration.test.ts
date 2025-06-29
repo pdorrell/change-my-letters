@@ -1,6 +1,6 @@
 import { AppState } from '@/models/app-state';
-import { ReviewPronunciationInteraction } from '@/models/review/review-pronunciation-interaction';
-import { ReviewStateFilterOption } from '@/models/review/review-state-filter-option';
+import { ReviewPronunciationInteraction } from '@/models/pronunciation/pronunciation-interaction';
+import { ReviewStateFilterOption } from '@/models/pronunciation/review-state-filter-option';
 import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
 import { createTestAppState } from '@/tests/utils/test-app-builder';
 
