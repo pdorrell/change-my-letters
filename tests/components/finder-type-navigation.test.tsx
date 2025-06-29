@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { FinderTypeNavigation } from '@/views/finders/finder-type-navigation';
 import { FindersInteraction } from '@/models/finders/finders-interaction';
-import { AudioFilePlayerTestDouble } from '../test_doubles/audio-file-player-test-double';
+import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
 import { WordSayer } from '@/models/word-sayer';
 import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';
 import { EmotionWordSet, HappyOrSad } from '@/models/audio/emotion-types';

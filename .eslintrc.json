@@ -5,7 +5,7 @@
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended"
   ],
-  "plugins": ["react", "@typescript-eslint", "unused-imports", "mobx"],
+  "plugins": ["react", "@typescript-eslint", "unused-imports", "mobx", "no-relative-import-paths"],
   "env": {
     "browser": true,
     "es6": true,
@@ -35,7 +35,15 @@
     }],
     "unused-imports/no-unused-imports": "error",
     "prefer-const": "warn",
-    "mobx/missing-observer": "error"
+    "mobx/missing-observer": "error",
+    "no-relative-import-paths/no-relative-import-paths": [
+      "error",
+      {
+        "allowSameFolder": true,
+        "rootDir": ".",
+        "prefix": "@"
+      }
+    ]
   },
   "parserOptions": {
     "ecmaVersion": 2020,
