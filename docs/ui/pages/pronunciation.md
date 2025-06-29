@@ -77,13 +77,14 @@ In auto mode, any mouse of keyboard interaction stops the auto. (In auto mode a 
 space bar to mark a word as wrong, but if they are too slow they'll mark the wrong word, so they
 will have to go back and adjust the review state of both words manually.)
 
-DONE-TODO1 - Step 1 of renaming "review pronunciation" file names & identifiers to "pronunciation".
+TODO2 - Step 2 of renaming "review pronunciation" file names & identifiers to "pronunciation".
 Originally the "Pronunciation" page was the "Review Pronunciation" page, but now "review" 
-is just on option mode of that page. 
-The first step is to rename only directories and filenames, and update all imports and other
-references to those changed names. Rename 'review' sub-directories of 'src/views' 
-and 'src/model' to be 'pronunciation'. Except for 'review-pronunciation-state.json', rename
-every file containing 'review-pronunciation' in its name replace that string with just 'pronunciation'.
-(The reason to do directory & file renaming first is that simultaneous file & identifier
-renaming is too hard to review.)
-
+is just an optional mode of that page. 
+The first step was to rename only directories and filenames, and update all imports and other
+references to those changed names, which is now done.
+For the second step, change typescript identifiers, literal strings and 
+CSS class names containing 'ReviewPronunciation' 'reviewPronunciation' or 'review-pronunciation'
+to just have 'Pronunciation', 'pronunciation' and 'pronunciation' respectively. Also rename 'reviewInteraction' 
+(which appears to be short for 'reviewPronunciationInteraction') to 'pronunciationInteraction'.
+Do not rename identifiers containing "review" where the function of the artifact actually relates
+to the reviewing function.
