@@ -37,6 +37,9 @@ will be updated accordingly:
 * Finally Claude will be instructed to update the current docs, to reflect the change, and delete 
   the DONE texts for that id.
   
+Claude should commit each time it makes any changes to files (ie for all items in the previous list 
+except for analysis).
+  
 In some cases I may perform some of these workflow steps myself.
   
 When instructed to do a specific todo, Claude should only work on that todo. This allows for the possibility
