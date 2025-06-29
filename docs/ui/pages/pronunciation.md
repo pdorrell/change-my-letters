@@ -76,3 +76,13 @@ In review mode only:
 In auto mode, any mouse of keyboard interaction stops the auto. (In auto mode a user might hit
 space bar to mark a word as wrong, but if they are too slow they'll mark the wrong word, so they
 will have to go back and adjust the review state of both words manually.)
+
+TODO1 - Rename "review pronunciation" file names & identifiers to "pronunciation".
+Originally the "Pronunciation" page was the "Review Pronunciation" page, but now "review" 
+is just on option mode of that page. Change all file names, typescript identifiers, literal strings and 
+CSS class names containing 'ReviewPronunciation' 'reviewPronunciation' or 'review-pronunciation'
+to just have 'Pronunciation', 'pronunciation' and 'pronunciation' respectively. The
+only exception is 'review-pronunciation-state.json' (because that is actually the state of
+the review of pronunciation). Also rename 'reviewInteraction' 
+(which appears to be short for 'reviewPronunciationInteraction') to 'pronunciationInteraction'.
+Also rename 'review' sub-directories of 'src/views' and 'src/model' to be 'pronunciation'.
