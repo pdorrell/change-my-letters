@@ -56,3 +56,12 @@ to include dummy invisible child elements the same size as actual
 child elements. (Main example in the application is when a word
 can contain up to 5 letters, and if it has less, then invisible 
 dummy letter elements are included at the end of the word.)
+
+## React Refs
+
+Sometimes in a React application it is necessary to perform actions
+directly on actual DOM elements.
+
+When such a requirement exists, the DOM elements should be accessed
+via React refs, and not by using DOM selector queries.
+
