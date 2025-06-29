@@ -43,6 +43,7 @@ is deployed as a static website (to Cloudfare currently).
 * NEVER include trailing whitespace on any line
 * When writing code, ensure proper line ending formatting from the start
 * Before considering code complete, verify no trailing spaces exist
+* For all typescript imports from local source files, use "@" path aliases.
 
 ### React Props
 * make all 'Props' interfaces one-liners, unless the line gets tooo long
