@@ -40,7 +40,7 @@ For each word the review state consists of:
    * "Download Wrong Words" button
    * "Reset All to Unreviewed" - set all words to be un-reviewed in the application
    * "Reset All to OK" - set all words to be OK
-   * "Review Wrong Words" - set only the "wrong" words to be un-reviewed (TODO - the button could be reworded)
+   * "Review Wrong Words" - set only the "wrong" words to be un-reviewed
 * Controls:
    * Filter controls as described in [../common/filter.md].
    * "Review state" - to filter the words based on their review state, with options:

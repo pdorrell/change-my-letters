@@ -58,7 +58,7 @@ export class ReviewPronunciationInteraction {
     this.downloadWrongWordsAction = new ButtonAction(() => this.downloadWrongWords(), { tooltip: "Download words-that-sound-wrong.txt" });
     this.resetAllToUnreviewedAction = new ButtonAction(() => this.resetAllToUnreviewed(), { tooltip: "Reset all words to unreviewed" });
     this.resetAllToOKAction = new ButtonAction(() => this.resetAllToOK(), { tooltip: "Reset all words to OK" });
-    this.reviewWrongWordsAction = new ButtonAction(() => this.reviewWrongWords(), { tooltip: "Set reviewed = not soundsWrong for all words" });
+    this.reviewWrongWordsAction = new ButtonAction(() => this.reviewWrongWords(), { tooltip: "Update review state so that only current 'wrong' words are to be reviewed" });
 
     makeAutoObservable(this, {
       filteredWords: computed,
