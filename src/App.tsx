@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 import { AppState } from '@/models/app-state';
 import { WordChangerPage } from '@/views/word-changer';
-import { ReviewPronunciationPage } from '@/views/pronunciation/pronunciation';
+import { PronunciationPage } from '@/views/pronunciation/pronunciation';
 import { ResetPage } from '@/views/reset/reset';
 import { FindersPage } from '@/views/finders/finders-page';
 import { MakePage } from '@/views/make/make-page';
@@ -90,7 +90,7 @@ const AppBody: React.FC<AppBodyProps> = observer(({ appState }) => {
           maxWordLength={appState.wordGraph.maxWordLength}
         />
       ) : appState.currentPage === 'reviewPronunciation' ? (
-        <ReviewPronunciationPage appState={appState} />
+        <PronunciationPage appState={appState} />
       ) : appState.currentPage === 'finders' ? (
         <FindersPage appState={appState} />
       ) : appState.currentPage.startsWith('reset') ? (

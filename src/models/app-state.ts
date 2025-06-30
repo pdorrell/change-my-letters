@@ -3,7 +3,7 @@ import { WordGraph } from '@/models/word-graph';
 import { WordChanger } from '@/models/word-changer';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
 import { ResetInteraction } from '@/models/reset/reset-interaction';
-import { ReviewPronunciationInteraction } from '@/models/pronunciation/pronunciation-interaction';
+import { PronunciationInteraction } from '@/models/pronunciation/pronunciation-interaction';
 import { FindersInteraction } from '@/models/finders/finders-interaction';
 import { WordChoiceFinderInteraction } from '@/models/finders/word-choice-finder/word-choice-finder-interaction';
 import { WordsInRowFinder } from '@/models/finders/words-in-row-finder/words-in-row-finder';
@@ -29,7 +29,7 @@ interface PageConfig {
 
 const PAGE_CONFIGS: Record<AppPage, PageConfig> = {
   changer: { label: 'Changer', tooltip: 'Change letters of a word' },
-  reviewPronunciation: { label: 'Pronunciation', tooltip: 'Review pronunciation of words' },
+  reviewPronunciation: { label: 'Pronunciation', tooltip: 'Pronunciation of words' },
   finders: { label: 'Finders', tooltip: 'Find words by listening to them' },
   make: { label: 'Make', tooltip: 'Practice making specific words' },
   'reset/changer': { label: 'Reset Changer', tooltip: 'Choose a new word for the Changer page' },
@@ -53,8 +53,8 @@ export class AppState {
   // The reset interaction model
   resetInteraction: ResetInteraction;
 
-  // The review pronunciation interaction model
-  reviewPronunciationInteraction: ReviewPronunciationInteraction;
+  // The pronunciation interaction model
+  pronunciationInteraction: PronunciationInteraction;
 
   // The finders interaction model
   findersInteraction: FindersInteraction;
@@ -108,8 +108,8 @@ export class AppState {
     // Initialize reset interaction
     this.resetInteraction = new ResetInteraction(this);
 
-    // Initialize review pronunciation interaction
-    this.reviewPronunciationInteraction = new ReviewPronunciationInteraction(
+    // Initialize pronunciation interaction
+    this.pronunciationInteraction = new PronunciationInteraction(
       this.wordGraph.sortedWords,
       this.wordSayer
     );
@@ -196,9 +196,9 @@ export class AppState {
   navigateTo(page: AppPage): void {
     this.currentPage = page;
 
-    // Reset review pronunciation interaction when navigating to it
+    // Reset pronunciation interaction when navigating to it
     if (page === 'reviewPronunciation') {
-      this.reviewPronunciationInteraction.reset();
+      this.pronunciationInteraction.reset();
     }
 
     // Set reset interaction target page when navigating to reset pages

@@ -2,15 +2,15 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { act } from 'react';
 import { runInAction } from 'mobx';
-import { ReviewPronunciationView, ReviewActionControls } from '@/views/pronunciation/pronunciation';
-import { ReviewPronunciationInteraction } from '@/models/pronunciation/pronunciation-interaction';
+import { PronunciationView, ActionControls } from '@/views/pronunciation/pronunciation';
+import { PronunciationInteraction } from '@/models/pronunciation/pronunciation-interaction';
 import { ReviewStateFilterOption } from '@/models/pronunciation/review-state-filter-option';
 import { Word } from '@/models/Word';
 import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
 import { WordSayer } from '@/models/word-sayer';
 
-describe('ReviewPronunciationView', () => {
-  let reviewInteraction: ReviewPronunciationInteraction;
+describe('PronunciationView', () => {
+  let pronunciationInteraction: PronunciationInteraction;
   let wordSayer: WordSayer;
   let audioFilePlayer: AudioFilePlayerTestDouble;
   let testWords: Word[];
@@ -27,11 +27,11 @@ describe('ReviewPronunciationView', () => {
       new Word('bird', [false, false, false, false], ['', '', '', '', ''], ['', '', '', ''])
     ];
 
-    reviewInteraction = new ReviewPronunciationInteraction(testWords, wordSayer);
+    pronunciationInteraction = new PronunciationInteraction(testWords, wordSayer);
   });
 
   it('renders the view without main title (now in header)', () => {
-    render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+    render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
     // The main title is now in the app header, not in the view itself
     expect(screen.queryByText('Review Pronunciation')).not.toBeInTheDocument();
@@ -40,11 +40,11 @@ describe('ReviewPronunciationView', () => {
   describe('Action Buttons Panel', () => {
     beforeEach(() => {
       // Set to review mode to show action buttons panel
-      reviewInteraction.setReviewMode(true);
+      pronunciationInteraction.setReviewMode(true);
     });
 
     it('renders all action buttons', () => {
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       expect(screen.getByText('+ Load State')).toBeInTheDocument();
       expect(screen.getByText('Save State')).toBeInTheDocument();
@@ -55,13 +55,13 @@ describe('ReviewPronunciationView', () => {
     });
 
     it('does not show drag and drop hint anymore', () => {
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       expect(screen.queryByText('(or drag & drop)')).not.toBeInTheDocument();
     });
 
     it('calls resetAllToUnreviewed when button is clicked', () => {
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       // Set up some state to reset
       act(() => {
@@ -81,7 +81,7 @@ describe('ReviewPronunciationView', () => {
     });
 
     it('calls resetAllToOK when button is clicked', () => {
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const resetButton = screen.getByText('Reset All to OK');
       act(() => {
@@ -98,8 +98,8 @@ describe('ReviewPronunciationView', () => {
   describe('word changer Panel', () => {
     it('renders the word changer panel in review mode', () => {
       // Set to review mode to show sounds wrong/OK buttons
-      reviewInteraction.setReviewMode(true);
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      pronunciationInteraction.setReviewMode(true);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const wordChangerPanel = document.querySelector('.word-changer-panel');
       expect(wordChangerPanel).toBeInTheDocument();
@@ -110,8 +110,8 @@ describe('ReviewPronunciationView', () => {
 
     it('hides the word changer panel in activity mode', () => {
       // Set to activity mode
-      reviewInteraction.setReviewMode(false);
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      pronunciationInteraction.setReviewMode(false);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const wordChangerPanel = document.querySelector('.word-changer-panel');
       expect(wordChangerPanel).toBeInTheDocument(); // Still in DOM but styled as hidden
@@ -121,14 +121,14 @@ describe('ReviewPronunciationView', () => {
 
     it('shows word when there is a current review word', () => {
       // Set to review mode to show sounds wrong/OK buttons
-      reviewInteraction.setReviewMode(true);
+      pronunciationInteraction.setReviewMode(true);
       act(() => {
         runInAction(() => {
-          reviewInteraction.reviewWord('cat');
+          pronunciationInteraction.reviewWord('cat');
         });
       });
 
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const wordChangerPanel = document.querySelector('.word-changer-panel');
       expect(wordChangerPanel).toContainElement(screen.getAllByText('cat')[0]);
@@ -139,12 +139,12 @@ describe('ReviewPronunciationView', () => {
     it('shows correct styling for current review word that sounds wrong', () => {
       act(() => {
         runInAction(() => {
-          reviewInteraction.reviewWord('cat');
+          pronunciationInteraction.reviewWord('cat');
           testWords[0].soundsWrong = true;
         });
       });
 
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const wordChangerPanel = document.querySelector('.word-changer-panel');
       const wordSpan = wordChangerPanel!.querySelector('.word-span');
@@ -154,13 +154,13 @@ describe('ReviewPronunciationView', () => {
     it('shows correct styling for current review word that sounds OK', () => {
       act(() => {
         runInAction(() => {
-          reviewInteraction.reviewWord('cat');
+          pronunciationInteraction.reviewWord('cat');
           testWords[0].reviewed = true;
           testWords[0].soundsWrong = false;
         });
       });
 
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const wordChangerPanel = document.querySelector('.word-changer-panel');
       const wordSpan = wordChangerPanel!.querySelector('.word-span');
@@ -169,15 +169,15 @@ describe('ReviewPronunciationView', () => {
 
     it('enables/disables buttons based on word changer state', () => {
       // Set to review mode to show sounds wrong/OK buttons
-      reviewInteraction.setReviewMode(true);
+      pronunciationInteraction.setReviewMode(true);
       act(() => {
         runInAction(() => {
-          reviewInteraction.reviewWord('cat');
+          pronunciationInteraction.reviewWord('cat');
           testWords[0].soundsWrong = true;
         });
       });
 
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const soundsOKButton = screen.getByText('Sounds OK');
       const soundsWrongButton = screen.getByText('Sounds Wrong');
@@ -190,8 +190,8 @@ describe('ReviewPronunciationView', () => {
   describe('Filter Panel', () => {
     it('renders filter controls', () => {
       // Set to review mode to show review state filter
-      reviewInteraction.setReviewMode(true);
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      pronunciationInteraction.setReviewMode(true);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       expect(screen.getByPlaceholderText('Filter...')).toBeInTheDocument();
       expect(screen.getByText('Match')).toBeInTheDocument();
@@ -203,8 +203,8 @@ describe('ReviewPronunciationView', () => {
 
     it('shows Auto button in activity mode filter controls', () => {
       // Set to activity mode
-      reviewInteraction.setReviewMode(false);
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      pronunciationInteraction.setReviewMode(false);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const filterPanel = document.querySelector('.filter-panel');
       const autoButton = filterPanel?.querySelector('button[title="Start automatic word review"]');
@@ -214,8 +214,8 @@ describe('ReviewPronunciationView', () => {
 
     it('does not show Auto button in review mode filter controls', () => {
       // Set to review mode
-      reviewInteraction.setReviewMode(true);
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      pronunciationInteraction.setReviewMode(true);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const filterPanel = document.querySelector('.filter-panel');
       const autoButton = filterPanel?.querySelector('button[title="Start automatic word review"]');
@@ -224,10 +224,10 @@ describe('ReviewPronunciationView', () => {
 
     it('calls autoplay action when Auto button in filter controls is clicked', () => {
       // Set to activity mode
-      reviewInteraction.setReviewMode(false);
-      const startAutoplaySpy = jest.spyOn(reviewInteraction, 'startAutoplay');
+      pronunciationInteraction.setReviewMode(false);
+      const startAutoplaySpy = jest.spyOn(pronunciationInteraction, 'startAutoplay');
 
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const filterPanel = document.querySelector('.filter-panel');
       const autoButton = filterPanel?.querySelector('button[title="Start automatic word review"]') as HTMLButtonElement;
@@ -239,7 +239,7 @@ describe('ReviewPronunciationView', () => {
     });
 
     it('updates filter text when typing', () => {
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const filterInput = screen.getByPlaceholderText('Filter...');
 
@@ -247,12 +247,12 @@ describe('ReviewPronunciationView', () => {
         fireEvent.change(filterInput, { target: { value: 'cat' } });
       });
 
-      expect(reviewInteraction.filter.value.value).toBe('cat');
+      expect(pronunciationInteraction.filter.value.value).toBe('cat');
       expect(filterInput).toHaveValue('cat');
     });
 
     it('updates match option radio buttons', () => {
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const startRadio = screen.getByLabelText('start');
       const anyRadio = screen.getByLabelText('any');
@@ -263,15 +263,15 @@ describe('ReviewPronunciationView', () => {
         fireEvent.click(anyRadio);
       });
 
-      expect(reviewInteraction.filter.matchOption.value).toBe('any');
+      expect(pronunciationInteraction.filter.matchOption.value).toBe('any');
       expect(anyRadio).toBeChecked();
       expect(startRadio).not.toBeChecked();
     });
 
     it('updates review state filter', () => {
       // Set to review mode to show review state filter
-      reviewInteraction.setReviewMode(true);
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      pronunciationInteraction.setReviewMode(true);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const select = screen.getByLabelText('Review state:');
 
@@ -279,13 +279,13 @@ describe('ReviewPronunciationView', () => {
         fireEvent.change(select, { target: { value: '1' } }); // UNREVIEWED
       });
 
-      expect(reviewInteraction.reviewStateFilter).toBe(ReviewStateFilterOption.UNREVIEWED);
+      expect(pronunciationInteraction.reviewStateFilter).toBe(ReviewStateFilterOption.UNREVIEWED);
     });
 
     it('shows all review state options in select', () => {
       // Set to review mode to show review state filter
-      reviewInteraction.setReviewMode(true);
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      pronunciationInteraction.setReviewMode(true);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const select = screen.getByLabelText('Review state:');
       const options = select.querySelectorAll('option');
@@ -300,7 +300,7 @@ describe('ReviewPronunciationView', () => {
 
   describe('Filtered Words', () => {
     it('displays all words by default', () => {
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       expect(screen.getByText('Words: 4')).toBeInTheDocument();
       expect(screen.getByText('cat')).toBeInTheDocument();
@@ -312,12 +312,12 @@ describe('ReviewPronunciationView', () => {
     it('updates word count when filtering', () => {
       act(() => {
         runInAction(() => {
-          reviewInteraction.filter.value.set('c');
-          reviewInteraction.filter.matchOption.set('start');
+          pronunciationInteraction.filter.value.set('c');
+          pronunciationInteraction.filter.matchOption.set('start');
         });
       });
 
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       expect(screen.getByText('Words: 1')).toBeInTheDocument();
       expect(screen.getByText('cat')).toBeInTheDocument();
@@ -326,17 +326,17 @@ describe('ReviewPronunciationView', () => {
 
     it('applies correct CSS classes based on word state', () => {
       // Set to review mode to see CSS classes
-      reviewInteraction.setReviewMode(true);
+      pronunciationInteraction.setReviewMode(true);
       act(() => {
         runInAction(() => {
           testWords[0].reviewed = true; // cat - reviewed OK
           testWords[1].soundsWrong = true; // dog - wrong
           testWords[2].currentReview = true; // fish - current review
-          reviewInteraction.currentReviewWord = testWords[2];
+          pronunciationInteraction.currentReviewWord = testWords[2];
         });
       });
 
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const wordsSection = screen.getByText('Words: 4').closest('.filtered-words');
       const wordsGrid = wordsSection!.querySelector('.words-grid');
@@ -354,9 +354,9 @@ describe('ReviewPronunciationView', () => {
     });
 
     it('calls reviewWord when clicking on a word', () => {
-      const reviewWordSpy = jest.spyOn(reviewInteraction, 'reviewWord');
+      const reviewWordSpy = jest.spyOn(pronunciationInteraction, 'reviewWord');
 
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const catSpan = screen.getAllByText('cat').find(el => el.closest('.words-grid'));
 
@@ -370,10 +370,10 @@ describe('ReviewPronunciationView', () => {
 
     it('shows ellipsis button when there are more words in activity mode', () => {
       // Set to activity mode and limit words
-      reviewInteraction.setReviewMode(false);
-      reviewInteraction.maxNumWordsToShow = 2;
+      pronunciationInteraction.setReviewMode(false);
+      pronunciationInteraction.maxNumWordsToShow = 2;
 
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const ellipsisButton = screen.getByRole('button', { name: '...' });expect(ellipsisButton).toBeInTheDocument();
       expect(ellipsisButton).toHaveClass('ellipsis-button');
@@ -381,10 +381,10 @@ describe('ReviewPronunciationView', () => {
 
     it('does not show ellipsis button when there are no more words', () => {
       // Set to activity mode but don't limit words
-      reviewInteraction.setReviewMode(false);
-      reviewInteraction.maxNumWordsToShow = 20;
+      pronunciationInteraction.setReviewMode(false);
+      pronunciationInteraction.maxNumWordsToShow = 20;
 
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const ellipsisButton = screen.queryByRole('button', { name: '...' });
       expect(ellipsisButton).not.toBeInTheDocument();
@@ -392,12 +392,12 @@ describe('ReviewPronunciationView', () => {
 
     it('calls showMoreWords when ellipsis button is clicked', () => {
       // Set to activity mode and limit words
-      reviewInteraction.setReviewMode(false);
-      reviewInteraction.maxNumWordsToShow = 2;
+      pronunciationInteraction.setReviewMode(false);
+      pronunciationInteraction.maxNumWordsToShow = 2;
 
-      const showMoreWordsSpy = jest.spyOn(reviewInteraction, 'showMoreWords');
+      const showMoreWordsSpy = jest.spyOn(pronunciationInteraction, 'showMoreWords');
 
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const ellipsisButton = screen.getByRole('button', { name: '...' });
       act(() => {
@@ -405,18 +405,18 @@ describe('ReviewPronunciationView', () => {
       });
 
       expect(showMoreWordsSpy).toHaveBeenCalled();
-      expect(reviewInteraction.maxNumWordsToShow).toBe(4);
+      expect(pronunciationInteraction.maxNumWordsToShow).toBe(4);
     });
   });
 
   describe('Drag and Drop', () => {
     beforeEach(() => {
       // Set to review mode to show action buttons panel
-      reviewInteraction.setReviewMode(true);
+      pronunciationInteraction.setReviewMode(true);
     });
 
     it('handles drag over event', () => {
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const dropArea = screen.getByText('+ Load State').closest('.load-state-button-container');
 
@@ -436,7 +436,7 @@ describe('ReviewPronunciationView', () => {
     it('shows alert for incorrect filename on drop', () => {
       const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
 
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       const dropArea = screen.getByText('+ Load State').closest('.load-state-button-container');
 
@@ -460,23 +460,23 @@ describe('ReviewPronunciationView', () => {
 
   describe('Keyboard Navigation', () => {
     it('shows keyboard shortcuts hint for review mode', () => {
-      reviewInteraction.setReviewMode(true);
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      pronunciationInteraction.setReviewMode(true);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       expect(screen.getByText('Use ← → arrow keys to navigate, Alt+→ to start autoplay, space bar to toggle sounds wrong')).toBeInTheDocument();
     });
 
     it('shows keyboard shortcuts hint for activity mode', () => {
-      reviewInteraction.setReviewMode(false);
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      pronunciationInteraction.setReviewMode(false);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       expect(screen.getByText('Use ← → arrow keys to navigate, Alt+→ to start autoplay')).toBeInTheDocument();
     });
 
     it('handles right arrow key for next word navigation', () => {
-      const gotoNextWordSpy = jest.spyOn(reviewInteraction, 'gotoNextWord');
+      const gotoNextWordSpy = jest.spyOn(pronunciationInteraction, 'gotoNextWord');
 
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       // Simulate right arrow key press
       act(() => {
@@ -487,9 +487,9 @@ describe('ReviewPronunciationView', () => {
     });
 
     it('handles left arrow key for previous word navigation', () => {
-      const gotoPreviousWordSpy = jest.spyOn(reviewInteraction, 'gotoPreviousWord');
+      const gotoPreviousWordSpy = jest.spyOn(pronunciationInteraction, 'gotoPreviousWord');
 
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       // Simulate left arrow key press
       act(() => {
@@ -500,10 +500,10 @@ describe('ReviewPronunciationView', () => {
     });
 
     it('does not handle other keys', () => {
-      const gotoNextWordSpy = jest.spyOn(reviewInteraction, 'gotoNextWord');
-      const gotoPreviousWordSpy = jest.spyOn(reviewInteraction, 'gotoPreviousWord');
+      const gotoNextWordSpy = jest.spyOn(pronunciationInteraction, 'gotoNextWord');
+      const gotoPreviousWordSpy = jest.spyOn(pronunciationInteraction, 'gotoPreviousWord');
 
-      render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       // Simulate other key presses
       act(() => {
@@ -519,7 +519,7 @@ describe('ReviewPronunciationView', () => {
     it('removes event listener on unmount', () => {
       const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
 
-      const { unmount } = render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      const { unmount } = render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       unmount();
 
@@ -529,9 +529,9 @@ describe('ReviewPronunciationView', () => {
     });
   });
 
-  describe('Integration with ReviewPronunciationInteraction', () => {
+  describe('Integration with PronunciationInteraction', () => {
     it('reflects changes in interaction state', () => {
-      const { rerender } = render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      const { rerender } = render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       // Initially word changer panel always exists but no word shown
       const wordChangerPanel = document.querySelector('.word-changer-panel');
@@ -540,36 +540,36 @@ describe('ReviewPronunciationView', () => {
       // Set a current review word
       act(() => {
         runInAction(() => {
-          reviewInteraction.reviewWord('cat');
+          pronunciationInteraction.reviewWord('cat');
         });
       });
 
-      rerender(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      rerender(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       // Should now show the word in the panel
       expect(wordChangerPanel).toContainElement(screen.getAllByText('cat')[0]);
     });
 
     it('updates word count when filter changes', () => {
-      const { rerender } = render(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      const { rerender } = render(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       expect(screen.getByText('Words: 4')).toBeInTheDocument();
 
       act(() => {
         runInAction(() => {
-          reviewInteraction.filter.value.set('fish');
+          pronunciationInteraction.filter.value.set('fish');
         });
       });
 
-      rerender(<ReviewPronunciationView reviewInteraction={reviewInteraction} />);
+      rerender(<PronunciationView pronunciationInteraction={pronunciationInteraction} />);
 
       expect(screen.getByText('Words: 1')).toBeInTheDocument();
     });
   });
 });
 
-describe('ReviewActionControls', () => {
-  let reviewInteraction: ReviewPronunciationInteraction;
+describe('ActionControls', () => {
+  let pronunciationInteraction: PronunciationInteraction;
   let wordSayer: WordSayer;
   let audioFilePlayer: AudioFilePlayerTestDouble;
   let reviewStateFileLoader: jest.Mock<void, [File]>;
@@ -585,7 +585,7 @@ describe('ReviewActionControls', () => {
       new Word('dog', [false, false, false], ['', '', '', ''], ['', '', ''])
     ];
 
-    reviewInteraction = new ReviewPronunciationInteraction(testWords, wordSayer);
+    pronunciationInteraction = new PronunciationInteraction(testWords, wordSayer);
 
     // Create test double for reviewStateFileLoader
     reviewStateFileLoader = jest.fn();
@@ -594,8 +594,8 @@ describe('ReviewActionControls', () => {
   describe('Drag and Drop', () => {
     it('handles drag over event', () => {
       render(
-        <ReviewActionControls
-          reviewInteraction={reviewInteraction}
+        <ActionControls
+          pronunciationInteraction={pronunciationInteraction}
           reviewStateFileLoader={reviewStateFileLoader}
         />
       );
@@ -617,8 +617,8 @@ describe('ReviewActionControls', () => {
 
     it('calls reviewStateFileLoader with correct file on drop', () => {
       render(
-        <ReviewActionControls
-          reviewInteraction={reviewInteraction}
+        <ActionControls
+          pronunciationInteraction={pronunciationInteraction}
           reviewStateFileLoader={reviewStateFileLoader}
         />
       );
@@ -645,8 +645,8 @@ describe('ReviewActionControls', () => {
       const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
 
       render(
-        <ReviewActionControls
-          reviewInteraction={reviewInteraction}
+        <ActionControls
+          pronunciationInteraction={pronunciationInteraction}
           reviewStateFileLoader={reviewStateFileLoader}
         />
       );
@@ -675,8 +675,8 @@ describe('ReviewActionControls', () => {
       const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
 
       render(
-        <ReviewActionControls
-          reviewInteraction={reviewInteraction}
+        <ActionControls
+          pronunciationInteraction={pronunciationInteraction}
           reviewStateFileLoader={reviewStateFileLoader}
         />
       );
@@ -704,8 +704,8 @@ describe('ReviewActionControls', () => {
 
     it('calls reviewStateFileLoader when correct file is found among multiple files', () => {
       render(
-        <ReviewActionControls
-          reviewInteraction={reviewInteraction}
+        <ActionControls
+          pronunciationInteraction={pronunciationInteraction}
           reviewStateFileLoader={reviewStateFileLoader}
         />
       );

@@ -7,9 +7,9 @@ import { ReviewState, getReviewStateFromJson } from '@/models/pronunciation/revi
 import { Filter } from '@/lib/models/filter';
 
 /**
- * Manages interactions for the Review Pronunciation page
+ * Manages interactions for the Pronunciation page
  */
-export class ReviewPronunciationInteraction {
+export class PronunciationInteraction {
   // Mode setting - review mode (developer tool) vs activity mode (for children)
   reviewMode: boolean = false;
 

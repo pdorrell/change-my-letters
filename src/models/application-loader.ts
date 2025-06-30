@@ -124,7 +124,7 @@ export class ApplicationLoader {
     try {
       // Only load in development environment
       if (process.env.NODE_ENV === 'development' && this.appState && localDevReviewState) {
-        this.appState.reviewPronunciationInteraction.setReviewState(localDevReviewState);
+        this.appState.pronunciationInteraction.setReviewState(localDevReviewState);
       }
     } catch (error) {
       console.warn('Could not load local dev review state:', error);

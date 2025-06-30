@@ -476,8 +476,8 @@ body {
 
 
 
-// Review Pronunciation view
-.review-pronunciation-container {
+// Pronunciation view
+.pronunciation-container {
   max-width: 75em;
   margin: 0 auto;
   padding: 1.25em;
@@ -497,7 +497,7 @@ body {
   }
 }
 
-// Review Pronunciation action controls
+// Pronunciation action controls
 .action-buttons-panel {
   display: flex;
   flex-wrap: wrap;
@@ -523,7 +523,7 @@ body {
   }
 }
 
-// Review Pronunciation state controls
+// Pronunciation state controls
 .word-changer-panel {
   background-color: #f8f9fa;
   border: 1px solid #dee2e6;
@@ -597,8 +597,8 @@ body {
   }
 }
 
-// Review Pronunciation filters
-.review-pronunciation-filters {
+// Pronunciation filters
+.pronunciation-filters {
   .filter-panel {
     background-color: #f8f9fa;
     border: 1px solid #dee2e6;
@@ -704,8 +704,8 @@ body {
 }
 
 // Activity mode styling for larger controls
-.review-pronunciation-container.activity-mode {
-  .review-pronunciation-filters .filter-panel .filter-controls {
+.pronunciation-container.activity-mode {
+  .pronunciation-filters .filter-panel .filter-controls {
     input[type="text"] {
       font-size: 1.75em;
       padding: 0.4em 0.5em;
@@ -794,8 +794,8 @@ body {
   }
 }
 
-// Review Pronunciation word choice
-.review-pronunciation-word-choice {
+// Pronunciation word choice
+.pronunciation-word-choice {
   
   .filtered-words {
     .words-header {

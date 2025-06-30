@@ -1,4 +1,4 @@
-import { ReviewPronunciationInteraction } from '@/models/pronunciation/pronunciation-interaction';
+import { PronunciationInteraction } from '@/models/pronunciation/pronunciation-interaction';
 import { ReviewStateFilterOption } from '@/models/pronunciation/review-state-filter-option';
 import { Word } from '@/models/Word';
 import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
@@ -13,8 +13,8 @@ function createFileFromTestData(filename: string, customName?: string): File {
   return new File([content], customName || 'review-pronunciation-state.json', { type: 'application/json' });
 }
 
-describe('ReviewPronunciationInteraction', () => {
-  let reviewInteraction: ReviewPronunciationInteraction;
+describe('PronunciationInteraction', () => {
+  let pronunciationInteraction: PronunciationInteraction;
   let wordSayer: WordSayer;
   let audioFilePlayer: AudioFilePlayerTestDouble;
   let testWords: Word[];
@@ -31,29 +31,29 @@ describe('ReviewPronunciationInteraction', () => {
       new Word('bird', [false, false, false, false], ['', '', '', '', ''], ['', '', '', ''])
     ];
 
-    reviewInteraction = new ReviewPronunciationInteraction(testWords, wordSayer);
+    pronunciationInteraction = new PronunciationInteraction(testWords, wordSayer);
   });
 
   describe('initialization', () => {
     it('should initialize with correct default values', () => {
-      expect(reviewInteraction.filter.value.value).toBe('');
-      expect(reviewInteraction.reviewStateFilter).toBe(ReviewStateFilterOption.ALL);
-      expect(reviewInteraction.filter.matchOption.value).toBe('start');
-      expect(reviewInteraction.currentReviewWord).toBeNull();
-      expect(reviewInteraction.sortedWords).toEqual(testWords);
+      expect(pronunciationInteraction.filter.value.value).toBe('');
+      expect(pronunciationInteraction.reviewStateFilter).toBe(ReviewStateFilterOption.ALL);
+      expect(pronunciationInteraction.filter.matchOption.value).toBe('start');
+      expect(pronunciationInteraction.currentReviewWord).toBeNull();
+      expect(pronunciationInteraction.sortedWords).toEqual(testWords);
     });
 
     it('should initialize button actions', () => {
-      expect(reviewInteraction.loadStateAction).toBeDefined();
-      expect(reviewInteraction.saveStateAction).toBeDefined();
-      expect(reviewInteraction.downloadWrongWordsAction).toBeDefined();
-      expect(reviewInteraction.resetAllToUnreviewedAction).toBeDefined();
-      expect(reviewInteraction.resetAllToOKAction).toBeDefined();
-      expect(reviewInteraction.reviewWrongWordsAction).toBeDefined();
+      expect(pronunciationInteraction.loadStateAction).toBeDefined();
+      expect(pronunciationInteraction.saveStateAction).toBeDefined();
+      expect(pronunciationInteraction.downloadWrongWordsAction).toBeDefined();
+      expect(pronunciationInteraction.resetAllToUnreviewedAction).toBeDefined();
+      expect(pronunciationInteraction.resetAllToOKAction).toBeDefined();
+      expect(pronunciationInteraction.reviewWrongWordsAction).toBeDefined();
     });
 
     it('should have review state filter options', () => {
-      const options = reviewInteraction.reviewStateFilterOptions;
+      const options = pronunciationInteraction.reviewStateFilterOptions;
       expect(options).toHaveLength(4);
       expect(options[0]).toBe(ReviewStateFilterOption.ALL);
       expect(options[1]).toBe(ReviewStateFilterOption.UNREVIEWED);
@@ -64,19 +64,19 @@ describe('ReviewPronunciationInteraction', () => {
 
   describe('filtering', () => {
     it('should filter words by text (match start)', () => {
-      reviewInteraction.filter.value.set('c');
-      reviewInteraction.filter.matchOption.set('start');
+      pronunciationInteraction.filter.value.set('c');
+      pronunciationInteraction.filter.matchOption.set('start');
 
-      const filtered = reviewInteraction.filteredWords;
+      const filtered = pronunciationInteraction.filteredWords;
       expect(filtered).toHaveLength(1);
       expect(filtered[0].word).toBe('cat');
     });
 
     it('should filter words by text (contains)', () => {
-      reviewInteraction.filter.value.set('i');
-      reviewInteraction.filter.matchOption.set('any');
+      pronunciationInteraction.filter.value.set('i');
+      pronunciationInteraction.filter.matchOption.set('any');
 
-      const filtered = reviewInteraction.filteredWords;
+      const filtered = pronunciationInteraction.filteredWords;
       expect(filtered).toHaveLength(2);
       expect(filtered.map(w => w.word)).toContain('fish');
       expect(filtered.map(w => w.word)).toContain('bird');
@@ -84,14 +84,14 @@ describe('ReviewPronunciationInteraction', () => {
 
     it('should filter words by review state - unreviewed', () => {
       // Set to review mode for filtering to work
-      reviewInteraction.setReviewMode(true);
+      pronunciationInteraction.setReviewMode(true);
       // Mark some words as reviewed
       testWords[0].reviewed = true;
       testWords[1].reviewed = true;
 
-      reviewInteraction.reviewStateFilter = ReviewStateFilterOption.UNREVIEWED;
+      pronunciationInteraction.reviewStateFilter = ReviewStateFilterOption.UNREVIEWED;
 
-      const filtered = reviewInteraction.filteredWords;
+      const filtered = pronunciationInteraction.filteredWords;
       expect(filtered).toHaveLength(2);
       expect(filtered.map(w => w.word)).toContain('fish');
       expect(filtered.map(w => w.word)).toContain('bird');
@@ -99,14 +99,14 @@ describe('ReviewPronunciationInteraction', () => {
 
     it('should filter words by review state - wrong', () => {
       // Set to review mode for filtering to work
-      reviewInteraction.setReviewMode(true);
+      pronunciationInteraction.setReviewMode(true);
       // Mark some words as wrong
       testWords[0].soundsWrong = true;
       testWords[2].soundsWrong = true;
 
-      reviewInteraction.reviewStateFilter = ReviewStateFilterOption.WRONG;
+      pronunciationInteraction.reviewStateFilter = ReviewStateFilterOption.WRONG;
 
-      const filtered = reviewInteraction.filteredWords;
+      const filtered = pronunciationInteraction.filteredWords;
       expect(filtered).toHaveLength(2);
       expect(filtered.map(w => w.word)).toContain('cat');
       expect(filtered.map(w => w.word)).toContain('fish');
@@ -114,7 +114,7 @@ describe('ReviewPronunciationInteraction', () => {
 
     it('should filter words by review state - unreviewed or wrong', () => {
       // Set to review mode for filtering to work
-      reviewInteraction.setReviewMode(true);
+      pronunciationInteraction.setReviewMode(true);
       // Mark some words as reviewed and OK
       testWords[0].reviewed = true;
       testWords[0].soundsWrong = false;
@@ -124,9 +124,9 @@ describe('ReviewPronunciationInteraction', () => {
 
       // Leave others unreviewed
 
-      reviewInteraction.reviewStateFilter = ReviewStateFilterOption.UNREVIEWED_OR_WRONG;
+      pronunciationInteraction.reviewStateFilter = ReviewStateFilterOption.UNREVIEWED_OR_WRONG;
 
-      const filtered = reviewInteraction.filteredWords;
+      const filtered = pronunciationInteraction.filteredWords;
       expect(filtered).toHaveLength(3); // dog (wrong), fish (unreviewed), bird (unreviewed)
       expect(filtered.map(w => w.word)).toContain('dog');
       expect(filtered.map(w => w.word)).toContain('fish');
@@ -136,15 +136,15 @@ describe('ReviewPronunciationInteraction', () => {
 
     it('should combine text and review state filters', () => {
       // Set to review mode for filtering to work
-      reviewInteraction.setReviewMode(true);
+      pronunciationInteraction.setReviewMode(true);
       testWords[0].reviewed = true; // cat reviewed
       testWords[2].soundsWrong = true; // fish wrong
 
-      reviewInteraction.filter.value.set('f');
-      reviewInteraction.filter.matchOption.set('start');
-      reviewInteraction.reviewStateFilter = ReviewStateFilterOption.WRONG;
+      pronunciationInteraction.filter.value.set('f');
+      pronunciationInteraction.filter.matchOption.set('start');
+      pronunciationInteraction.reviewStateFilter = ReviewStateFilterOption.WRONG;
 
-      const filtered = reviewInteraction.filteredWords;
+      const filtered = pronunciationInteraction.filteredWords;
       expect(filtered).toHaveLength(1);
       expect(filtered[0].word).toBe('fish');
     });
@@ -157,7 +157,7 @@ describe('ReviewPronunciationInteraction', () => {
         soundsWrong: ['dog']
       };
 
-      reviewInteraction.setReviewState(reviewState);
+      pronunciationInteraction.setReviewState(reviewState);
 
       expect(testWords[0].reviewed).toBe(true); // cat
       expect(testWords[0].soundsWrong).toBe(false);
@@ -174,7 +174,7 @@ describe('ReviewPronunciationInteraction', () => {
       testWords[2].soundsWrong = true;
       testWords[2].reviewed = true;
 
-      const reviewState = reviewInteraction.getReviewState();
+      const reviewState = pronunciationInteraction.getReviewState();
 
       expect(reviewState.reviewed).toContain('cat');
       expect(reviewState.reviewed).toContain('dog');
@@ -189,7 +189,7 @@ describe('ReviewPronunciationInteraction', () => {
       testWords[1].soundsWrong = true; // dog
       testWords[0].soundsWrong = true; // cat
 
-      const wrongWords = reviewInteraction.getWrongSoundingWords();
+      const wrongWords = pronunciationInteraction.getWrongSoundingWords();
 
       expect(wrongWords).toEqual(['bird', 'cat', 'dog']); // sorted alphabetically
     });
@@ -202,29 +202,29 @@ describe('ReviewPronunciationInteraction', () => {
       testWords[0].soundsWrong = true;
       testWords[1].reviewed = true;
       testWords[1].currentReview = true;
-      reviewInteraction.currentReviewWord = testWords[1];
+      pronunciationInteraction.currentReviewWord = testWords[1];
     });
 
     it('should reset all to unreviewed', () => {
-      reviewInteraction.resetAllToUnreviewed();
+      pronunciationInteraction.resetAllToUnreviewed();
 
       testWords.forEach(word => {
         expect(word.reviewed).toBe(false);
         expect(word.soundsWrong).toBe(false);
         expect(word.currentReview).toBe(false);
       });
-      expect(reviewInteraction.currentReviewWord).toBeNull();
+      expect(pronunciationInteraction.currentReviewWord).toBeNull();
     });
 
     it('should reset all to OK', () => {
-      reviewInteraction.resetAllToOK();
+      pronunciationInteraction.resetAllToOK();
 
       testWords.forEach(word => {
         expect(word.reviewed).toBe(true);
         expect(word.soundsWrong).toBe(false);
         expect(word.currentReview).toBe(false);
       });
-      expect(reviewInteraction.currentReviewWord).toBeNull();
+      expect(pronunciationInteraction.currentReviewWord).toBeNull();
     });
 
     it('should review wrong words', () => {
@@ -232,7 +232,7 @@ describe('ReviewPronunciationInteraction', () => {
       testWords[1].soundsWrong = false;
       testWords[2].soundsWrong = true;
 
-      reviewInteraction.reviewWrongWords();
+      pronunciationInteraction.reviewWrongWords();
 
       expect(testWords[0].reviewed).toBe(false); // wrong word
       expect(testWords[1].reviewed).toBe(true); // not wrong
@@ -242,23 +242,23 @@ describe('ReviewPronunciationInteraction', () => {
     it('should clear current review word if not wrong when reviewing wrong words', () => {
       testWords[1].soundsWrong = false;
       testWords[1].currentReview = true;
-      reviewInteraction.currentReviewWord = testWords[1];
+      pronunciationInteraction.currentReviewWord = testWords[1];
 
-      reviewInteraction.reviewWrongWords();
+      pronunciationInteraction.reviewWrongWords();
 
       expect(testWords[1].currentReview).toBe(false);
-      expect(reviewInteraction.currentReviewWord).toBeNull();
+      expect(pronunciationInteraction.currentReviewWord).toBeNull();
     });
 
     it('should keep current review word if wrong when reviewing wrong words', () => {
       testWords[1].soundsWrong = true;
       testWords[1].currentReview = true;
-      reviewInteraction.currentReviewWord = testWords[1];
+      pronunciationInteraction.currentReviewWord = testWords[1];
 
-      reviewInteraction.reviewWrongWords();
+      pronunciationInteraction.reviewWrongWords();
 
       expect(testWords[1].currentReview).toBe(true);
-      expect(reviewInteraction.currentReviewWord).toBe(testWords[1]);
+      expect(pronunciationInteraction.currentReviewWord).toBe(testWords[1]);
     });
   });
 
@@ -266,14 +266,14 @@ describe('ReviewPronunciationInteraction', () => {
     it('should mark word as OK', () => {
       testWords[0].soundsWrong = true;
 
-      reviewInteraction.markOK('cat');
+      pronunciationInteraction.markOK('cat');
 
       expect(testWords[0].soundsWrong).toBe(false);
       expect(testWords[0].reviewed).toBe(true);
     });
 
     it('should mark word as sounds wrong', () => {
-      reviewInteraction.markSoundsWrong('cat');
+      pronunciationInteraction.markSoundsWrong('cat');
 
       expect(testWords[0].soundsWrong).toBe(true);
       expect(testWords[0].reviewed).toBe(true);
@@ -281,233 +281,233 @@ describe('ReviewPronunciationInteraction', () => {
 
     it('should handle non-existent words gracefully', () => {
       expect(() => {
-        reviewInteraction.markOK('nonexistent');
-        reviewInteraction.markSoundsWrong('nonexistent');
+        pronunciationInteraction.markOK('nonexistent');
+        pronunciationInteraction.markSoundsWrong('nonexistent');
       }).not.toThrow();
     });
   });
 
   describe('review word function', () => {
     it('should set current review word and say it', () => {
-      reviewInteraction.reviewWord('cat');
+      pronunciationInteraction.reviewWord('cat');
 
-      expect(reviewInteraction.currentReviewWord).toBe(testWords[0]);
+      expect(pronunciationInteraction.currentReviewWord).toBe(testWords[0]);
       expect(testWords[0].currentReview).toBe(true);
       expect(audioFilePlayer.playedFiles).toContain('words/cat');
     });
 
     it('should mark previous review word as reviewed when setting new one', () => {
       // Set initial review word
-      reviewInteraction.reviewWord('cat');
+      pronunciationInteraction.reviewWord('cat');
 
       // Set new review word
-      reviewInteraction.reviewWord('dog');
+      pronunciationInteraction.reviewWord('dog');
 
       expect(testWords[0].reviewed).toBe(true);
       expect(testWords[0].currentReview).toBe(false);
       expect(testWords[1].currentReview).toBe(true);
-      expect(reviewInteraction.currentReviewWord).toBe(testWords[1]);
+      expect(pronunciationInteraction.currentReviewWord).toBe(testWords[1]);
     });
 
     it('should handle non-existent words gracefully', () => {
       expect(() => {
-        reviewInteraction.reviewWord('nonexistent');
+        pronunciationInteraction.reviewWord('nonexistent');
       }).not.toThrow();
 
-      expect(reviewInteraction.currentReviewWord).toBeNull();
+      expect(pronunciationInteraction.currentReviewWord).toBeNull();
     });
   });
 
   describe('computed button actions', () => {
     it('should enable mark OK action when word changer sounds wrong', () => {
       testWords[0].soundsWrong = true;
-      reviewInteraction.currentReviewWord = testWords[0];
+      pronunciationInteraction.currentReviewWord = testWords[0];
 
-      const action = reviewInteraction.markOKAction;
+      const action = pronunciationInteraction.markOKAction;
       expect(action.enabled).toBe(true);
     });
 
     it('should disable mark OK action when word changer does not sound wrong', () => {
       testWords[0].soundsWrong = false;
-      reviewInteraction.currentReviewWord = testWords[0];
+      pronunciationInteraction.currentReviewWord = testWords[0];
 
-      const action = reviewInteraction.markOKAction;
+      const action = pronunciationInteraction.markOKAction;
       expect(action.enabled).toBe(false);
     });
 
     it('should disable mark OK action when no word changer', () => {
-      reviewInteraction.currentReviewWord = null;
+      pronunciationInteraction.currentReviewWord = null;
 
-      const action = reviewInteraction.markOKAction;
+      const action = pronunciationInteraction.markOKAction;
       expect(action.enabled).toBe(false);
     });
 
     it('should enable mark sounds wrong action when word changer does not sound wrong', () => {
       testWords[0].soundsWrong = false;
-      reviewInteraction.currentReviewWord = testWords[0];
+      pronunciationInteraction.currentReviewWord = testWords[0];
 
-      const action = reviewInteraction.markSoundsWrongAction;
+      const action = pronunciationInteraction.markSoundsWrongAction;
       expect(action.enabled).toBe(true);
     });
 
     it('should disable mark sounds wrong action when word changer sounds wrong', () => {
       testWords[0].soundsWrong = true;
-      reviewInteraction.currentReviewWord = testWords[0];
+      pronunciationInteraction.currentReviewWord = testWords[0];
 
-      const action = reviewInteraction.markSoundsWrongAction;
+      const action = pronunciationInteraction.markSoundsWrongAction;
       expect(action.enabled).toBe(false);
     });
   });
 
   describe('reset function', () => {
     it('should reset filter settings and clear current review word', () => {
-      reviewInteraction.filter.value.set('test');
-      reviewInteraction.filter.matchOption.set('any');
-      reviewInteraction.reviewStateFilter = ReviewStateFilterOption.WRONG;
+      pronunciationInteraction.filter.value.set('test');
+      pronunciationInteraction.filter.matchOption.set('any');
+      pronunciationInteraction.reviewStateFilter = ReviewStateFilterOption.WRONG;
       testWords[0].currentReview = true;
-      reviewInteraction.currentReviewWord = testWords[0];
+      pronunciationInteraction.currentReviewWord = testWords[0];
 
-      reviewInteraction.reset();
+      pronunciationInteraction.reset();
 
-      expect(reviewInteraction.filter.value.value).toBe('');
-      expect(reviewInteraction.filter.matchOption.value).toBe('start');
-      expect(reviewInteraction.reviewStateFilter).toBe(ReviewStateFilterOption.ALL);
-      expect(reviewInteraction.currentReviewWord).toBeNull();
-      expect(reviewInteraction.currentReviewWordIndex).toBeNull();
+      expect(pronunciationInteraction.filter.value.value).toBe('');
+      expect(pronunciationInteraction.filter.matchOption.value).toBe('start');
+      expect(pronunciationInteraction.reviewStateFilter).toBe(ReviewStateFilterOption.ALL);
+      expect(pronunciationInteraction.currentReviewWord).toBeNull();
+      expect(pronunciationInteraction.currentReviewWordIndex).toBeNull();
       expect(testWords[0].currentReview).toBe(false);
     });
   });
 
   describe('keyboard navigation', () => {
     it('should initialize with null currentReviewWordIndex', () => {
-      expect(reviewInteraction.currentReviewWordIndex).toBeNull();
+      expect(pronunciationInteraction.currentReviewWordIndex).toBeNull();
     });
 
     it('should update currentReviewWordIndex when reviewWord is called', () => {
-      reviewInteraction.reviewWord('dog'); // dog is at index 1 in testWords
+      pronunciationInteraction.reviewWord('dog'); // dog is at index 1 in testWords
 
-      expect(reviewInteraction.currentReviewWordIndex).toBe(1);
-      expect(reviewInteraction.currentReviewWord).toBe(testWords[1]);
+      expect(pronunciationInteraction.currentReviewWordIndex).toBe(1);
+      expect(pronunciationInteraction.currentReviewWord).toBe(testWords[1]);
     });
 
     describe('gotoNextWord', () => {
       it('should start with first word when no word changer', () => {
-        expect(reviewInteraction.currentReviewWord).toBeNull();
+        expect(pronunciationInteraction.currentReviewWord).toBeNull();
 
-        reviewInteraction.gotoNextWord();
+        pronunciationInteraction.gotoNextWord();
 
-        expect(reviewInteraction.currentReviewWord).toBe(testWords[0]); // 'cat'
-        expect(reviewInteraction.currentReviewWordIndex).toBe(0);
+        expect(pronunciationInteraction.currentReviewWord).toBe(testWords[0]); // 'cat'
+        expect(pronunciationInteraction.currentReviewWordIndex).toBe(0);
         expect(audioFilePlayer.playedFiles).toContain('words/cat');
       });
 
       it('should move to next word in sequence', () => {
-        reviewInteraction.reviewWord('cat'); // Start at index 0
+        pronunciationInteraction.reviewWord('cat'); // Start at index 0
         audioFilePlayer.playedFiles = []; // Clear previous calls
 
-        reviewInteraction.gotoNextWord();
+        pronunciationInteraction.gotoNextWord();
 
-        expect(reviewInteraction.currentReviewWord).toBe(testWords[1]); // 'dog'
-        expect(reviewInteraction.currentReviewWordIndex).toBe(1);
+        expect(pronunciationInteraction.currentReviewWord).toBe(testWords[1]); // 'dog'
+        expect(pronunciationInteraction.currentReviewWordIndex).toBe(1);
         expect(audioFilePlayer.playedFiles).toContain('words/dog');
       });
 
       it('should repeat word changer when at end of list', () => {
-        reviewInteraction.reviewWord('bird'); // Last word (index 3)
+        pronunciationInteraction.reviewWord('bird'); // Last word (index 3)
         audioFilePlayer.playedFiles = []; // Clear previous calls
 
-        reviewInteraction.gotoNextWord();
+        pronunciationInteraction.gotoNextWord();
 
-        expect(reviewInteraction.currentReviewWord).toBe(testWords[3]); // Still 'bird'
-        expect(reviewInteraction.currentReviewWordIndex).toBe(3);
+        expect(pronunciationInteraction.currentReviewWord).toBe(testWords[3]); // Still 'bird'
+        expect(pronunciationInteraction.currentReviewWordIndex).toBe(3);
         expect(audioFilePlayer.playedFiles).toContain('words/bird');
       });
 
       it('should handle empty filtered list gracefully', () => {
-        reviewInteraction.filter.value.set('nonexistent');
+        pronunciationInteraction.filter.value.set('nonexistent');
 
-        reviewInteraction.gotoNextWord();
+        pronunciationInteraction.gotoNextWord();
 
-        expect(reviewInteraction.currentReviewWord).toBeNull();
-        expect(reviewInteraction.currentReviewWordIndex).toBeNull();
+        expect(pronunciationInteraction.currentReviewWord).toBeNull();
+        expect(pronunciationInteraction.currentReviewWordIndex).toBeNull();
       });
     });
 
     describe('gotoPreviousWord', () => {
       it('should start with last word when no word changer', () => {
-        expect(reviewInteraction.currentReviewWord).toBeNull();
+        expect(pronunciationInteraction.currentReviewWord).toBeNull();
 
-        reviewInteraction.gotoPreviousWord();
+        pronunciationInteraction.gotoPreviousWord();
 
-        expect(reviewInteraction.currentReviewWord).toBe(testWords[3]); // 'bird'
-        expect(reviewInteraction.currentReviewWordIndex).toBe(3);
+        expect(pronunciationInteraction.currentReviewWord).toBe(testWords[3]); // 'bird'
+        expect(pronunciationInteraction.currentReviewWordIndex).toBe(3);
         expect(audioFilePlayer.playedFiles).toContain('words/bird');
       });
 
       it('should move to previous word in sequence', () => {
-        reviewInteraction.reviewWord('dog'); // Start at index 1
+        pronunciationInteraction.reviewWord('dog'); // Start at index 1
         audioFilePlayer.playedFiles = []; // Clear previous calls
 
-        reviewInteraction.gotoPreviousWord();
+        pronunciationInteraction.gotoPreviousWord();
 
-        expect(reviewInteraction.currentReviewWord).toBe(testWords[0]); // 'cat'
-        expect(reviewInteraction.currentReviewWordIndex).toBe(0);
+        expect(pronunciationInteraction.currentReviewWord).toBe(testWords[0]); // 'cat'
+        expect(pronunciationInteraction.currentReviewWordIndex).toBe(0);
         expect(audioFilePlayer.playedFiles).toContain('words/cat');
       });
 
       it('should repeat word changer when at start of list', () => {
-        reviewInteraction.reviewWord('cat'); // First word (index 0)
+        pronunciationInteraction.reviewWord('cat'); // First word (index 0)
         audioFilePlayer.playedFiles = []; // Clear previous calls
 
-        reviewInteraction.gotoPreviousWord();
+        pronunciationInteraction.gotoPreviousWord();
 
-        expect(reviewInteraction.currentReviewWord).toBe(testWords[0]); // Still 'cat'
-        expect(reviewInteraction.currentReviewWordIndex).toBe(0);
+        expect(pronunciationInteraction.currentReviewWord).toBe(testWords[0]); // Still 'cat'
+        expect(pronunciationInteraction.currentReviewWordIndex).toBe(0);
         expect(audioFilePlayer.playedFiles).toContain('words/cat');
       });
 
       it('should handle empty filtered list gracefully', () => {
-        reviewInteraction.filter.value.set('nonexistent');
+        pronunciationInteraction.filter.value.set('nonexistent');
 
-        reviewInteraction.gotoPreviousWord();
+        pronunciationInteraction.gotoPreviousWord();
 
-        expect(reviewInteraction.currentReviewWord).toBeNull();
-        expect(reviewInteraction.currentReviewWordIndex).toBeNull();
+        expect(pronunciationInteraction.currentReviewWord).toBeNull();
+        expect(pronunciationInteraction.currentReviewWordIndex).toBeNull();
       });
     });
 
     describe('navigation with filtering', () => {
       it('should update index when filter changes', () => {
         // Start with 'dog' selected (index 1 in full list)
-        reviewInteraction.reviewWord('dog');
-        expect(reviewInteraction.currentReviewWordIndex).toBe(1);
+        pronunciationInteraction.reviewWord('dog');
+        expect(pronunciationInteraction.currentReviewWordIndex).toBe(1);
 
         // Filter to only words starting with 'd'
-        reviewInteraction.filter.value.set('d');
+        pronunciationInteraction.filter.value.set('d');
 
         // Now 'dog' should be at index 0 in filtered list
-        expect(reviewInteraction.currentReviewWordIndex).toBe(0);
+        expect(pronunciationInteraction.currentReviewWordIndex).toBe(0);
 
         // Test navigation works with filter
-        reviewInteraction.gotoNextWord();
-        expect(reviewInteraction.currentReviewWord?.word).toBe('dog'); // Should repeat since it's the only 'd' word
+        pronunciationInteraction.gotoNextWord();
+        expect(pronunciationInteraction.currentReviewWord?.word).toBe('dog'); // Should repeat since it's the only 'd' word
       });
 
       it('should handle word disappearing from filter', () => {
         // Start with 'cat' selected
-        reviewInteraction.reviewWord('cat');
-        expect(reviewInteraction.currentReviewWordIndex).toBe(0);
+        pronunciationInteraction.reviewWord('cat');
+        expect(pronunciationInteraction.currentReviewWordIndex).toBe(0);
 
         // Filter to only words starting with 'd' (cat disappears)
-        reviewInteraction.filter.value.set('d');
+        pronunciationInteraction.filter.value.set('d');
 
         // Index should be null since 'cat' is not in filtered list
-        expect(reviewInteraction.currentReviewWordIndex).toBeNull();
-        expect(reviewInteraction.currentReviewWord?.word).toBe('cat'); // Word is still current
+        expect(pronunciationInteraction.currentReviewWordIndex).toBeNull();
+        expect(pronunciationInteraction.currentReviewWord?.word).toBe('cat'); // Word is still current
 
         // Navigation should work from filtered list
-        reviewInteraction.gotoNextWord();
-        expect(reviewInteraction.currentReviewWord?.word).toBe('dog');
+        pronunciationInteraction.gotoNextWord();
+        expect(pronunciationInteraction.currentReviewWord?.word).toBe('dog');
       });
     });
   });
@@ -518,9 +518,9 @@ describe('ReviewPronunciationInteraction', () => {
       const file = createFileFromTestData('valid-review-state.json');
 
       // Spy on setReviewState to verify it gets called with correct data
-      const setReviewStateSpy = jest.spyOn(reviewInteraction, 'setReviewState');
+      const setReviewStateSpy = jest.spyOn(pronunciationInteraction, 'setReviewState');
 
-      reviewInteraction.loadReviewStateFromFile(file);
+      pronunciationInteraction.loadReviewStateFromFile(file);
 
       // Wait for FileReader to complete (real FileReader is asynchronous)
       setTimeout(() => {
@@ -539,7 +539,7 @@ describe('ReviewPronunciationInteraction', () => {
       // Use real test file but with wrong filename
       const file = createFileFromTestData('valid-review-state.json', 'wrong-name.json');
 
-      reviewInteraction.loadReviewStateFromFile(file);
+      pronunciationInteraction.loadReviewStateFromFile(file);
 
       expect(alertSpy).toHaveBeenCalledWith('Please select a file named "review-pronunciation-state.json"');
 
@@ -553,7 +553,7 @@ describe('ReviewPronunciationInteraction', () => {
       // Use real test file with invalid JSON
       const file = createFileFromTestData('invalid-json.json');
 
-      reviewInteraction.loadReviewStateFromFile(file);
+      pronunciationInteraction.loadReviewStateFromFile(file);
 
       // Wait for FileReader to complete and error handling to execute
       setTimeout(() => {
@@ -573,7 +573,7 @@ describe('ReviewPronunciationInteraction', () => {
       // Use real test file with invalid structure
       const file = createFileFromTestData('invalid-structure.json');
 
-      reviewInteraction.loadReviewStateFromFile(file);
+      pronunciationInteraction.loadReviewStateFromFile(file);
 
       // Wait for FileReader to complete and validation to execute
       setTimeout(() => {
@@ -589,117 +589,117 @@ describe('ReviewPronunciationInteraction', () => {
 
   describe('maxNumWordsToShow functionality', () => {
     it('should initialize with maxNumWordsToShow of 20', () => {
-      expect(reviewInteraction.maxNumWordsToShow).toBe(20);
+      expect(pronunciationInteraction.maxNumWordsToShow).toBe(20);
     });
 
     it('should limit displayedWords to maxNumWordsToShow in activity mode', () => {
-      reviewInteraction.setReviewMode(false);
-      reviewInteraction.maxNumWordsToShow = 2;
+      pronunciationInteraction.setReviewMode(false);
+      pronunciationInteraction.maxNumWordsToShow = 2;
 
-      const displayed = reviewInteraction.displayedWords;
+      const displayed = pronunciationInteraction.displayedWords;
       expect(displayed).toHaveLength(2);
       expect(displayed[0].word).toBe('cat');
       expect(displayed[1].word).toBe('dog');
     });
 
     it('should show hasMoreWords as true when filteredWords exceed maxNumWordsToShow in activity mode', () => {
-      reviewInteraction.setReviewMode(false);
-      reviewInteraction.maxNumWordsToShow = 2;
+      pronunciationInteraction.setReviewMode(false);
+      pronunciationInteraction.maxNumWordsToShow = 2;
 
-      expect(reviewInteraction.hasMoreWords).toBe(true);
+      expect(pronunciationInteraction.hasMoreWords).toBe(true);
     });
 
     it('should show hasMoreWords as false in review mode regardless of maxNumWordsToShow', () => {
-      reviewInteraction.setReviewMode(true);
-      reviewInteraction.maxNumWordsToShow = 2;
+      pronunciationInteraction.setReviewMode(true);
+      pronunciationInteraction.maxNumWordsToShow = 2;
 
-      expect(reviewInteraction.hasMoreWords).toBe(false);
+      expect(pronunciationInteraction.hasMoreWords).toBe(false);
     });
 
     it('should double maxNumWordsToShow when showMoreWords is called', () => {
-      reviewInteraction.maxNumWordsToShow = 20;
-      reviewInteraction.showMoreWords();
-      expect(reviewInteraction.maxNumWordsToShow).toBe(40);
+      pronunciationInteraction.maxNumWordsToShow = 20;
+      pronunciationInteraction.showMoreWords();
+      expect(pronunciationInteraction.maxNumWordsToShow).toBe(40);
     });
 
     it('should reset maxNumWordsToShow to 20 when filter value changes', () => {
-      reviewInteraction.maxNumWordsToShow = 40;
-      reviewInteraction.setFilterValue('test');
-      expect(reviewInteraction.maxNumWordsToShow).toBe(20);
+      pronunciationInteraction.maxNumWordsToShow = 40;
+      pronunciationInteraction.setFilterValue('test');
+      expect(pronunciationInteraction.maxNumWordsToShow).toBe(20);
     });
 
     it('should reset maxNumWordsToShow to 20 when filter match option changes', () => {
-      reviewInteraction.maxNumWordsToShow = 40;
-      reviewInteraction.setFilterMatchOption('any');
-      expect(reviewInteraction.maxNumWordsToShow).toBe(20);
+      pronunciationInteraction.maxNumWordsToShow = 40;
+      pronunciationInteraction.setFilterMatchOption('any');
+      expect(pronunciationInteraction.maxNumWordsToShow).toBe(20);
     });
 
     it('should reset maxNumWordsToShow to 20 when review state filter changes', () => {
-      reviewInteraction.maxNumWordsToShow = 40;
-      reviewInteraction.setReviewStateFilter(ReviewStateFilterOption.UNREVIEWED);
-      expect(reviewInteraction.maxNumWordsToShow).toBe(20);
+      pronunciationInteraction.maxNumWordsToShow = 40;
+      pronunciationInteraction.setReviewStateFilter(ReviewStateFilterOption.UNREVIEWED);
+      expect(pronunciationInteraction.maxNumWordsToShow).toBe(20);
     });
 
     it('should reset maxNumWordsToShow to 20 when reset is called', () => {
-      reviewInteraction.maxNumWordsToShow = 40;
-      reviewInteraction.reset();
-      expect(reviewInteraction.maxNumWordsToShow).toBe(20);
+      pronunciationInteraction.maxNumWordsToShow = 40;
+      pronunciationInteraction.reset();
+      expect(pronunciationInteraction.maxNumWordsToShow).toBe(20);
     });
 
     it('should provide correct tooltip for showMoreWordsAction', () => {
-      reviewInteraction.setReviewMode(false);
-      reviewInteraction.maxNumWordsToShow = 2; // Should show 2 words, with 2 more available
+      pronunciationInteraction.setReviewMode(false);
+      pronunciationInteraction.maxNumWordsToShow = 2; // Should show 2 words, with 2 more available
 
-      const action = reviewInteraction.showMoreWordsAction;
+      const action = pronunciationInteraction.showMoreWordsAction;
       expect(action.tooltip).toBe('Show 2 more words');
     });
 
     it('should calculate tooltip correctly when fewer additional words than maxNumWordsToShow', () => {
-      reviewInteraction.setReviewMode(false);
-      reviewInteraction.maxNumWordsToShow = 3; // Should show 3 words, with 1 more available
+      pronunciationInteraction.setReviewMode(false);
+      pronunciationInteraction.maxNumWordsToShow = 3; // Should show 3 words, with 1 more available
 
-      const action = reviewInteraction.showMoreWordsAction;
+      const action = pronunciationInteraction.showMoreWordsAction;
       expect(action.tooltip).toBe('Show 1 more words');
     });
   });
 
   describe('autoplay with activity mode', () => {
     it('should stop autoplay at last displayed word in activity mode', async () => {
-      reviewInteraction.setReviewMode(false);
-      reviewInteraction.maxNumWordsToShow = 2; // Only show 2 words in activity mode
+      pronunciationInteraction.setReviewMode(false);
+      pronunciationInteraction.maxNumWordsToShow = 2; // Only show 2 words in activity mode
 
-      reviewInteraction.startAutoplay();
-      expect(reviewInteraction.autoplaying).toBe(true);
-      expect(reviewInteraction.currentReviewWord?.word).toBe('cat');
+      pronunciationInteraction.startAutoplay();
+      expect(pronunciationInteraction.autoplaying).toBe(true);
+      expect(pronunciationInteraction.currentReviewWord?.word).toBe('cat');
 
       // Manually trigger next autoplay step
-      await reviewInteraction.gotoNextWord();
-      expect(reviewInteraction.currentReviewWord?.word).toBe('dog');
+      await pronunciationInteraction.gotoNextWord();
+      expect(pronunciationInteraction.currentReviewWord?.word).toBe('dog');
 
       // Since we're at the last displayed word (index 1 of 2), autoplay should stop on next call
       // We can't easily test the private autoplayNext method, but we can test the behavior indirectly
-      expect(reviewInteraction.displayedWords).toHaveLength(2);
-      expect(reviewInteraction.currentReviewWordIndex).toBe(1); // At last displayed word
+      expect(pronunciationInteraction.displayedWords).toHaveLength(2);
+      expect(pronunciationInteraction.currentReviewWordIndex).toBe(1); // At last displayed word
     });
 
     it('should continue autoplay through all words in review mode', async () => {
-      reviewInteraction.setReviewMode(true);
-      reviewInteraction.maxNumWordsToShow = 2; // This should be ignored in review mode
+      pronunciationInteraction.setReviewMode(true);
+      pronunciationInteraction.maxNumWordsToShow = 2; // This should be ignored in review mode
 
-      expect(reviewInteraction.displayedWords).toHaveLength(4); // Should show all words in review mode
+      expect(pronunciationInteraction.displayedWords).toHaveLength(4); // Should show all words in review mode
 
-      reviewInteraction.startAutoplay();
-      expect(reviewInteraction.autoplaying).toBe(true);
-      expect(reviewInteraction.currentReviewWord?.word).toBe('cat');
+      pronunciationInteraction.startAutoplay();
+      expect(pronunciationInteraction.autoplaying).toBe(true);
+      expect(pronunciationInteraction.currentReviewWord?.word).toBe('cat');
 
-      await reviewInteraction.gotoNextWord();
-      expect(reviewInteraction.currentReviewWord?.word).toBe('dog');
+      await pronunciationInteraction.gotoNextWord();
+      expect(pronunciationInteraction.currentReviewWord?.word).toBe('dog');
 
-      await reviewInteraction.gotoNextWord();
-      expect(reviewInteraction.currentReviewWord?.word).toBe('fish');
+      await pronunciationInteraction.gotoNextWord();
+      expect(pronunciationInteraction.currentReviewWord?.word).toBe('fish');
 
-      await reviewInteraction.gotoNextWord();
-      expect(reviewInteraction.currentReviewWord?.word).toBe('bird');
+      await pronunciationInteraction.gotoNextWord();
+      expect(pronunciationInteraction.currentReviewWord?.word).toBe('bird');
     });
   });
 });

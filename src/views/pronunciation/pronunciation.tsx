@@ -1,19 +1,19 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
-import { ReviewPronunciationInteraction } from '@/models/pronunciation/pronunciation-interaction';
+import { PronunciationInteraction } from '@/models/pronunciation/pronunciation-interaction';
 import { ActionButton } from '@/lib/views/action-button';
 import { AppState } from '@/models/app-state';
 
 /**
- * Action controls component for Review Pronunciation page
+ * Action controls component for Pronunciation page
  */
-interface ReviewActionControlsProps {
-  reviewInteraction: ReviewPronunciationInteraction;
+interface ActionControlsProps {
+  pronunciationInteraction: PronunciationInteraction;
   reviewStateFileLoader: (file: File) => void;
 }
 
-export const ReviewActionControls: React.FC<ReviewActionControlsProps> = observer(({ reviewInteraction, reviewStateFileLoader }) => {
+export const ActionControls: React.FC<ActionControlsProps> = observer(({ pronunciationInteraction, reviewStateFileLoader }) => {
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -38,28 +38,28 @@ export const ReviewActionControls: React.FC<ReviewActionControlsProps> = observe
         onDragOver={handleDragOver}
         onDrop={handleDrop}
       >
-        <ActionButton action={reviewInteraction.loadStateAction}>
+        <ActionButton action={pronunciationInteraction.loadStateAction}>
           + Load State
         </ActionButton>
       </div>
 
-      <ActionButton action={reviewInteraction.saveStateAction}>
+      <ActionButton action={pronunciationInteraction.saveStateAction}>
         Save State
       </ActionButton>
 
-      <ActionButton action={reviewInteraction.downloadWrongWordsAction}>
+      <ActionButton action={pronunciationInteraction.downloadWrongWordsAction}>
         Download Wrong Words
       </ActionButton>
 
-      <ActionButton action={reviewInteraction.resetAllToUnreviewedAction}>
+      <ActionButton action={pronunciationInteraction.resetAllToUnreviewedAction}>
         Reset All to Unreviewed
       </ActionButton>
 
-      <ActionButton action={reviewInteraction.resetAllToOKAction}>
+      <ActionButton action={pronunciationInteraction.resetAllToOKAction}>
         Reset All to OK
       </ActionButton>
 
-      <ActionButton action={reviewInteraction.reviewWrongWordsAction}>
+      <ActionButton action={pronunciationInteraction.reviewWrongWordsAction}>
         Review Wrong Words
       </ActionButton>
     </div>
@@ -67,48 +67,48 @@ export const ReviewActionControls: React.FC<ReviewActionControlsProps> = observe
 });
 
 /**
- * State controls component for Review Pronunciation page
+ * State controls component for Pronunciation page
  */
-interface ReviewStateControlsProps {
-  reviewInteraction: ReviewPronunciationInteraction;
+interface StateControlsProps {
+  pronunciationInteraction: PronunciationInteraction;
 }
 
-export const ReviewStateControls: React.FC<ReviewStateControlsProps> = observer(({ reviewInteraction }) => {
+export const StateControls: React.FC<StateControlsProps> = observer(({ pronunciationInteraction }) => {
   return (
     <div className="word-changer-panel">
       <div className="current-review-word">
         <span
           className={clsx('word-span', {
-            'no-word': !reviewInteraction.currentReviewWord,
-            'wrong current-review': reviewInteraction.currentReviewWord?.soundsWrong,
-            'ok current-review': reviewInteraction.currentReviewWord && !reviewInteraction.currentReviewWord.soundsWrong
+            'no-word': !pronunciationInteraction.currentReviewWord,
+            'wrong current-review': pronunciationInteraction.currentReviewWord?.soundsWrong,
+            'ok current-review': pronunciationInteraction.currentReviewWord && !pronunciationInteraction.currentReviewWord.soundsWrong
           })}
         >
-          {reviewInteraction.currentReviewWord ? reviewInteraction.currentReviewWord.word : '\u00A0'}
+          {pronunciationInteraction.currentReviewWord ? pronunciationInteraction.currentReviewWord.word : '\u00A0'}
         </span>
 
-        {reviewInteraction.reviewMode && (
+        {pronunciationInteraction.reviewMode && (
           <div className="review-buttons">
-            <ActionButton action={reviewInteraction.markSoundsWrongAction}>
+            <ActionButton action={pronunciationInteraction.markSoundsWrongAction}>
               Sounds Wrong
             </ActionButton>
 
-            <ActionButton action={reviewInteraction.markOKAction}>
+            <ActionButton action={pronunciationInteraction.markOKAction}>
               Sounds OK
             </ActionButton>
           </div>
         )}
 
         <div className="autoplay-controls">
-          <ActionButton action={reviewInteraction.autoplayAction}>
-            {reviewInteraction.autoplaying ? 'Stop' : 'Auto'}
+          <ActionButton action={pronunciationInteraction.autoplayAction}>
+            {pronunciationInteraction.autoplaying ? 'Stop' : 'Auto'}
           </ActionButton>
 
           <select
-            value={reviewInteraction.autoPlayWaitMillis}
+            value={pronunciationInteraction.autoPlayWaitMillis}
             onChange={(e) => {
-              reviewInteraction.stopAutoplay();
-              reviewInteraction.setAutoPlayWaitMillis(parseInt(e.target.value));
+              pronunciationInteraction.stopAutoplay();
+              pronunciationInteraction.setAutoPlayWaitMillis(parseInt(e.target.value));
             }}
             className="autoplay-interval-select"
           >
@@ -125,22 +125,22 @@ export const ReviewStateControls: React.FC<ReviewStateControlsProps> = observer(
 });
 
 /**
- * Filters component for Review Pronunciation page
+ * Filters component for Pronunciation page
  */
-interface ReviewPronunciationFiltersProps {
-  reviewInteraction: ReviewPronunciationInteraction;
+interface PronunciationFiltersProps {
+  pronunciationInteraction: PronunciationInteraction;
 }
 
-export const ReviewPronunciationFilters: React.FC<ReviewPronunciationFiltersProps> = observer(({ reviewInteraction }) => {
+export const PronunciationFilters: React.FC<PronunciationFiltersProps> = observer(({ pronunciationInteraction }) => {
   return (
-    <div className="review-pronunciation-filters">
+    <div className="pronunciation-filters">
       <div className="filter-panel">
         <div className="filter-controls">
           <input
             type="text"
             placeholder="Filter..."
-            value={reviewInteraction.filter.value.value}
-            onChange={(e) => reviewInteraction.setFilterValue(e.target.value)}
+            value={pronunciationInteraction.filter.value.value}
+            onChange={(e) => pronunciationInteraction.setFilterValue(e.target.value)}
           />
           <div className="radio-group">
             <span>Match</span>
@@ -150,26 +150,26 @@ export const ReviewPronunciationFilters: React.FC<ReviewPronunciationFiltersProp
                   type="radio"
                   name="match-option"
                   value={option}
-                  checked={reviewInteraction.filter.matchOption.value === option}
-                  onChange={(e) => reviewInteraction.setFilterMatchOption(e.target.value as 'start' | 'end' | 'any')}
+                  checked={pronunciationInteraction.filter.matchOption.value === option}
+                  onChange={(e) => pronunciationInteraction.setFilterMatchOption(e.target.value as 'start' | 'end' | 'any')}
                 />
                 {option}
               </label>
             ))}
           </div>
 
-          {reviewInteraction.reviewMode && (
+          {pronunciationInteraction.reviewMode && (
             <div className="review-state-filter">
               <label htmlFor="review-state-select">Review state:</label>
               <select
                 id="review-state-select"
-                value={reviewInteraction.reviewStateFilterOptions.indexOf(reviewInteraction.reviewStateFilter)}
+                value={pronunciationInteraction.reviewStateFilterOptions.indexOf(pronunciationInteraction.reviewStateFilter)}
                 onChange={(e) => {
                   const index = parseInt(e.target.value);
-                  reviewInteraction.setReviewStateFilter(reviewInteraction.reviewStateFilterOptions[index]);
+                  pronunciationInteraction.setReviewStateFilter(pronunciationInteraction.reviewStateFilterOptions[index]);
                 }}
               >
-                {reviewInteraction.reviewStateFilterOptions.map((option, index) => (
+                {pronunciationInteraction.reviewStateFilterOptions.map((option, index) => (
                   <option key={index} value={index}>
                     {option.label}
                   </option>
@@ -178,11 +178,11 @@ export const ReviewPronunciationFilters: React.FC<ReviewPronunciationFiltersProp
             </div>
           )}
 
-          {!reviewInteraction.reviewMode && (
+          {!pronunciationInteraction.reviewMode && (
             <div className="auto-control">
               <button
-                title={reviewInteraction.autoplayAction.tooltip}
-                onClick={() => reviewInteraction.autoplayAction.doAction()}
+                title={pronunciationInteraction.autoplayAction.tooltip}
+                onClick={() => pronunciationInteraction.autoplayAction.doAction()}
               >
                 Auto
               </button>
@@ -194,8 +194,8 @@ export const ReviewPronunciationFilters: React.FC<ReviewPronunciationFiltersProp
               <input
                 id="review-mode-checkbox"
                 type="checkbox"
-                checked={reviewInteraction.reviewMode}
-                onChange={(e) => reviewInteraction.setReviewMode(e.target.checked)}
+                checked={pronunciationInteraction.reviewMode}
+                onChange={(e) => pronunciationInteraction.setReviewMode(e.target.checked)}
               />
               Review mode
             </label>
@@ -207,38 +207,38 @@ export const ReviewPronunciationFilters: React.FC<ReviewPronunciationFiltersProp
 });
 
 /**
- * Word choice component for Review Pronunciation page
+ * Word choice component for Pronunciation page
  */
-interface ReviewPronunciationWordChoiceProps {
-  reviewInteraction: ReviewPronunciationInteraction;
+interface PronunciationWordChoiceProps {
+  pronunciationInteraction: PronunciationInteraction;
 }
 
-export const ReviewPronunciationWordChoice: React.FC<ReviewPronunciationWordChoiceProps> = observer(({ reviewInteraction }) => {
-  const keyboardHint = reviewInteraction.reviewMode
+export const PronunciationWordChoice: React.FC<PronunciationWordChoiceProps> = observer(({ pronunciationInteraction }) => {
+  const keyboardHint = pronunciationInteraction.reviewMode
     ? "Use ← → arrow keys to navigate, Alt+→ to start autoplay, space bar to toggle sounds wrong"
     : "Use ← → arrow keys to navigate, Alt+→ to start autoplay";
 
   return (
-    <div className="review-pronunciation-word-choice">
+    <div className="pronunciation-word-choice">
       {/* Filtered Words */}
       <div className="filtered-words">
         <div className="words-header">
-          <span className="words-count">Words: {reviewInteraction.filteredWords.length}</span>
+          <span className="words-count">Words: {pronunciationInteraction.filteredWords.length}</span>
           <div className="keyboard-shortcuts">
             <span className="shortcut-hint">{keyboardHint}</span>
           </div>
         </div>
 
-        <div className={clsx('words-grid', 'touch-interactive-area', { 'activity-mode': !reviewInteraction.reviewMode })}>
-          {reviewInteraction.displayedWords.map(word => {
+        <div className={clsx('words-grid', 'touch-interactive-area', { 'activity-mode': !pronunciationInteraction.reviewMode })}>
+          {pronunciationInteraction.displayedWords.map(word => {
             const isCurrentReview = word.currentReview;
             const isReviewed = word.reviewed && !word.soundsWrong;
             const isWrong = word.soundsWrong;
 
             const className = clsx('word-span', {
               // Review mode states
-              'wrong': reviewInteraction.reviewMode && isWrong,
-              'ok': reviewInteraction.reviewMode && isReviewed && !isWrong,
+              'wrong': pronunciationInteraction.reviewMode && isWrong,
+              'ok': pronunciationInteraction.reviewMode && isReviewed && !isWrong,
               'current-review': isCurrentReview
             });
 
@@ -246,18 +246,18 @@ export const ReviewPronunciationWordChoice: React.FC<ReviewPronunciationWordChoi
               <span
                 key={word.word}
                 className={className}
-                onClick={() => reviewInteraction.reviewWord(word.word)}
+                onClick={() => pronunciationInteraction.reviewWord(word.word)}
               >
                 {word.word}
               </span>
             );
           })}
 
-          {reviewInteraction.hasMoreWords && (
+          {pronunciationInteraction.hasMoreWords && (
             <button
               className={clsx('word-span', 'ellipsis-button')}
-              title={reviewInteraction.showMoreWordsAction.tooltip}
-              onClick={() => reviewInteraction.showMoreWordsAction.doAction()}
+              title={pronunciationInteraction.showMoreWordsAction.tooltip}
+              onClick={() => pronunciationInteraction.showMoreWordsAction.doAction()}
             >
               ...
             </button>
@@ -269,47 +269,47 @@ export const ReviewPronunciationWordChoice: React.FC<ReviewPronunciationWordChoi
 });
 
 /**
- * Main view component for Review Pronunciation page
+ * Main view component for Pronunciation page
  */
-interface ReviewPronunciationViewProps {
-  reviewInteraction: ReviewPronunciationInteraction;
+interface PronunciationViewProps {
+  pronunciationInteraction: PronunciationInteraction;
 }
 
-export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = observer(({ reviewInteraction }) => {
+export const PronunciationView: React.FC<PronunciationViewProps> = observer(({ pronunciationInteraction }) => {
   // Add keyboard event listener for arrow key navigation and space bar toggle
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight' && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
         e.preventDefault();
-        if (reviewInteraction.autoplaying) {
-          reviewInteraction.stopAutoplay();
+        if (pronunciationInteraction.autoplaying) {
+          pronunciationInteraction.stopAutoplay();
         }
-        reviewInteraction.gotoNextWord();
+        pronunciationInteraction.gotoNextWord();
       } else if (e.key === 'ArrowRight' && !e.ctrlKey && e.altKey && !e.shiftKey && !e.metaKey) {
         e.preventDefault();
-        if (!reviewInteraction.autoplaying) {
-          reviewInteraction.startAutoplay();
+        if (!pronunciationInteraction.autoplaying) {
+          pronunciationInteraction.startAutoplay();
         }
       } else if (e.key === 'ArrowLeft' && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
         e.preventDefault();
-        if (reviewInteraction.autoplaying) {
-          reviewInteraction.stopAutoplay();
+        if (pronunciationInteraction.autoplaying) {
+          pronunciationInteraction.stopAutoplay();
         }
-        reviewInteraction.gotoPreviousWord();
-      } else if (e.key === ' ' && reviewInteraction.currentReviewWord && reviewInteraction.reviewMode) {
+        pronunciationInteraction.gotoPreviousWord();
+      } else if (e.key === ' ' && pronunciationInteraction.currentReviewWord && pronunciationInteraction.reviewMode) {
         e.preventDefault();
-        if (reviewInteraction.autoplaying) {
-          reviewInteraction.stopAutoplay();
+        if (pronunciationInteraction.autoplaying) {
+          pronunciationInteraction.stopAutoplay();
         }
-        if (reviewInteraction.currentReviewWord.soundsWrong) {
-          reviewInteraction.markOK(reviewInteraction.currentReviewWord.word);
+        if (pronunciationInteraction.currentReviewWord.soundsWrong) {
+          pronunciationInteraction.markOK(pronunciationInteraction.currentReviewWord.word);
         } else {
-          reviewInteraction.markSoundsWrong(reviewInteraction.currentReviewWord.word);
+          pronunciationInteraction.markSoundsWrong(pronunciationInteraction.currentReviewWord.word);
         }
       } else if (e.key === 'Escape') {
         e.preventDefault();
-        if (reviewInteraction.autoplaying) {
-          reviewInteraction.stopAutoplay();
+        if (pronunciationInteraction.autoplaying) {
+          pronunciationInteraction.stopAutoplay();
         }
       }
     };
@@ -319,30 +319,30 @@ export const ReviewPronunciationView: React.FC<ReviewPronunciationViewProps> = o
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [reviewInteraction]);
+  }, [pronunciationInteraction]);
 
   return (
-    <div className={clsx('review-pronunciation-container', { 'activity-mode': !reviewInteraction.reviewMode })}>
-      {reviewInteraction.reviewMode && (
-        <ReviewActionControls
-          reviewInteraction={reviewInteraction}
-          reviewStateFileLoader={(file: File) => reviewInteraction.loadReviewStateFromFile(file)}
+    <div className={clsx('pronunciation-container', { 'activity-mode': !pronunciationInteraction.reviewMode })}>
+      {pronunciationInteraction.reviewMode && (
+        <ActionControls
+          pronunciationInteraction={pronunciationInteraction}
+          reviewStateFileLoader={(file: File) => pronunciationInteraction.loadReviewStateFromFile(file)}
         />
       )}
-      <ReviewPronunciationFilters reviewInteraction={reviewInteraction} />
-      <ReviewStateControls reviewInteraction={reviewInteraction} />
-      <ReviewPronunciationWordChoice reviewInteraction={reviewInteraction} />
+      <PronunciationFilters pronunciationInteraction={pronunciationInteraction} />
+      <StateControls pronunciationInteraction={pronunciationInteraction} />
+      <PronunciationWordChoice pronunciationInteraction={pronunciationInteraction} />
     </div>
   );
 });
 
 /**
- * Full page component for Review Pronunciation page
+ * Full page component for Pronunciation page
  */
-interface ReviewPronunciationPageProps { appState: AppState; }
+interface PronunciationPageProps { appState: AppState; }
 
-export const ReviewPronunciationPage: React.FC<ReviewPronunciationPageProps> = observer(({ appState }) => {
+export const PronunciationPage: React.FC<PronunciationPageProps> = observer(({ appState }) => {
   return (
-    <ReviewPronunciationView reviewInteraction={appState.reviewPronunciationInteraction} />
+    <PronunciationView pronunciationInteraction={appState.pronunciationInteraction} />
   );
 });
