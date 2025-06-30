@@ -2,7 +2,7 @@ import { createTestWordGraph, testWordLists } from '@/tests/utils/test-word-grap
 import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
 import { AudioFilePlayerInterface } from '@/models/audio/audio-file-player-interface';
 import { AppState } from '@/models/app-state';
-import { WordChanger } from '@/models/word-changer';
+import { WordChanger } from '@/models/changer/word-changer';
 import { WordSayer } from '@/models/word-sayer';
 import { Word } from '@/models/Word';
 

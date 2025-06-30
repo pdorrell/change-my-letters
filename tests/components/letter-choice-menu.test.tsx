@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import { LetterChoiceMenu } from '@/views/word-changer';
+import { LetterChoiceMenu } from '@/views/changer/word-changer';
 import { createTestWordChanger } from '@/tests/utils/test-app-builder';
 import { MenuManager } from '@/lib/views/menu-manager';
-import { WordSelectionByLetter } from '@/models/word-selection-by-letter';
-import { WordChanger } from '@/models/word-changer';
+import { WordSelectionByLetter } from '@/models/changer/word-selection-by-letter';
+import { WordChanger } from '@/models/changer/word-changer';
 import { Word } from '@/models/Word';
 import { TestChoiceHandler } from '@/tests/utils/test-choice-handler';
 import { FreeTestWordGetter } from '@/tests/utils/free-test-word-getter';

@@ -1,5 +1,5 @@
 import { WordInteraction } from '@/models/interaction/word-interaction';
-import { WordChanger } from '@/models/word-changer';
+import { WordChanger } from '@/models/changer/word-changer';
 import { MenuManager } from '@/lib/views/menu-manager';
 import { createTestWordChanger } from '@/tests/utils/test-app-builder';
 import { createTestWordGraph, testWordLists } from '@/tests/utils/test-word-graph-builder';

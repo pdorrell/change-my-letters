@@ -1,5 +1,5 @@
-import { History, WordChange } from '@/models/History';
-import { WordChanger } from '@/models/word-changer';
+import { History, WordChange } from '@/views/changer/History';
+import { WordChanger } from '@/models/changer/word-changer';
 import { WordGraph } from '@/models/word-graph';
 import { WordGraphBuilder } from '@/models/word-graph-builder';
 import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';

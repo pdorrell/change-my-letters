@@ -1,6 +1,6 @@
 import { LetterInteraction } from '@/models/interaction/letter-interaction';
 import { Letter } from '@/models/Letter';
-import { WordChanger } from '@/models/word-changer';
+import { WordChanger } from '@/models/changer/word-changer';
 import { createTestWordChanger } from '@/tests/utils/test-app-builder';
 import { createTestWordGraph, testWordLists } from '@/tests/utils/test-word-graph-builder';
 

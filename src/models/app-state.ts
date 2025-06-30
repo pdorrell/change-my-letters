@@ -1,6 +1,6 @@
 import { makeAutoObservable, computed } from 'mobx';
 import { WordGraph } from '@/models/word-graph';
-import { WordChanger } from '@/models/word-changer';
+import { WordChanger } from '@/models/changer/word-changer';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
 import { ResetInteraction } from '@/models/reset/reset-interaction';
 import { PronunciationInteraction } from '@/models/pronunciation/pronunciation-interaction';

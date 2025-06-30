@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 import { AppState } from '@/models/app-state';
-import { WordChangerPage } from '@/views/word-changer';
+import { WordChangerPage } from '@/views/changer/word-changer';
 import { PronunciationPage } from '@/views/pronunciation/pronunciation';
 import { ResetPage } from '@/views/reset/reset';
 import { FindersPage } from '@/views/finders/finders-page';

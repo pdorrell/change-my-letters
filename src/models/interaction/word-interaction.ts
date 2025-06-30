@@ -6,7 +6,7 @@ import { Letter } from '@/models/Letter';
 import { Position } from '@/models/Position';
 import { MenuManager } from '@/lib/views/menu-manager';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
-import { History } from '@/models/History';
+import { History } from '@/views/changer/History';
 import { InteractionOptions } from './interaction-options';
 
 /**

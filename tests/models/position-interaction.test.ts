@@ -1,6 +1,6 @@
 import { PositionInteraction } from '@/models/interaction/position-interaction';
 import { Position } from '@/models/Position';
-import { WordChanger } from '@/models/word-changer';
+import { WordChanger } from '@/models/changer/word-changer';
 import { createTestWordChanger } from '@/tests/utils/test-app-builder';
 import { createTestWordGraph, testWordLists } from '@/tests/utils/test-word-graph-builder';
 

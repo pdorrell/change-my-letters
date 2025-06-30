@@ -4,12 +4,12 @@ import clsx from 'clsx';
 import { range } from '@/lib/util';
 import { PositionInteraction } from '@/models/interaction/position-interaction';
 import { WordInteraction } from '@/models/interaction/word-interaction';
-import { WordChanger } from '@/models/word-changer';
+import { WordChanger } from '@/models/changer/word-changer';
 import { LetterView, LetterPlaceholder } from '@/views/Letter';
 import { PositionView, PositionPlaceholder } from '@/views/Position';
 import { MenuManagerInterface } from '@/lib/views/menu-manager-interface';
 import { ActionButton } from '@/lib/views/action-button';
-import { HistoryPanel } from '@/views/History';
+import { HistoryPanel } from './History';
 import { ValueCheckbox } from '@/lib/views/value-model-views';
 import { Panel } from '@/lib/views/panel';
 import {
@@ -107,7 +107,7 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordI
 /**
  * View component for the letter choice menu
  */
-import { WordSelectionByLetter } from '@/models/word-selection-by-letter';
+import { WordSelectionByLetter } from '@/models/changer/word-selection-by-letter';
 import { ButtonAction } from '@/lib/models/actions';
 
 interface LetterChoiceMenuProps {
