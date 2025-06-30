@@ -3,7 +3,7 @@ import { AppState, ResettableAppPage } from '@/models/app-state';
 import { ButtonAction } from '@/lib/models/actions';
 import { Word } from '@/models/Word';
 import { Filter } from '@/lib/models/filter';
-import { MakeInteraction } from '@/models/maker/make';
+import { MakerInteraction } from '@/models/maker/make';
 
 /**
  * Model for the Reset page interaction
@@ -86,7 +86,7 @@ export class ResetInteraction {
   setNewWord(wordObj: Word): void {
     if (this.targetPage === 'make') {
       // Reset the make interaction with the new word
-      this.appState.makeInteraction = new MakeInteraction(
+      this.appState.makerInteraction = new MakerInteraction(
         this.appState.wordSayer,
         this.appState.wordGraph,
         wordObj

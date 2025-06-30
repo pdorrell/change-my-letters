@@ -86,7 +86,7 @@ const AppBody: React.FC<AppBodyProps> = observer(({ appState }) => {
         <WordChangerPage wordChanger={appState.wordChanger} maxWordLength={appState.wordGraph.maxWordLength} />
       ) : appState.currentPage === 'make' ? (
         <MakePage
-          makeInteraction={appState.makeInteraction}
+          makerInteraction={appState.makerInteraction}
           maxWordLength={appState.wordGraph.maxWordLength}
         />
       ) : appState.currentPage === 'reviewPronunciation' ? (

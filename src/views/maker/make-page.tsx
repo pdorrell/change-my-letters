@@ -1,23 +1,23 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { MakeInteraction } from '@/models/maker/make';
+import { MakerInteraction } from '@/models/maker/make';
 import { MakeWordView } from './make-word-view';
 import { useScrollOnResize } from '@/hooks/useScrollOnResize';
 
 interface MakePageProps {
-  makeInteraction: MakeInteraction;
+  makerInteraction: MakerInteraction;
   maxWordLength: number;
 }
 
-export const MakePage: React.FC<MakePageProps> = observer(({ makeInteraction, maxWordLength }) => {
+export const MakePage: React.FC<MakePageProps> = observer(({ makerInteraction, maxWordLength }) => {
   const { containerRef, bottomElementRef } = useScrollOnResize(20); // 20px margin from bottom
 
   return (
     <div className="make-page" ref={containerRef}>
       {/* History words */}
-      {makeInteraction.history.historyWords.length > 0 && (
+      {makerInteraction.history.historyWords.length > 0 && (
         <div className="make-history">
-          {makeInteraction.history.historyWords.map((word, index) => (
+          {makerInteraction.history.historyWords.map((word, index) => (
             <MakeWordView
               key={`history-${index}`}
               word={word}
@@ -32,30 +32,30 @@ export const MakePage: React.FC<MakePageProps> = observer(({ makeInteraction, ma
       {/* Current word */}
       <div className="make-current-word">
         <MakeWordView
-          word={makeInteraction.currentWord.word}
+          word={makerInteraction.currentWord.word}
           maxWordLength={maxWordLength}
-          backgroundClass={makeInteraction.currentWord.backgroundClass}
+          backgroundClass={makerInteraction.currentWord.backgroundClass}
           showControls={true}
-          wordInteraction={makeInteraction.currentWord}
-          newWordAction={makeInteraction.newWordAction}
+          wordInteraction={makerInteraction.currentWord}
+          newWordAction={makerInteraction.newWordAction}
         />
       </div>
 
       {/* Result word (always shown) */}
       <div className="make-result-word" ref={bottomElementRef}>
-        {makeInteraction.result ? (
+        {makerInteraction.result ? (
           <MakeWordView
-            word={makeInteraction.result.word}
+            word={makerInteraction.result.word}
             maxWordLength={maxWordLength}
-            backgroundClass={makeInteraction.result.backgroundClass}
-            showControls={makeInteraction.result.showDeleteButton}
-            deleteAction={makeInteraction.deleteResultAction}
+            backgroundClass={makerInteraction.result.backgroundClass}
+            showControls={makerInteraction.result.showDeleteButton}
+            deleteAction={makerInteraction.deleteResultAction}
           />
         ) : (
           <MakeWordView
             word={null}
             maxWordLength={maxWordLength}
-            backgroundClass={makeInteraction.resultDisplay.backgroundClass}
+            backgroundClass={makerInteraction.resultDisplay.backgroundClass}
             showControls={false}
           />
         )}

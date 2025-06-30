@@ -9,7 +9,7 @@ import { WordGraph } from '@/models/word-graph';
 
 export type MakeState = 'awaiting-new-word' | 'awaiting-change' | 'incorrect-result' | 'correct-result';
 
-export class MakeInteraction {
+export class MakerInteraction {
   history: MakeWordsHistory;
   currentWord: MakeCurrentWord;
   result: MakeWordResult | null = null;
