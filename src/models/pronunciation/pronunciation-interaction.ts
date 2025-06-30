@@ -14,7 +14,8 @@ export class PronunciationInteraction {
   reviewMode: boolean = false;
 
   // Activity mode word display limit
-  maxNumWordsToShow: number = 20;  // TODO3 [TODO3.md] don't automatically reset to 20 on filter changes
+  defaultMaxNumWordsToShow: number = 20;
+  maxNumWordsToShow: number = 20;  // DONE-TODO3 [TODO3.md] don't automatically reset to 20 on filter changes
 
   // Filter settings
   filter: Filter;
@@ -38,6 +39,7 @@ export class PronunciationInteraction {
   resetAllToUnreviewedAction: ButtonAction;
   resetAllToOKAction: ButtonAction;
   reviewWrongWordsAction: ButtonAction;
+  resetMaxWordsAction: ButtonAction;
 
   constructor(
     public readonly sortedWords: Word[],
@@ -59,6 +61,7 @@ export class PronunciationInteraction {
     this.resetAllToUnreviewedAction = new ButtonAction(() => this.resetAllToUnreviewed(), { tooltip: "Reset all words to unreviewed" });
     this.resetAllToOKAction = new ButtonAction(() => this.resetAllToOK(), { tooltip: "Reset all words to OK" });
     this.reviewWrongWordsAction = new ButtonAction(() => this.reviewWrongWords(), { tooltip: "Update review state so that only current 'wrong' words are to be reviewed" });
+    this.resetMaxWordsAction = new ButtonAction(() => this.resetMaxWordsToShow(), { tooltip: `Reset maximum number of words to show to ${this.defaultMaxNumWordsToShow}` });
 
     makeAutoObservable(this, {
       filteredWords: computed,
@@ -69,7 +72,8 @@ export class PronunciationInteraction {
       currentReviewWordIndex: computed,
       markOKAction: computed,
       markSoundsWrongAction: computed,
-      autoplayAction: computed
+      autoplayAction: computed,
+      resetMaxWordsAction: computed
     });
   }
 
@@ -272,7 +276,7 @@ export class PronunciationInteraction {
     this.filter.value.set('');
     this.filter.matchOption.set('start');
     this.setReviewStateFilter(ReviewStateFilterOption.ALL);
-    this.maxNumWordsToShow = 20; // Reset to initial value
+    this.maxNumWordsToShow = this.defaultMaxNumWordsToShow; // Reset to initial value
 
     // Clear current review word
     if (this.currentReviewWord) {
@@ -346,7 +350,6 @@ export class PronunciationInteraction {
   setReviewStateFilter(filter: ReviewStateFilterOption): void {
     this.stopAutoplay();
     this.reviewStateFilter = filter;
-    this.maxNumWordsToShow = 20; // Reset to initial value when filtering changes
   }
 
   @action
@@ -366,15 +369,25 @@ export class PronunciationInteraction {
   }
 
   @action
+  resetMaxWordsToShow(): void {
+    this.maxNumWordsToShow = this.defaultMaxNumWordsToShow;
+  }
+
+  get resetMaxWordsAction(): ButtonAction {
+    const enabled = this.maxNumWordsToShow !== this.defaultMaxNumWordsToShow;
+    const handler = enabled ? () => this.resetMaxWordsToShow() : null;
+    const tooltip = `Reset maximum number of words to show to ${this.defaultMaxNumWordsToShow}`;
+    return new ButtonAction(handler, { tooltip });
+  }
+
+  @action
   setFilterValue(value: string): void {
     this.filter.value.set(value);
-    this.maxNumWordsToShow = 20; // Reset to initial value when filtering changes
   }
 
   @action
   setFilterMatchOption(option: 'start' | 'end' | 'any'): void {
     this.filter.matchOption.set(option);
-    this.maxNumWordsToShow = 20; // Reset to initial value when filtering changes
   }
 
 

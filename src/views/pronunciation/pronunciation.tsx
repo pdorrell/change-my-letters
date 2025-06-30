@@ -225,6 +225,11 @@ export const PronunciationWordChoice: React.FC<PronunciationWordChoiceProps> = o
         <div className="words-header">
           <span className="words-count">Words: {pronunciationInteraction.filteredWords.length}</span>
           <div className="keyboard-shortcuts">
+            {!pronunciationInteraction.reviewMode && (
+              <ActionButton action={pronunciationInteraction.resetMaxWordsAction}>
+                ↻...
+              </ActionButton>
+            )}
             <span className="shortcut-hint">{keyboardHint}</span>
           </div>
         </div>

@@ -1,3 +1,5 @@
+DONE-TODO3
+
 Currently PronunciationInteraction.maxNumWordsToShow is reset to 20 if filter values are changed.
 
 Change this logic to instead do the following:
