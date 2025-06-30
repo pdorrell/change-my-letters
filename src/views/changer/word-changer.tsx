@@ -7,12 +7,10 @@ import { WordInteraction } from '@/models/interaction/word-interaction';
 import { WordChanger } from '@/models/changer/word-changer';
 import { LetterView, LetterPlaceholder } from '@/views/Letter';
 import { PositionView, PositionPlaceholder } from '@/views/Position';
-import { MenuManagerInterface } from '@/lib/views/menu-manager-interface';
 import { ActionButton } from '@/lib/views/action-button';
 import { HistoryPanel } from './History';
 import { ValueCheckbox } from '@/lib/views/value-model-views';
 import { Panel } from '@/lib/views/panel';
-import { LetterChoiceMenu } from '@/lib/views/letter-choice-menu';
 
 /**
  * View component for displaying the word changer

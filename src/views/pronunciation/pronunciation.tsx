@@ -79,12 +79,12 @@ export const StateControls: React.FC<StateControlsProps> = observer(({ pronuncia
       <div className="current-review-word">
         <span
           className={clsx('word-span', {
-            'no-word': !pronunciationInteraction.currentReviewWord,
-            'wrong current-review': pronunciationInteraction.currentReviewWord?.soundsWrong,
-            'ok current-review': pronunciationInteraction.currentReviewWord && !pronunciationInteraction.currentReviewWord.soundsWrong
+            'no-word': !pronunciationInteraction.currentWord,
+            'wrong current-review': pronunciationInteraction.currentWord?.soundsWrong,
+            'ok current-review': pronunciationInteraction.currentWord && !pronunciationInteraction.currentWord.soundsWrong
           })}
         >
-          {pronunciationInteraction.currentReviewWord ? pronunciationInteraction.currentReviewWord.word : '\u00A0'}
+          {pronunciationInteraction.currentWord ? pronunciationInteraction.currentWord.word : '\u00A0'}
         </span>
 
         {pronunciationInteraction.reviewMode && (
@@ -301,15 +301,15 @@ export const PronunciationView: React.FC<PronunciationViewProps> = observer(({ p
           pronunciationInteraction.stopAutoplay();
         }
         pronunciationInteraction.gotoPreviousWord();
-      } else if (e.key === ' ' && pronunciationInteraction.currentReviewWord && pronunciationInteraction.reviewMode) {
+      } else if (e.key === ' ' && pronunciationInteraction.currentWord && pronunciationInteraction.reviewMode) {
         e.preventDefault();
         if (pronunciationInteraction.autoplaying) {
           pronunciationInteraction.stopAutoplay();
         }
-        if (pronunciationInteraction.currentReviewWord.soundsWrong) {
-          pronunciationInteraction.markOK(pronunciationInteraction.currentReviewWord.word);
+        if (pronunciationInteraction.currentWord.soundsWrong) {
+          pronunciationInteraction.markOK(pronunciationInteraction.currentWord.word);
         } else {
-          pronunciationInteraction.markSoundsWrong(pronunciationInteraction.currentReviewWord.word);
+          pronunciationInteraction.markSoundsWrong(pronunciationInteraction.currentWord.word);
         }
       } else if (e.key === 'Escape') {
         e.preventDefault();

@@ -332,7 +332,7 @@ describe('PronunciationView', () => {
           testWords[0].reviewed = true; // cat - reviewed OK
           testWords[1].soundsWrong = true; // dog - wrong
           testWords[2].currentReview = true; // fish - current review
-          pronunciationInteraction.currentReviewWord = testWords[2];
+          pronunciationInteraction.currentWord = testWords[2];
         });
       });
 

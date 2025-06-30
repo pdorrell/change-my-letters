@@ -22,7 +22,7 @@ export class PronunciationInteraction {
   reviewStateFilter: ReviewStateFilterOption = ReviewStateFilterOption.ALL;
 
   // Current review word
-  currentReviewWord: Word | null = null;
+  currentWord: Word | null = null;
 
   // Autoplay state
   autoplaying: boolean = false;
@@ -67,7 +67,7 @@ export class PronunciationInteraction {
       hasMoreWords: computed,
       showMoreWordsAction: computed,
       reviewStateFilterOptions: computed,
-      currentReviewWordIndex: computed,
+      currentWordIndex: computed,
       markOKAction: computed,
       markSoundsWrongAction: computed,
       autoplayAction: computed,
@@ -112,24 +112,24 @@ export class PronunciationInteraction {
     return new ButtonAction(handler, { tooltip });
   }
 
-  // Computed property for currentReviewWordIndex
-  get currentReviewWordIndex(): number | null {
-    if (!this.currentReviewWord) return null;
+  // Computed property for currentWordIndex
+  get currentWordIndex(): number | null {
+    if (!this.currentWord) return null;
 
     const filtered = this.filteredWords;
-    const index = filtered.findIndex(word => word === this.currentReviewWord);
+    const index = filtered.findIndex(word => word === this.currentWord);
     return index >= 0 ? index : null;
   }
 
   get markOKAction(): ButtonAction {
-    const enabled = this.currentReviewWord && this.currentReviewWord.soundsWrong;
-    const handler = enabled ? () => this.markOK(this.currentReviewWord!.word) : null;
+    const enabled = this.currentWord && this.currentWord.soundsWrong;
+    const handler = enabled ? () => this.markOK(this.currentWord!.word) : null;
     return new ButtonAction(handler, { tooltip: "Mark word changer as sounding OK" });
   }
 
   get markSoundsWrongAction(): ButtonAction {
-    const enabled = this.currentReviewWord && !this.currentReviewWord.soundsWrong;
-    const handler = enabled ? () => this.markSoundsWrong(this.currentReviewWord!.word) : null;
+    const enabled = this.currentWord && !this.currentWord.soundsWrong;
+    const handler = enabled ? () => this.markSoundsWrong(this.currentWord!.word) : null;
     return new ButtonAction(handler, { tooltip: "Mark word changer as sounding wrong" });
   }
 
@@ -187,9 +187,9 @@ export class PronunciationInteraction {
   resetAllToUnreviewed(): void {
     this.stopAutoplay();
     // Clear current review word
-    if (this.currentReviewWord) {
-      this.currentReviewWord.currentReview = false;
-      this.currentReviewWord = null;
+    if (this.currentWord) {
+      this.currentWord.currentReview = false;
+      this.currentWord = null;
     }
 
     // Reset all words
@@ -203,9 +203,9 @@ export class PronunciationInteraction {
   resetAllToOK(): void {
     this.stopAutoplay();
     // Clear current review word
-    if (this.currentReviewWord) {
-      this.currentReviewWord.currentReview = false;
-      this.currentReviewWord = null;
+    if (this.currentWord) {
+      this.currentWord.currentReview = false;
+      this.currentWord = null;
     }
 
     // Set all words as reviewed and OK
@@ -223,9 +223,9 @@ export class PronunciationInteraction {
     }
 
     // Clear current review word if it's not wrong
-    if (this.currentReviewWord && !this.currentReviewWord.soundsWrong) {
-      this.currentReviewWord.currentReview = false;
-      this.currentReviewWord = null;
+    if (this.currentWord && !this.currentWord.soundsWrong) {
+      this.currentWord.currentReview = false;
+      this.currentWord = null;
     }
   }
 
@@ -253,13 +253,13 @@ export class PronunciationInteraction {
     if (!word) return;
 
     // Mark current review word as reviewed if it exists
-    if (this.currentReviewWord) {
-      this.currentReviewWord.reviewed = true;
-      this.currentReviewWord.currentReview = false;
+    if (this.currentWord) {
+      this.currentWord.reviewed = true;
+      this.currentWord.currentReview = false;
     }
 
     // Set new current review word
-    this.currentReviewWord = word;
+    this.currentWord = word;
     word.currentReview = true;
 
     // Say the word
@@ -277,9 +277,9 @@ export class PronunciationInteraction {
     this.maxNumWordsToShow = this.defaultMaxNumWordsToShow; // Reset to initial value
 
     // Clear current review word
-    if (this.currentReviewWord) {
-      this.currentReviewWord.currentReview = false;
-      this.currentReviewWord = null;
+    if (this.currentWord) {
+      this.currentWord.currentReview = false;
+      this.currentWord = null;
     }
   }
 
@@ -395,17 +395,17 @@ export class PronunciationInteraction {
     const filtered = this.filteredWords;
     if (filtered.length === 0) return;
 
-    if (this.currentReviewWordIndex === null) {
+    if (this.currentWordIndex === null) {
       // No word changer, start with first word
       await this.reviewWord(filtered[0].word);
-    } else if (this.currentReviewWordIndex < filtered.length - 1) {
+    } else if (this.currentWordIndex < filtered.length - 1) {
       // Move to next word
-      const nextIndex = this.currentReviewWordIndex + 1;
+      const nextIndex = this.currentWordIndex + 1;
       await this.reviewWord(filtered[nextIndex].word);
     } else {
       // At end of list, repeat word changer
-      if (this.currentReviewWord) {
-        await this.wordSayer.say(this.currentReviewWord.word);
+      if (this.currentWord) {
+        await this.wordSayer.say(this.currentWord.word);
       }
     }
   }
@@ -416,17 +416,17 @@ export class PronunciationInteraction {
     const filtered = this.filteredWords;
     if (filtered.length === 0) return;
 
-    if (this.currentReviewWordIndex === null) {
+    if (this.currentWordIndex === null) {
       // No word changer, start with last word
       await this.reviewWord(filtered[filtered.length - 1].word);
-    } else if (this.currentReviewWordIndex > 0) {
+    } else if (this.currentWordIndex > 0) {
       // Move to previous word
-      const prevIndex = this.currentReviewWordIndex - 1;
+      const prevIndex = this.currentWordIndex - 1;
       await this.reviewWord(filtered[prevIndex].word);
     } else {
       // At start of list, repeat word changer
-      if (this.currentReviewWord) {
-        await this.wordSayer.say(this.currentReviewWord.word);
+      if (this.currentWord) {
+        await this.wordSayer.say(this.currentWord.word);
       }
     }
   }
@@ -460,8 +460,8 @@ export class PronunciationInteraction {
 
     // Find current word index in the displayed words
     let currentIndexInDisplayed: number | null = null;
-    if (this.currentReviewWord) {
-      currentIndexInDisplayed = wordsToAutoplay.findIndex(word => word === this.currentReviewWord);
+    if (this.currentWord) {
+      currentIndexInDisplayed = wordsToAutoplay.findIndex(word => word === this.currentWord);
       if (currentIndexInDisplayed === -1) {
         currentIndexInDisplayed = null; // Current word not in displayed list
       }
@@ -483,13 +483,13 @@ export class PronunciationInteraction {
     const nextWord = wordsToAutoplay[nextIndex];
 
     // Mark current review word as reviewed if it exists
-    if (this.currentReviewWord) {
-      this.currentReviewWord.reviewed = true;
-      this.currentReviewWord.currentReview = false;
+    if (this.currentWord) {
+      this.currentWord.reviewed = true;
+      this.currentWord.currentReview = false;
     }
 
     // Set new current review word
-    this.currentReviewWord = nextWord;
+    this.currentWord = nextWord;
     nextWord.currentReview = true;
 
     // Say the word and wait for it to finish

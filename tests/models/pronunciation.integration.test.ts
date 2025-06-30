@@ -89,7 +89,7 @@ describe('Pronunciation Integration', () => {
       // Start reviewing
       pronunciationInteraction.reviewWord(testWord.word);
       expect(testWord.currentReview).toBe(true);
-      expect(pronunciationInteraction.currentReviewWord).toBe(testWord);
+      expect(pronunciationInteraction.currentWord).toBe(testWord);
 
       // Mark as wrong
       pronunciationInteraction.markSoundsWrong(testWord.word);
