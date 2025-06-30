@@ -39,7 +39,6 @@ export class PronunciationInteraction {
   resetAllToUnreviewedAction: ButtonAction;
   resetAllToOKAction: ButtonAction;
   reviewWrongWordsAction: ButtonAction;
-  resetMaxWordsAction: ButtonAction;
 
   constructor(
     public readonly sortedWords: Word[],
@@ -61,7 +60,6 @@ export class PronunciationInteraction {
     this.resetAllToUnreviewedAction = new ButtonAction(() => this.resetAllToUnreviewed(), { tooltip: "Reset all words to unreviewed" });
     this.resetAllToOKAction = new ButtonAction(() => this.resetAllToOK(), { tooltip: "Reset all words to OK" });
     this.reviewWrongWordsAction = new ButtonAction(() => this.reviewWrongWords(), { tooltip: "Update review state so that only current 'wrong' words are to be reviewed" });
-    this.resetMaxWordsAction = new ButtonAction(() => this.resetMaxWordsToShow(), { tooltip: `Reset maximum number of words to show to ${this.defaultMaxNumWordsToShow}` });
 
     makeAutoObservable(this, {
       filteredWords: computed,
