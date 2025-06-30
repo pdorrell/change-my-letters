@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { act } from 'react';
 import { runInAction } from 'mobx';
-import { PronunciationView, ActionControls } from '@/views/pronunciation/pronunciation';
+import { PronunciationView, ReviewStateControls } from '@/views/pronunciation/pronunciation';
 import { PronunciationInteraction } from '@/models/pronunciation/pronunciation-interaction';
 import { ReviewStateFilterOption } from '@/models/pronunciation/review-state-filter-option';
 import { Word } from '@/models/Word';
@@ -568,7 +568,7 @@ describe('PronunciationView', () => {
   });
 });
 
-describe('ActionControls', () => {
+describe('ReviewStateControls', () => {
   let pronunciationInteraction: PronunciationInteraction;
   let wordSayer: WordSayer;
   let audioFilePlayer: AudioFilePlayerTestDouble;
@@ -594,7 +594,7 @@ describe('ActionControls', () => {
   describe('Drag and Drop', () => {
     it('handles drag over event', () => {
       render(
-        <ActionControls
+        <ReviewStateControls
           pronunciationInteraction={pronunciationInteraction}
           reviewStateFileLoader={reviewStateFileLoader}
         />
@@ -617,7 +617,7 @@ describe('ActionControls', () => {
 
     it('calls reviewStateFileLoader with correct file on drop', () => {
       render(
-        <ActionControls
+        <ReviewStateControls
           pronunciationInteraction={pronunciationInteraction}
           reviewStateFileLoader={reviewStateFileLoader}
         />
@@ -645,7 +645,7 @@ describe('ActionControls', () => {
       const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
 
       render(
-        <ActionControls
+        <ReviewStateControls
           pronunciationInteraction={pronunciationInteraction}
           reviewStateFileLoader={reviewStateFileLoader}
         />
@@ -675,7 +675,7 @@ describe('ActionControls', () => {
       const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
 
       render(
-        <ActionControls
+        <ReviewStateControls
           pronunciationInteraction={pronunciationInteraction}
           reviewStateFileLoader={reviewStateFileLoader}
         />
@@ -704,7 +704,7 @@ describe('ActionControls', () => {
 
     it('calls reviewStateFileLoader when correct file is found among multiple files', () => {
       render(
-        <ActionControls
+        <ReviewStateControls
           pronunciationInteraction={pronunciationInteraction}
           reviewStateFileLoader={reviewStateFileLoader}
         />

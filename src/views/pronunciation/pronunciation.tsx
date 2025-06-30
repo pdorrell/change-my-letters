@@ -13,7 +13,7 @@ interface ActionControlsProps {
   reviewStateFileLoader: (file: File) => void;
 }
 
-export const ActionControls: React.FC<ActionControlsProps> = observer(({ pronunciationInteraction, reviewStateFileLoader }) => {
+export const ReviewStateControls: React.FC<ActionControlsProps> = observer(({ pronunciationInteraction, reviewStateFileLoader }) => {
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -324,7 +324,7 @@ export const PronunciationView: React.FC<PronunciationViewProps> = observer(({ p
   return (
     <div className={clsx('pronunciation-container', { 'activity-mode': !pronunciationInteraction.reviewMode })}>
       {pronunciationInteraction.reviewMode && (
-        <ActionControls
+        <ReviewStateControls
           pronunciationInteraction={pronunciationInteraction}
           reviewStateFileLoader={(file: File) => pronunciationInteraction.loadReviewStateFromFile(file)}
         />
