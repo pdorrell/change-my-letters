@@ -15,7 +15,7 @@ export class PronunciationInteraction {
 
   // Activity mode word display limit
   defaultMaxNumWordsToShow: number = 20;
-  maxNumWordsToShow: number = defaultMaxNumWordsToShow;
+  maxNumWordsToShow: number = this.defaultMaxNumWordsToShow;
 
   // Filter settings
   filter: Filter;
