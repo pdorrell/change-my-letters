@@ -71,7 +71,7 @@ export const ResetWordChoice: React.FC<ResetWordChoiceProps> = observer(({ reset
 interface ResetPageProps { resetInteraction: ResetInteraction; }
 
 export const ResetPage: React.FC<ResetPageProps> = observer(({ resetInteraction }) => {
-  const targetPageLabel = resetInteraction.targetPage === 'make' ? 'Make' : 'Changer';
+  const targetPageLabel = resetInteraction.targetPage === 'maker' ? 'Maker' : 'Changer';
 
   return (
     <>

@@ -84,7 +84,7 @@ export class ResetInteraction {
    * Set a new word as the word changer and reset the history
    */
   setNewWord(wordObj: Word): void {
-    if (this.targetPage === 'make') {
+    if (this.targetPage === 'maker') {
       // Reset the make interaction with the new word
       this.appState.makerInteraction = new MakerInteraction(
         this.appState.wordSayer,
@@ -92,7 +92,7 @@ export class ResetInteraction {
         wordObj
       );
       // Navigate back to the make view
-      this.appState.navigateTo('make');
+      this.appState.navigateTo('maker');
     } else {
       // Reset the app state with the new word object
       // This already sets the word as the current visiting word and resets history

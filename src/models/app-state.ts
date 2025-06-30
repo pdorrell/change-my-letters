@@ -16,10 +16,10 @@ import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';
 import { EmotionWordSet, HappyOrSad } from '@/models/audio/emotion-types';
 
 // Type for pages that can be reset
-export type ResettableAppPage = 'make' | 'changer';
+export type ResettableAppPage = 'maker' | 'changer';
 
 // Type for the main application pages
-type AppPage = ResettableAppPage | 'reviewPronunciation' | 'finders' | 'reset/changer' | 'reset/make';
+type AppPage = ResettableAppPage | 'reviewPronunciation' | 'finders' | 'reset/changer' | 'reset/maker';
 
 // Page configuration with labels for navigation
 interface PageConfig {
@@ -31,9 +31,9 @@ const PAGE_CONFIGS: Record<AppPage, PageConfig> = {
   changer: { label: 'Changer', tooltip: 'Change letters of a word' },
   reviewPronunciation: { label: 'Pronunciation', tooltip: 'Pronunciation of words' },
   finders: { label: 'Finders', tooltip: 'Find words by listening to them' },
-  make: { label: 'Make', tooltip: 'Practice making specific words' },
+  maker: { label: 'Make', tooltip: 'Practice making specific words' },
   'reset/changer': { label: 'Reset Changer', tooltip: 'Choose a new word for the Changer page' },
-  'reset/make': { label: 'Reset Make', tooltip: 'Choose a new word for the Make page' }
+  'reset/maker': { label: 'Reset Make', tooltip: 'Choose a new word for the Make page' }
 };
 
 /**
@@ -181,8 +181,8 @@ export class AppState {
    * Reset the game with a new word - navigates to appropriate reset page based on current page
    */
   resetGame(): void {
-    if (this.currentPage === 'make') {
-      this.navigateTo('reset/make');
+    if (this.currentPage === 'maker') {
+      this.navigateTo('reset/maker');
     } else if (this.currentPage === 'changer') {
       this.navigateTo('reset/changer');
     }
@@ -204,8 +204,8 @@ export class AppState {
     // Set reset interaction target page when navigating to reset pages
     if (page === 'reset/changer') {
       this.resetInteraction.setTargetPage('changer');
-    } else if (page === 'reset/make') {
-      this.resetInteraction.setTargetPage('make');
+    } else if (page === 'reset/maker') {
+      this.resetInteraction.setTargetPage('maker');
     }
   }
 
@@ -220,7 +220,7 @@ export class AppState {
    * Get pages that should appear in the navigation menu
    */
   get menuPages(): Array<{ page: AppPage; config: PageConfig; isActive: boolean }> {
-    const pages: AppPage[] = ['changer', 'reviewPronunciation', 'finders', 'make'];
+    const pages: AppPage[] = ['changer', 'reviewPronunciation', 'finders', 'maker'];
     return pages.map(page => ({
       page,
       config: PAGE_CONFIGS[page],
@@ -233,7 +233,7 @@ export class AppState {
    * Get reset action (computed) - only enabled on resettable pages
    */
   get resetAction(): ButtonAction {
-    const resettablePages: ResettableAppPage[] = ['changer', 'make'];
+    const resettablePages: ResettableAppPage[] = ['changer', 'maker'];
     const enabled = resettablePages.includes(this.currentPage as ResettableAppPage);
     const handler = enabled ? () => this.resetGame() : null;
     return new ButtonAction(handler, { tooltip: "Choose a new word" });
