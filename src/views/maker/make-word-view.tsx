@@ -7,7 +7,7 @@ import { LetterView, LetterPlaceholder } from '@/views/Letter';
 import { PositionView, PositionPlaceholder } from '@/views/Position';
 import { ActionButton } from '@/lib/views/action-button';
 import { ButtonAction } from '@/lib/models/actions';
-import { MakeCurrentWord } from '@/models/make/make-current-word';
+import { MakeCurrentWord } from '@/models/maker/make-current-word';
 
 interface MakeWordViewProps {
   word: Word | null;

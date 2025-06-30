@@ -6,7 +6,7 @@ import { WordChangerPage } from '@/views/word-changer';
 import { PronunciationPage } from '@/views/pronunciation/pronunciation';
 import { ResetPage } from '@/views/reset/reset';
 import { FindersPage } from '@/views/finders/finders-page';
-import { MakePage } from '@/views/make/make-page';
+import { MakePage } from '@/views/maker/make-page';
 
 interface AppProps {
   appState: AppState;

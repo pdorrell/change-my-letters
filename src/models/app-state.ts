@@ -7,7 +7,7 @@ import { PronunciationInteraction } from '@/models/pronunciation/pronunciation-i
 import { FindersInteraction } from '@/models/finders/finders-interaction';
 import { WordChoiceFinderInteraction } from '@/models/finders/word-choice-finder/word-choice-finder-interaction';
 import { WordsInRowFinder } from '@/models/finders/words-in-row-finder/words-in-row-finder';
-import { MakeInteraction } from '@/models/make/make-interaction';
+import { MakeInteraction } from '@/models/maker/make-interaction';
 import { Word } from '@/models/Word';
 import { ButtonAction } from '@/lib/models/actions';
 import { AudioFilePlayerInterface } from '@/models/audio/audio-file-player-interface';

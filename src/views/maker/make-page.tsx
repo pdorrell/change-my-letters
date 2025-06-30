@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { MakeInteraction } from '@/models/make/make-interaction';
+import { MakeInteraction } from '@/models/maker/make-interaction';
 import { MakeWordView } from './make-word-view';
 import { useScrollOnResize } from '@/hooks/useScrollOnResize';
 
