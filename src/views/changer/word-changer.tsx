@@ -107,7 +107,7 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordI
 /**
  * View component for the letter choice menu
  */
-import { WordSelectionByLetter } from '@/models/changer/word-selection-by-letter';
+import { WordSelectionByLetter } from '@/models/word-selection-by-letter';
 import { ButtonAction } from '@/lib/models/actions';
 
 interface LetterChoiceMenuProps {

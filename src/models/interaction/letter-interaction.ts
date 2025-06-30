@@ -4,7 +4,7 @@ import { Letter } from '@/models/Letter';
 import { MenuManagerInterface } from '@/lib/views/menu-manager-interface';
 import { Word } from '@/models/Word';
 import { ButtonAction } from '@/lib/models/actions';
-import { WordSelectionByLetter } from '@/models/changer/word-selection-by-letter';
+import { WordSelectionByLetter } from '@/models/word-selection-by-letter';
 import { InteractionOptions } from './interaction-options';
 
 /**
