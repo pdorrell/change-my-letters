@@ -17,7 +17,7 @@ describe('WordInteraction', () => {
   it('should initialize correctly with a word', () => {
     const wordGraph = createTestWordGraph(testWordLists.minimal);
     const wordObj = wordGraph.getRequiredWord('cat');
-    const wordInteractionLocal = new WordInteraction(wordObj, wordChanger.newWordHandler, wordChanger.wordSayer, menuManager, wordChanger.history);
+    const wordInteractionLocal = new WordInteraction(wordObj, wordChanger.newWordHandler, wordChanger.wordSayer, menuManager);
 
     expect(wordInteractionLocal.value).toBe('cat');
     expect(wordInteractionLocal.word).toBe(wordObj);
@@ -33,7 +33,7 @@ describe('WordInteraction', () => {
     const wordGraph = createTestWordGraph(testWordLists.minimal);
     const catWord = wordGraph.getRequiredWord('cat');
     const batWord = wordGraph.getRequiredWord('bat');
-    const wordInteractionLocal = new WordInteraction(catWord, wordChanger.newWordHandler, wordChanger.wordSayer, menuManager, wordChanger.history);
+    const wordInteractionLocal = new WordInteraction(catWord, wordChanger.newWordHandler, wordChanger.wordSayer, menuManager);
     wordInteractionLocal.updateWord(batWord);
 
     expect(wordInteractionLocal.value).toBe('bat');
@@ -48,7 +48,7 @@ describe('WordInteraction', () => {
 
   it('should access letters and positions via getters', () => {
     const word = createTestWordGraph(testWordLists.minimal).getRequiredWord('cat');
-    const wordInteractionLocal = new WordInteraction(word, wordChanger.newWordHandler, wordChanger.wordSayer, menuManager, wordChanger.history);
+    const wordInteractionLocal = new WordInteraction(word, wordChanger.newWordHandler, wordChanger.wordSayer, menuManager);
 
     // letters and positions are getters that map from interactions
     expect(wordInteractionLocal.letters.length).toBe(3);
@@ -60,7 +60,7 @@ describe('WordInteraction', () => {
     const canWord = createTestWordGraph(testWordLists.minimal).getRequiredWord('can');
     const atWord = createTestWordGraph(testWordLists.minimal).getRequiredWord('at'); // 2-letter word from deletion
 
-    const wordInteractionLocal = new WordInteraction(catWord, wordChanger.newWordHandler, wordChanger.wordSayer, menuManager, wordChanger.history);
+    const wordInteractionLocal = new WordInteraction(catWord, wordChanger.newWordHandler, wordChanger.wordSayer, menuManager);
 
     // Update to same length word
     wordInteractionLocal.updateWord(canWord);

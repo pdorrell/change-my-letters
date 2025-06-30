@@ -6,7 +6,6 @@ import { Letter } from '@/models/Letter';
 import { Position } from '@/models/Position';
 import { MenuManager } from '@/lib/views/menu-manager';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
-import { History } from '@/views/changer/History';
 import { InteractionOptions } from './interaction-options';
 
 /**
@@ -44,8 +43,6 @@ export class WordInteraction {
     // Reference to the menu manager
     public readonly menuManager: MenuManager,
 
-    // History model for compact history view
-    public readonly history: History | null,
 
     // Interaction options
     public readonly options: InteractionOptions = { disabled: false, showChangeHints: true, alwaysInteract: false }

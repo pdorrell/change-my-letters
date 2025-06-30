@@ -61,7 +61,7 @@ export class WordChanger implements WordStateManager {
     this.history = new History(this, initialWord);
 
     // Initialize the word interaction with the menu manager and history
-    this.wordInteraction = new WordInteraction(initialWord, this.newWordHandler, this.wordSayer, this.menuManager, this.history);
+    this.wordInteraction = new WordInteraction(initialWord, this.newWordHandler, this.wordSayer, this.menuManager);
 
     // Initialize button actions
     this.sayAction = new ButtonAction(() => this.wordInteraction.say(), { tooltip: "Say the word" });

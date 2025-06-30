@@ -31,7 +31,6 @@ export class MakeCurrentWord {
       this.newWordHandler,
       wordSayer,
       menuManager,
-      null, // No history for Make page
       options
     );
 
@@ -68,7 +67,6 @@ export class MakeCurrentWord {
       this.newWordHandler,
       this.wordSayer,
       this.wordInteraction.menuManager,
-      null,
       options
     );
   }
