@@ -1,4 +1,4 @@
-import { LetterInteraction } from '@/models/interaction/letter-interaction';
+import { LetterInteraction } from '@/models/interaction/letter';
 import { Letter } from '@/models/Letter';
 import { WordChanger } from '@/models/changer/word-changer';
 import { createTestWordChanger } from '@/tests/utils/test-app-builder';

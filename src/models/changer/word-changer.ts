@@ -1,6 +1,6 @@
 import { makeAutoObservable, computed } from 'mobx';
 import { History, WordStateManager } from '@/views/changer/History';
-import { WordInteraction } from '@/models/interaction/word-interaction';
+import { WordInteraction } from '@/models/interaction/word';
 import { Word } from '@/models/Word';
 import { ButtonAction } from '@/lib/models/actions';
 import { ValueModel } from '@/lib/models/value-models';

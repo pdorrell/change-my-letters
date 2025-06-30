@@ -1,4 +1,4 @@
-import { WordInteraction } from '@/models/interaction/word-interaction';
+import { WordInteraction } from '@/models/interaction/word';
 import { WordChanger } from '@/models/changer/word-changer';
 import { createTestWordChanger } from '@/tests/utils/test-app-builder';
 import { createTestWordGraph, testWordLists } from '@/tests/utils/test-word-graph-builder';

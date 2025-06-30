@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { Word } from '@/models/Word';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
-import { WordInteraction } from '@/models/interaction/word-interaction';
+import { WordInteraction } from '@/models/interaction/word';
 import { MenuManager } from '@/lib/views/menu-manager';
 import { InteractionOptions } from '@/models/interaction/interaction-options';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
-import { LetterInteraction } from '@/models/interaction/letter-interaction';
+import { LetterInteraction } from '@/models/interaction/letter';
 import { LetterChoiceMenu } from '@/lib/views/letter-choice-menu';
 
 /**

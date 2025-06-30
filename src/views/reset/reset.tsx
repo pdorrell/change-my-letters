@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { ResetInteraction } from '@/models/reset/reset-interaction';
+import { ResetInteraction } from '@/models/reset/reset';
 import { ActionButton } from '@/lib/views/action-button';
 import { FilterControls } from '@/lib/views/filter-controls';
 

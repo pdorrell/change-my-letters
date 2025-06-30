@@ -1,4 +1,4 @@
-import { PositionInteraction } from '@/models/interaction/position-interaction';
+import { PositionInteraction } from '@/models/interaction/position';
 import { Position } from '@/models/Position';
 import { WordChanger } from '@/models/changer/word-changer';
 import { createTestWordChanger } from '@/tests/utils/test-app-builder';

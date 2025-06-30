@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
-import { WordChoiceFinderInteraction } from '@/models/finders/word-choice-finder/word-choice-finder-interaction';
+import { WordChoiceFinderInteraction } from '@/models/finders/word-choice-finder/word-choice-finder';
 import { WordToFindView } from './word-to-find-view';
 import { ValueCheckbox } from '@/lib/views/value-model-views';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { FinderTypeNavigation } from '@/views/finders/finder-type-navigation';
-import { FindersInteraction } from '@/models/finders/finders-interaction';
+import { FindersInteraction } from '@/models/finders/finders';
 import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
 import { WordSayer } from '@/models/word-sayer';
 import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';

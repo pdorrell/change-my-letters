@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, act } from '@testing-library/react';
 import { PositionView } from '@/views/Position';
-import { PositionInteraction } from '@/models/interaction/position-interaction';
+import { PositionInteraction } from '@/models/interaction/position';
 import { Word } from '@/models/Word';
 import { FreeTestWordGetter } from '@/tests/utils/free-test-word-getter';
 import { MenuManagerTestDouble } from '@/tests/test_doubles/menu-manager-test-double';

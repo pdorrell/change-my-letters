@@ -1,4 +1,4 @@
-import { WordInteraction } from '@/models/interaction/word-interaction';
+import { WordInteraction } from '@/models/interaction/word';
 import { WordChanger } from '@/models/changer/word-changer';
 import { MenuManager } from '@/lib/views/menu-manager';
 import { createTestWordChanger } from '@/tests/utils/test-app-builder';

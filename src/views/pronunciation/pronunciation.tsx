@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
-import { PronunciationInteraction } from '@/models/pronunciation/pronunciation-interaction';
+import { PronunciationInteraction } from '@/models/pronunciation/pronunciation';
 import { ActionButton } from '@/lib/views/action-button';
 import { AppState } from '@/models/app-state';
 

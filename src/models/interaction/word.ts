@@ -1,6 +1,6 @@
 import { makeObservable, observable, computed, action } from 'mobx';
-import { LetterInteraction } from '@/models/interaction/letter-interaction';
-import { PositionInteraction } from '@/models/interaction/position-interaction';
+import { LetterInteraction } from '@/models/interaction/letter';
+import { PositionInteraction } from '@/models/interaction/position';
 import { Word } from '@/models/Word';
 import { Letter } from '@/models/Letter';
 import { Position } from '@/models/Position';

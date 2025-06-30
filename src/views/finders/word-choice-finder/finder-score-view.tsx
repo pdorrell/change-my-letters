@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { WordChoiceFinderInteraction } from '@/models/finders/word-choice-finder/word-choice-finder-interaction';
+import { WordChoiceFinderInteraction } from '@/models/finders/word-choice-finder/word-choice-finder';
 
 interface FinderScoreViewProps { finderInteraction: WordChoiceFinderInteraction; }
 
