@@ -54,3 +54,27 @@ This will be marked by a suffix TODO on the heading of the section describing th
 
 Similar to other todos, Claude should not proceed to implement the feature until the todo is formalised
 by adding a numerical id suffix and Claude is instructed to implement it.
+
+## Separate TODO<number>.md file
+
+If the TODO is too complex to fit comfortably in a single paragraph, then it may be placed in
+a separate markdown file. This file may be referenced from another doc file or source file.
+(The file will most likely be in the same directory as the TODO comment that references it.)
+
+## Multi-step Todos
+
+A more complex todo may have multiple steps, marked with STEP <n> labels, eg contents of TODO1234.md:
+
+````
+* STEP 1 Do the first thing
+* STEP 2 Do the second thing
+````
+
+For a multi-step TODO, I may give instructions to do one step at a time, eg "Do STEP 1 of TODO1234",
+and Claude would mark individual steps as DONE when finished.
+
+This will mostly happen when I want to review the completion of one STEP before allowing Claude
+to proceed with the next STEP.
+
+On the other hand, a TODO may contain a list of items, but I might still instruct Claude to do the whole
+TODO in one go.
