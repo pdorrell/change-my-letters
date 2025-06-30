@@ -1,9 +1,9 @@
 import { makeAutoObservable } from 'mobx';
 import { Word } from '@/models/Word';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
-import { MakeWordsHistory } from './make-words-history';
-import { MakeCurrentWord } from './make-current-word';
-import { MakeWordResult, MakeWordResultPlaceholder } from './make-word-result';
+import { MakeWordsHistory } from './maker-history';
+import { MakeCurrentWord } from './maker-current-word';
+import { MakeWordResult, MakeWordResultPlaceholder } from './maker-word-result';
 import { ButtonAction } from '@/lib/models/actions';
 import { WordGraph } from '@/models/word-graph';
 

@@ -3,7 +3,7 @@ import { AppState, ResettableAppPage } from '@/models/app-state';
 import { ButtonAction } from '@/lib/models/actions';
 import { Word } from '@/models/Word';
 import { Filter } from '@/lib/models/filter';
-import { MakerInteraction } from '@/models/maker/make';
+import { MakerInteraction } from '@/models/maker/maker';
 
 /**
  * Model for the Reset page interaction
