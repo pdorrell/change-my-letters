@@ -14,7 +14,7 @@ export class PronunciationInteraction {
   reviewMode: boolean = false;
 
   // Activity mode word display limit
-  maxNumWordsToShow: number = 20;
+  maxNumWordsToShow: number = 20;  // TODO3 [TODO3.md] don't automatically reset to 20 on filter changes
 
   // Filter settings
   filter: Filter;
