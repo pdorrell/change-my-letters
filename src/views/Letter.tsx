@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 import { LetterInteraction } from '@/models/interaction/letter-interaction';
-import { LetterChoiceMenu } from '@/views/changer/word-changer';
+import { LetterChoiceMenu } from '@/lib/views/letter-choice-menu';
 
 /**
  * Placeholder component that maintains the same dimensions as a letter

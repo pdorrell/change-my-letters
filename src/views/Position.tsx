@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 import { PositionInteraction } from '@/models/interaction/position-interaction';
-import { LetterChoiceMenu } from '@/views/changer/word-changer';
+import { LetterChoiceMenu } from '@/lib/views/letter-choice-menu';
 import { ActionButton } from '@/lib/views/action-button';
 
 /**
