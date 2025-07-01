@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 import { PronunciationReview } from '@/models/pronunciation/pronunciation-review';
 import { ActionButton } from '@/lib/views/action-button';
+import { FilterControls } from '@/lib/views/filter-controls';
 
 /**
  * Review mode action controls component for Pronunciation page
@@ -76,46 +77,24 @@ export const PronunciationReviewFilters: React.FC<PronunciationReviewFiltersProp
   return (
     <div className="pronunciation-filters">
       <div className="filter-panel">
-        <div className="filter-controls">
-          <input
-            type="text"
-            placeholder="Filter..."
-            value={pronunciation.filter.value.value}
-            onChange={(e) => pronunciation.setFilterValue(e.target.value)}
-          />
-          <div className="radio-group">
-            <span>Match</span>
-            {['start', 'end', 'any'].map((option) => (
-              <label key={option}>
-                <input
-                  type="radio"
-                  name="match-option"
-                  value={option}
-                  checked={pronunciation.filter.matchOption.value === option}
-                  onChange={(e) => pronunciation.setFilterMatchOption(e.target.value as 'start' | 'end' | 'any')}
-                />
-                {option}
-              </label>
+        <FilterControls filter={pronunciation.filter} />
+        
+        <div className="review-state-filter">
+          <label htmlFor="review-state-select">Review state:</label>
+          <select
+            id="review-state-select"
+            value={pronunciation.reviewStateFilterOptions.indexOf(pronunciation.reviewStateFilter)}
+            onChange={(e) => {
+              const index = parseInt(e.target.value);
+              pronunciation.setReviewStateFilter(pronunciation.reviewStateFilterOptions[index]);
+            }}
+          >
+            {pronunciation.reviewStateFilterOptions.map((option, index) => (
+              <option key={index} value={index}>
+                {option.label}
+              </option>
             ))}
-          </div>
-
-          <div className="review-state-filter">
-            <label htmlFor="review-state-select">Review state:</label>
-            <select
-              id="review-state-select"
-              value={pronunciation.reviewStateFilterOptions.indexOf(pronunciation.reviewStateFilter)}
-              onChange={(e) => {
-                const index = parseInt(e.target.value);
-                pronunciation.setReviewStateFilter(pronunciation.reviewStateFilterOptions[index]);
-              }}
-            >
-              {pronunciation.reviewStateFilterOptions.map((option, index) => (
-                <option key={index} value={index}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
+          </select>
         </div>
       </div>
     </div>

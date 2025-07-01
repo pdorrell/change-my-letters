@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 import { PronunciationActivity } from '@/models/pronunciation/pronunciation-activity';
 import { ActionButton } from '@/lib/views/action-button';
+import { FilterControls } from '@/lib/views/filter-controls';
 
 /**
  * Activity mode filters component for Pronunciation page
@@ -15,38 +16,7 @@ export const PronunciationActivityFilters: React.FC<PronunciationActivityFilters
   return (
     <div className="pronunciation-filters">
       <div className="filter-panel">
-        <div className="filter-controls">
-          <input
-            type="text"
-            placeholder="Filter..."
-            value={pronunciation.filter.value.value}
-            onChange={(e) => pronunciation.setFilterValue(e.target.value)}
-          />
-          <div className="radio-group">
-            <span>Match</span>
-            {['start', 'end', 'any'].map((option) => (
-              <label key={option}>
-                <input
-                  type="radio"
-                  name="match-option"
-                  value={option}
-                  checked={pronunciation.filter.matchOption.value === option}
-                  onChange={(e) => pronunciation.setFilterMatchOption(e.target.value as 'start' | 'end' | 'any')}
-                />
-                {option}
-              </label>
-            ))}
-          </div>
-
-          <div className="auto-control">
-            <button
-              title={pronunciation.autoplayAction.tooltip}
-              onClick={() => pronunciation.autoplayAction.doAction()}
-            >
-              Auto
-            </button>
-          </div>
-        </div>
+        <FilterControls filter={pronunciation.filter} />
       </div>
     </div>
   );
