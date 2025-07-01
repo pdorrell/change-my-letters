@@ -348,6 +348,7 @@ export class Pronunciation {
   setReviewStateFilter(filter: ReviewStateFilterOption): void {
     this.stopAutoplay();
     this.reviewStateFilter = filter;
+    this.maxNumWordsToShow = this.defaultMaxNumWordsToShow;
   }
 
   @action
@@ -381,11 +382,13 @@ export class Pronunciation {
   @action
   setFilterValue(value: string): void {
     this.filter.value.set(value);
+    this.maxNumWordsToShow = this.defaultMaxNumWordsToShow;
   }
 
   @action
   setFilterMatchOption(option: 'start' | 'end' | 'any'): void {
     this.filter.matchOption.set(option);
+    this.maxNumWordsToShow = this.defaultMaxNumWordsToShow;
   }
 
 
