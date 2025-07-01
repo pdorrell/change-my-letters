@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { Word } from '@/models/Word';
 
-export class MakeWordsHistory {
+export class MakerHistory {
   private words: Word[] = [];
   private visitedWords: Set<string> = new Set();
 

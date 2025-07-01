@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { WordChoiceFinderInteraction } from '@/models/finders/word-choice-finder/word-choice-finder';
+import { WordChoiceFinder } from '@/models/finders/word-choice-finder/word-choice-finder';
 import { ActionButton } from '@/lib/views/action-button';
 
-interface FinderControlsProps { finderInteraction: WordChoiceFinderInteraction; }
+interface FinderControlsProps { finderInteraction: WordChoiceFinder; }
 
 export const FinderControls: React.FC<FinderControlsProps> = observer(({ finderInteraction }) => {
   return (

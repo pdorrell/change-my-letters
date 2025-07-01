@@ -9,7 +9,7 @@ import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';
 import { HappyOrSad } from '@/models/audio/emotion-types';
 import { shuffle } from '@/lib/util';
 
-export class WordChoiceFinderInteraction {
+export class WordChoiceFinder {
   wordSayer: WordSayerInterface;
   words: string[];
   wordsToFind: WordToFind[];

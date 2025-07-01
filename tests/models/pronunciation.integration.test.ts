@@ -1,24 +1,26 @@
 import { AppState } from '@/models/app-state';
-import { PronunciationInteraction } from '@/models/pronunciation/pronunciation';
+import { Pronunciation } from '@/models/pronunciation/pronunciation';
 import { ReviewStateFilterOption } from '@/models/pronunciation/review-state-filter-option';
 import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
 import { createTestAppState } from '@/tests/utils/test-app-builder';
 
 describe('Pronunciation Integration', () => {
   let appState: AppState;
-  let pronunciationInteraction: PronunciationInteraction;
+  let pronunciationInteraction: Pronunciation;
   let audioFilePlayerTestDouble: AudioFilePlayerTestDouble;
 
   beforeEach(() => {
     audioFilePlayerTestDouble = new AudioFilePlayerTestDouble('/assets/words/amazon_polly');
     appState = createTestAppState(audioFilePlayerTestDouble);
-    pronunciationInteraction = appState.pronunciationInteraction;
+    pronunciationInteraction = appState.reviewPronunciation;
   });
 
   describe('AppState integration', () => {
-    it('should initialize pronunciation interaction in AppState', () => {
-      expect(appState.pronunciationInteraction).toBeDefined();
-      expect(appState.pronunciationInteraction).toBeInstanceOf(PronunciationInteraction);
+    it('should initialize pronunciation interactions in AppState', () => {
+      expect(appState.activityPronunciation).toBeDefined();
+      expect(appState.activityPronunciation).toBeInstanceOf(Pronunciation);
+      expect(appState.reviewPronunciation).toBeDefined();
+      expect(appState.reviewPronunciation).toBeInstanceOf(Pronunciation);
     });
 
     it('should navigate to review pronunciation view', () => {
@@ -27,15 +29,19 @@ describe('Pronunciation Integration', () => {
       expect(appState.currentPage).toBe('reviewPronunciation');
     });
 
-    it('should reset review interaction when navigating to review pronunciation view', () => {
-      // Set some state
-      pronunciationInteraction.filter.value.set('test');
-      pronunciationInteraction.filter.matchOption.set('any');
+    it('should reset both pronunciation interactions when navigating to review pronunciation view', () => {
+      // Set some state on both instances
+      appState.activityPronunciation.filter.value.set('test');
+      appState.activityPronunciation.filter.matchOption.set('any');
+      appState.reviewPronunciation.filter.value.set('other');
+      appState.reviewPronunciation.filter.matchOption.set('end');
 
       appState.navigateTo('reviewPronunciation');
 
-      expect(pronunciationInteraction.filter.value.value).toBe('');
-      expect(pronunciationInteraction.filter.matchOption.value).toBe('start');
+      expect(appState.activityPronunciation.filter.value.value).toBe('');
+      expect(appState.activityPronunciation.filter.matchOption.value).toBe('start');
+      expect(appState.reviewPronunciation.filter.value.value).toBe('');
+      expect(appState.reviewPronunciation.filter.matchOption.value).toBe('start');
     });
 
   });

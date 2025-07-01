@@ -4,7 +4,7 @@ import { WordSayerInterface } from '@/models/word-sayer-interface';
 import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';
 import { HappyOrSad } from '@/models/audio/emotion-types';
 
-export class FindersInteraction {
+export class Finders {
   currentFinderType: FinderType = 'word-choice';
 
   constructor(

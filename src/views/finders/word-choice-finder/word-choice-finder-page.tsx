@@ -1,13 +1,13 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { WordChoiceFinderInteraction } from '@/models/finders/word-choice-finder/word-choice-finder';
+import { WordChoiceFinder } from '@/models/finders/word-choice-finder/word-choice-finder';
 import { FinderMessagePanel } from './finder-message-panel';
 import { WordToChoosePanel } from './word-to-choose-panel';
 import { WordToFindPanel } from './word-to-find-panel';
 import { FinderScoreAndControlsPanel } from './finder-score-and-controls-panel';
 import { ConfirmationView } from '@/lib/views/confirmation-view';
 
-interface WordChoiceFinderPageProps { wordChoiceFinderInteraction: WordChoiceFinderInteraction; }
+interface WordChoiceFinderPageProps { wordChoiceFinderInteraction: WordChoiceFinder; }
 
 export const WordChoiceFinderPage: React.FC<WordChoiceFinderPageProps> = observer(({ wordChoiceFinderInteraction }) => {
   return (

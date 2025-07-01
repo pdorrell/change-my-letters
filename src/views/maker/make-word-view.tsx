@@ -7,14 +7,14 @@ import { LetterView, LetterPlaceholder } from '@/views/Letter';
 import { PositionView, PositionPlaceholder } from '@/views/Position';
 import { ActionButton } from '@/lib/views/action-button';
 import { ButtonAction } from '@/lib/models/actions';
-import { MakeCurrentWord } from '@/models/maker/maker-current-word';
+import { MakerCurrentWord } from '@/models/maker/maker-current-word';
 
 interface MakeWordViewProps {
   word: Word | null;
   maxWordLength: number;
   backgroundClass: string;
   showControls: boolean;
-  wordInteraction?: MakeCurrentWord;
+  wordInteraction?: MakerCurrentWord;
   newWordAction?: ButtonAction;
   deleteAction?: ButtonAction;
 }

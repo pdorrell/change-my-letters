@@ -1,10 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
-import { WordChoiceFinderInteraction } from '@/models/finders/word-choice-finder/word-choice-finder';
+import { WordChoiceFinder } from '@/models/finders/word-choice-finder/word-choice-finder';
 import { WordToChooseButton } from './word-to-choose-button';
 
-interface WordToChoosePanelProps { finderInteraction: WordChoiceFinderInteraction; }
+interface WordToChoosePanelProps { finderInteraction: WordChoiceFinder; }
 
 export const WordToChoosePanel: React.FC<WordToChoosePanelProps> = observer(({ finderInteraction }) => {
   return (

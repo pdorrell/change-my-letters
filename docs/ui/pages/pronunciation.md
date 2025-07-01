@@ -1,18 +1,19 @@
 # Pronunciation Page
 
-The pronunciation page has two modes:
+The pronunciation page has two sub-pages, accessed via navigation tabs at the top:
 
-* Activity mode (the default), where the user can explore the relationship between the pronunciations
+* **Activity** (the default), where the user can explore the relationship between the pronunciations
   of words that start with, end with or contain a specified substring (ie the filter text).
-* Review mode, where the developer can systematically review the quality of pronunciation
+* **Review**, where the developer can systematically review the quality of pronunciation
   of the words
-  
-In review mode, the page consists of:
+
+## Activity Sub-page
+
+In activity mode, the page consists of:
 
 * Controls:
    * Filter controls as described in [../common/filter.md].
    * "Auto" button, which causes the filtered words to be pronounced automatically in sequence.
-   * "Review mode" checkbox (unchecked), to switch to review mode
 * Mini-header panel:
    * Word count showing how many words are selected by the filter
    * An explanation of keyboard shortcuts
@@ -21,7 +22,9 @@ In review mode, the page consists of:
   doubles the maximum number of words to show. The maximum is reset back to 20 if any change is made
   to the filtering control. (TODO - don't do the reset - but then a manual reset option would be required)
 
-In review mode more controls are shown (and typically a developer would use this mode on a larger screen).
+## Review Sub-page
+
+The review sub-page provides more controls (and is typically used by developers on larger screens).
 
 Review mode allows the user to save or load review state from a JSON file. Also the user can download a list
 of "wrong" words in the format of one word per line in a text file.
@@ -48,7 +51,6 @@ For each word the review state consists of:
       * Un-reviewed
       * Wrong
       * Un-reviewed or Wrong
-   * "Review mode" checkbox (checked), to switch back to activity mode
 * Review controls:
    * Current word display - displays word being reviewed in large bold white text on blue background
    * "Sounds Wrong" - mark current word as wrong
@@ -64,12 +66,12 @@ For each word the review state consists of:
 
 ## Keyboard shortcuts
 
-Keyboard shortcuts are:
+Keyboard shortcuts available on both sub-pages:
 
 * Left & right arrows to go to previous or next word
 * Alt-right to start autoplay
 
-In review mode only:
+Additional shortcuts available only on the Review sub-page:
 
 * Space bar to toggle sounds wrong
 

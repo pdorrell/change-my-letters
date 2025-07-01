@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { FinderTypeNavigation } from '@/views/finders/finder-type-navigation';
-import { FindersInteraction } from '@/models/finders/finders';
+import { Finders } from '@/models/finders/finders';
 import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
 import { WordSayer } from '@/models/word-sayer';
 import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';
@@ -16,7 +16,7 @@ describe('FinderTypeNavigation', () => {
       new EmotionWordSet<HappyOrSad>('sad', ['oh no!'])
     ]);
     const getRandomWords = () => ['cat', 'dog', 'bat'];
-    const findersInteraction = new FindersInteraction(wordSayer, emotionalWordSayer, getRandomWords);
+    const findersInteraction = new Finders(wordSayer, emotionalWordSayer, getRandomWords);
 
     render(<FinderTypeNavigation findersInteraction={findersInteraction} />);
 
@@ -34,7 +34,7 @@ describe('FinderTypeNavigation', () => {
       new EmotionWordSet<HappyOrSad>('sad', ['oh no!'])
     ]);
     const getRandomWords = () => ['cat', 'dog', 'bat'];
-    const findersInteraction = new FindersInteraction(wordSayer, emotionalWordSayer, getRandomWords);
+    const findersInteraction = new Finders(wordSayer, emotionalWordSayer, getRandomWords);
 
     render(<FinderTypeNavigation findersInteraction={findersInteraction} />);
 

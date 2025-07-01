@@ -6,7 +6,7 @@ import { WordChangerPage } from '@/views/changer/word-changer';
 import { PronunciationPage } from '@/views/pronunciation/pronunciation';
 import { ResetPage } from '@/views/reset/reset';
 import { FindersPage } from '@/views/finders/finders-page';
-import { MakePage } from '@/views/maker/make-page';
+import { MakerPage } from '@/views/maker/maker-page';
 
 interface AppProps {
   appState: AppState;
@@ -85,8 +85,8 @@ const AppBody: React.FC<AppBodyProps> = observer(({ appState }) => {
       {appState.currentPage === 'changer' ? (
         <WordChangerPage wordChanger={appState.wordChanger} maxWordLength={appState.wordGraph.maxWordLength} />
       ) : appState.currentPage === 'maker' ? (
-        <MakePage
-          makerInteraction={appState.makerInteraction}
+        <MakerPage
+          makerInteraction={appState.maker}
           maxWordLength={appState.wordGraph.maxWordLength}
         />
       ) : appState.currentPage === 'reviewPronunciation' ? (

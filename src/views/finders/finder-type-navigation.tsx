@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
-import { FindersInteraction } from '@/models/finders/finders';
+import { Finders } from '@/models/finders/finders';
 
-interface FinderTypeNavigationProps { findersInteraction: FindersInteraction; }
+interface FinderTypeNavigationProps { findersInteraction: Finders; }
 
 export const FinderTypeNavigation: React.FC<FinderTypeNavigationProps> = observer(({ findersInteraction }) => {
   return (

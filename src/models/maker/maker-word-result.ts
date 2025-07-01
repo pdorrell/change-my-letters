@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { Word } from '@/models/Word';
 
-export class MakeWordResult {
+export class MakerWordResult {
   private isCorrect: boolean | null = null;
 
   constructor(public readonly word: Word) {
@@ -27,7 +27,7 @@ export class MakeWordResult {
   }
 }
 
-export class MakeWordResultPlaceholder {
+export class MakerWordResultPlaceholder {
   constructor() {
     makeAutoObservable(this);
   }

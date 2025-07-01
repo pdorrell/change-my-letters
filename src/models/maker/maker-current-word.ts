@@ -5,7 +5,7 @@ import { WordInteraction } from '@/models/interaction/word';
 import { MenuManager } from '@/lib/views/menu-manager';
 import { InteractionOptions } from '@/models/interaction/interaction-options';
 
-export class MakeCurrentWord {
+export class MakerCurrentWord {
   public wordInteraction: WordInteraction;
   private isInteractive: boolean = false;
 

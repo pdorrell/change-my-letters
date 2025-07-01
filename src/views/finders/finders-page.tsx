@@ -11,12 +11,12 @@ export const FindersPage: React.FC<FindersPageProps> = observer(({ appState }) =
   return (
     <>
       <div className="finders-header">
-        <FinderTypeNavigation findersInteraction={appState.findersInteraction} />
+        <FinderTypeNavigation findersInteraction={appState.finders} />
       </div>
-      {appState.findersInteraction.currentFinderType === 'word-choice' && (
-        <WordChoiceFinderPage wordChoiceFinderInteraction={appState.wordChoiceFinderInteraction} />
+      {appState.finders.currentFinderType === 'word-choice' && (
+        <WordChoiceFinderPage wordChoiceFinderInteraction={appState.wordChoiceFinder} />
       )}
-      {appState.findersInteraction.currentFinderType === 'words-in-row' && (
+      {appState.finders.currentFinderType === 'words-in-row' && (
         <WordsInRowFinderPage wordsInRowFinder={appState.wordsInRowFinder} />
       )}
     </>

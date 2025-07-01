@@ -1,13 +1,13 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { ResetInteraction } from '@/models/reset/reset';
+import { Reset } from '@/models/reset/reset';
 import { ActionButton } from '@/lib/views/action-button';
 import { FilterControls } from '@/lib/views/filter-controls';
 
 /**
  * Controls component for Reset page
  */
-interface ResetControlsProps { resetInteraction: ResetInteraction; }
+interface ResetControlsProps { resetInteraction: Reset; }
 
 export const ResetControls: React.FC<ResetControlsProps> = observer(({ resetInteraction }) => {
   return (
@@ -25,7 +25,7 @@ export const ResetControls: React.FC<ResetControlsProps> = observer(({ resetInte
 /**
  * Word choice component for Reset page
  */
-interface ResetWordChoiceProps { resetInteraction: ResetInteraction; }
+interface ResetWordChoiceProps { resetInteraction: Reset; }
 
 export const ResetWordChoice: React.FC<ResetWordChoiceProps> = observer(({ resetInteraction }) => {
   const handleWordClick = (word: string) => {
@@ -68,7 +68,7 @@ export const ResetWordChoice: React.FC<ResetWordChoiceProps> = observer(({ reset
 /**
  * Full page component for Reset page
  */
-interface ResetPageProps { resetInteraction: ResetInteraction; }
+interface ResetPageProps { resetInteraction: Reset; }
 
 export const ResetPage: React.FC<ResetPageProps> = observer(({ resetInteraction }) => {
   const targetPageLabel = resetInteraction.targetPage === 'maker' ? 'Maker' : 'Changer';

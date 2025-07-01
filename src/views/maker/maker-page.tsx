@@ -1,15 +1,15 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { MakerInteraction } from '@/models/maker/maker';
+import { Maker } from '@/models/maker/maker';
 import { MakeWordView } from './make-word-view';
 import { useScrollOnResize } from '@/hooks/useScrollOnResize';
 
-interface MakePageProps {
-  makerInteraction: MakerInteraction;
+interface MakerPageProps {
+  makerInteraction: Maker;
   maxWordLength: number;
 }
 
-export const MakePage: React.FC<MakePageProps> = observer(({ makerInteraction, maxWordLength }) => {
+export const MakerPage: React.FC<MakerPageProps> = observer(({ makerInteraction, maxWordLength }) => {
   const { containerRef, bottomElementRef } = useScrollOnResize(20); // 20px margin from bottom
 
   return (

@@ -9,7 +9,7 @@ import { Filter } from '@/lib/models/filter';
 /**
  * Manages interactions for the Pronunciation page
  */
-export class PronunciationInteraction {
+export class Pronunciation {
   // Mode setting - review mode (developer tool) vs activity mode (for children)
   reviewMode: boolean = false;
 

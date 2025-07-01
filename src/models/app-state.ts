@@ -2,12 +2,12 @@ import { makeAutoObservable, computed } from 'mobx';
 import { WordGraph } from '@/models/word-graph';
 import { WordChanger } from '@/models/changer/word-changer';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
-import { ResetInteraction } from '@/models/reset/reset';
-import { PronunciationInteraction } from '@/models/pronunciation/pronunciation';
-import { FindersInteraction } from '@/models/finders/finders';
-import { WordChoiceFinderInteraction } from '@/models/finders/word-choice-finder/word-choice-finder';
+import { Reset } from '@/models/reset/reset';
+import { Pronunciation } from '@/models/pronunciation/pronunciation';
+import { Finders } from '@/models/finders/finders';
+import { WordChoiceFinder } from '@/models/finders/word-choice-finder/word-choice-finder';
 import { WordsInRowFinder } from '@/models/finders/words-in-row-finder/words-in-row-finder';
-import { MakerInteraction } from '@/models/maker/maker';
+import { Maker } from '@/models/maker/maker';
 import { Word } from '@/models/Word';
 import { ButtonAction } from '@/lib/models/actions';
 import { AudioFilePlayerInterface } from '@/models/audio/audio-file-player-interface';
@@ -51,22 +51,25 @@ export class AppState {
   wordChanger: WordChanger;
 
   // The reset interaction model
-  resetInteraction: ResetInteraction;
+  resetInteraction: Reset;
 
-  // The pronunciation interaction model
-  pronunciationInteraction: PronunciationInteraction;
+  // The activity pronunciation model
+  activityPronunciation: Pronunciation;
+
+  // The review pronunciation model
+  reviewPronunciation: Pronunciation;
 
   // The finders interaction model
-  findersInteraction: FindersInteraction;
+  finders: Finders;
 
   // The word choice finder interaction model
-  wordChoiceFinderInteraction: WordChoiceFinderInteraction;
+  wordChoiceFinder: WordChoiceFinder;
 
   // The words in row finder interaction model
   wordsInRowFinder: WordsInRowFinder;
 
   // The make interaction model
-  makerInteraction: MakerInteraction;
+  maker: Maker;
 
 
   // Audio file player for all audio functionality
@@ -106,10 +109,16 @@ export class AppState {
     this.emotionalWordSayer = new EmotionalWordSayer(audioFilePlayer, emotionWordSets);
 
     // Initialize reset interaction
-    this.resetInteraction = new ResetInteraction(this);
+    this.resetInteraction = new Reset(this);
 
-    // Initialize pronunciation interaction
-    this.pronunciationInteraction = new PronunciationInteraction(
+    // Initialize activity pronunciation instance
+    this.activityPronunciation = new Pronunciation(
+      this.wordGraph.sortedWords,
+      this.wordSayer
+    );
+
+    // Initialize review pronunciation instance
+    this.reviewPronunciation = new Pronunciation(
       this.wordGraph.sortedWords,
       this.wordSayer
     );
@@ -117,7 +126,7 @@ export class AppState {
     // Initialize finders interaction
     const allWords = this.wordGraph.sortedWords.map(word => word.word);
     const getRandomWords = () => this.getRandomWords(allWords, 10);
-    this.findersInteraction = new FindersInteraction(
+    this.finders = new Finders(
       this.wordSayer,
       this.emotionalWordSayer,
       getRandomWords
@@ -125,7 +134,7 @@ export class AppState {
 
     // Initialize word choice finder interaction with random words
     const wordChoiceRandomWords = getRandomWords();
-    this.wordChoiceFinderInteraction = new WordChoiceFinderInteraction(
+    this.wordChoiceFinder = new WordChoiceFinder(
       this.wordSayer,
       wordChoiceRandomWords,
       getRandomWords,
@@ -148,7 +157,7 @@ export class AppState {
     }
 
     // Initialize make interaction
-    this.makerInteraction = new MakerInteraction(
+    this.maker = new Maker(
       this.wordSayer,
       this.wordGraph,
       wordNode
@@ -196,9 +205,10 @@ export class AppState {
   navigateTo(page: AppPage): void {
     this.currentPage = page;
 
-    // Reset pronunciation interaction when navigating to it
+    // Reset pronunciation interactions when navigating to pronunciation
     if (page === 'reviewPronunciation') {
-      this.pronunciationInteraction.reset();
+      this.activityPronunciation.reset();
+      this.reviewPronunciation.reset();
     }
 
     // Set reset interaction target page when navigating to reset pages

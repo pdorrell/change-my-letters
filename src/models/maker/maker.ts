@@ -1,34 +1,34 @@
 import { makeAutoObservable } from 'mobx';
 import { Word } from '@/models/Word';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
-import { MakeWordsHistory } from './maker-history';
-import { MakeCurrentWord } from './maker-current-word';
-import { MakeWordResult, MakeWordResultPlaceholder } from './maker-word-result';
+import { MakerHistory } from './maker-history';
+import { MakerCurrentWord } from './maker-current-word';
+import { MakerWordResult, MakerWordResultPlaceholder } from './maker-word-result';
 import { ButtonAction } from '@/lib/models/actions';
 import { WordGraph } from '@/models/word-graph';
 
 export type MakeState = 'awaiting-new-word' | 'awaiting-change' | 'incorrect-result' | 'correct-result';
 
-export class MakerInteraction {
-  history: MakeWordsHistory;
-  currentWord: MakeCurrentWord;
-  result: MakeWordResult | null = null;
+export class Maker {
+  history: MakerHistory;
+  currentWord: MakerCurrentWord;
+  result: MakerWordResult | null = null;
   newWordToMake: Word | null = null;
   state: MakeState = 'awaiting-new-word';
-  private readonly resultPlaceholder = new MakeWordResultPlaceholder();
+  private readonly resultPlaceholder = new MakerWordResultPlaceholder();
 
   constructor(
     private readonly wordSayer: WordSayerInterface,
     private readonly wordGraph: WordGraph,
     initialWord: Word
   ) {
-    this.history = new MakeWordsHistory();
-    this.currentWord = new MakeCurrentWord(initialWord, (word: Word) => this.handleWordChange(word), this.wordSayer);
+    this.history = new MakerHistory();
+    this.currentWord = new MakerCurrentWord(initialWord, (word: Word) => this.handleWordChange(word), this.wordSayer);
 
     makeAutoObservable(this);
   }
 
-  get resultDisplay(): MakeWordResult | MakeWordResultPlaceholder {
+  get resultDisplay(): MakerWordResult | MakerWordResultPlaceholder {
     return this.result || this.resultPlaceholder;
   }
 
@@ -91,7 +91,7 @@ export class MakerInteraction {
     }
 
     // Create result
-    this.result = new MakeWordResult(resultWord);
+    this.result = new MakerWordResult(resultWord);
     this.currentWord.setInteractive(false);
 
     // Say the result word
@@ -129,7 +129,7 @@ export class MakerInteraction {
     this.history.addWord(this.currentWord.word);
 
     // Result becomes new current word
-    this.currentWord = new MakeCurrentWord(
+    this.currentWord = new MakerCurrentWord(
       this.result.word,
       (word: Word) => this.handleWordChange(word),
       this.wordSayer

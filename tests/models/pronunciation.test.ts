@@ -1,4 +1,4 @@
-import { PronunciationInteraction } from '@/models/pronunciation/pronunciation';
+import { Pronunciation } from '@/models/pronunciation/pronunciation';
 import { ReviewStateFilterOption } from '@/models/pronunciation/review-state-filter-option';
 import { Word } from '@/models/Word';
 import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
@@ -13,8 +13,8 @@ function createFileFromTestData(filename: string, customName?: string): File {
   return new File([content], customName || 'review-pronunciation-state.json', { type: 'application/json' });
 }
 
-describe('PronunciationInteraction', () => {
-  let pronunciationInteraction: PronunciationInteraction;
+describe('Pronunciation', () => {
+  let pronunciationInteraction: Pronunciation;
   let wordSayer: WordSayer;
   let audioFilePlayer: AudioFilePlayerTestDouble;
   let testWords: Word[];
@@ -31,7 +31,7 @@ describe('PronunciationInteraction', () => {
       new Word('bird', [false, false, false, false], ['', '', '', '', ''], ['', '', '', ''])
     ];
 
-    pronunciationInteraction = new PronunciationInteraction(testWords, wordSayer);
+    pronunciationInteraction = new Pronunciation(testWords, wordSayer);
   });
 
   describe('initialization', () => {
