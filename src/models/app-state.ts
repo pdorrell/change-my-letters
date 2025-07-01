@@ -3,7 +3,8 @@ import { WordGraph } from '@/models/word-graph';
 import { WordChanger } from '@/models/changer/word-changer';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
 import { Reset } from '@/models/reset/reset';
-import { Pronunciation } from '@/models/pronunciation/pronunciation';
+import { PronunciationActivity } from '@/models/pronunciation/pronunciation-activity';
+import { PronunciationReview } from '@/models/pronunciation/pronunciation-review';
 import { Finders } from '@/models/finders/finders';
 import { WordChoiceFinder } from '@/models/finders/word-choice-finder/word-choice-finder';
 import { WordsInRowFinder } from '@/models/finders/words-in-row-finder/words-in-row-finder';
@@ -54,10 +55,10 @@ export class AppState {
   resetPage: Reset;
 
   // The activity pronunciation model
-  activityPronunciation: Pronunciation;
+  activityPronunciation: PronunciationActivity;
 
   // The review pronunciation model
-  reviewPronunciation: Pronunciation;
+  reviewPronunciation: PronunciationReview;
 
   // The finders interaction model
   finders: Finders;
@@ -112,13 +113,13 @@ export class AppState {
     this.resetPage = new Reset(this);
 
     // Initialize activity pronunciation instance
-    this.activityPronunciation = new Pronunciation(
+    this.activityPronunciation = new PronunciationActivity(
       this.wordGraph.sortedWords,
       this.wordSayer
     );
 
     // Initialize review pronunciation instance
-    this.reviewPronunciation = new Pronunciation(
+    this.reviewPronunciation = new PronunciationReview(
       this.wordGraph.sortedWords,
       this.wordSayer
     );

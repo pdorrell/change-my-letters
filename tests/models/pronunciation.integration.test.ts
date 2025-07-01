@@ -1,12 +1,13 @@
 import { AppState } from '@/models/app-state';
-import { Pronunciation } from '@/models/pronunciation/pronunciation';
+import { PronunciationReview } from '@/models/pronunciation/pronunciation-review';
+import { PronunciationActivity } from '@/models/pronunciation/pronunciation-activity';
 import { ReviewStateFilterOption } from '@/models/pronunciation/review-state-filter-option';
 import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
 import { createTestAppState } from '@/tests/utils/test-app-builder';
 
 describe('Pronunciation Integration', () => {
   let appState: AppState;
-  let pronunciation: Pronunciation;
+  let pronunciation: PronunciationReview;
   let audioFilePlayerTestDouble: AudioFilePlayerTestDouble;
 
   beforeEach(() => {
@@ -18,9 +19,9 @@ describe('Pronunciation Integration', () => {
   describe('AppState integration', () => {
     it('should initialize pronunciation interactions in AppState', () => {
       expect(appState.activityPronunciation).toBeDefined();
-      expect(appState.activityPronunciation).toBeInstanceOf(Pronunciation);
+      expect(appState.activityPronunciation).toBeInstanceOf(PronunciationActivity);
       expect(appState.reviewPronunciation).toBeDefined();
-      expect(appState.reviewPronunciation).toBeInstanceOf(Pronunciation);
+      expect(appState.reviewPronunciation).toBeInstanceOf(PronunciationReview);
     });
 
     it('should navigate to review pronunciation view', () => {

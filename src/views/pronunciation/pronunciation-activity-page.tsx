@@ -1,14 +1,14 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
-import { Pronunciation } from '@/models/pronunciation/pronunciation';
+import { PronunciationActivity } from '@/models/pronunciation/pronunciation-activity';
 import { ActionButton } from '@/lib/views/action-button';
 
 /**
  * Activity mode filters component for Pronunciation page
  */
 interface PronunciationActivityFiltersProps {
-  pronunciation: Pronunciation;
+  pronunciation: PronunciationActivity;
 }
 
 export const PronunciationActivityFilters: React.FC<PronunciationActivityFiltersProps> = observer(({ pronunciation }) => {
@@ -56,7 +56,7 @@ export const PronunciationActivityFilters: React.FC<PronunciationActivityFilters
  * Activity mode state controls component for Pronunciation page
  */
 interface PronunciationActivityStateControlsProps {
-  pronunciation: Pronunciation;
+  pronunciation: PronunciationActivity;
 }
 
 export const PronunciationActivityStateControls: React.FC<PronunciationActivityStateControlsProps> = observer(({ pronunciation }) => {
@@ -100,7 +100,7 @@ export const PronunciationActivityStateControls: React.FC<PronunciationActivityS
  * Activity mode word choice component for Pronunciation page
  */
 interface PronunciationActivityWordChoiceProps {
-  pronunciation: Pronunciation;
+  pronunciation: PronunciationActivity;
 }
 
 export const PronunciationActivityWordChoice: React.FC<PronunciationActivityWordChoiceProps> = observer(({ pronunciation }) => {
@@ -158,7 +158,7 @@ export const PronunciationActivityWordChoice: React.FC<PronunciationActivityWord
  * Activity page component for Pronunciation
  */
 interface PronunciationActivityPageProps {
-  pronunciation: Pronunciation;
+  pronunciation: PronunciationActivity;
 }
 
 export const PronunciationActivityPage: React.FC<PronunciationActivityPageProps> = observer(({ pronunciation }) => {

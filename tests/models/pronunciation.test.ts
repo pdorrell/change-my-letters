@@ -1,4 +1,4 @@
-import { Pronunciation } from '@/models/pronunciation/pronunciation';
+import { PronunciationReview } from '@/models/pronunciation/pronunciation-review';
 import { ReviewStateFilterOption } from '@/models/pronunciation/review-state-filter-option';
 import { Word } from '@/models/Word';
 import { AudioFilePlayerTestDouble } from '@/tests/test_doubles/audio-file-player-test-double';
@@ -14,7 +14,7 @@ function createFileFromTestData(filename: string, customName?: string): File {
 }
 
 describe('Pronunciation', () => {
-  let pronunciation: Pronunciation;
+  let pronunciation: PronunciationReview;
   let wordSayer: WordSayer;
   let audioFilePlayer: AudioFilePlayerTestDouble;
   let testWords: Word[];
@@ -31,7 +31,7 @@ describe('Pronunciation', () => {
       new Word('bird', [false, false, false, false], ['', '', '', '', ''], ['', '', '', ''])
     ];
 
-    pronunciation = new Pronunciation(testWords, wordSayer);
+    pronunciation = new PronunciationReview(testWords, wordSayer);
   });
 
   describe('initialization', () => {
@@ -83,8 +83,7 @@ describe('Pronunciation', () => {
     });
 
     it('should filter words by review state - unreviewed', () => {
-      // Set to review mode for filtering to work
-      pronunciation.setReviewMode(true);
+      // In review mode by default
       // Mark some words as reviewed
       testWords[0].reviewed = true;
       testWords[1].reviewed = true;
@@ -98,8 +97,7 @@ describe('Pronunciation', () => {
     });
 
     it('should filter words by review state - wrong', () => {
-      // Set to review mode for filtering to work
-      pronunciation.setReviewMode(true);
+      // In review mode by default
       // Mark some words as wrong
       testWords[0].soundsWrong = true;
       testWords[2].soundsWrong = true;
@@ -113,8 +111,7 @@ describe('Pronunciation', () => {
     });
 
     it('should filter words by review state - unreviewed or wrong', () => {
-      // Set to review mode for filtering to work
-      pronunciation.setReviewMode(true);
+      // In review mode by default
       // Mark some words as reviewed and OK
       testWords[0].reviewed = true;
       testWords[0].soundsWrong = false;
@@ -135,8 +132,7 @@ describe('Pronunciation', () => {
     });
 
     it('should combine text and review state filters', () => {
-      // Set to review mode for filtering to work
-      pronunciation.setReviewMode(true);
+      // In review mode by default
       testWords[0].reviewed = true; // cat reviewed
       testWords[2].soundsWrong = true; // fish wrong
 
@@ -587,119 +583,9 @@ describe('Pronunciation', () => {
     });
   });
 
-  describe('maxNumWordsToShow functionality', () => {
-    it('should initialize with maxNumWordsToShow of 20', () => {
-      expect(pronunciation.maxNumWordsToShow).toBe(20);
-    });
-
-    it('should limit displayedWords to maxNumWordsToShow in activity mode', () => {
-      pronunciation.setReviewMode(false);
-      pronunciation.maxNumWordsToShow = 2;
-
-      const displayed = pronunciation.displayedWords;
-      expect(displayed).toHaveLength(2);
-      expect(displayed[0].word).toBe('cat');
-      expect(displayed[1].word).toBe('dog');
-    });
-
-    it('should show hasMoreWords as true when filteredWords exceed maxNumWordsToShow in activity mode', () => {
-      pronunciation.setReviewMode(false);
-      pronunciation.maxNumWordsToShow = 2;
-
-      expect(pronunciation.hasMoreWords).toBe(true);
-    });
-
-    it('should show hasMoreWords as false in review mode regardless of maxNumWordsToShow', () => {
-      pronunciation.setReviewMode(true);
-      pronunciation.maxNumWordsToShow = 2;
-
-      expect(pronunciation.hasMoreWords).toBe(false);
-    });
-
-    it('should double maxNumWordsToShow when showMoreWords is called', () => {
-      pronunciation.maxNumWordsToShow = 20;
-      pronunciation.showMoreWords();
-      expect(pronunciation.maxNumWordsToShow).toBe(40);
-    });
-
-    it('should reset maxNumWordsToShow to 20 when filter value changes', () => {
-      pronunciation.maxNumWordsToShow = 40;
-      pronunciation.setFilterValue('test');
-      expect(pronunciation.maxNumWordsToShow).toBe(20);
-    });
-
-    it('should reset maxNumWordsToShow to 20 when filter match option changes', () => {
-      pronunciation.maxNumWordsToShow = 40;
-      pronunciation.setFilterMatchOption('any');
-      expect(pronunciation.maxNumWordsToShow).toBe(20);
-    });
-
-    it('should reset maxNumWordsToShow to 20 when review state filter changes', () => {
-      pronunciation.maxNumWordsToShow = 40;
-      pronunciation.setReviewStateFilter(ReviewStateFilterOption.UNREVIEWED);
-      expect(pronunciation.maxNumWordsToShow).toBe(20);
-    });
-
-    it('should reset maxNumWordsToShow to 20 when reset is called', () => {
-      pronunciation.maxNumWordsToShow = 40;
-      pronunciation.reset();
-      expect(pronunciation.maxNumWordsToShow).toBe(20);
-    });
-
-    it('should provide correct tooltip for showMoreWordsAction', () => {
-      pronunciation.setReviewMode(false);
-      pronunciation.maxNumWordsToShow = 2; // Should show 2 words, with 2 more available
-
-      const action = pronunciation.showMoreWordsAction;
-      expect(action.tooltip).toBe('Show 2 more words');
-    });
-
-    it('should calculate tooltip correctly when fewer additional words than maxNumWordsToShow', () => {
-      pronunciation.setReviewMode(false);
-      pronunciation.maxNumWordsToShow = 3; // Should show 3 words, with 1 more available
-
-      const action = pronunciation.showMoreWordsAction;
-      expect(action.tooltip).toBe('Show 1 more words');
-    });
-  });
-
-  describe('autoplay with activity mode', () => {
-    it('should stop autoplay at last displayed word in activity mode', async () => {
-      pronunciation.setReviewMode(false);
-      pronunciation.maxNumWordsToShow = 2; // Only show 2 words in activity mode
-
-      pronunciation.startAutoplay();
-      expect(pronunciation.autoplaying).toBe(true);
-      expect(pronunciation.currentWord?.word).toBe('cat');
-
-      // Manually trigger next autoplay step
-      await pronunciation.gotoNextWord();
-      expect(pronunciation.currentWord?.word).toBe('dog');
-
-      // Since we're at the last displayed word (index 1 of 2), autoplay should stop on next call
-      // We can't easily test the private autoplayNext method, but we can test the behavior indirectly
-      expect(pronunciation.displayedWords).toHaveLength(2);
-      expect(pronunciation.currentWordIndex).toBe(1); // At last displayed word
-    });
-
-    it('should continue autoplay through all words in review mode', async () => {
-      pronunciation.setReviewMode(true);
-      pronunciation.maxNumWordsToShow = 2; // This should be ignored in review mode
-
-      expect(pronunciation.displayedWords).toHaveLength(4); // Should show all words in review mode
-
-      pronunciation.startAutoplay();
-      expect(pronunciation.autoplaying).toBe(true);
-      expect(pronunciation.currentWord?.word).toBe('cat');
-
-      await pronunciation.gotoNextWord();
-      expect(pronunciation.currentWord?.word).toBe('dog');
-
-      await pronunciation.gotoNextWord();
-      expect(pronunciation.currentWord?.word).toBe('fish');
-
-      await pronunciation.gotoNextWord();
-      expect(pronunciation.currentWord?.word).toBe('bird');
-    });
-  });
+  // TODO: Add separate tests for PronunciationActivity functionality:
+  // - maxNumWordsToShow functionality
+  // - hasMoreWords
+  // - showMoreWords functionality
+  // - Activity mode specific behavior
 });

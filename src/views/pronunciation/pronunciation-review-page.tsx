@@ -1,14 +1,14 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
-import { Pronunciation } from '@/models/pronunciation/pronunciation';
+import { PronunciationReview } from '@/models/pronunciation/pronunciation-review';
 import { ActionButton } from '@/lib/views/action-button';
 
 /**
  * Review mode action controls component for Pronunciation page
  */
 interface ReviewStateControlsProps {
-  pronunciation: Pronunciation;
+  pronunciation: PronunciationReview;
   reviewStateFileLoader: (file: File) => void;
 }
 
@@ -69,7 +69,7 @@ export const ReviewStateControls: React.FC<ReviewStateControlsProps> = observer(
  * Review mode filters component for Pronunciation page
  */
 interface PronunciationReviewFiltersProps {
-  pronunciation: Pronunciation;
+  pronunciation: PronunciationReview;
 }
 
 export const PronunciationReviewFilters: React.FC<PronunciationReviewFiltersProps> = observer(({ pronunciation }) => {
@@ -126,7 +126,7 @@ export const PronunciationReviewFilters: React.FC<PronunciationReviewFiltersProp
  * Review mode state controls component for Pronunciation page
  */
 interface PronunciationReviewStateControlsProps {
-  pronunciation: Pronunciation;
+  pronunciation: PronunciationReview;
 }
 
 export const PronunciationReviewStateControls: React.FC<PronunciationReviewStateControlsProps> = observer(({ pronunciation }) => {
@@ -182,7 +182,7 @@ export const PronunciationReviewStateControls: React.FC<PronunciationReviewState
  * Review mode word choice component for Pronunciation page
  */
 interface PronunciationReviewWordChoiceProps {
-  pronunciation: Pronunciation;
+  pronunciation: PronunciationReview;
 }
 
 export const PronunciationReviewWordChoice: React.FC<PronunciationReviewWordChoiceProps> = observer(({ pronunciation }) => {
@@ -231,7 +231,7 @@ export const PronunciationReviewWordChoice: React.FC<PronunciationReviewWordChoi
  * Review page component for Pronunciation
  */
 interface PronunciationReviewPageProps {
-  pronunciation: Pronunciation;
+  pronunciation: PronunciationReview;
 }
 
 export const PronunciationReviewPage: React.FC<PronunciationReviewPageProps> = observer(({ pronunciation }) => {
