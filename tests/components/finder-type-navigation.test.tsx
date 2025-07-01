@@ -16,9 +16,9 @@ describe('FinderTypeNavigation', () => {
       new EmotionWordSet<HappyOrSad>('sad', ['oh no!'])
     ]);
     const getRandomWords = () => ['cat', 'dog', 'bat'];
-    const findersInteraction = new Finders(wordSayer, emotionalWordSayer, getRandomWords);
+    const finders = new Finders(wordSayer, emotionalWordSayer, getRandomWords);
 
-    render(<FinderTypeNavigation findersInteraction={findersInteraction} />);
+    render(<FinderTypeNavigation finders={finders} />);
 
     const wordChoiceTab = screen.getByRole('button', { name: 'Word Choice' });
     expect(wordChoiceTab).toBeInTheDocument();
@@ -34,9 +34,9 @@ describe('FinderTypeNavigation', () => {
       new EmotionWordSet<HappyOrSad>('sad', ['oh no!'])
     ]);
     const getRandomWords = () => ['cat', 'dog', 'bat'];
-    const findersInteraction = new Finders(wordSayer, emotionalWordSayer, getRandomWords);
+    const finders = new Finders(wordSayer, emotionalWordSayer, getRandomWords);
 
-    render(<FinderTypeNavigation findersInteraction={findersInteraction} />);
+    render(<FinderTypeNavigation finders={finders} />);
 
     const wordChoiceTab = screen.getByRole('button', { name: 'Word Choice' });
     expect(wordChoiceTab).toHaveAttribute('title', 'Switch to Word Choice finder');

@@ -7,16 +7,16 @@ import { WordToFindPanel } from './word-to-find-panel';
 import { FinderScoreAndControlsPanel } from './finder-score-and-controls-panel';
 import { ConfirmationView } from '@/lib/views/confirmation-view';
 
-interface WordChoiceFinderPageProps { wordChoiceFinderInteraction: WordChoiceFinder; }
+interface WordChoiceFinderPageProps { wordChoiceFinder: WordChoiceFinder; }
 
-export const WordChoiceFinderPage: React.FC<WordChoiceFinderPageProps> = observer(({ wordChoiceFinderInteraction }) => {
+export const WordChoiceFinderPage: React.FC<WordChoiceFinderPageProps> = observer(({ wordChoiceFinder }) => {
   return (
     <>
-      <WordToChoosePanel finderInteraction={wordChoiceFinderInteraction} />
-      <WordToFindPanel finderInteraction={wordChoiceFinderInteraction} />
-      <FinderScoreAndControlsPanel finderInteraction={wordChoiceFinderInteraction} />
-      <FinderMessagePanel finderInteraction={wordChoiceFinderInteraction} />
-      <ConfirmationView confirmationModel={wordChoiceFinderInteraction.confirmation}
+      <WordToChoosePanel finder={wordChoiceFinder} />
+      <WordToFindPanel finder={wordChoiceFinder} />
+      <FinderScoreAndControlsPanel finder={wordChoiceFinder} />
+      <FinderMessagePanel finder={wordChoiceFinder} />
+      <ConfirmationView confirmationModel={wordChoiceFinder.confirmation}
       />
     </>
   );

@@ -4,13 +4,13 @@ import { WordChoiceFinder } from '@/models/finders/word-choice-finder/word-choic
 import { FinderScoreView } from './finder-score-view';
 import { FinderControls } from './finder-controls';
 
-interface FinderScoreAndControlsPanelProps { finderInteraction: WordChoiceFinder; }
+interface FinderScoreAndControlsPanelProps { finder: WordChoiceFinder; }
 
-export const FinderScoreAndControlsPanel: React.FC<FinderScoreAndControlsPanelProps> = observer(({ finderInteraction }) => {
+export const FinderScoreAndControlsPanel: React.FC<FinderScoreAndControlsPanelProps> = observer(({ finder }) => {
   return (
     <div className="finder-score-and-controls-panel">
-      <FinderScoreView finderInteraction={finderInteraction} />
-      <FinderControls finderInteraction={finderInteraction} />
+      <FinderScoreView finder={finder} />
+      <FinderControls finder={finder} />
     </div>
   );
 });

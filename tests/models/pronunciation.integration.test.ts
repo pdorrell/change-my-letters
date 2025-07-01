@@ -6,13 +6,13 @@ import { createTestAppState } from '@/tests/utils/test-app-builder';
 
 describe('Pronunciation Integration', () => {
   let appState: AppState;
-  let pronunciationInteraction: Pronunciation;
+  let pronunciation: Pronunciation;
   let audioFilePlayerTestDouble: AudioFilePlayerTestDouble;
 
   beforeEach(() => {
     audioFilePlayerTestDouble = new AudioFilePlayerTestDouble('/assets/words/amazon_polly');
     appState = createTestAppState(audioFilePlayerTestDouble);
-    pronunciationInteraction = appState.reviewPronunciation;
+    pronunciation = appState.reviewPronunciation;
   });
 
   describe('AppState integration', () => {
@@ -50,8 +50,8 @@ describe('Pronunciation Integration', () => {
     it('should use sorted words from word graph', () => {
       const sortedWords = appState.wordGraph.sortedWords;
 
-      expect(pronunciationInteraction.sortedWords).toBe(sortedWords);
-      expect(pronunciationInteraction.sortedWords.length).toBeGreaterThan(0);
+      expect(pronunciation.sortedWords).toBe(sortedWords);
+      expect(pronunciation.sortedWords.length).toBeGreaterThan(0);
     });
 
     it('should be able to review all words from the graph', () => {
@@ -60,9 +60,9 @@ describe('Pronunciation Integration', () => {
       // Should be able to mark any word from the graph
       allWords.forEach(word => {
         expect(() => {
-          pronunciationInteraction.markOK(word.word);
-          pronunciationInteraction.markSoundsWrong(word.word);
-          pronunciationInteraction.reviewWord(word.word);
+          pronunciation.markOK(word.word);
+          pronunciation.markSoundsWrong(word.word);
+          pronunciation.reviewWord(word.word);
         }).not.toThrow();
       });
     });
@@ -70,13 +70,13 @@ describe('Pronunciation Integration', () => {
 
   describe('WordSayer integration', () => {
     it('should use the same word sayer as AppState', () => {
-      expect(pronunciationInteraction.wordSayer).toBe(appState.wordSayer);
+      expect(pronunciation.wordSayer).toBe(appState.wordSayer);
     });
 
     it('should say words when reviewing them', () => {
       const wordToReview = appState.wordGraph.sortedWords[0].word;
 
-      pronunciationInteraction.reviewWord(wordToReview);
+      pronunciation.reviewWord(wordToReview);
 
       // Verify the word sayer was called (checking through test double)
       expect(audioFilePlayerTestDouble.playedFiles).toContain(`words/${wordToReview}`);
@@ -93,17 +93,17 @@ describe('Pronunciation Integration', () => {
       expect(testWord.currentReview).toBe(false);
 
       // Start reviewing
-      pronunciationInteraction.reviewWord(testWord.word);
+      pronunciation.reviewWord(testWord.word);
       expect(testWord.currentReview).toBe(true);
-      expect(pronunciationInteraction.currentWord).toBe(testWord);
+      expect(pronunciation.currentWord).toBe(testWord);
 
       // Mark as wrong
-      pronunciationInteraction.markSoundsWrong(testWord.word);
+      pronunciation.markSoundsWrong(testWord.word);
       expect(testWord.soundsWrong).toBe(true);
       expect(testWord.reviewed).toBe(true);
 
       // Change to OK
-      pronunciationInteraction.markOK(testWord.word);
+      pronunciation.markOK(testWord.word);
       expect(testWord.soundsWrong).toBe(false);
       expect(testWord.reviewed).toBe(true);
     });
@@ -112,17 +112,17 @@ describe('Pronunciation Integration', () => {
       const words = appState.wordGraph.sortedWords.slice(0, 3);
 
       // Review first word
-      pronunciationInteraction.reviewWord(words[0].word);
+      pronunciation.reviewWord(words[0].word);
       expect(words[0].currentReview).toBe(true);
 
       // Review second word - should mark first as reviewed
-      pronunciationInteraction.reviewWord(words[1].word);
+      pronunciation.reviewWord(words[1].word);
       expect(words[0].reviewed).toBe(true);
       expect(words[0].currentReview).toBe(false);
       expect(words[1].currentReview).toBe(true);
 
       // Review third word
-      pronunciationInteraction.reviewWord(words[2].word);
+      pronunciation.reviewWord(words[2].word);
       expect(words[1].reviewed).toBe(true);
       expect(words[1].currentReview).toBe(false);
       expect(words[2].currentReview).toBe(true);
@@ -135,10 +135,10 @@ describe('Pronunciation Integration', () => {
       const wordsStartingWithC = appState.wordGraph.sortedWords.filter(w => w.word.startsWith('c'));
 
       if (wordsStartingWithC.length > 0) {
-        pronunciationInteraction.filter.value.set('c');
-        pronunciationInteraction.filter.matchOption.set('start');
+        pronunciation.filter.value.set('c');
+        pronunciation.filter.matchOption.set('start');
 
-        const filtered = pronunciationInteraction.filteredWords;
+        const filtered = pronunciation.filteredWords;
         expect(filtered.length).toBe(wordsStartingWithC.length);
         filtered.forEach(word => {
           expect(word.word.startsWith('c')).toBe(true);
@@ -148,7 +148,7 @@ describe('Pronunciation Integration', () => {
 
     it('should filter by review state correctly', () => {
       // Set to review mode for filtering to work
-      pronunciationInteraction.setReviewMode(true);
+      pronunciation.setReviewMode(true);
       const words = appState.wordGraph.sortedWords.slice(0, 5);
 
       // Mark some words as reviewed
@@ -156,8 +156,8 @@ describe('Pronunciation Integration', () => {
       words[1].reviewed = true;
       words[2].soundsWrong = true;
 
-      pronunciationInteraction.reviewStateFilter = ReviewStateFilterOption.UNREVIEWED;
-      const unreviewed = pronunciationInteraction.filteredWords;
+      pronunciation.reviewStateFilter = ReviewStateFilterOption.UNREVIEWED;
+      const unreviewed = pronunciation.filteredWords;
 
       expect(unreviewed).not.toContain(words[0]);
       expect(unreviewed).not.toContain(words[1]);
@@ -178,10 +178,10 @@ describe('Pronunciation Integration', () => {
       words[2].reviewed = true;
 
       // Export state
-      const exportedState = pronunciationInteraction.getReviewState();
+      const exportedState = pronunciation.getReviewState();
 
       // Reset all words
-      pronunciationInteraction.resetAllToUnreviewed();
+      pronunciation.resetAllToUnreviewed();
 
       // Verify reset
       words.forEach(word => {
@@ -190,7 +190,7 @@ describe('Pronunciation Integration', () => {
       });
 
       // Import state
-      pronunciationInteraction.setReviewState(exportedState);
+      pronunciation.setReviewState(exportedState);
 
       // Verify restoration
       expect(words[0].reviewed).toBe(true);
@@ -209,7 +209,7 @@ describe('Pronunciation Integration', () => {
       words[0].soundsWrong = true; // earlier in alphabet
       words[2].soundsWrong = true; // middle
 
-      const wrongWords = pronunciationInteraction.getWrongSoundingWords();
+      const wrongWords = pronunciation.getWrongSoundingWords();
 
       expect(wrongWords).toHaveLength(3);
       expect(wrongWords).toContain(words[0].word);
@@ -225,38 +225,38 @@ describe('Pronunciation Integration', () => {
   describe('Button action integration', () => {
     it('should have enabled/disabled button actions based on state', () => {
       // Initially no current review word
-      expect(pronunciationInteraction.markOKAction.enabled).toBe(false);
-      expect(pronunciationInteraction.markSoundsWrongAction.enabled).toBe(false);
+      expect(pronunciation.markOKAction.enabled).toBe(false);
+      expect(pronunciation.markSoundsWrongAction.enabled).toBe(false);
 
       // Set current review word
       const word = appState.wordGraph.sortedWords[0];
-      pronunciationInteraction.reviewWord(word.word);
+      pronunciation.reviewWord(word.word);
 
       // Should enable mark as wrong (since not wrong yet)
-      expect(pronunciationInteraction.markSoundsWrongAction.enabled).toBe(true);
-      expect(pronunciationInteraction.markOKAction.enabled).toBe(false);
+      expect(pronunciation.markSoundsWrongAction.enabled).toBe(true);
+      expect(pronunciation.markOKAction.enabled).toBe(false);
 
       // Mark as wrong
       word.soundsWrong = true;
 
       // Should enable mark as OK
-      expect(pronunciationInteraction.markOKAction.enabled).toBe(true);
-      expect(pronunciationInteraction.markSoundsWrongAction.enabled).toBe(false);
+      expect(pronunciation.markOKAction.enabled).toBe(true);
+      expect(pronunciation.markSoundsWrongAction.enabled).toBe(false);
     });
 
     it('should execute button actions correctly', () => {
       const word = appState.wordGraph.sortedWords[0];
-      pronunciationInteraction.reviewWord(word.word);
+      pronunciation.reviewWord(word.word);
 
       // Execute mark as wrong action
-      const markWrongAction = pronunciationInteraction.markSoundsWrongAction;
+      const markWrongAction = pronunciation.markSoundsWrongAction;
       markWrongAction.doAction();
 
       expect(word.soundsWrong).toBe(true);
       expect(word.reviewed).toBe(true);
 
       // Execute mark as OK action
-      const markOKAction = pronunciationInteraction.markOKAction;
+      const markOKAction = pronunciation.markOKAction;
       markOKAction.doAction();
 
       expect(word.soundsWrong).toBe(false);
@@ -281,7 +281,7 @@ describe('Pronunciation Integration', () => {
       words[3].soundsWrong = true; // Wrong unreviewed word
       words[3].reviewed = false;
 
-      pronunciationInteraction.reviewWrongWords();
+      pronunciation.reviewWrongWords();
 
       // reviewed should be set to !soundsWrong
       expect(words[0].reviewed).toBe(true); // not wrong -> reviewed

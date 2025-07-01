@@ -8,10 +8,10 @@ import { ActionButton } from '@/lib/views/action-button';
  * Activity mode filters component for Pronunciation page
  */
 interface PronunciationActivityFiltersProps {
-  pronunciationInteraction: Pronunciation;
+  pronunciation: Pronunciation;
 }
 
-export const PronunciationActivityFilters: React.FC<PronunciationActivityFiltersProps> = observer(({ pronunciationInteraction }) => {
+export const PronunciationActivityFilters: React.FC<PronunciationActivityFiltersProps> = observer(({ pronunciation }) => {
   return (
     <div className="pronunciation-filters">
       <div className="filter-panel">
@@ -19,8 +19,8 @@ export const PronunciationActivityFilters: React.FC<PronunciationActivityFilters
           <input
             type="text"
             placeholder="Filter..."
-            value={pronunciationInteraction.filter.value.value}
-            onChange={(e) => pronunciationInteraction.setFilterValue(e.target.value)}
+            value={pronunciation.filter.value.value}
+            onChange={(e) => pronunciation.setFilterValue(e.target.value)}
           />
           <div className="radio-group">
             <span>Match</span>
@@ -30,8 +30,8 @@ export const PronunciationActivityFilters: React.FC<PronunciationActivityFilters
                   type="radio"
                   name="match-option"
                   value={option}
-                  checked={pronunciationInteraction.filter.matchOption.value === option}
-                  onChange={(e) => pronunciationInteraction.setFilterMatchOption(e.target.value as 'start' | 'end' | 'any')}
+                  checked={pronunciation.filter.matchOption.value === option}
+                  onChange={(e) => pronunciation.setFilterMatchOption(e.target.value as 'start' | 'end' | 'any')}
                 />
                 {option}
               </label>
@@ -40,8 +40,8 @@ export const PronunciationActivityFilters: React.FC<PronunciationActivityFilters
 
           <div className="auto-control">
             <button
-              title={pronunciationInteraction.autoplayAction.tooltip}
-              onClick={() => pronunciationInteraction.autoplayAction.doAction()}
+              title={pronunciation.autoplayAction.tooltip}
+              onClick={() => pronunciation.autoplayAction.doAction()}
             >
               Auto
             </button>
@@ -56,31 +56,31 @@ export const PronunciationActivityFilters: React.FC<PronunciationActivityFilters
  * Activity mode state controls component for Pronunciation page
  */
 interface PronunciationActivityStateControlsProps {
-  pronunciationInteraction: Pronunciation;
+  pronunciation: Pronunciation;
 }
 
-export const PronunciationActivityStateControls: React.FC<PronunciationActivityStateControlsProps> = observer(({ pronunciationInteraction }) => {
+export const PronunciationActivityStateControls: React.FC<PronunciationActivityStateControlsProps> = observer(({ pronunciation }) => {
   return (
     <div className="word-changer-panel">
       <div className="current-review-word">
         <span
           className={clsx('word-span', {
-            'no-word': !pronunciationInteraction.currentWord
+            'no-word': !pronunciation.currentWord
           })}
         >
-          {pronunciationInteraction.currentWord ? pronunciationInteraction.currentWord.word : '\u00A0'}
+          {pronunciation.currentWord ? pronunciation.currentWord.word : '\u00A0'}
         </span>
 
         <div className="autoplay-controls">
-          <ActionButton action={pronunciationInteraction.autoplayAction}>
-            {pronunciationInteraction.autoplaying ? 'Stop' : 'Auto'}
+          <ActionButton action={pronunciation.autoplayAction}>
+            {pronunciation.autoplaying ? 'Stop' : 'Auto'}
           </ActionButton>
 
           <select
-            value={pronunciationInteraction.autoPlayWaitMillis}
+            value={pronunciation.autoPlayWaitMillis}
             onChange={(e) => {
-              pronunciationInteraction.stopAutoplay();
-              pronunciationInteraction.setAutoPlayWaitMillis(parseInt(e.target.value));
+              pronunciation.stopAutoplay();
+              pronunciation.setAutoPlayWaitMillis(parseInt(e.target.value));
             }}
             className="autoplay-interval-select"
           >
@@ -100,10 +100,10 @@ export const PronunciationActivityStateControls: React.FC<PronunciationActivityS
  * Activity mode word choice component for Pronunciation page
  */
 interface PronunciationActivityWordChoiceProps {
-  pronunciationInteraction: Pronunciation;
+  pronunciation: Pronunciation;
 }
 
-export const PronunciationActivityWordChoice: React.FC<PronunciationActivityWordChoiceProps> = observer(({ pronunciationInteraction }) => {
+export const PronunciationActivityWordChoice: React.FC<PronunciationActivityWordChoiceProps> = observer(({ pronunciation }) => {
   const keyboardHint = "Use ← → arrow keys to navigate, Alt+→ to start autoplay";
 
   return (
@@ -111,9 +111,9 @@ export const PronunciationActivityWordChoice: React.FC<PronunciationActivityWord
       {/* Filtered Words */}
       <div className="filtered-words">
         <div className="words-header">
-          <span className="words-count">Words: {pronunciationInteraction.filteredWords.length}</span>
+          <span className="words-count">Words: {pronunciation.filteredWords.length}</span>
           <div className="keyboard-shortcuts">
-            <ActionButton action={pronunciationInteraction.resetMaxWordsAction}>
+            <ActionButton action={pronunciation.resetMaxWordsAction}>
               ↻...
             </ActionButton>
             <span className="shortcut-hint">{keyboardHint}</span>
@@ -121,7 +121,7 @@ export const PronunciationActivityWordChoice: React.FC<PronunciationActivityWord
         </div>
 
         <div className={clsx('words-grid', 'touch-interactive-area', 'activity-mode')}>
-          {pronunciationInteraction.displayedWords.map(word => {
+          {pronunciation.displayedWords.map(word => {
             const isCurrentReview = word.currentReview;
 
             const className = clsx('word-span', {
@@ -132,18 +132,18 @@ export const PronunciationActivityWordChoice: React.FC<PronunciationActivityWord
               <span
                 key={word.word}
                 className={className}
-                onClick={() => pronunciationInteraction.reviewWord(word.word)}
+                onClick={() => pronunciation.reviewWord(word.word)}
               >
                 {word.word}
               </span>
             );
           })}
 
-          {pronunciationInteraction.hasMoreWords && (
+          {pronunciation.hasMoreWords && (
             <button
               className={clsx('word-span', 'ellipsis-button')}
-              title={pronunciationInteraction.showMoreWordsAction.tooltip}
-              onClick={() => pronunciationInteraction.showMoreWordsAction.doAction()}
+              title={pronunciation.showMoreWordsAction.tooltip}
+              onClick={() => pronunciation.showMoreWordsAction.doAction()}
             >
               ...
             </button>
@@ -158,34 +158,34 @@ export const PronunciationActivityWordChoice: React.FC<PronunciationActivityWord
  * Activity page component for Pronunciation
  */
 interface PronunciationActivityPageProps {
-  pronunciationInteraction: Pronunciation;
+  pronunciation: Pronunciation;
 }
 
-export const PronunciationActivityPage: React.FC<PronunciationActivityPageProps> = observer(({ pronunciationInteraction }) => {
+export const PronunciationActivityPage: React.FC<PronunciationActivityPageProps> = observer(({ pronunciation }) => {
   // Add keyboard event listener for arrow key navigation
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight' && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
         e.preventDefault();
-        if (pronunciationInteraction.autoplaying) {
-          pronunciationInteraction.stopAutoplay();
+        if (pronunciation.autoplaying) {
+          pronunciation.stopAutoplay();
         }
-        pronunciationInteraction.gotoNextWord();
+        pronunciation.gotoNextWord();
       } else if (e.key === 'ArrowRight' && !e.ctrlKey && e.altKey && !e.shiftKey && !e.metaKey) {
         e.preventDefault();
-        if (!pronunciationInteraction.autoplaying) {
-          pronunciationInteraction.startAutoplay();
+        if (!pronunciation.autoplaying) {
+          pronunciation.startAutoplay();
         }
       } else if (e.key === 'ArrowLeft' && !e.ctrlKey && !e.altKey && !e.shiftKey && !e.metaKey) {
         e.preventDefault();
-        if (pronunciationInteraction.autoplaying) {
-          pronunciationInteraction.stopAutoplay();
+        if (pronunciation.autoplaying) {
+          pronunciation.stopAutoplay();
         }
-        pronunciationInteraction.gotoPreviousWord();
+        pronunciation.gotoPreviousWord();
       } else if (e.key === 'Escape') {
         e.preventDefault();
-        if (pronunciationInteraction.autoplaying) {
-          pronunciationInteraction.stopAutoplay();
+        if (pronunciation.autoplaying) {
+          pronunciation.stopAutoplay();
         }
       }
     };
@@ -195,20 +195,20 @@ export const PronunciationActivityPage: React.FC<PronunciationActivityPageProps>
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [pronunciationInteraction]);
+  }, [pronunciation]);
 
   // Ensure we're in activity mode
   React.useEffect(() => {
-    if (pronunciationInteraction.reviewMode) {
-      pronunciationInteraction.setReviewMode(false);
+    if (pronunciation.reviewMode) {
+      pronunciation.setReviewMode(false);
     }
-  }, [pronunciationInteraction]);
+  }, [pronunciation]);
 
   return (
     <div className={clsx('pronunciation-container', 'activity-mode')}>
-      <PronunciationActivityFilters pronunciationInteraction={pronunciationInteraction} />
-      <PronunciationActivityStateControls pronunciationInteraction={pronunciationInteraction} />
-      <PronunciationActivityWordChoice pronunciationInteraction={pronunciationInteraction} />
+      <PronunciationActivityFilters pronunciation={pronunciation} />
+      <PronunciationActivityStateControls pronunciation={pronunciation} />
+      <PronunciationActivityWordChoice pronunciation={pronunciation} />
     </div>
   );
 });

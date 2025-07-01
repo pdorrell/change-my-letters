@@ -50,8 +50,8 @@ export class AppState {
   // The word changer model
   wordChanger: WordChanger;
 
-  // The reset interaction model
-  resetInteraction: Reset;
+  // The reset page model
+  resetPage: Reset;
 
   // The activity pronunciation model
   activityPronunciation: Pronunciation;
@@ -108,8 +108,8 @@ export class AppState {
     ];
     this.emotionalWordSayer = new EmotionalWordSayer(audioFilePlayer, emotionWordSets);
 
-    // Initialize reset interaction
-    this.resetInteraction = new Reset(this);
+    // Initialize reset model
+    this.resetPage = new Reset(this);
 
     // Initialize activity pronunciation instance
     this.activityPronunciation = new Pronunciation(
@@ -213,9 +213,9 @@ export class AppState {
 
     // Set reset interaction target page when navigating to reset pages
     if (page === 'reset/changer') {
-      this.resetInteraction.setTargetPage('changer');
+      this.resetPage.setTargetPage('changer');
     } else if (page === 'reset/maker') {
-      this.resetInteraction.setTargetPage('maker');
+      this.resetPage.setTargetPage('maker');
     }
   }
 

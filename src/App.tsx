@@ -86,7 +86,7 @@ const AppBody: React.FC<AppBodyProps> = observer(({ appState }) => {
         <WordChangerPage wordChanger={appState.wordChanger} maxWordLength={appState.wordGraph.maxWordLength} />
       ) : appState.currentPage === 'maker' ? (
         <MakerPage
-          makerInteraction={appState.maker}
+          maker={appState.maker}
           maxWordLength={appState.wordGraph.maxWordLength}
         />
       ) : appState.currentPage === 'reviewPronunciation' ? (
@@ -94,7 +94,7 @@ const AppBody: React.FC<AppBodyProps> = observer(({ appState }) => {
       ) : appState.currentPage === 'finders' ? (
         <FindersPage appState={appState} />
       ) : appState.currentPage.startsWith('reset') ? (
-        <ResetPage resetInteraction={appState.resetInteraction} />
+        <ResetPage resetInteraction={appState.resetPage} />
       ) : (
         <WordChangerPage wordChanger={appState.wordChanger} maxWordLength={appState.wordGraph.maxWordLength} />
       )}

@@ -23,10 +23,10 @@ export const PronunciationPage: React.FC<PronunciationPageProps> = observer(({ a
         />
       </div>
       {pronunciationType === 'activity' && (
-        <PronunciationActivityPage pronunciationInteraction={appState.activityPronunciation} />
+        <PronunciationActivityPage pronunciation={appState.activityPronunciation} />
       )}
       {pronunciationType === 'review' && (
-        <PronunciationReviewPage pronunciationInteraction={appState.reviewPronunciation} />
+        <PronunciationReviewPage pronunciation={appState.reviewPronunciation} />
       )}
     </>
   );
