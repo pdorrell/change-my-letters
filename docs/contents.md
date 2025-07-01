@@ -16,7 +16,9 @@
       user to make a single letter change to make a new word.
   * Pages -
     * [ui/pages/word-changer.md] The Word Changer page
-    * [ui/pages/pronunciation.md] The Pronunciation page
+    * [ui/pages/pronunciation.md] Pronunciation pages
+      * [ui/pages/pronunciation-activity.md] The Pronunciation Activity page
+      * [ui/pages/pronunciation-review.md] The Pronunciation Review page
     * [ui/pages/finders.md] Finders pages
       * [ui/pages/word-choice-finder.md] The Word Choice finder page
       * [ui/pages/words-in-row-finder.md] The Words in Row finder page
