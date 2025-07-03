@@ -11,7 +11,7 @@ export abstract class PronunciationBase {
   // Filter settings
   filter: Filter;
 
-  // Current review word
+  // Current word
   currentWord: Word | null = null;
 
   // Autoplay state
@@ -83,7 +83,7 @@ export abstract class PronunciationBase {
     this.filter.value.set('');
     this.filter.matchOption.set('start');
 
-    // Clear current review word
+    // Clear current word
     if (this.currentWord) {
       this.currentWord.currentReview = false;
       this.currentWord = null;
@@ -241,8 +241,8 @@ export abstract class PronunciationBase {
       ? () => this.stopAutoplay()
       : () => this.startAutoplay();
     const tooltip = this.autoplaying
-      ? "Stop automatic word review"
-      : "Start automatic word review";
+      ? "Stop auto-play"
+      : "Start auto-play";
 
     return new ButtonAction(handler, { tooltip });
   }
