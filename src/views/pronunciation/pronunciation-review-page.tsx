@@ -78,7 +78,7 @@ export const PronunciationReviewFilters: React.FC<PronunciationReviewFiltersProp
     <div className="pronunciation-filters">
       <div className="filter-panel">
         <FilterControls filter={pronunciation.filter} />
-        
+
         <div className="review-state-filter">
           <label htmlFor="review-state-select">Review state:</label>
           <select
@@ -194,7 +194,7 @@ export const PronunciationReviewWordChoice: React.FC<PronunciationReviewWordChoi
               <span
                 key={word.word}
                 className={className}
-                onClick={() => pronunciation.reviewWord(word.word)}
+                onClick={() => pronunciation.reviewWord(word)}
               >
                 {word.word}
               </span>
@@ -240,9 +240,9 @@ export const PronunciationReviewPage: React.FC<PronunciationReviewPageProps> = o
           pronunciation.stopAutoplay();
         }
         if (pronunciation.currentWord.soundsWrong) {
-          pronunciation.markOK(pronunciation.currentWord.word);
+          pronunciation.markOK(pronunciation.currentWord);
         } else {
-          pronunciation.markSoundsWrong(pronunciation.currentWord.word);
+          pronunciation.markSoundsWrong(pronunciation.currentWord);
         }
       } else if (e.key === 'Escape') {
         e.preventDefault();

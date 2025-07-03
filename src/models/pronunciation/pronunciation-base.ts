@@ -127,11 +127,11 @@ export abstract class PronunciationBase {
 
     if (this.currentWordIndex === null) {
       // No word changer, start with first word
-      await this.playWord(filtered[0].word);
+      await this.playWord(filtered[0]);
     } else if (this.currentWordIndex < filtered.length - 1) {
       // Move to next word
       const nextIndex = this.currentWordIndex + 1;
-      await this.playWord(filtered[nextIndex].word);
+      await this.playWord(filtered[nextIndex]);
     } else {
       // At end of list, repeat word changer
       if (this.currentWord) {
@@ -148,11 +148,11 @@ export abstract class PronunciationBase {
 
     if (this.currentWordIndex === null) {
       // No word changer, start with last word
-      await this.playWord(filtered[filtered.length - 1].word);
+      await this.playWord(filtered[filtered.length - 1]);
     } else if (this.currentWordIndex > 0) {
       // Move to previous word
       const prevIndex = this.currentWordIndex - 1;
-      await this.playWord(filtered[prevIndex].word);
+      await this.playWord(filtered[prevIndex]);
     } else {
       // At start of list, repeat word changer
       if (this.currentWord) {
@@ -186,25 +186,22 @@ export abstract class PronunciationBase {
   }
 
   // Legacy method name for backward compatibility (calls stopAnyAutoplay + playWord)
-  async reviewWord(wordStr: string): Promise<void> {
+  async reviewWord(word: Word): Promise<void> {
     this.stopAnyAutoplay();
-    await this.playWord(wordStr);
+    await this.playWord(word);
   }
 
   // Play a word (handles audio and sets current word)
-  async playWord(wordStr: string): Promise<void> {
-    const word = this.wordsMap.get(wordStr);
-    if (!word) return;
-
+  async playWord(word: Word): Promise<void> {
     // Set current word (subclass-specific implementation)
-    this.setCurrentWord(wordStr);
+    this.setCurrentWord(word);
 
     // Say the word
-    await this.wordSayer.say(wordStr);
+    await this.wordSayer.say(word.word);
   }
 
   // Abstract method for setting current word (implemented by subclasses)
-  protected abstract setCurrentWord(wordStr: string): void;
+  protected abstract setCurrentWord(word: Word): void;
 
   // Move to next word in autoplay sequence
   private async autoplayNext(): Promise<void> {
@@ -241,7 +238,7 @@ export abstract class PronunciationBase {
     const nextWord = wordsToAutoplay[nextIndex];
 
     // Use playWord to handle the word change
-    await this.playWord(nextWord.word);
+    await this.playWord(nextWord);
 
     // Continue autoplay after the configured delay
     if (this.autoplaying) {

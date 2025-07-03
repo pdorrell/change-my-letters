@@ -85,10 +85,7 @@ export class PronunciationActivity extends PronunciationBase {
   }
 
   // Activity mode implementation of setCurrentWord - simple word change without review state
-  protected setCurrentWord(wordStr: string): void {
-    const word = this.wordsMap.get(wordStr);
-    if (!word) return;
-
+  protected setCurrentWord(word: Word): void {
     // Clear previous current word
     if (this.currentWord) {
       this.currentWord.currentReview = false;

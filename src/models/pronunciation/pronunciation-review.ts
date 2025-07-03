@@ -62,13 +62,13 @@ export class PronunciationReview extends PronunciationBase {
 
   get markOKAction(): ButtonAction {
     const enabled = this.currentWord && this.currentWord.soundsWrong;
-    const handler = enabled ? () => this.markOK(this.currentWord!.word) : null;
+    const handler = enabled ? () => this.markOK(this.currentWord!) : null;
     return new ButtonAction(handler, { tooltip: "Mark word changer as sounding OK" });
   }
 
   get markSoundsWrongAction(): ButtonAction {
     const enabled = this.currentWord && !this.currentWord.soundsWrong;
-    const handler = enabled ? () => this.markSoundsWrong(this.currentWord!.word) : null;
+    const handler = enabled ? () => this.markSoundsWrong(this.currentWord!) : null;
     return new ButtonAction(handler, { tooltip: "Mark word changer as sounding wrong" });
   }
 
@@ -168,22 +168,16 @@ export class PronunciationReview extends PronunciationBase {
     }
   }
 
-  markOK(wordStr: string): void {
+  markOK(word: Word): void {
     this.stopAutoplay();
-    const word = this.wordsMap.get(wordStr);
-    if (word) {
-      word.soundsWrong = false;
-      word.reviewed = true;
-    }
+    word.soundsWrong = false;
+    word.reviewed = true;
   }
 
-  markSoundsWrong(wordStr: string): void {
+  markSoundsWrong(word: Word): void {
     this.stopAutoplay();
-    const word = this.wordsMap.get(wordStr);
-    if (word) {
-      word.soundsWrong = true;
-      word.reviewed = true;
-    }
+    word.soundsWrong = true;
+    word.reviewed = true;
   }
 
   reset(): void {
@@ -258,10 +252,7 @@ export class PronunciationReview extends PronunciationBase {
   }
 
   // Review mode implementation of setCurrentWord - handles review state changes
-  protected setCurrentWord(wordStr: string): void {
-    const word = this.wordsMap.get(wordStr);
-    if (!word) return;
-
+  protected setCurrentWord(word: Word): void {
     // Mark current review word as reviewed if it exists
     if (this.currentWord) {
       this.currentWord.reviewed = true;

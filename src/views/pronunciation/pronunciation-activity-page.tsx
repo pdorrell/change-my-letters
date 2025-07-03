@@ -102,7 +102,7 @@ export const PronunciationActivityWordChoice: React.FC<PronunciationActivityWord
               <span
                 key={word.word}
                 className={className}
-                onClick={() => pronunciation.reviewWord(word.word)}
+                onClick={() => pronunciation.reviewWord(word)}
               >
                 {word.word}
               </span>

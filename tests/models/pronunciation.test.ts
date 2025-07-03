@@ -262,14 +262,14 @@ describe('Pronunciation', () => {
     it('should mark word as OK', () => {
       testWords[0].soundsWrong = true;
 
-      pronunciation.markOK('cat');
+      pronunciation.markOK(testWords[0]);
 
       expect(testWords[0].soundsWrong).toBe(false);
       expect(testWords[0].reviewed).toBe(true);
     });
 
     it('should mark word as sounds wrong', () => {
-      pronunciation.markSoundsWrong('cat');
+      pronunciation.markSoundsWrong(testWords[0]);
 
       expect(testWords[0].soundsWrong).toBe(true);
       expect(testWords[0].reviewed).toBe(true);
@@ -277,15 +277,16 @@ describe('Pronunciation', () => {
 
     it('should handle non-existent words gracefully', () => {
       expect(() => {
-        pronunciation.markOK('nonexistent');
-        pronunciation.markSoundsWrong('nonexistent');
+        const nonexistentWord = new Word('nonexistent', [], [], []);
+        pronunciation.markOK(nonexistentWord);
+        pronunciation.markSoundsWrong(nonexistentWord);
       }).not.toThrow();
     });
   });
 
   describe('review word function', () => {
     it('should set current review word and say it', () => {
-      pronunciation.reviewWord('cat');
+      pronunciation.reviewWord(testWords[0]);
 
       expect(pronunciation.currentWord).toBe(testWords[0]);
       expect(testWords[0].currentReview).toBe(true);
@@ -294,10 +295,10 @@ describe('Pronunciation', () => {
 
     it('should mark previous review word as reviewed when setting new one', () => {
       // Set initial review word
-      pronunciation.reviewWord('cat');
+      pronunciation.reviewWord(testWords[0]);
 
       // Set new review word
-      pronunciation.reviewWord('dog');
+      pronunciation.reviewWord(testWords[1]);
 
       expect(testWords[0].reviewed).toBe(true);
       expect(testWords[0].currentReview).toBe(false);
@@ -307,10 +308,12 @@ describe('Pronunciation', () => {
 
     it('should handle non-existent words gracefully', () => {
       expect(() => {
-        pronunciation.reviewWord('nonexistent');
+        const nonexistentWord = new Word('nonexistent', [], [], []);
+        pronunciation.reviewWord(nonexistentWord);
       }).not.toThrow();
 
-      expect(pronunciation.currentWord).toBeNull();
+      // Since we're now passing Word objects directly, the nonexistent word becomes the current word
+      expect(pronunciation.currentWord?.word).toBe('nonexistent');
     });
   });
 
@@ -380,7 +383,7 @@ describe('Pronunciation', () => {
     });
 
     it('should update currentWordIndex when reviewWord is called', () => {
-      pronunciation.reviewWord('dog'); // dog is at index 1 in testWords
+      pronunciation.reviewWord(testWords[1]); // dog is at index 1 in testWords
 
       expect(pronunciation.currentWordIndex).toBe(1);
       expect(pronunciation.currentWord).toBe(testWords[1]);
@@ -398,7 +401,7 @@ describe('Pronunciation', () => {
       });
 
       it('should move to next word in sequence', () => {
-        pronunciation.reviewWord('cat'); // Start at index 0
+        pronunciation.reviewWord(testWords[0]); // Start at index 0
         audioFilePlayer.playedFiles = []; // Clear previous calls
 
         pronunciation.gotoNextWord();
@@ -409,7 +412,7 @@ describe('Pronunciation', () => {
       });
 
       it('should repeat word changer when at end of list', () => {
-        pronunciation.reviewWord('bird'); // Last word (index 3)
+        pronunciation.reviewWord(testWords[3]); // Last word (index 3)
         audioFilePlayer.playedFiles = []; // Clear previous calls
 
         pronunciation.gotoNextWord();
@@ -441,7 +444,7 @@ describe('Pronunciation', () => {
       });
 
       it('should move to previous word in sequence', () => {
-        pronunciation.reviewWord('dog'); // Start at index 1
+        pronunciation.reviewWord(testWords[1]); // Start at index 1
         audioFilePlayer.playedFiles = []; // Clear previous calls
 
         pronunciation.gotoPreviousWord();
@@ -452,7 +455,7 @@ describe('Pronunciation', () => {
       });
 
       it('should repeat word changer when at start of list', () => {
-        pronunciation.reviewWord('cat'); // First word (index 0)
+        pronunciation.reviewWord(testWords[0]); // First word (index 0)
         audioFilePlayer.playedFiles = []; // Clear previous calls
 
         pronunciation.gotoPreviousWord();
@@ -475,7 +478,7 @@ describe('Pronunciation', () => {
     describe('navigation with filtering', () => {
       it('should update index when filter changes', () => {
         // Start with 'dog' selected (index 1 in full list)
-        pronunciation.reviewWord('dog');
+        pronunciation.reviewWord(testWords[1]);
         expect(pronunciation.currentWordIndex).toBe(1);
 
         // Filter to only words starting with 'd'
@@ -491,7 +494,7 @@ describe('Pronunciation', () => {
 
       it('should handle word disappearing from filter', () => {
         // Start with 'cat' selected
-        pronunciation.reviewWord('cat');
+        pronunciation.reviewWord(testWords[0]);
         expect(pronunciation.currentWordIndex).toBe(0);
 
         // Filter to only words starting with 'd' (cat disappears)
