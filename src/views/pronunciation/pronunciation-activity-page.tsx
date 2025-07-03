@@ -6,65 +6,28 @@ import { ActionButton } from '@/lib/views/action-button';
 import { FilterControls } from '@/lib/views/filter-controls';
 
 /**
- * Activity mode filters component for Pronunciation page
+ * Activity mode control panel component with filters on left and Auto button on right
  */
-interface PronunciationActivityFiltersProps {
+interface PronunciationActivityControlPanelProps {
   pronunciation: PronunciationActivity;
 }
 
-export const PronunciationActivityFilters: React.FC<PronunciationActivityFiltersProps> = observer(({ pronunciation }) => {
+export const PronunciationActivityControlPanel: React.FC<PronunciationActivityControlPanelProps> = observer(({ pronunciation }) => {
   return (
-    <div className="pronunciation-filters">
+    <div className="pronunciation-control-panel">
       <div className="filter-panel">
         <FilterControls filter={pronunciation.filter} />
       </div>
-    </div>
-  );
-});
 
-/**
- * Activity mode state controls component for Pronunciation page
- */
-interface PronunciationActivityStateControlsProps {
-  pronunciation: PronunciationActivity;
-}
-
-export const PronunciationActivityStateControls: React.FC<PronunciationActivityStateControlsProps> = observer(({ pronunciation }) => {
-  return (
-    <div className="word-changer-panel">
-      <div className="current-review-word">
-        <span
-          className={clsx('word-span', {
-            'no-word': !pronunciation.currentWord
-          })}
-        >
-          {pronunciation.currentWord ? pronunciation.currentWord.word : '\u00A0'}
-        </span>
-
-        <div className="autoplay-controls">
-          <ActionButton action={pronunciation.autoplayAction}>
-            {pronunciation.autoplaying ? 'Stop' : 'Auto'}
-          </ActionButton>
-
-          <select
-            value={pronunciation.autoPlayWaitMillis}
-            onChange={(e) => {
-              pronunciation.stopAutoplay();
-              pronunciation.setAutoPlayWaitMillis(parseInt(e.target.value));
-            }}
-            className="autoplay-interval-select"
-          >
-            <option value={100}>100ms</option>
-            <option value={200}>200ms</option>
-            <option value={300}>300ms</option>
-            <option value={400}>400ms</option>
-            <option value={500}>500ms</option>
-          </select>
-        </div>
+      <div className="auto-controls">
+        <ActionButton action={pronunciation.autoplayAction}>
+          {pronunciation.autoplaying ? 'Stop' : 'Auto'}
+        </ActionButton>
       </div>
     </div>
   );
 });
+
 
 /**
  * Activity mode word choice component for Pronunciation page
@@ -170,8 +133,7 @@ export const PronunciationActivityPage: React.FC<PronunciationActivityPageProps>
 
   return (
     <div className={clsx('pronunciation-container', 'activity-mode')}>
-      <PronunciationActivityFilters pronunciation={pronunciation} />
-      <PronunciationActivityStateControls pronunciation={pronunciation} />
+      <PronunciationActivityControlPanel pronunciation={pronunciation} />
       <PronunciationActivityWordChoice pronunciation={pronunciation} />
     </div>
   );
