@@ -16,7 +16,7 @@ export class PronunciationActivity extends PronunciationBase {
     sortedWords: Word[],
     wordSayer: WordSayerInterface
   ) {
-    super(sortedWords, wordSayer, false); // activity mode
+    super(sortedWords, wordSayer);
 
     makeObservable(this, {
       maxNumWordsToShow: observable,

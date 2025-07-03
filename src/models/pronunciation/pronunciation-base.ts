@@ -8,9 +8,6 @@ import { Filter } from '@/lib/models/filter';
  * Base class for pronunciation interactions
  */
 export abstract class PronunciationBase {
-  // Mode setting - review mode (developer tool) vs activity mode (for children)
-  reviewMode: boolean;
-
   // Filter settings
   filter: Filter;
 
@@ -27,11 +24,8 @@ export abstract class PronunciationBase {
 
   constructor(
     public readonly sortedWords: Word[],
-    public readonly wordSayer: WordSayerInterface,
-    reviewMode: boolean
+    public readonly wordSayer: WordSayerInterface
   ) {
-    this.reviewMode = reviewMode;
-
     // Initialize filter
     this.filter = new Filter('start');
 
@@ -42,7 +36,6 @@ export abstract class PronunciationBase {
     }
 
     makeObservable(this, {
-      reviewMode: observable,
       currentWord: observable,
       autoplaying: observable,
       autoPlayWaitMillis: observable,
@@ -53,7 +46,6 @@ export abstract class PronunciationBase {
       setAutoPlayWaitMillis: action,
       setFilterValue: action,
       setFilterMatchOption: action,
-      setReviewMode: action,
       gotoNextWord: action,
       gotoPreviousWord: action,
       startAutoplay: action,
@@ -113,11 +105,6 @@ export abstract class PronunciationBase {
     this.filter.matchOption.set(option);
   }
 
-  @action
-  setReviewMode(reviewMode: boolean): void {
-    this.stopAutoplay();
-    this.reviewMode = reviewMode;
-  }
 
   // Navigate to next word in filtered list
   @action

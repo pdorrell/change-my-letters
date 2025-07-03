@@ -24,7 +24,7 @@ export class PronunciationReview extends PronunciationBase {
     sortedWords: Word[],
     wordSayer: WordSayerInterface
   ) {
-    super(sortedWords, wordSayer, true); // review mode
+    super(sortedWords, wordSayer);
 
     // Initialize button actions
     this.loadStateAction = new ButtonAction(() => this.triggerFileUpload(), { tooltip: "Upload review-pronunciation-state.json" });

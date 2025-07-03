@@ -167,12 +167,6 @@ export const PronunciationActivityPage: React.FC<PronunciationActivityPageProps>
     };
   }, [pronunciation]);
 
-  // Ensure we're in activity mode
-  React.useEffect(() => {
-    if (pronunciation.reviewMode) {
-      pronunciation.setReviewMode(false);
-    }
-  }, [pronunciation]);
 
   return (
     <div className={clsx('pronunciation-container', 'activity-mode')}>

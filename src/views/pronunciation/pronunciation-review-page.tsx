@@ -259,12 +259,6 @@ export const PronunciationReviewPage: React.FC<PronunciationReviewPageProps> = o
     };
   }, [pronunciation]);
 
-  // Ensure we're in review mode
-  React.useEffect(() => {
-    if (!pronunciation.reviewMode) {
-      pronunciation.setReviewMode(true);
-    }
-  }, [pronunciation]);
 
   return (
     <div className={clsx('pronunciation-container')}>
