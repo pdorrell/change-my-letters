@@ -11,7 +11,7 @@
 // Base styles
 html, body {
   overflow-x: hidden; // Prevent horizontal scrollbar 
-  overflow-y: auto; // Allow vertical scrolling when needed
+  overflow-y: scroll; // Always show vertical scrollbar to prevent layout shifts
   height: 100%; // Full height
   width: 100%; // Full width
   margin: 0;
