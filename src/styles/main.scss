@@ -689,6 +689,83 @@ button {
   }
 }
 
+// Filter controls (used globally)
+.filter-controls {
+  display: flex;
+  flex-direction: row;
+  gap: 1.25em;
+  align-items: center;
+  
+  input[type="text"] {
+    padding: 0.5em 0.75em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.88em;
+    min-width: 6em;
+  }
+  
+  .radio-group {
+    display: flex;
+    gap: 1.88em;
+    align-items: center;
+    
+    span {
+      margin-right: 1.25em;
+    }
+    
+    label {
+      gap: 0.94em;
+      margin-right: 1.56em;
+      display: flex;
+      align-items: center;
+      
+      input[type="radio"] {
+        margin-right: 0.94em;
+      }
+    }
+  }
+  
+  .review-state-filter {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    
+    label {
+      font-weight: 500;
+    }
+    
+    select {
+      padding: 0.5em 0.75em;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 0.88em;
+      min-width: 9.4em;
+    }
+  }
+  
+  .auto-control {
+    button {
+      font-size: 1em;
+      padding: 0.5em 0.75em;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 5em;
+      
+      &:hover {
+        background-color: #0056b3;
+      }
+      
+      &:disabled {
+        background-color: #6c757d;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
 // Pronunciation filters
 .pronunciation-filters {
   .filter-panel {
@@ -697,82 +774,6 @@ button {
     border-radius: 8px;
     padding: 1.25em;
     margin-bottom: 1.88em;
-    
-    .filter-controls {
-      display: flex;
-      flex-direction: row;
-      gap: 1.25em;
-      align-items: center;
-      
-      input[type="text"] {
-        padding: 0.5em 0.75em;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 0.88em;
-        min-width: 6em;
-      }
-      
-      .radio-group {
-        display: flex;
-        gap: 1.88em;
-        align-items: center;
-        
-        span {
-          margin-right: 1.25em;
-        }
-        
-        label {
-          gap: 0.94em;
-          margin-right: 1.56em;
-          display: flex;
-          align-items: center;
-          
-          input[type="radio"] {
-            margin-right: 0.94em;
-          }
-        }
-      }
-      
-      .review-state-filter {
-        display: flex;
-        align-items: center;
-        gap: 0.5em;
-        
-        label {
-          font-weight: 500;
-        }
-        
-        select {
-          padding: 0.5em 0.75em;
-          border: 1px solid #ccc;
-          border-radius: 4px;
-          font-size: 0.88em;
-          min-width: 9.4em;
-        }
-      }
-      
-      .auto-control {
-        button {
-          font-size: 1em;
-          padding: 0.5em 0.75em;
-          background-color: #007bff;
-          color: white;
-          border: none;
-          border-radius: 8px;
-          cursor: pointer;
-          width: 5em;
-          
-          &:hover {
-            background-color: #0056b3;
-          }
-          
-          &:disabled {
-            background-color: #6c757d;
-            cursor: not-allowed;
-          }
-        }
-      }
-    }
   }
 }
 
@@ -780,7 +781,7 @@ button {
 .pronunciation-container.activity-mode {
   // Style the new control panel for activity mode
   .pronunciation-control-panel {
-    .filter-panel .filter-controls {
+    .filter-controls {
       input[type="text"] {
         font-size: 1.75em;
         padding: 0.4em 0.5em;
@@ -833,7 +834,7 @@ button {
     }
   }
   
-  .pronunciation-filters .filter-panel .filter-controls {
+  .pronunciation-filters .filter-controls {
     input[type="text"] {
       font-size: 1.75em;
       padding: 0.4em 0.5em;
