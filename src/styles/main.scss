@@ -477,6 +477,13 @@ button {
     cursor: pointer;
     padding: 0.5em 0;
   }
+  
+  .value-radio-buttons-container {
+    display: flex;
+    align-items: center;
+    gap: 0.31em;
+    font-size: 0.9em;
+  }
 }
 
 
@@ -717,7 +724,6 @@ button {
       gap: 0.94em;
       margin-right: 1.56em;
       display: flex;
-      align-items: center;
       
       input[type="radio"] {
         margin-right: 0.94em;
