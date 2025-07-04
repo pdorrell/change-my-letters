@@ -772,25 +772,6 @@ button {
           }
         }
       }
-      
-      .review-mode-filter {
-        display: flex;
-        align-items: center;
-        gap: 0.5em;
-        margin-left: auto; // Push to the right
-        
-        label {
-          font-weight: 500;
-          display: flex;
-          align-items: center;
-          gap: 0.31em;
-          cursor: pointer;
-        }
-        
-        input[type="checkbox"] {
-          transform: scale(1.2);
-        }
-      }
     }
   }
 }
@@ -910,19 +891,6 @@ button {
         &:disabled {
           background-color: #6c757d;
           cursor: not-allowed;
-        }
-      }
-    }
-    
-    .review-mode-filter {
-        font-size: 1.5em;
-      
-      label {
-        font-size: 1em;
-        gap: 0.3em;
-        
-        input[type="checkbox"] {
-          margin-right: 0.2em;
         }
       }
     }
