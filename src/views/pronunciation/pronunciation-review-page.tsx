@@ -110,7 +110,7 @@ interface PronunciationReviewStateControlsProps {
 
 export const PronunciationReviewStateControls: React.FC<PronunciationReviewStateControlsProps> = observer(({ pronunciation }) => {
   return (
-    <div className="word-changer-panel">
+    <div className="pronunciation-review-panel">
       <div className="current-review-word">
         <span
           className={clsx('word-span', {

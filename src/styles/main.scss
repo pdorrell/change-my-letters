@@ -1,6 +1,13 @@
 // Import reset view styles  
 @use 'reset-view';
 
+// CSS Variables for button styling
+:root {
+  --control-bg: #4a90e2;
+  --control-hover-bg: #3a80d2;
+  --control-fg: white;
+}
+
 // Base styles
 html, body {
   overflow-x: hidden; // Prevent horizontal scrollbar 
@@ -17,6 +24,30 @@ body {
   background-color: #f5f5f5;
   position: static; // Remove positioning context to avoid constraining floating elements
   min-height: 100%; // Ensure it takes at least full height
+}
+
+// Default button styles (override with specific classes as needed)
+button {
+  padding: 0.5em 1em;
+  background-color: var(--control-bg);
+  color: var(--control-fg);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  
+  &:hover {
+    background-color: var(--control-hover-bg);
+  }
+  
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  &.hidden {
+    visibility: hidden;
+  }
 }
 
 // Utility classes
@@ -438,7 +469,6 @@ body {
   margin-top: 1.25em;
   flex-wrap: wrap;
   
-  
   .value-checkbox-container {
     display: flex;
     align-items: center;
@@ -447,31 +477,6 @@ body {
     cursor: pointer;
     padding: 0.5em 0;
   }
-  
-  button {
-    padding: 0.5em 1em;
-    background-color: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9em;
-    
-    &:hover {
-      background-color: #3a80d2;
-    }
-    
-    &:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
-    }
-    
-    &.hidden {
-      visibility: hidden;
-    }
-    
-  }
-  
 }
 
 
@@ -504,6 +509,11 @@ body {
   gap: 0.63em;
   margin-bottom: 1.88em;
   justify-content: center;
+  align-items: center; // Center buttons vertically with Load State button
+  
+  button {
+    align-self: center; // Center individual buttons but don't stretch
+  }
   
   .load-state-button-container {
     display: flex;
@@ -523,8 +533,8 @@ body {
   }
 }
 
-// Pronunciation state controls
-.word-changer-panel {
+// Pronunciation review controls
+.pronunciation-review-panel {
   background-color: #f8f9fa;
   border: 1px solid #dee2e6;
   border-radius: 8px;
@@ -918,8 +928,8 @@ body {
     }
   }
   
-  // Hide the word changer panel in activity mode
-  .word-changer-panel {
+  // Hide the pronunciation review panel in activity mode
+  .pronunciation-review-panel {
     display: none;
   }
   
