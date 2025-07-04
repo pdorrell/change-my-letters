@@ -551,7 +551,7 @@ button {
   .word-span {
     font-size: 1.5em;
     font-weight: bold;
-    padding: 0.63em 0.94em;
+    padding: 0.3em 0.4em;
     border-radius: 6px;
     border: 2px solid transparent;
     min-width: 10ch;
@@ -700,7 +700,7 @@ button {
     
     .filter-controls {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: row;
       gap: 1.25em;
       align-items: center;
       

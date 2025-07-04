@@ -77,24 +77,26 @@ export const PronunciationReviewFilters: React.FC<PronunciationReviewFiltersProp
   return (
     <div className="pronunciation-filters">
       <div className="filter-panel">
-        <FilterControls filter={pronunciation.filter} />
+        <div className="filter-controls">
+          <FilterControls filter={pronunciation.filter} />
 
-        <div className="review-state-filter">
-          <label htmlFor="review-state-select">Review state:</label>
-          <select
-            id="review-state-select"
-            value={pronunciation.reviewStateFilterOptions.indexOf(pronunciation.reviewStateFilter)}
-            onChange={(e) => {
-              const index = parseInt(e.target.value);
-              pronunciation.setReviewStateFilter(pronunciation.reviewStateFilterOptions[index]);
-            }}
-          >
-            {pronunciation.reviewStateFilterOptions.map((option, index) => (
-              <option key={index} value={index}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+          <div className="review-state-filter">
+            <label htmlFor="review-state-select">Review state:</label>
+            <select
+              id="review-state-select"
+              value={pronunciation.reviewStateFilterOptions.indexOf(pronunciation.reviewStateFilter)}
+              onChange={(e) => {
+                const index = parseInt(e.target.value);
+                pronunciation.setReviewStateFilter(pronunciation.reviewStateFilterOptions[index]);
+              }}
+            >
+              {pronunciation.reviewStateFilterOptions.map((option, index) => (
+                <option key={index} value={index}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
     </div>
