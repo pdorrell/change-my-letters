@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Reset } from '@/models/reset/reset';
 import { ActionButton } from '@/lib/views/action-button';
 import { FilterControls } from '@/lib/views/filter-controls';
+import { Inspectable } from '@/lib/inspector';
 
 /**
  * Controls component for Reset page
@@ -11,14 +12,16 @@ interface ResetControlsProps { resetInteraction: Reset; }
 
 export const ResetControls: React.FC<ResetControlsProps> = observer(({ resetInteraction }) => {
   return (
-    <div className="reset-controls">
-      <div className="reset-controls-left">
-        <FilterControls filter={resetInteraction.filter} />
+    <Inspectable label="ResetControls">
+      <div className="reset-controls">
+        <div className="reset-controls-left">
+          <FilterControls filter={resetInteraction.filter} />
+        </div>
+        <div className="reset-controls-right">
+          <ActionButton action={resetInteraction.randomAction}>Choose Random</ActionButton>
+        </div>
       </div>
-      <div className="reset-controls-right">
-        <ActionButton action={resetInteraction.randomAction}>Choose Random</ActionButton>
-      </div>
-    </div>
+    </Inspectable>
   );
 });
 
@@ -40,28 +43,30 @@ export const ResetWordChoice: React.FC<ResetWordChoiceProps> = observer(({ reset
   const filteredWords = resetInteraction.filteredWords;
 
   return (
-    <div className="reset-word-choice">
-      {filteredWords.length > 0 ? (
-        <p>
-          {filteredWords.map((word, index) => (
-            <React.Fragment key={word}>
-              <span
-                className="reset-word-option"
-                onClick={() => handleWordClick(word)}
-                title={`Set word changer to '${word}'`}
-              >
-                {word}
-              </span>
-              {index < filteredWords.length - 1 && ' '}
-            </React.Fragment>
-          ))}
-        </p>
-      ) : (
-        <p className="reset-no-words">
-          No words match the current filter.
-        </p>
-      )}
-    </div>
+    <Inspectable label="ResetWordChoice">
+      <div className="reset-word-choice">
+        {filteredWords.length > 0 ? (
+          <p>
+            {filteredWords.map((word, index) => (
+              <React.Fragment key={word}>
+                <span
+                  className="reset-word-option"
+                  onClick={() => handleWordClick(word)}
+                  title={`Set word changer to '${word}'`}
+                >
+                  {word}
+                </span>
+                {index < filteredWords.length - 1 && ' '}
+              </React.Fragment>
+            ))}
+          </p>
+        ) : (
+          <p className="reset-no-words">
+            No words match the current filter.
+          </p>
+        )}
+      </div>
+    </Inspectable>
   );
 });
 
@@ -74,12 +79,14 @@ export const ResetPage: React.FC<ResetPageProps> = observer(({ resetInteraction 
   const targetPageLabel = resetInteraction.targetPage === 'maker' ? 'Maker' : 'Changer';
 
   return (
-    <>
-      <div className="reset-page-header">
-        <p>Reset <b>{targetPageLabel}</b> page by choosing a new initial word.</p>
-      </div>
-      <ResetControls resetInteraction={resetInteraction} />
-      <ResetWordChoice resetInteraction={resetInteraction} />
-    </>
+    <Inspectable label="ResetPage">
+      <>
+        <div className="reset-page-header">
+          <p>Reset <b>{targetPageLabel}</b> page by choosing a new initial word.</p>
+        </div>
+        <ResetControls resetInteraction={resetInteraction} />
+        <ResetWordChoice resetInteraction={resetInteraction} />
+      </>
+    </Inspectable>
   );
 });

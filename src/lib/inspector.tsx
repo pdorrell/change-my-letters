@@ -1,4 +1,5 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 
 /**
  * Inspector Tool for React Components
@@ -19,9 +20,8 @@ import React from 'react';
  *   return <div>Component content</div>;
  * };
  * 
- * export const MyComponent: React.FC<Props> = observer(
- *   inspectable('MyComponent', MyComponentImpl)
- * );
+ * export const MyComponent: React.FC<Props> = 
+ *   inspectable('MyComponent', observer(MyComponentImpl));
  * ```
  * 
  * IMPORTANT: The first parameter MUST match the exported component name
@@ -32,14 +32,31 @@ import React from 'react';
  */
 
 /**
- * Wrapper function that makes a React component inspectable in inspector mode.
+ * Component that makes its children inspectable in inspector mode.
  * 
  * When the application is in inspector mode (has 'inspector' CSS class on top-level element),
  * hovering over the wrapped component will show a red border and display the provided label.
  * 
  * @param label - The label to display when hovering in inspector mode
- * @param Component - The React component function to wrap
- * @returns A new component wrapped with inspection capabilities
+ * @param children - The React children to wrap with inspection capabilities
+ */
+interface InspectableProps {
+  label: string;
+  children: React.ReactNode;
+}
+
+export const Inspectable: React.FC<InspectableProps> = observer(({ label, children }) => {
+  return (
+    <div className="inspectable">
+      <div className="label">{label}</div>
+      {children}
+    </div>
+  );
+});
+
+/**
+ * @deprecated Use <Inspectable label="ComponentName"> instead
+ * Wrapper function that makes a React component inspectable in inspector mode.
  */
 export function inspectable<P extends Record<string, any>>(
   label: string,
@@ -47,10 +64,9 @@ export function inspectable<P extends Record<string, any>>(
 ): React.FC<P> {
   const InspectableComponent: React.FC<P> = (props) => {
     return (
-      <div className="inspectable">
-        <div className="label">{label}</div>
+      <Inspectable label={label}>
         <Component {...props} />
-      </div>
+      </Inspectable>
     );
   };
 

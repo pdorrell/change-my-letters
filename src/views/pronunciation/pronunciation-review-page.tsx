@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { PronunciationReview } from '@/models/pronunciation/pronunciation-review';
 import { ActionButton } from '@/lib/views/action-button';
 import { FilterControls } from '@/lib/views/filter-controls';
+import { Inspectable } from '@/lib/inspector';
 
 /**
  * Review mode action controls component for Pronunciation page
@@ -32,37 +33,39 @@ export const ReviewStateControls: React.FC<ReviewStateControlsProps> = observer(
   };
 
   return (
-    <div className="action-buttons-panel">
-      <div
-        className="load-state-button-container"
-        onDragOver={handleDragOver}
-        onDrop={handleDrop}
-      >
-        <ActionButton action={pronunciation.loadStateAction}>
-          + Load State
+    <Inspectable label="ReviewStateControls">
+      <div className="action-buttons-panel">
+        <div
+          className="load-state-button-container"
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+        >
+          <ActionButton action={pronunciation.loadStateAction}>
+            + Load State
+          </ActionButton>
+        </div>
+
+        <ActionButton action={pronunciation.saveStateAction}>
+          Save State
+        </ActionButton>
+
+        <ActionButton action={pronunciation.downloadWrongWordsAction}>
+          Download Wrong Words
+        </ActionButton>
+
+        <ActionButton action={pronunciation.resetAllToUnreviewedAction}>
+          Reset All to Unreviewed
+        </ActionButton>
+
+        <ActionButton action={pronunciation.resetAllToOKAction}>
+          Reset All to OK
+        </ActionButton>
+
+        <ActionButton action={pronunciation.reviewWrongWordsAction}>
+          Review Wrong Words
         </ActionButton>
       </div>
-
-      <ActionButton action={pronunciation.saveStateAction}>
-        Save State
-      </ActionButton>
-
-      <ActionButton action={pronunciation.downloadWrongWordsAction}>
-        Download Wrong Words
-      </ActionButton>
-
-      <ActionButton action={pronunciation.resetAllToUnreviewedAction}>
-        Reset All to Unreviewed
-      </ActionButton>
-
-      <ActionButton action={pronunciation.resetAllToOKAction}>
-        Reset All to OK
-      </ActionButton>
-
-      <ActionButton action={pronunciation.reviewWrongWordsAction}>
-        Review Wrong Words
-      </ActionButton>
-    </div>
+    </Inspectable>
   );
 });
 
@@ -75,31 +78,33 @@ interface PronunciationReviewFiltersProps {
 
 export const PronunciationReviewFilters: React.FC<PronunciationReviewFiltersProps> = observer(({ pronunciation }) => {
   return (
-    <div className="pronunciation-filters">
-      <div className="filter-panel">
-        <div className="filter-controls">
-          <FilterControls filter={pronunciation.filter} />
+    <Inspectable label="PronunciationReviewFilters">
+      <div className="pronunciation-filters">
+        <div className="filter-panel">
+          <div className="filter-controls">
+            <FilterControls filter={pronunciation.filter} />
 
-          <div className="review-state-filter">
-            <label htmlFor="review-state-select">Review state:</label>
-            <select
-              id="review-state-select"
-              value={pronunciation.reviewStateFilterOptions.indexOf(pronunciation.reviewStateFilter)}
-              onChange={(e) => {
-                const index = parseInt(e.target.value);
-                pronunciation.setReviewStateFilter(pronunciation.reviewStateFilterOptions[index]);
-              }}
-            >
-              {pronunciation.reviewStateFilterOptions.map((option, index) => (
-                <option key={index} value={index}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
+            <div className="review-state-filter">
+              <label htmlFor="review-state-select">Review state:</label>
+              <select
+                id="review-state-select"
+                value={pronunciation.reviewStateFilterOptions.indexOf(pronunciation.reviewStateFilter)}
+                onChange={(e) => {
+                  const index = parseInt(e.target.value);
+                  pronunciation.setReviewStateFilter(pronunciation.reviewStateFilterOptions[index]);
+                }}
+              >
+                {pronunciation.reviewStateFilterOptions.map((option, index) => (
+                  <option key={index} value={index}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Inspectable>
   );
 });
 
@@ -112,50 +117,52 @@ interface PronunciationReviewStateControlsProps {
 
 export const PronunciationReviewStateControls: React.FC<PronunciationReviewStateControlsProps> = observer(({ pronunciation }) => {
   return (
-    <div className="pronunciation-review-panel">
-      <div className="current-review-word">
-        <span
-          className={clsx('word-span', {
-            'no-word': !pronunciation.currentWord,
-            'wrong current-review': pronunciation.currentWord?.soundsWrong,
-            'ok current-review': pronunciation.currentWord && !pronunciation.currentWord.soundsWrong
-          })}
-        >
-          {pronunciation.currentWord ? pronunciation.currentWord.word : '\u00A0'}
-        </span>
-
-        <div className="review-buttons">
-          <ActionButton action={pronunciation.markSoundsWrongAction}>
-            Sounds Wrong
-          </ActionButton>
-
-          <ActionButton action={pronunciation.markOKAction}>
-            Sounds OK
-          </ActionButton>
-        </div>
-
-        <div className="autoplay-controls">
-          <ActionButton action={pronunciation.autoplayAction}>
-            {pronunciation.autoplaying ? 'Stop' : 'Auto'}
-          </ActionButton>
-
-          <select
-            value={pronunciation.autoPlayWaitMillis}
-            onChange={(e) => {
-              pronunciation.stopAutoplay();
-              pronunciation.setAutoPlayWaitMillis(parseInt(e.target.value));
-            }}
-            className="autoplay-interval-select"
+    <Inspectable label="PronunciationReviewStateControls">
+      <div className="pronunciation-review-panel">
+        <div className="current-review-word">
+          <span
+            className={clsx('word-span', {
+              'no-word': !pronunciation.currentWord,
+              'wrong current-review': pronunciation.currentWord?.soundsWrong,
+              'ok current-review': pronunciation.currentWord && !pronunciation.currentWord.soundsWrong
+            })}
           >
-            <option value={100}>100ms</option>
-            <option value={200}>200ms</option>
-            <option value={300}>300ms</option>
-            <option value={400}>400ms</option>
-            <option value={500}>500ms</option>
-          </select>
+            {pronunciation.currentWord ? pronunciation.currentWord.word : '\u00A0'}
+          </span>
+
+          <div className="review-buttons">
+            <ActionButton action={pronunciation.markSoundsWrongAction}>
+              Sounds Wrong
+            </ActionButton>
+
+            <ActionButton action={pronunciation.markOKAction}>
+              Sounds OK
+            </ActionButton>
+          </div>
+
+          <div className="autoplay-controls">
+            <ActionButton action={pronunciation.autoplayAction}>
+              {pronunciation.autoplaying ? 'Stop' : 'Auto'}
+            </ActionButton>
+
+            <select
+              value={pronunciation.autoPlayWaitMillis}
+              onChange={(e) => {
+                pronunciation.stopAutoplay();
+                pronunciation.setAutoPlayWaitMillis(parseInt(e.target.value));
+              }}
+              className="autoplay-interval-select"
+            >
+              <option value={100}>100ms</option>
+              <option value={200}>200ms</option>
+              <option value={300}>300ms</option>
+              <option value={400}>400ms</option>
+              <option value={500}>500ms</option>
+            </select>
+          </div>
         </div>
       </div>
-    </div>
+    </Inspectable>
   );
 });
 
@@ -170,41 +177,43 @@ export const PronunciationReviewWordChoice: React.FC<PronunciationReviewWordChoi
   const keyboardHint = "Use ← → arrow keys to navigate, Alt+→ to start autoplay, space bar to toggle sounds wrong";
 
   return (
-    <div className="pronunciation-word-choice">
-      {/* Filtered Words */}
-      <div className="filtered-words">
-        <div className="words-header">
-          <span className="words-count">Words: {pronunciation.filteredWords.length}</span>
-          <div className="keyboard-shortcuts">
-            <span className="shortcut-hint">{keyboardHint}</span>
+    <Inspectable label="PronunciationReviewWordChoice">
+      <div className="pronunciation-word-choice">
+        {/* Filtered Words */}
+        <div className="filtered-words">
+          <div className="words-header">
+            <span className="words-count">Words: {pronunciation.filteredWords.length}</span>
+            <div className="keyboard-shortcuts">
+              <span className="shortcut-hint">{keyboardHint}</span>
+            </div>
+          </div>
+
+          <div className={clsx('words-grid', 'touch-interactive-area')}>
+            {pronunciation.displayedWords.map(word => {
+              const isCurrentReview = word.currentReview;
+              const isReviewed = word.reviewed && !word.soundsWrong;
+              const isWrong = word.soundsWrong;
+
+              const className = clsx('word-span', {
+                'wrong': isWrong,
+                'ok': isReviewed && !isWrong,
+                'current-review': isCurrentReview
+              });
+
+              return (
+                <span
+                  key={word.word}
+                  className={className}
+                  onClick={() => pronunciation.reviewWord(word)}
+                >
+                  {word.word}
+                </span>
+              );
+            })}
           </div>
         </div>
-
-        <div className={clsx('words-grid', 'touch-interactive-area')}>
-          {pronunciation.displayedWords.map(word => {
-            const isCurrentReview = word.currentReview;
-            const isReviewed = word.reviewed && !word.soundsWrong;
-            const isWrong = word.soundsWrong;
-
-            const className = clsx('word-span', {
-              'wrong': isWrong,
-              'ok': isReviewed && !isWrong,
-              'current-review': isCurrentReview
-            });
-
-            return (
-              <span
-                key={word.word}
-                className={className}
-                onClick={() => pronunciation.reviewWord(word)}
-              >
-                {word.word}
-              </span>
-            );
-          })}
-        </div>
       </div>
-    </div>
+    </Inspectable>
   );
 });
 
@@ -263,14 +272,16 @@ export const PronunciationReviewPage: React.FC<PronunciationReviewPageProps> = o
 
 
   return (
-    <div className={clsx('pronunciation-container')}>
-      <ReviewStateControls
-        pronunciation={pronunciation}
-        reviewStateFileLoader={(file: File) => pronunciation.loadReviewStateFromFile(file)}
-      />
-      <PronunciationReviewFilters pronunciation={pronunciation} />
-      <PronunciationReviewStateControls pronunciation={pronunciation} />
-      <PronunciationReviewWordChoice pronunciation={pronunciation} />
-    </div>
+    <Inspectable label="PronunciationReviewPage">
+      <div className={clsx('pronunciation-container')}>
+        <ReviewStateControls
+          pronunciation={pronunciation}
+          reviewStateFileLoader={(file: File) => pronunciation.loadReviewStateFromFile(file)}
+        />
+        <PronunciationReviewFilters pronunciation={pronunciation} />
+        <PronunciationReviewStateControls pronunciation={pronunciation} />
+        <PronunciationReviewWordChoice pronunciation={pronunciation} />
+      </div>
+    </Inspectable>
   );
 });

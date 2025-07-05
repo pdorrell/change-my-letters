@@ -11,14 +11,14 @@ import { ActionButton } from '@/lib/views/action-button';
 import { HistoryPanel } from './History';
 import { ValueCheckbox } from '@/lib/views/value-model-views';
 import { Panel } from '@/lib/views/panel';
-import { inspectable } from '@/lib/inspector';
+import { Inspectable } from '@/lib/inspector';
 
 /**
  * View component for displaying the word changer
  */
 interface WordChangerViewProps { wordInteraction: WordInteraction; maxWordLength?: number; }
 
-const WordChangerViewComponent: React.FC<WordChangerViewProps> = ({ wordInteraction, maxWordLength }) => {
+export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordInteraction, maxWordLength }) => {
 
   // Add a document-wide click handler to close menus when clicking outside
   React.useEffect(() => {
@@ -78,24 +78,22 @@ const WordChangerViewComponent: React.FC<WordChangerViewProps> = ({ wordInteract
   }
 
   return (
-    <Panel>
-      <div className={clsx('word-display', 'touch-interactive-area', { 'previously-visited': wordInteraction.word.previouslyVisited })}>
-        {/* Render alternating sequence of positions and letters for the word changer */}
-        { range(maxLength).map(index => (
-          <React.Fragment key={`position--${index}`}>
-            { getPositionView(index) }
-            { getLetterView(index) }
-          </React.Fragment>
-        ))}
-        <PositionPlaceholder/>
-      </div>
-    </Panel>
+    <Inspectable label="WordChangerView">
+      <Panel>
+        <div className={clsx('word-display', 'touch-interactive-area', { 'previously-visited': wordInteraction.word.previouslyVisited })}>
+          {/* Render alternating sequence of positions and letters for the word changer */}
+          { range(maxLength).map(index => (
+            <React.Fragment key={`position--${index}`}>
+              { getPositionView(index) }
+              { getLetterView(index) }
+            </React.Fragment>
+          ))}
+          <PositionPlaceholder/>
+        </div>
+      </Panel>
+    </Inspectable>
   );
-};
-
-export const WordChangerView: React.FC<WordChangerViewProps> = observer(
-  inspectable('WordChangerView', WordChangerViewComponent)
-);
+});
 
 
 /**
@@ -103,36 +101,32 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(
  */
 interface WordChangerControlsProps { wordChanger: WordChanger; }
 
-const WordChangerControlsComponent: React.FC<WordChangerControlsProps> = ({ wordChanger }) => {
+export const WordChangerControls: React.FC<WordChangerControlsProps> = observer(({ wordChanger }) => {
   return (
-    <div className="word-changer-controls">
-      <ActionButton action={wordChanger.undoAction}>Undo</ActionButton>
-      <ActionButton action={wordChanger.redoAction}>Redo</ActionButton>
-      <ActionButton action={wordChanger.sayAction}>Say</ActionButton>
-      <ValueCheckbox value={wordChanger.sayImmediately} />
-    </div>
+    <Inspectable label="WordChangerControls">
+      <div className="word-changer-controls">
+        <ActionButton action={wordChanger.undoAction}>Undo</ActionButton>
+        <ActionButton action={wordChanger.redoAction}>Redo</ActionButton>
+        <ActionButton action={wordChanger.sayAction}>Say</ActionButton>
+        <ValueCheckbox value={wordChanger.sayImmediately} />
+      </div>
+    </Inspectable>
   );
-};
-
-export const WordChangerControls: React.FC<WordChangerControlsProps> = observer(
-  inspectable('WordChangerControls', WordChangerControlsComponent)
-);
+});
 
 /**
  * Full page component for word changer page
  */
 interface WordChangerPageProps { wordChanger: WordChanger; maxWordLength: number; }
 
-const WordChangerPageComponent: React.FC<WordChangerPageProps> = ({ wordChanger, maxWordLength }) => {
+export const WordChangerPage: React.FC<WordChangerPageProps> = observer(({ wordChanger, maxWordLength }) => {
   return (
-    <>
-      <WordChangerControls wordChanger={wordChanger} />
-      <WordChangerView wordInteraction={wordChanger.wordInteraction} maxWordLength={maxWordLength} />
-      <HistoryPanel history={wordChanger.history} />
-    </>
+    <Inspectable label="WordChangerPage">
+      <>
+        <WordChangerControls wordChanger={wordChanger} />
+        <WordChangerView wordInteraction={wordChanger.wordInteraction} maxWordLength={maxWordLength} />
+        <HistoryPanel history={wordChanger.history} />
+      </>
+    </Inspectable>
   );
-};
-
-export const WordChangerPage: React.FC<WordChangerPageProps> = observer(
-  inspectable('WordChangerPage', WordChangerPageComponent)
-);
+});

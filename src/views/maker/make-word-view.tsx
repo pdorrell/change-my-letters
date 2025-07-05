@@ -8,6 +8,7 @@ import { PositionView, PositionPlaceholder } from '@/views/Position';
 import { ActionButton } from '@/lib/views/action-button';
 import { ButtonAction } from '@/lib/models/actions';
 import { MakerCurrentWord } from '@/models/maker/maker-current-word';
+import { Inspectable } from '@/lib/inspector';
 
 interface MakeWordViewProps {
   word: Word | null;
@@ -106,36 +107,38 @@ export const MakeWordView: React.FC<MakeWordViewProps> = observer(({
   }
 
   return (
-    <div className="make-word-row">
-      <div className={clsx('word-display', 'touch-interactive-area', backgroundClass)}>
-        {/* Render alternating sequence of positions and letters */}
-        {range(maxWordLength).map(index => (
-          <React.Fragment key={`position--${index}`}>
-            {getPositionView(index)}
-            {getLetterView(index)}
-          </React.Fragment>
-        ))}
-        <PositionPlaceholder/>
-      </div>
-
-      {/* Controls */}
-      {showControls && (
-        <div className="make-word-controls">
-          {newWordAction && (
-            <ActionButton action={newWordAction} className="make-new-word-button">New Word</ActionButton>
-          )}
-          {deleteAction && (
-            <button
-              onClick={deleteAction.enabled ? () => deleteAction.doAction() : undefined}
-              disabled={!deleteAction.enabled}
-              className="make-delete-button"
-              title={deleteAction.tooltip}
-            >
-              ✕
-            </button>
-          )}
+    <Inspectable label="MakeWordView">
+      <div className="make-word-row">
+        <div className={clsx('word-display', 'touch-interactive-area', backgroundClass)}>
+          {/* Render alternating sequence of positions and letters */}
+          {range(maxWordLength).map(index => (
+            <React.Fragment key={`position--${index}`}>
+              {getPositionView(index)}
+              {getLetterView(index)}
+            </React.Fragment>
+          ))}
+          <PositionPlaceholder/>
         </div>
-      )}
-    </div>
+
+        {/* Controls */}
+        {showControls && (
+          <div className="make-word-controls">
+            {newWordAction && (
+              <ActionButton action={newWordAction} className="make-new-word-button">New Word</ActionButton>
+            )}
+            {deleteAction && (
+              <button
+                onClick={deleteAction.enabled ? () => deleteAction.doAction() : undefined}
+                disabled={!deleteAction.enabled}
+                className="make-delete-button"
+                title={deleteAction.tooltip}
+              >
+                ✕
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    </Inspectable>
   );
 });

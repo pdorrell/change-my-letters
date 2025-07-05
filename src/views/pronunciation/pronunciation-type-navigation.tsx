@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
+import { Inspectable } from '@/lib/inspector';
 
 interface PronunciationTypeNavigationProps {
   pronunciationType: 'activity' | 'review';
@@ -17,21 +18,23 @@ export const PronunciationTypeNavigation: React.FC<PronunciationTypeNavigationPr
   ];
 
   return (
-    <div className="page-navigation-tabs">
-      {pronunciationTypes.map(({ type, label, tooltip }) => {
-        const isActive = pronunciationType === type;
-        return (
-          <button
-            key={type}
-            className={clsx('page-tab', { active: isActive })}
-            onClick={isActive ? undefined : () => onTypeChange(type)}
-            title={tooltip}
-            disabled={isActive}
-          >
-            {label}
-          </button>
-        );
-      })}
-    </div>
+    <Inspectable label="PronunciationTypeNavigation">
+      <div className="page-navigation-tabs">
+        {pronunciationTypes.map(({ type, label, tooltip }) => {
+          const isActive = pronunciationType === type;
+          return (
+            <button
+              key={type}
+              className={clsx('page-tab', { active: isActive })}
+              onClick={isActive ? undefined : () => onTypeChange(type)}
+              title={tooltip}
+              disabled={isActive}
+            >
+              {label}
+            </button>
+          );
+        })}
+      </div>
+    </Inspectable>
   );
 });

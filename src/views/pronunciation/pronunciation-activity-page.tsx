@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { PronunciationActivity } from '@/models/pronunciation/pronunciation-activity';
 import { ActionButton } from '@/lib/views/action-button';
 import { FilterControls } from '@/lib/views/filter-controls';
+import { Inspectable } from '@/lib/inspector';
 
 /**
  * Activity mode control panel component with filters on left and Auto button on right
@@ -14,17 +15,19 @@ interface PronunciationActivityControlPanelProps {
 
 export const PronunciationActivityControlPanel: React.FC<PronunciationActivityControlPanelProps> = observer(({ pronunciation }) => {
   return (
-    <div className="pronunciation-control-panel">
-      <div className="filter-panel">
-        <FilterControls filter={pronunciation.filter} />
-      </div>
+    <Inspectable label="PronunciationActivityControlPanel">
+      <div className="pronunciation-control-panel">
+        <div className="filter-panel">
+          <FilterControls filter={pronunciation.filter} />
+        </div>
 
-      <div className="auto-controls">
-        <ActionButton action={pronunciation.autoplayAction}>
-          {pronunciation.autoplaying ? 'Stop' : 'Auto'}
-        </ActionButton>
+        <div className="auto-controls">
+          <ActionButton action={pronunciation.autoplayAction}>
+            {pronunciation.autoplaying ? 'Stop' : 'Auto'}
+          </ActionButton>
+        </div>
       </div>
-    </div>
+    </Inspectable>
   );
 });
 
@@ -40,50 +43,52 @@ export const PronunciationActivityWordChoice: React.FC<PronunciationActivityWord
   const keyboardHint = "Use ← → arrow keys to navigate, Alt+→ to start autoplay";
 
   return (
-    <div className="pronunciation-word-choice">
-      {/* Filtered Words */}
-      <div className="filtered-words">
-        <div className="words-header">
-          <span className="words-count">Words: {pronunciation.filteredWords.length}</span>
-          <div className="keyboard-shortcuts">
-            <ActionButton action={pronunciation.resetMaxWordsAction}>
-              ↻...
-            </ActionButton>
-            <span className="shortcut-hint">{keyboardHint}</span>
+    <Inspectable label="PronunciationActivityWordChoice">
+      <div className="pronunciation-word-choice">
+        {/* Filtered Words */}
+        <div className="filtered-words">
+          <div className="words-header">
+            <span className="words-count">Words: {pronunciation.filteredWords.length}</span>
+            <div className="keyboard-shortcuts">
+              <ActionButton action={pronunciation.resetMaxWordsAction}>
+                ↻...
+              </ActionButton>
+              <span className="shortcut-hint">{keyboardHint}</span>
+            </div>
+          </div>
+
+          <div className={clsx('words-grid', 'touch-interactive-area', 'activity-mode')}>
+            {pronunciation.displayedWords.map(word => {
+              const isCurrentReview = word.currentReview;
+
+              const className = clsx('word-span', {
+                'current-review': isCurrentReview
+              });
+
+              return (
+                <span
+                  key={word.word}
+                  className={className}
+                  onClick={() => pronunciation.reviewWord(word)}
+                >
+                  {word.word}
+                </span>
+              );
+            })}
+
+            {pronunciation.hasMoreWords && (
+              <button
+                className={clsx('word-span', 'ellipsis-button')}
+                title={pronunciation.showMoreWordsAction.tooltip}
+                onClick={() => pronunciation.showMoreWordsAction.doAction()}
+              >
+                ...
+              </button>
+            )}
           </div>
         </div>
-
-        <div className={clsx('words-grid', 'touch-interactive-area', 'activity-mode')}>
-          {pronunciation.displayedWords.map(word => {
-            const isCurrentReview = word.currentReview;
-
-            const className = clsx('word-span', {
-              'current-review': isCurrentReview
-            });
-
-            return (
-              <span
-                key={word.word}
-                className={className}
-                onClick={() => pronunciation.reviewWord(word)}
-              >
-                {word.word}
-              </span>
-            );
-          })}
-
-          {pronunciation.hasMoreWords && (
-            <button
-              className={clsx('word-span', 'ellipsis-button')}
-              title={pronunciation.showMoreWordsAction.tooltip}
-              onClick={() => pronunciation.showMoreWordsAction.doAction()}
-            >
-              ...
-            </button>
-          )}
-        </div>
       </div>
-    </div>
+    </Inspectable>
   );
 });
 
@@ -132,9 +137,11 @@ export const PronunciationActivityPage: React.FC<PronunciationActivityPageProps>
 
 
   return (
-    <div className={clsx('pronunciation-container', 'activity-mode')}>
-      <PronunciationActivityControlPanel pronunciation={pronunciation} />
-      <PronunciationActivityWordChoice pronunciation={pronunciation} />
-    </div>
+    <Inspectable label="PronunciationActivityPage">
+      <div className={clsx('pronunciation-container', 'activity-mode')}>
+        <PronunciationActivityControlPanel pronunciation={pronunciation} />
+        <PronunciationActivityWordChoice pronunciation={pronunciation} />
+      </div>
+    </Inspectable>
   );
 });

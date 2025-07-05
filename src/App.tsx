@@ -9,7 +9,7 @@ import { FindersPage } from '@/views/finders/finders-page';
 import { MakerPage } from '@/views/maker/maker-page';
 import { InspectorToggle } from '@/lib/views/inspector-toggle';
 import { inspectorStore } from '@/lib/inspector-store';
-import { inspectable } from '@/lib/inspector';
+import { Inspectable } from '@/lib/inspector';
 
 interface AppProps {
   appState: AppState;
@@ -27,27 +27,25 @@ const AppVersion: React.FC<AppVersionProps> = observer(({ version }) => {
 
 interface PageNavigationProps { appState: AppState; }
 
-const PageNavigationComponent: React.FC<PageNavigationProps> = ({ appState }) => {
+const PageNavigation: React.FC<PageNavigationProps> = observer(({ appState }) => {
   return (
-    <div className="page-navigation-tabs">
-      {appState.menuPages.map(({ page, config, isActive }) => (
-        <button
-          key={page}
-          className={clsx('page-tab', { active: isActive })}
-          onClick={isActive ? undefined : () => appState.navigateTo(page)}
-          title={config.tooltip}
-          disabled={isActive}
-        >
-          {config.label}
-        </button>
-      ))}
-    </div>
+    <Inspectable label="PageNavigation">
+      <div className="page-navigation-tabs">
+        {appState.menuPages.map(({ page, config, isActive }) => (
+          <button
+            key={page}
+            className={clsx('page-tab', { active: isActive })}
+            onClick={isActive ? undefined : () => appState.navigateTo(page)}
+            title={config.tooltip}
+            disabled={isActive}
+          >
+            {config.label}
+          </button>
+        ))}
+      </div>
+    </Inspectable>
   );
-};
-
-const PageNavigation: React.FC<PageNavigationProps> = observer(
-  inspectable('PageNavigation', PageNavigationComponent)
-);
+});
 
 interface ResetButtonProps { appState: AppState; }
 
@@ -73,20 +71,18 @@ const ResetButton: React.FC<ResetButtonProps> = observer(({ appState }) => {
 
 interface AppHeaderProps { appState: AppState; }
 
-const AppHeaderComponent: React.FC<AppHeaderProps> = ({ appState }) => {
+const AppHeader: React.FC<AppHeaderProps> = observer(({ appState }) => {
   return (
-    <header>
-      <h1>Change My Letters</h1>
-      <PageNavigation appState={appState} />
-      <ResetButton appState={appState} />
-      <AppVersion version={appState.version} />
-    </header>
+    <Inspectable label="AppHeader">
+      <header>
+        <h1>Change My Letters</h1>
+        <PageNavigation appState={appState} />
+        <ResetButton appState={appState} />
+        <AppVersion version={appState.version} />
+      </header>
+    </Inspectable>
   );
-};
-
-const AppHeader: React.FC<AppHeaderProps> = observer(
-  inspectable('AppHeader', AppHeaderComponent)
-);
+});
 
 interface AppBodyProps { appState: AppState; }
 
