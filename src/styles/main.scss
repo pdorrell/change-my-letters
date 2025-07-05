@@ -8,6 +8,37 @@
   --control-fg: white;
 }
 
+// Inspector mode styling
+.inspector {
+  .inspectable {
+    position: relative;
+    
+    .label {
+      display: none;
+    }
+    
+    &:hover {
+      border: 1px solid red !important;
+      
+      .label {
+        display: block;
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        background-color: rgba(255, 255, 255, 0.9);
+        color: red;
+        font-size: 0.75em;
+        font-weight: bold;
+        padding: 2px 4px;
+        border-radius: 2px;
+        z-index: 9999;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+    }
+  }
+}
+
 // Base styles
 html, body {
   overflow-x: hidden; // Prevent horizontal scrollbar 
