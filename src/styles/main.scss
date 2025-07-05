@@ -9,24 +9,28 @@
 }
 
 // Inspector mode styling
+.inspectable {
+  position: relative;
+  
+  .label {
+    display: none;
+  }
+}
+
 .inspector {
   .inspectable {
-    position: relative;
-    
-    .label {
-      display: none;
-    }
+    border: 1px solid transparent !important;
     
     &:hover {
-      border: 1px solid red !important;
+      border-color: red !important;
       
       .label {
         display: block;
         position: absolute;
         top: 2px;
         left: 2px;
-        background-color: rgba(255, 255, 255, 0.9);
-        color: red;
+        background-color: rgba(255, 255, 255, 0.5);
+        color: rgba(255, 0, 0, 0.8);
         font-size: 0.75em;
         font-weight: bold;
         padding: 2px 4px;
