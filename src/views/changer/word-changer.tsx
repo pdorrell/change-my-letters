@@ -11,13 +11,14 @@ import { ActionButton } from '@/lib/views/action-button';
 import { HistoryPanel } from './History';
 import { ValueCheckbox } from '@/lib/views/value-model-views';
 import { Panel } from '@/lib/views/panel';
+import { inspectable } from '@/lib/inspector';
 
 /**
  * View component for displaying the word changer
  */
 interface WordChangerViewProps { wordInteraction: WordInteraction; maxWordLength?: number; }
 
-export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordInteraction, maxWordLength }) => {
+const WordChangerViewComponent: React.FC<WordChangerViewProps> = ({ wordInteraction, maxWordLength }) => {
 
   // Add a document-wide click handler to close menus when clicking outside
   React.useEffect(() => {
@@ -90,7 +91,11 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordI
       </div>
     </Panel>
   );
-});
+};
+
+export const WordChangerView: React.FC<WordChangerViewProps> = observer(
+  inspectable('WordChangerView', WordChangerViewComponent)
+);
 
 
 /**
@@ -98,7 +103,7 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordI
  */
 interface WordChangerControlsProps { wordChanger: WordChanger; }
 
-export const WordChangerControls: React.FC<WordChangerControlsProps> = observer(({ wordChanger }) => {
+const WordChangerControlsComponent: React.FC<WordChangerControlsProps> = ({ wordChanger }) => {
   return (
     <div className="word-changer-controls">
       <ActionButton action={wordChanger.undoAction}>Undo</ActionButton>
@@ -107,14 +112,18 @@ export const WordChangerControls: React.FC<WordChangerControlsProps> = observer(
       <ValueCheckbox value={wordChanger.sayImmediately} />
     </div>
   );
-});
+};
+
+export const WordChangerControls: React.FC<WordChangerControlsProps> = observer(
+  inspectable('WordChangerControls', WordChangerControlsComponent)
+);
 
 /**
  * Full page component for word changer page
  */
 interface WordChangerPageProps { wordChanger: WordChanger; maxWordLength: number; }
 
-export const WordChangerPage: React.FC<WordChangerPageProps> = observer(({ wordChanger, maxWordLength }) => {
+const WordChangerPageComponent: React.FC<WordChangerPageProps> = ({ wordChanger, maxWordLength }) => {
   return (
     <>
       <WordChangerControls wordChanger={wordChanger} />
@@ -122,4 +131,8 @@ export const WordChangerPage: React.FC<WordChangerPageProps> = observer(({ wordC
       <HistoryPanel history={wordChanger.history} />
     </>
   );
-});
+};
+
+export const WordChangerPage: React.FC<WordChangerPageProps> = observer(
+  inspectable('WordChangerPage', WordChangerPageComponent)
+);

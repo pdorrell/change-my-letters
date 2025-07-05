@@ -9,6 +9,7 @@ import { FindersPage } from '@/views/finders/finders-page';
 import { MakerPage } from '@/views/maker/maker-page';
 import { InspectorToggle } from '@/lib/views/inspector-toggle';
 import { inspectorStore } from '@/lib/inspector-store';
+import { inspectable } from '@/lib/inspector';
 
 interface AppProps {
   appState: AppState;
@@ -26,7 +27,7 @@ const AppVersion: React.FC<AppVersionProps> = observer(({ version }) => {
 
 interface PageNavigationProps { appState: AppState; }
 
-const PageNavigation: React.FC<PageNavigationProps> = observer(({ appState }) => {
+const PageNavigationComponent: React.FC<PageNavigationProps> = ({ appState }) => {
   return (
     <div className="page-navigation-tabs">
       {appState.menuPages.map(({ page, config, isActive }) => (
@@ -42,7 +43,11 @@ const PageNavigation: React.FC<PageNavigationProps> = observer(({ appState }) =>
       ))}
     </div>
   );
-});
+};
+
+const PageNavigation: React.FC<PageNavigationProps> = observer(
+  inspectable('PageNavigation', PageNavigationComponent)
+);
 
 interface ResetButtonProps { appState: AppState; }
 
@@ -68,7 +73,7 @@ const ResetButton: React.FC<ResetButtonProps> = observer(({ appState }) => {
 
 interface AppHeaderProps { appState: AppState; }
 
-const AppHeader: React.FC<AppHeaderProps> = observer(({ appState }) => {
+const AppHeaderComponent: React.FC<AppHeaderProps> = ({ appState }) => {
   return (
     <header>
       <h1>Change My Letters</h1>
@@ -77,7 +82,11 @@ const AppHeader: React.FC<AppHeaderProps> = observer(({ appState }) => {
       <AppVersion version={appState.version} />
     </header>
   );
-});
+};
+
+const AppHeader: React.FC<AppHeaderProps> = observer(
+  inspectable('AppHeader', AppHeaderComponent)
+);
 
 interface AppBodyProps { appState: AppState; }
 

@@ -21,10 +21,16 @@
   .inspectable {
     border: 1px solid transparent !important;
     
+    // Add padding if this inspectable has another inspectable as immediate second child
+    &:has(> *:first-child + div.inspectable) {
+      padding: 3px;
+      padding-top: 22px;
+    }
+    
     &:hover {
       border-color: red !important;
       
-      .label {
+      > .label {
         display: block;
         position: absolute;
         top: 2px;

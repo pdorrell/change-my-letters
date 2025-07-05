@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 import { makeAutoObservable } from 'mobx';
 import { Word } from '@/models/Word';
+import { inspectable } from '@/lib/inspector';
 
 /**
  * Represents a change from one word to another
@@ -144,7 +145,7 @@ export class History {
 
 interface HistoryPanelProps { history: History; }
 
-export const HistoryPanel: React.FC<HistoryPanelProps> = observer(({ history }) => {
+const HistoryPanelComponent: React.FC<HistoryPanelProps> = ({ history }) => {
   const handleHistoryClick = (index: number) => {
     const word = history.jumpToIndex(index);
     if (word) {
@@ -172,4 +173,8 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = observer(({ history }) 
       </div>
     </div>
   );
-});
+};
+
+export const HistoryPanel: React.FC<HistoryPanelProps> = observer(
+  inspectable('HistoryPanel', HistoryPanelComponent)
+);
