@@ -15,12 +15,17 @@ import React from 'react';
  * 
  * Example:
  * ```typescript
+ * const MyComponentImpl: React.FC<Props> = ({ prop1, prop2 }) => {
+ *   return <div>Component content</div>;
+ * };
+ * 
  * export const MyComponent: React.FC<Props> = observer(
- *   inspectable('MyComponent', ({ prop1, prop2 }) => {
- *     return <div>Component content</div>;
- *   })
+ *   inspectable('MyComponent', MyComponentImpl)
  * );
  * ```
+ * 
+ * IMPORTANT: The first parameter MUST match the exported component name
+ * for consistency and debugging purposes.
  * 
  * Note: There will be a slight layout shift when hovering due to the 1px border,
  * but this is intentional for the inspection functionality.
@@ -54,6 +59,7 @@ export function inspectable<P extends Record<string, any>>(
 
   return InspectableComponent;
 }
+
 
 // Export the inspector store for convenience
 export { inspectorStore } from './inspector-store';
