@@ -33,21 +33,21 @@ import React from 'react';
  * hovering over the wrapped component will show a red border and display the provided label.
  * 
  * @param label - The label to display when hovering in inspector mode
- * @param Component - The React component to wrap
+ * @param Component - The React component function to wrap
  * @returns A new component wrapped with inspection capabilities
  */
-export function inspectable<P extends object>(
+export function inspectable<P extends Record<string, any>>(
   label: string,
-  Component: React.ComponentType<P>
-): React.ComponentType<P> {
-  const InspectableComponent = React.forwardRef<any, P>((props, ref) => {
+  Component: React.FC<P>
+): React.FC<P> {
+  const InspectableComponent: React.FC<P> = (props) => {
     return (
-      <div className="inspectable" ref={ref}>
+      <div className="inspectable">
         <div className="label">{label}</div>
         <Component {...props} />
       </div>
     );
-  });
+  };
 
   // Set display name for debugging
   InspectableComponent.displayName = `Inspectable(${Component.displayName || Component.name || 'Component'})`;
