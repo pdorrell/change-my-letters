@@ -20,6 +20,7 @@
 .inspector {
   .inspectable {
     border: 1px solid #880000 !important;
+    border-radius: 2px;
     margin: 2px;
     
     // Add padding if this inspectable has another inspectable as immediate second child
