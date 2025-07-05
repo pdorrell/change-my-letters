@@ -19,31 +19,36 @@
 
 .inspector {
   .inspectable {
-    border: 1px solid transparent !important;
+    border: 1px solid #880000 !important;
+    margin: 2px;
     
     // Add padding if this inspectable has another inspectable as immediate second child
     &:has(> *:first-child + div.inspectable) {
-      padding: 3px;
+      padding: 2px;
       padding-top: 22px;
+    }
+    
+    > .label {
+      display: block;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      background-color: rgba(255, 255, 255, 0.5);
+      color: rgba(136, 0, 0, 0.8);
+      font-size: 0.75em;
+      font-weight: bold;
+      padding: 2px 4px;
+      border-radius: 2px;
+      z-index: 9999;
+      pointer-events: none;
+      white-space: nowrap;
     }
     
     &:hover {
       border-color: red !important;
       
       > .label {
-        display: block;
-        position: absolute;
-        top: 2px;
-        left: 2px;
-        background-color: rgba(255, 255, 255, 0.5);
         color: rgba(255, 0, 0, 0.8);
-        font-size: 0.75em;
-        font-weight: bold;
-        padding: 2px 4px;
-        border-radius: 2px;
-        z-index: 9999;
-        pointer-events: none;
-        white-space: nowrap;
       }
     }
   }
