@@ -4,6 +4,7 @@ import { Reset } from '@/models/reset/reset';
 import { ActionButton } from '@/lib/views/action-button';
 import { FilterControls } from '@/lib/views/filter-controls';
 import { Inspectable } from '@/lib/inspector';
+import { Page } from '@/lib/views/page';
 
 /**
  * Controls component for Reset page
@@ -79,14 +80,12 @@ export const ResetPage: React.FC<ResetPageProps> = observer(({ resetInteraction 
   const targetPageLabel = resetInteraction.targetPage === 'maker' ? 'Maker' : 'Changer';
 
   return (
-    <Inspectable name="ResetPage">
-      <>
-        <div className="reset-page-header">
-          <p>Reset <b>{targetPageLabel}</b> page by choosing a new initial word.</p>
-        </div>
-        <ResetControls resetInteraction={resetInteraction} />
-        <ResetWordChoice resetInteraction={resetInteraction} />
-      </>
-    </Inspectable>
+    <Page>
+      <div className="reset-page-header">
+        <p>Reset <b>{targetPageLabel}</b> page by choosing a new initial word.</p>
+      </div>
+      <ResetControls resetInteraction={resetInteraction} />
+      <ResetWordChoice resetInteraction={resetInteraction} />
+    </Page>
   );
 });

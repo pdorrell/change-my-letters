@@ -12,6 +12,7 @@ import { HistoryPanel } from './History';
 import { ValueCheckbox } from '@/lib/views/value-model-views';
 import { Panel } from '@/lib/views/panel';
 import { Inspectable } from '@/lib/inspector';
+import { Page } from '@/lib/views/page';
 
 /**
  * View component for displaying the word changer
@@ -121,12 +122,10 @@ interface WordChangerPageProps { wordChanger: WordChanger; maxWordLength: number
 
 export const WordChangerPage: React.FC<WordChangerPageProps> = observer(({ wordChanger, maxWordLength }) => {
   return (
-    <Inspectable name="WordChangerPage">
-      <>
-        <WordChangerControls wordChanger={wordChanger} />
-        <WordChangerView wordInteraction={wordChanger.wordInteraction} maxWordLength={maxWordLength} />
-        <HistoryPanel history={wordChanger.history} />
-      </>
-    </Inspectable>
+    <Page>
+      <WordChangerControls wordChanger={wordChanger} />
+      <WordChangerView wordInteraction={wordChanger.wordInteraction} maxWordLength={maxWordLength} />
+      <HistoryPanel history={wordChanger.history} />
+    </Page>
   );
 });

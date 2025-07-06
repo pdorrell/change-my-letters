@@ -191,9 +191,21 @@ button {
   }
   
   main {
+    display: flex;
+    flex-direction: column;
+    align-items: center; // Center Page components horizontally
     padding: 0 0.63em;
     overflow: visible; // Allow menus to extend beyond container
   }
+}
+
+// Generic Page component for consistent layout
+.page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 850px;
+  // No margin, padding, border, or background for clean nesting
 }
 
 // Page navigation tabs (can be used anywhere)
