@@ -1,4 +1,5 @@
 export type FinderType = 'word-choice' | 'words-in-row';
+export type FinderPageType = FinderType;
 
 export interface FinderConfig {
   label: string;

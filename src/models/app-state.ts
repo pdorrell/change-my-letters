@@ -5,6 +5,7 @@ import { WordSayerInterface } from '@/models/word-sayer-interface';
 import { Reset } from '@/models/reset/reset';
 import { PronunciationActivity } from '@/models/pronunciation/pronunciation-activity';
 import { PronunciationReview } from '@/models/pronunciation/pronunciation-review';
+import { Pronunciation } from '@/models/pronunciation/pronunciation';
 import { Finders } from '@/models/finders/finders';
 import { WordChoiceFinder } from '@/models/finders/word-choice-finder/word-choice-finder';
 import { WordsInRowFinder } from '@/models/finders/words-in-row-finder/words-in-row-finder';
@@ -53,6 +54,9 @@ export class AppState {
 
   // The reset page model
   resetPage: Reset;
+
+  // The pronunciation navigation model
+  pronunciation: Pronunciation;
 
   // The activity pronunciation model
   activityPronunciation: PronunciationActivity;
@@ -111,6 +115,9 @@ export class AppState {
 
     // Initialize reset model
     this.resetPage = new Reset(this);
+
+    // Initialize pronunciation navigation model
+    this.pronunciation = new Pronunciation();
 
     // Initialize activity pronunciation instance
     this.activityPronunciation = new PronunciationActivity(

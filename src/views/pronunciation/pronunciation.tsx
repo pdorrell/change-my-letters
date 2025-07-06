@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { AppState } from '@/models/app-state';
 import { PronunciationTypeNavigation } from './pronunciation-type-navigation';
@@ -12,22 +12,20 @@ import { Inspectable } from '@/lib/inspector';
 interface PronunciationPageProps { appState: AppState; }
 
 export const PronunciationPage: React.FC<PronunciationPageProps> = observer(({ appState }) => {
-  // Local state for pronunciation type (activity vs review)
-  const [pronunciationType, setPronunciationType] = useState<'activity' | 'review'>('activity');
+  const currentType = appState.pronunciation.currentPronunciationType;
 
   return (
     <Inspectable label="PronunciationPage">
       <>
         <div className="pronunciation-header">
           <PronunciationTypeNavigation
-            pronunciationType={pronunciationType}
-            onTypeChange={setPronunciationType}
+            pronunciation={appState.pronunciation}
           />
         </div>
-        {pronunciationType === 'activity' && (
+        {currentType === 'activity' && (
           <PronunciationActivityPage pronunciation={appState.activityPronunciation} />
         )}
-        {pronunciationType === 'review' && (
+        {currentType === 'review' && (
           <PronunciationReviewPage pronunciation={appState.reviewPronunciation} />
         )}
       </>

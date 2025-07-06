@@ -1,40 +1,14 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import clsx from 'clsx';
-import { Inspectable } from '@/lib/inspector';
+import { Pronunciation } from '@/models/pronunciation/pronunciation';
+import { PageNavigationMenu } from '@/lib/views/page-navigation-menu';
 
 interface PronunciationTypeNavigationProps {
-  pronunciationType: 'activity' | 'review';
-  onTypeChange: (type: 'activity' | 'review') => void;
+  pronunciation: Pronunciation;
 }
 
 export const PronunciationTypeNavigation: React.FC<PronunciationTypeNavigationProps> = observer(({
-  pronunciationType,
-  onTypeChange
+  pronunciation
 }) => {
-  const pronunciationTypes = [
-    { type: 'activity' as const, label: 'Activity', tooltip: 'Switch to Activity mode' },
-    { type: 'review' as const, label: 'Review', tooltip: 'Switch to Review mode' }
-  ];
-
-  return (
-    <Inspectable label="PronunciationTypeNavigation">
-      <div className="page-navigation-tabs">
-        {pronunciationTypes.map(({ type, label, tooltip }) => {
-          const isActive = pronunciationType === type;
-          return (
-            <button
-              key={type}
-              className={clsx('page-tab', { active: isActive })}
-              onClick={isActive ? undefined : () => onTypeChange(type)}
-              title={tooltip}
-              disabled={isActive}
-            >
-              {label}
-            </button>
-          );
-        })}
-      </div>
-    </Inspectable>
-  );
+  return <PageNavigationMenu subPageModel={pronunciation} />;
 });
