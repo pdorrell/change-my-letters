@@ -36,11 +36,12 @@
       position: absolute;
       top: 2px;
       left: 2px;
-      background-color: rgba(255, 255, 255, 0.5);
+      background-color: white;
       color: red;
       font-size: 0.75em;
       font-weight: bold;
       padding: 2px 4px;
+      border: 1px solid #888;
       border-radius: 2px;
       z-index: 9999;
       pointer-events: none;
@@ -56,15 +57,10 @@
       }
     }
     
-    // Hover behavior: increase opacity to 100%
+    // Hover behavior: reduce opacity to 20% for better interaction
     &:hover {
       > .label {
-        background-color: rgba(255, 255, 255, 1.0);
-        color: red;
-      }
-      
-      &.lib > .label {
-        color: blue;
+        opacity: 0.2;
       }
     }
   }
