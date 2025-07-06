@@ -5,6 +5,7 @@ import { PronunciationActivity } from '@/models/pronunciation/pronunciation-acti
 import { ActionButton } from '@/lib/views/action-button';
 import { FilterControls } from '@/lib/views/filter-controls';
 import { Inspectable } from '@/lib/inspector';
+import { Page } from '@/lib/views/page';
 
 /**
  * Activity mode control panel component with filters on left and Auto button on right
@@ -137,11 +138,11 @@ export const PronunciationActivityPage: React.FC<PronunciationActivityPageProps>
 
 
   return (
-    <Inspectable name="PronunciationActivityPage">
+    <Page>
       <div className={clsx('pronunciation-container', 'activity-mode')}>
         <PronunciationActivityControlPanel pronunciation={pronunciation} />
         <PronunciationActivityWordChoice pronunciation={pronunciation} />
       </div>
-    </Inspectable>
+    </Page>
   );
 });

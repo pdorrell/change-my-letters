@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Inspectable } from '@/lib/inspector';
+import { Page } from '@/lib/views/page';
 import { WordsInRowFinder } from '@/models/finders/words-in-row-finder/words-in-row-finder';
 import { FinderControls } from './finder-controls';
 import { WordsToFindPanel } from './words-to-find-panel';
@@ -10,7 +11,7 @@ interface WordsInRowFinderPageProps { wordsInRowFinder: WordsInRowFinder; }
 
 export const WordsInRowFinderPage: React.FC<WordsInRowFinderPageProps> = observer(({ wordsInRowFinder }) => {
   return (
-    <Inspectable name="WordsInRowFinderPage">
+    <Page>
       <>
         <FinderControls finder={wordsInRowFinder} />
         <p>Click/touch any square in the bottom row to hear a word, then find the
@@ -18,6 +19,6 @@ export const WordsInRowFinderPage: React.FC<WordsInRowFinderPageProps> = observe
         <LettersRowPanel finder={wordsInRowFinder} />
         <WordsToFindPanel finder={wordsInRowFinder} />
       </>
-    </Inspectable>
+    </Page>
   );
 });

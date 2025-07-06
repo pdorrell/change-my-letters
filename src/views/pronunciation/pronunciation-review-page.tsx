@@ -5,6 +5,7 @@ import { PronunciationReview } from '@/models/pronunciation/pronunciation-review
 import { ActionButton } from '@/lib/views/action-button';
 import { FilterControls } from '@/lib/views/filter-controls';
 import { Inspectable } from '@/lib/inspector';
+import { Page } from '@/lib/views/page';
 
 /**
  * Review mode action controls component for Pronunciation page
@@ -272,7 +273,7 @@ export const PronunciationReviewPage: React.FC<PronunciationReviewPageProps> = o
 
 
   return (
-    <Inspectable name="PronunciationReviewPage">
+    <Page>
       <div className={clsx('pronunciation-container')}>
         <ReviewStateControls
           pronunciation={pronunciation}
@@ -282,6 +283,6 @@ export const PronunciationReviewPage: React.FC<PronunciationReviewPageProps> = o
         <PronunciationReviewStateControls pronunciation={pronunciation} />
         <PronunciationReviewWordChoice pronunciation={pronunciation} />
       </div>
-    </Inspectable>
+    </Page>
   );
 });
