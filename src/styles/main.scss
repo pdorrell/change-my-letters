@@ -21,12 +21,8 @@
   .inspectable {
     border-radius: 2px;
     margin: 2px;
-    
-    // Add padding if this inspectable has another inspectable as immediate second child
-    &:has(> *:first-child + div.inspectable) {
-      padding: 2px;
-      padding-top: 22px;
-    }
+    padding: 2px;
+    padding-top: 22px;
     
     // Default styling for app components (red)
     border: 1px solid red !important;
@@ -54,13 +50,6 @@
       
       > .label {
         color: blue;
-      }
-    }
-    
-    // Hover behavior: reduce opacity to 20% for better interaction
-    &:hover {
-      > .label {
-        opacity: 0.2;
       }
     }
   }
