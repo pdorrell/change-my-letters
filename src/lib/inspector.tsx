@@ -60,7 +60,7 @@ export const Inspectable: React.FC<InspectableProps> = observer(({ name, lib = f
  * @deprecated Use <Inspectable name="ComponentName"> instead
  * Wrapper function that makes a React component inspectable in inspector mode.
  */
-export function inspectable<P extends Record<string, any>>(
+export function inspectable<P extends Record<string, unknown>>(
   label: string,
   Component: React.FC<P>
 ): React.FC<P> {
