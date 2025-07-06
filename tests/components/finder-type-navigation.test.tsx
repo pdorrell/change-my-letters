@@ -39,6 +39,6 @@ describe('FinderTypeNavigation', () => {
     render(<FinderTypeNavigation finders={finders} />);
 
     const wordChoiceTab = screen.getByRole('button', { name: 'Word Choice' });
-    expect(wordChoiceTab).toHaveAttribute('title', 'Switch to Word Choice finder');
+    expect(wordChoiceTab).toHaveAttribute('title', 'Switch to Word Choice Finder');
   });
 });
