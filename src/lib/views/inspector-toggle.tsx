@@ -7,10 +7,10 @@ import { inspectorStore } from '@/lib/inspector-store';
  */
 export const InspectorToggle: React.FC = observer(() => {
   return (
-    <label style={{ 
-      position: 'fixed', 
-      top: '10px', 
-      right: '10px', 
+    <label style={{
+      position: 'fixed',
+      top: '10px',
+      right: '10px',
       zIndex: 10000,
       background: 'rgba(255, 255, 255, 0.9)',
       padding: '5px 10px',

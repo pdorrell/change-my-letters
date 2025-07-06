@@ -4,7 +4,7 @@ import { Inspectable } from '@/lib/inspector';
 
 /**
  * Generic Page component for consistent layout across all pages and sub-pages.
- * 
+ *
  * Features:
  * - Maximum width of 850px or 100% viewport width, whichever is smaller
  * - Horizontally centered in the application container
