@@ -10,7 +10,7 @@ interface FindersPageProps { appState: AppState; }
 
 export const FindersPage: React.FC<FindersPageProps> = observer(({ appState }) => {
   return (
-    <Inspectable label="FindersPage">
+    <Inspectable name="FindersPage">
       <>
         <div className="finders-header">
           <FinderTypeNavigation finders={appState.finders} />

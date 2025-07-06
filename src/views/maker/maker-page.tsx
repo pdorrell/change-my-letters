@@ -14,7 +14,7 @@ export const MakerPage: React.FC<MakerPageProps> = observer(({ maker, maxWordLen
   const { containerRef, bottomElementRef } = useScrollOnResize(20); // 20px margin from bottom
 
   return (
-    <Inspectable label="MakerPage">
+    <Inspectable name="MakerPage">
       <div className="make-page" ref={containerRef}>
         {/* History words */}
         {maker.history.historyWords.length > 0 && (

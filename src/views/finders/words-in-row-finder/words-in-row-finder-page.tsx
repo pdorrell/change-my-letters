@@ -10,7 +10,7 @@ interface WordsInRowFinderPageProps { wordsInRowFinder: WordsInRowFinder; }
 
 export const WordsInRowFinderPage: React.FC<WordsInRowFinderPageProps> = observer(({ wordsInRowFinder }) => {
   return (
-    <Inspectable label="WordsInRowFinderPage">
+    <Inspectable name="WordsInRowFinderPage">
       <>
         <FinderControls finder={wordsInRowFinder} />
         <p>Click/touch any square in the bottom row to hear a word, then find the

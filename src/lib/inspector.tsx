@@ -35,27 +35,29 @@ import { observer } from 'mobx-react-lite';
  * Component that makes its children inspectable in inspector mode.
  * 
  * When the application is in inspector mode (has 'inspector' CSS class on top-level element),
- * hovering over the wrapped component will show a red border and display the provided label.
+ * hovering over the wrapped component will show a border and display the provided name.
  * 
- * @param label - The label to display when hovering in inspector mode
+ * @param name - The name to display when hovering in inspector mode
+ * @param lib - Whether this is a lib component (blue styling) vs app component (red styling)
  * @param children - The React children to wrap with inspection capabilities
  */
 interface InspectableProps {
-  label: string;
+  name: string;
+  lib?: boolean;
   children: React.ReactNode;
 }
 
-export const Inspectable: React.FC<InspectableProps> = observer(({ label, children }) => {
+export const Inspectable: React.FC<InspectableProps> = observer(({ name, lib = false, children }) => {
   return (
-    <div className="inspectable">
-      <div className="label">{label}</div>
+    <div className={`inspectable ${lib ? 'lib' : ''}`}>
+      <div className="label">{name}</div>
       {children}
     </div>
   );
 });
 
 /**
- * @deprecated Use <Inspectable label="ComponentName"> instead
+ * @deprecated Use <Inspectable name="ComponentName"> instead
  * Wrapper function that makes a React component inspectable in inspector mode.
  */
 export function inspectable<P extends Record<string, any>>(
@@ -64,7 +66,7 @@ export function inspectable<P extends Record<string, any>>(
 ): React.FC<P> {
   const InspectableComponent: React.FC<P> = (props) => {
     return (
-      <Inspectable label={label}>
+      <Inspectable name={label}>
         <Component {...props} />
       </Inspectable>
     );

@@ -78,7 +78,7 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordI
   }
 
   return (
-    <Inspectable label="WordChangerView">
+    <Inspectable name="WordChangerView">
       <Panel>
         <div className={clsx('word-display', 'touch-interactive-area', { 'previously-visited': wordInteraction.word.previouslyVisited })}>
           {/* Render alternating sequence of positions and letters for the word changer */}
@@ -103,7 +103,7 @@ interface WordChangerControlsProps { wordChanger: WordChanger; }
 
 export const WordChangerControls: React.FC<WordChangerControlsProps> = observer(({ wordChanger }) => {
   return (
-    <Inspectable label="WordChangerControls">
+    <Inspectable name="WordChangerControls">
       <div className="word-changer-controls">
         <ActionButton action={wordChanger.undoAction}>Undo</ActionButton>
         <ActionButton action={wordChanger.redoAction}>Redo</ActionButton>
@@ -121,7 +121,7 @@ interface WordChangerPageProps { wordChanger: WordChanger; maxWordLength: number
 
 export const WordChangerPage: React.FC<WordChangerPageProps> = observer(({ wordChanger, maxWordLength }) => {
   return (
-    <Inspectable label="WordChangerPage">
+    <Inspectable name="WordChangerPage">
       <>
         <WordChangerControls wordChanger={wordChanger} />
         <WordChangerView wordInteraction={wordChanger.wordInteraction} maxWordLength={maxWordLength} />

@@ -15,7 +15,7 @@ interface PronunciationActivityControlPanelProps {
 
 export const PronunciationActivityControlPanel: React.FC<PronunciationActivityControlPanelProps> = observer(({ pronunciation }) => {
   return (
-    <Inspectable label="PronunciationActivityControlPanel">
+    <Inspectable name="PronunciationActivityControlPanel">
       <div className="pronunciation-control-panel">
         <div className="filter-panel">
           <FilterControls filter={pronunciation.filter} />
@@ -43,7 +43,7 @@ export const PronunciationActivityWordChoice: React.FC<PronunciationActivityWord
   const keyboardHint = "Use ← → arrow keys to navigate, Alt+→ to start autoplay";
 
   return (
-    <Inspectable label="PronunciationActivityWordChoice">
+    <Inspectable name="PronunciationActivityWordChoice">
       <div className="pronunciation-word-choice">
         {/* Filtered Words */}
         <div className="filtered-words">
@@ -137,7 +137,7 @@ export const PronunciationActivityPage: React.FC<PronunciationActivityPageProps>
 
 
   return (
-    <Inspectable label="PronunciationActivityPage">
+    <Inspectable name="PronunciationActivityPage">
       <div className={clsx('pronunciation-container', 'activity-mode')}>
         <PronunciationActivityControlPanel pronunciation={pronunciation} />
         <PronunciationActivityWordChoice pronunciation={pronunciation} />

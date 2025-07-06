@@ -107,7 +107,7 @@ export const MakeWordView: React.FC<MakeWordViewProps> = observer(({
   }
 
   return (
-    <Inspectable label="MakeWordView">
+    <Inspectable name="MakeWordView">
       <div className="make-word-row">
         <div className={clsx('word-display', 'touch-interactive-area', backgroundClass)}>
           {/* Render alternating sequence of positions and letters */}

@@ -12,7 +12,7 @@ interface WordChoiceFinderPageProps { wordChoiceFinder: WordChoiceFinder; }
 
 export const WordChoiceFinderPage: React.FC<WordChoiceFinderPageProps> = observer(({ wordChoiceFinder }) => {
   return (
-    <Inspectable label="WordChoiceFinderPage">
+    <Inspectable name="WordChoiceFinderPage">
       <>
         <WordToChoosePanel finder={wordChoiceFinder} />
         <WordToFindPanel finder={wordChoiceFinder} />

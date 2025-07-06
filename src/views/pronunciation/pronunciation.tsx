@@ -15,7 +15,7 @@ export const PronunciationPage: React.FC<PronunciationPageProps> = observer(({ a
   const currentType = appState.pronunciation.currentPronunciationType;
 
   return (
-    <Inspectable label="PronunciationPage">
+    <Inspectable name="PronunciationPage">
       <>
         <div className="pronunciation-header">
           <PronunciationTypeNavigation

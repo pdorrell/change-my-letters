@@ -33,7 +33,7 @@ export const ReviewStateControls: React.FC<ReviewStateControlsProps> = observer(
   };
 
   return (
-    <Inspectable label="ReviewStateControls">
+    <Inspectable name="ReviewStateControls">
       <div className="action-buttons-panel">
         <div
           className="load-state-button-container"
@@ -78,7 +78,7 @@ interface PronunciationReviewFiltersProps {
 
 export const PronunciationReviewFilters: React.FC<PronunciationReviewFiltersProps> = observer(({ pronunciation }) => {
   return (
-    <Inspectable label="PronunciationReviewFilters">
+    <Inspectable name="PronunciationReviewFilters">
       <div className="pronunciation-filters">
         <div className="filter-panel">
           <div className="filter-controls">
@@ -117,7 +117,7 @@ interface PronunciationReviewStateControlsProps {
 
 export const PronunciationReviewStateControls: React.FC<PronunciationReviewStateControlsProps> = observer(({ pronunciation }) => {
   return (
-    <Inspectable label="PronunciationReviewStateControls">
+    <Inspectable name="PronunciationReviewStateControls">
       <div className="pronunciation-review-panel">
         <div className="current-review-word">
           <span
@@ -177,7 +177,7 @@ export const PronunciationReviewWordChoice: React.FC<PronunciationReviewWordChoi
   const keyboardHint = "Use ← → arrow keys to navigate, Alt+→ to start autoplay, space bar to toggle sounds wrong";
 
   return (
-    <Inspectable label="PronunciationReviewWordChoice">
+    <Inspectable name="PronunciationReviewWordChoice">
       <div className="pronunciation-word-choice">
         {/* Filtered Words */}
         <div className="filtered-words">
@@ -272,7 +272,7 @@ export const PronunciationReviewPage: React.FC<PronunciationReviewPageProps> = o
 
 
   return (
-    <Inspectable label="PronunciationReviewPage">
+    <Inspectable name="PronunciationReviewPage">
       <div className={clsx('pronunciation-container')}>
         <ReviewStateControls
           pronunciation={pronunciation}

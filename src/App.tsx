@@ -29,7 +29,7 @@ interface PageNavigationProps { appState: AppState; }
 
 const PageNavigation: React.FC<PageNavigationProps> = observer(({ appState }) => {
   return (
-    <Inspectable label="PageNavigation">
+    <Inspectable name="PageNavigation">
       <div className="page-navigation-tabs">
         {appState.menuPages.map(({ page, config, isActive }) => (
           <button
@@ -73,7 +73,7 @@ interface AppHeaderProps { appState: AppState; }
 
 const AppHeader: React.FC<AppHeaderProps> = observer(({ appState }) => {
   return (
-    <Inspectable label="AppHeader">
+    <Inspectable name="AppHeader">
       <header>
         <h1>Change My Letters</h1>
         <PageNavigation appState={appState} />

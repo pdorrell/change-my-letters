@@ -19,7 +19,6 @@
 
 .inspector {
   .inspectable {
-    border: 1px solid #880000 !important;
     border-radius: 2px;
     margin: 2px;
     
@@ -29,13 +28,16 @@
       padding-top: 22px;
     }
     
+    // Default styling for app components (red)
+    border: 1px solid red !important;
+    
     > .label {
       display: block;
       position: absolute;
       top: 2px;
       left: 2px;
       background-color: rgba(255, 255, 255, 0.5);
-      color: rgba(136, 0, 0, 0.8);
+      color: red;
       font-size: 0.75em;
       font-weight: bold;
       padding: 2px 4px;
@@ -45,11 +47,24 @@
       white-space: nowrap;
     }
     
-    &:hover {
-      border-color: red !important;
+    // Lib component styling (blue)
+    &.lib {
+      border-color: blue !important;
       
       > .label {
-        color: rgba(255, 0, 0, 0.8);
+        color: blue;
+      }
+    }
+    
+    // Hover behavior: increase opacity to 100%
+    &:hover {
+      > .label {
+        background-color: rgba(255, 255, 255, 1.0);
+        color: red;
+      }
+      
+      &.lib > .label {
+        color: blue;
       }
     }
   }

@@ -16,7 +16,7 @@ export const PageNavigationMenu = observer(<T extends PageType>({
   const allTypes = subPageModel.getAllSubPageTypes();
 
   return (
-    <Inspectable label="PageNavigationMenu">
+    <Inspectable name="PageNavigationMenu" lib>
       <div className={clsx('page-navigation-tabs', className)}>
         {allTypes.map((pageType) => {
           const config = subPageModel.configs[pageType];

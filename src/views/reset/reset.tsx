@@ -12,7 +12,7 @@ interface ResetControlsProps { resetInteraction: Reset; }
 
 export const ResetControls: React.FC<ResetControlsProps> = observer(({ resetInteraction }) => {
   return (
-    <Inspectable label="ResetControls">
+    <Inspectable name="ResetControls">
       <div className="reset-controls">
         <div className="reset-controls-left">
           <FilterControls filter={resetInteraction.filter} />
@@ -43,7 +43,7 @@ export const ResetWordChoice: React.FC<ResetWordChoiceProps> = observer(({ reset
   const filteredWords = resetInteraction.filteredWords;
 
   return (
-    <Inspectable label="ResetWordChoice">
+    <Inspectable name="ResetWordChoice">
       <div className="reset-word-choice">
         {filteredWords.length > 0 ? (
           <p>
@@ -79,7 +79,7 @@ export const ResetPage: React.FC<ResetPageProps> = observer(({ resetInteraction 
   const targetPageLabel = resetInteraction.targetPage === 'maker' ? 'Maker' : 'Changer';
 
   return (
-    <Inspectable label="ResetPage">
+    <Inspectable name="ResetPage">
       <>
         <div className="reset-page-header">
           <p>Reset <b>{targetPageLabel}</b> page by choosing a new initial word.</p>
