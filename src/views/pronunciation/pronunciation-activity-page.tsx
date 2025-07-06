@@ -138,11 +138,13 @@ export const PronunciationActivityPage: React.FC<PronunciationActivityPageProps>
 
 
   return (
-    <Page>
-      <div className={clsx('pronunciation-container', 'activity-mode')}>
-        <PronunciationActivityControlPanel pronunciation={pronunciation} />
-        <PronunciationActivityWordChoice pronunciation={pronunciation} />
-      </div>
-    </Page>
+    <Inspectable name="PronunciationActivityPage">
+      <Page>
+        <div className={clsx('pronunciation-container', 'activity-mode')}>
+          <PronunciationActivityControlPanel pronunciation={pronunciation} />
+          <PronunciationActivityWordChoice pronunciation={pronunciation} />
+        </div>
+      </Page>
+    </Inspectable>
   );
 });

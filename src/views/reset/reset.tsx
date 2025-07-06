@@ -80,12 +80,14 @@ export const ResetPage: React.FC<ResetPageProps> = observer(({ resetInteraction 
   const targetPageLabel = resetInteraction.targetPage === 'maker' ? 'Maker' : 'Changer';
 
   return (
-    <Page>
-      <div className="reset-page-header">
-        <p>Reset <b>{targetPageLabel}</b> page by choosing a new initial word.</p>
-      </div>
-      <ResetControls resetInteraction={resetInteraction} />
-      <ResetWordChoice resetInteraction={resetInteraction} />
-    </Page>
+    <Inspectable name="ResetPage">
+      <Page>
+        <div className="reset-page-header">
+          <p>Reset <b>{targetPageLabel}</b> page by choosing a new initial word.</p>
+        </div>
+        <ResetControls resetInteraction={resetInteraction} />
+        <ResetWordChoice resetInteraction={resetInteraction} />
+      </Page>
+    </Inspectable>
   );
 });

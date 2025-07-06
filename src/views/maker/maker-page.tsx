@@ -4,6 +4,7 @@ import { Maker } from '@/models/maker/maker';
 import { MakeWordView } from './make-word-view';
 import { useScrollOnResize } from '@/hooks/useScrollOnResize';
 import { Page } from '@/lib/views/page';
+import { Inspectable } from '@/lib/inspector';
 
 interface MakerPageProps {
   maker: Maker;
@@ -14,7 +15,8 @@ export const MakerPage: React.FC<MakerPageProps> = observer(({ maker, maxWordLen
   const { containerRef, bottomElementRef } = useScrollOnResize(20); // 20px margin from bottom
 
   return (
-    <Page>
+    <Inspectable name="MakerPage">
+      <Page>
       <div className="make-page" ref={containerRef}>
         {/* History words */}
         {maker.history.historyWords.length > 0 && (
@@ -64,6 +66,7 @@ export const MakerPage: React.FC<MakerPageProps> = observer(({ maker, maxWordLen
         </div>
 
       </div>
-    </Page>
+      </Page>
+    </Inspectable>
   );
 });

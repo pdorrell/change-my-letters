@@ -5,6 +5,7 @@ import { PronunciationTypeNavigation } from './pronunciation-type-navigation';
 import { PronunciationActivityPage } from './pronunciation-activity-page';
 import { PronunciationReviewPage } from './pronunciation-review-page';
 import { Page } from '@/lib/views/page';
+import { Inspectable } from '@/lib/inspector';
 
 /**
  * Full page component for Pronunciation page with sub-page navigation
@@ -15,18 +16,20 @@ export const PronunciationPage: React.FC<PronunciationPageProps> = observer(({ a
   const currentType = appState.pronunciation.currentPronunciationType;
 
   return (
-    <Page>
-      <div className="pronunciation-header">
-        <PronunciationTypeNavigation
-          pronunciation={appState.pronunciation}
-        />
-      </div>
-      {currentType === 'activity' && (
-        <PronunciationActivityPage pronunciation={appState.activityPronunciation} />
-      )}
-      {currentType === 'review' && (
-        <PronunciationReviewPage pronunciation={appState.reviewPronunciation} />
-      )}
-    </Page>
+    <Inspectable name="PronunciationPage">
+      <Page>
+        <div className="pronunciation-header">
+          <PronunciationTypeNavigation
+            pronunciation={appState.pronunciation}
+          />
+        </div>
+        {currentType === 'activity' && (
+          <PronunciationActivityPage pronunciation={appState.activityPronunciation} />
+        )}
+        {currentType === 'review' && (
+          <PronunciationReviewPage pronunciation={appState.reviewPronunciation} />
+        )}
+      </Page>
+    </Inspectable>
   );
 });

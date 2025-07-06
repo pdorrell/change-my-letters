@@ -122,10 +122,12 @@ interface WordChangerPageProps { wordChanger: WordChanger; maxWordLength: number
 
 export const WordChangerPage: React.FC<WordChangerPageProps> = observer(({ wordChanger, maxWordLength }) => {
   return (
-    <Page>
-      <WordChangerControls wordChanger={wordChanger} />
-      <WordChangerView wordInteraction={wordChanger.wordInteraction} maxWordLength={maxWordLength} />
-      <HistoryPanel history={wordChanger.history} />
-    </Page>
+    <Inspectable name="WordChangerPage">
+      <Page>
+        <WordChangerControls wordChanger={wordChanger} />
+        <WordChangerView wordInteraction={wordChanger.wordInteraction} maxWordLength={maxWordLength} />
+        <HistoryPanel history={wordChanger.history} />
+      </Page>
+    </Inspectable>
   );
 });

@@ -13,15 +13,17 @@ interface WordChoiceFinderPageProps { wordChoiceFinder: WordChoiceFinder; }
 
 export const WordChoiceFinderPage: React.FC<WordChoiceFinderPageProps> = observer(({ wordChoiceFinder }) => {
   return (
-    <Page>
-      <>
-        <WordToChoosePanel finder={wordChoiceFinder} />
-        <WordToFindPanel finder={wordChoiceFinder} />
-        <FinderScoreAndControlsPanel finder={wordChoiceFinder} />
-        <FinderMessagePanel finder={wordChoiceFinder} />
-        <ConfirmationView confirmationModel={wordChoiceFinder.confirmation}
-        />
-      </>
-    </Page>
+    <Inspectable name="WordChoiceFinderPage">
+      <Page>
+        <>
+          <WordToChoosePanel finder={wordChoiceFinder} />
+          <WordToFindPanel finder={wordChoiceFinder} />
+          <FinderScoreAndControlsPanel finder={wordChoiceFinder} />
+          <FinderMessagePanel finder={wordChoiceFinder} />
+          <ConfirmationView confirmationModel={wordChoiceFinder.confirmation}
+          />
+        </>
+      </Page>
+    </Inspectable>
   );
 });

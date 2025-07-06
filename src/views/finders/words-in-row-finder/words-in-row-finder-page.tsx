@@ -11,14 +11,16 @@ interface WordsInRowFinderPageProps { wordsInRowFinder: WordsInRowFinder; }
 
 export const WordsInRowFinderPage: React.FC<WordsInRowFinderPageProps> = observer(({ wordsInRowFinder }) => {
   return (
-    <Page>
-      <>
-        <FinderControls finder={wordsInRowFinder} />
-        <p>Click/touch any square in the bottom row to hear a word, then find the
-             word in the line of letters.</p>
-        <LettersRowPanel finder={wordsInRowFinder} />
-        <WordsToFindPanel finder={wordsInRowFinder} />
-      </>
-    </Page>
+    <Inspectable name="WordsInRowFinderPage">
+      <Page>
+        <>
+          <FinderControls finder={wordsInRowFinder} />
+          <p>Click/touch any square in the bottom row to hear a word, then find the
+               word in the line of letters.</p>
+          <LettersRowPanel finder={wordsInRowFinder} />
+          <WordsToFindPanel finder={wordsInRowFinder} />
+        </>
+      </Page>
+    </Inspectable>
   );
 });

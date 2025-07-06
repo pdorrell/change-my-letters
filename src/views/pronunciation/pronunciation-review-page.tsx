@@ -273,16 +273,18 @@ export const PronunciationReviewPage: React.FC<PronunciationReviewPageProps> = o
 
 
   return (
-    <Page>
-      <div className={clsx('pronunciation-container')}>
-        <ReviewStateControls
-          pronunciation={pronunciation}
-          reviewStateFileLoader={(file: File) => pronunciation.loadReviewStateFromFile(file)}
-        />
-        <PronunciationReviewFilters pronunciation={pronunciation} />
-        <PronunciationReviewStateControls pronunciation={pronunciation} />
-        <PronunciationReviewWordChoice pronunciation={pronunciation} />
-      </div>
-    </Page>
+    <Inspectable name="PronunciationReviewPage">
+      <Page>
+        <div className={clsx('pronunciation-container')}>
+          <ReviewStateControls
+            pronunciation={pronunciation}
+            reviewStateFileLoader={(file: File) => pronunciation.loadReviewStateFromFile(file)}
+          />
+          <PronunciationReviewFilters pronunciation={pronunciation} />
+          <PronunciationReviewStateControls pronunciation={pronunciation} />
+          <PronunciationReviewWordChoice pronunciation={pronunciation} />
+        </div>
+      </Page>
+    </Inspectable>
   );
 });
