@@ -1294,16 +1294,26 @@ button {
   }
 }
 
-// Finders page header
-.finders-header {
+// Consistent page header styling for sub-pages
+.page-header {
   display: flex;
-  justify-content: center;
+  align-items: center;
   margin: 1.25em auto;
-  max-width: 50em;
+  max-width: 75em;
+  padding-left: 10em;
   
   .page-navigation-tabs {
     margin: 0;
   }
+}
+
+// Specific headers using the consistent pattern
+.finders-header {
+  @extend .page-header;
+}
+
+.pronunciation-header {
+  @extend .page-header;
 }
 
 // Words In Row Finder styles
