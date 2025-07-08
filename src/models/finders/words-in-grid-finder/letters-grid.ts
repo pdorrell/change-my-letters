@@ -125,4 +125,80 @@ export class LettersGrid {
     this.wrongSelections = [];
     this.currentSelection = null;
   }
+
+  // Methods for table-based selection UI
+  get selection(): { start: number; end: number } | null {
+    if (!this.currentSelection || !this.currentSelection.isValid) {
+      return null;
+    }
+
+    const positions = this.currentSelection.positions;
+    if (positions.length === 0) return null;
+
+    // Convert 2D positions to 1D indices
+    const indices = positions.map(pos => pos.row * this.gridSize + pos.col);
+    return {
+      start: Math.min(...indices),
+      end: Math.max(...indices)
+    };
+  }
+
+  get correctSelection(): { start: number; end: number } | null {
+    if (this.correctSelections.length === 0) return null;
+
+    // Get the most recent correct selection
+    const lastCorrect = this.correctSelections[this.correctSelections.length - 1];
+    const indices = lastCorrect.positions.map(pos => pos.row * this.gridSize + pos.col);
+    return {
+      start: Math.min(...indices),
+      end: Math.max(...indices)
+    };
+  }
+
+  get wrongSelection(): { start: number; end: number } | null {
+    if (this.wrongSelections.length === 0) return null;
+
+    // Get the most recent wrong selection
+    const lastWrong = this.wrongSelections[this.wrongSelections.length - 1];
+    const indices = lastWrong.positions.map(pos => pos.row * this.gridSize + pos.col);
+    return {
+      start: Math.min(...indices),
+      end: Math.max(...indices)
+    };
+  }
+
+  get correctSelectionStart(): number | null {
+    if (!this.currentSelection || this.correctSelections.length === 0) return null;
+
+    const lastCorrect = this.correctSelections[this.correctSelections.length - 1];
+    const startPos = lastCorrect.positions[0];
+    return startPos.row * this.gridSize + startPos.col;
+  }
+
+  get wrongSelectionStart(): number | null {
+    if (!this.currentSelection || this.wrongSelections.length === 0) return null;
+
+    const lastWrong = this.wrongSelections[this.wrongSelections.length - 1];
+    const startPos = lastWrong.positions[0];
+    return startPos.row * this.gridSize + startPos.col;
+  }
+
+  get selectionState(): GridSelectionState | null {
+    return this.currentSelection;
+  }
+
+  get interactionsDisabled(): boolean {
+    return false; // Grid is always interactive when visible
+  }
+
+  // Get letters as flat array for table rendering
+  get lettersArray(): string[] {
+    const letters: string[] = [];
+    for (let row = 0; row < this.gridSize; row++) {
+      for (let col = 0; col < this.gridSize; col++) {
+        letters.push(this.grid[row][col]);
+      }
+    }
+    return letters;
+  }
 }

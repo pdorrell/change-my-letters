@@ -9,8 +9,9 @@ import { ValueModel } from '@/lib/models/value-models';
 import { ButtonAction } from '@/lib/models/actions';
 import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';
 import { HappyOrSad } from '@/models/audio/emotion-types';
+import { RangeSelectable } from '@/lib/models/range-selectable';
 
-export class WordsInGridFinder {
+export class WordsInGridFinder implements RangeSelectable {
   wordSayer: WordSayerInterface;
   emotionalWordSayer?: EmotionalWordSayer<HappyOrSad>;
   difficulty: ValueModel<DifficultyType>;
@@ -83,24 +84,21 @@ export class WordsInGridFinder {
   }
 
   private initializeWithWords(words: string[]): void {
-    try {
-      // Select words for the grid
-      const selectedWords = selectWordsForGrid(words);
+    console.log('WordsInGridFinder: Initializing with', words.length, 'words');
+    console.log('WordsInGridFinder: First 10 words:', words.slice(0, 10));
+    
+    // Select words for the grid
+    const selectedWords = selectWordsForGrid(words);
+    console.log('WordsInGridFinder: Selected', selectedWords.length, 'words:', selectedWords);
 
-      // Populate the grid with the selected words
-      const populatedGrid = populateGrid(selectedWords, this.difficulty.value, this.forwardsOnly.value);
+    // Populate the grid with the selected words
+    const populatedGrid = populateGrid(selectedWords, this.difficulty.value, this.forwardsOnly.value);
 
-      // Create the models
-      this.wordsToFind = new WordsToFind(selectedWords);
-      this.lettersGrid = new LettersGrid(populatedGrid.grid, populatedGrid.placedWords);
-
-    } catch (error) {
-      console.error('Error generating words in grid:', error);
-      // Don't throw error during initialization - let the app continue
-      // The grid finder will just show as non-functional
-      this.wordsToFind = null;
-      this.lettersGrid = null;
-    }
+    // Create the models
+    this.wordsToFind = new WordsToFind(selectedWords);
+    this.lettersGrid = new LettersGrid(populatedGrid.grid, populatedGrid.placedWords);
+    
+    console.log('WordsInGridFinder: Successfully initialized');
   }
 
   new(): void {
@@ -108,26 +106,19 @@ export class WordsInGridFinder {
       throw new Error('WordsInGridFinder not initialized with newWordsCallback');
     }
 
-    try {
-      // Get all available words and select words for the grid
-      const allWords = this.newWordsCallback();
-      const selectedWords = selectWordsForGrid(allWords);
+    // Get all available words and select words for the grid
+    const allWords = this.newWordsCallback();
+    const selectedWords = selectWordsForGrid(allWords);
 
-      // Populate the grid with the selected words
-      const populatedGrid = populateGrid(selectedWords, this.difficulty.value, this.forwardsOnly.value);
+    // Populate the grid with the selected words
+    const populatedGrid = populateGrid(selectedWords, this.difficulty.value, this.forwardsOnly.value);
 
-      // Create the models
-      this.wordsToFind = new WordsToFind(selectedWords);
-      this.lettersGrid = new LettersGrid(populatedGrid.grid, populatedGrid.placedWords);
+    // Create the models
+    this.wordsToFind = new WordsToFind(selectedWords);
+    this.lettersGrid = new LettersGrid(populatedGrid.grid, populatedGrid.placedWords);
 
-      // Reset task state
-      this.taskStarted = false;
-
-    } catch (error) {
-      console.error('Error generating words in grid:', error);
-      // For the 'new' action, we can't gracefully degrade, so show error
-      throw error;
-    }
+    // Reset task state
+    this.taskStarted = false;
   }
 
   async selectWordToFind(wordToFind: WordToFind): Promise<void> {
@@ -204,5 +195,52 @@ export class WordsInGridFinder {
     this.wordsToFind?.destroy();
     this.wordsToFind = null;
     this.lettersGrid = null;
+  }
+
+  // RangeSelectable implementation
+  get canSelect(): boolean {
+    return this.lettersGrid !== null && this.wordsToFind?.activeWord !== null;
+  }
+
+  startSelection(index: number): void {
+    if (!this.lettersGrid || !this.canSelect) return;
+
+    const position = this.indexToGridPosition(index);
+    this.lettersGrid.startSelection(position, this.forwardsOnly.value);
+  }
+
+  updateSelection(index: number): void {
+    if (!this.lettersGrid || !this.canSelect) return;
+
+    const position = this.indexToGridPosition(index);
+    this.lettersGrid.updateSelection(position);
+  }
+
+  finishSelection(): void {
+    if (!this.lettersGrid || !this.canSelect) return;
+
+    const selectedText = this.lettersGrid.finishSelection();
+    if (selectedText) {
+      this.handleGridSelection(selectedText);
+    }
+  }
+
+  clearSelection(): void {
+    if (!this.lettersGrid) return;
+    this.lettersGrid.cancelSelection();
+  }
+
+  // Helper methods for converting between 1D index and 2D grid position
+  private indexToGridPosition(index: number): { row: number; col: number } {
+    const gridSize = this.lettersGrid?.gridSize || 10;
+    return {
+      row: Math.floor(index / gridSize),
+      col: index % gridSize
+    };
+  }
+
+  private gridPositionToIndex(row: number, col: number): number {
+    const gridSize = this.lettersGrid?.gridSize || 10;
+    return row * gridSize + col;
   }
 }

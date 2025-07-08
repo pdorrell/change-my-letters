@@ -1,160 +1,113 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
+import { RangeSelectable } from '@/lib/models/range-selectable';
+import { useDragSelection } from '@/lib/drag-selection';
+import { DragSelectableTd } from '@/lib/views/drag-selectable';
 import { LettersGrid } from '@/models/finders/words-in-grid-finder/letters-grid';
 import { GridPosition } from '@/models/finders/words-in-grid-finder/types';
 import { Inspectable } from '@/lib/inspector';
 
 interface LettersGridViewProps {
-  grid: LettersGrid;
-  forwardsOnly: boolean;
-  onSelection: (selectedText: string) => void;
+  selectable: RangeSelectable;
+  lettersGrid: LettersGrid;
 }
 
-export const LettersGridView: React.FC<LettersGridViewProps> = observer(({ grid, forwardsOnly, onSelection }) => {
-  const [isDragging, setIsDragging] = useState(false);
-  const gridRef = useRef<HTMLDivElement>(null);
+export const LettersGridView: React.FC<LettersGridViewProps> = observer(({
+  selectable,
+  lettersGrid
+}) => {
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const getPositionFromElement = useCallback((element: HTMLElement): GridPosition | null => {
-    const row = parseInt(element.dataset.row || '', 10);
-    const col = parseInt(element.dataset.col || '', 10);
+  // Use the generic drag selection hook
+  const dragSelection = useDragSelection(
+    selectable,
+    containerRef
+  );
 
-    if (isNaN(row) || isNaN(col)) {
-      return null;
+  const getWordFirstPosition = (): number | null => {
+    // For completed selections, we need to determine which end was the starting position
+    if (lettersGrid.correctSelection) {
+      return lettersGrid.correctSelectionStart ?? null;
     }
-
-    return { row, col };
-  }, []);
-
-  const findCellAtPoint = useCallback((x: number, y: number): HTMLElement | null => {
-    const elements = document.elementsFromPoint(x, y);
-    return elements.find(el => el.classList.contains('letters-grid-cell')) as HTMLElement || null;
-  }, []);
-
-  const handleMouseDown = useCallback((e: React.MouseEvent) => {
-    if (e.button !== 0) return; // Only handle left clicks
-
-    const target = e.target as HTMLElement;
-    if (!target.classList.contains('letters-grid-cell')) return;
-
-    const position = getPositionFromElement(target);
-    if (!position) return;
-
-    setIsDragging(true);
-    grid.startSelection(position, forwardsOnly);
-    e.preventDefault();
-  }, [grid, forwardsOnly, getPositionFromElement]);
-
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!isDragging || !grid.currentSelection) return;
-
-    const cell = findCellAtPoint(e.clientX, e.clientY);
-    if (!cell) return;
-
-    const position = getPositionFromElement(cell);
-    if (!position) return;
-
-    grid.updateSelection(position);
-  }, [isDragging, grid, findCellAtPoint, getPositionFromElement]);
-
-  const handleMouseUp = useCallback(() => {
-    if (!isDragging || !grid.currentSelection) return;
-
-    const selectedText = grid.finishSelection();
-    setIsDragging(false);
-
-    if (selectedText) {
-      onSelection(selectedText);
+    if (lettersGrid.wrongSelection) {
+      return lettersGrid.wrongSelectionStart ?? null;
     }
-  }, [isDragging, grid, onSelection]);
+    return null;
+  };
 
-  const handleMouseLeave = useCallback(() => {
-    if (isDragging) {
-      grid.cancelSelection();
-      setIsDragging(false);
-    }
-  }, [isDragging, grid]);
+  const gridPositionToIndex = (position: GridPosition): number => {
+    return position.row * lettersGrid.gridSize + position.col;
+  };
 
-  // Touch event handlers
-  const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    if (e.touches.length !== 1) return;
+  const getCellClassName = (index: number): string => {
+    const selection = lettersGrid.selection;
+    const isInSelection = selection && index >= selection.start && index <= selection.end;
+    const wordStart = getWordFirstPosition();
 
-    const touch = e.touches[0];
-    const target = document.elementFromPoint(touch.clientX, touch.clientY) as HTMLElement;
-
-    if (!target || !target.classList.contains('letters-grid-cell')) return;
-
-    const position = getPositionFromElement(target);
-    if (!position) return;
-
-    setIsDragging(true);
-    grid.startSelection(position, forwardsOnly);
-    e.preventDefault();
-  }, [grid, forwardsOnly, getPositionFromElement]);
-
-  const handleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (!isDragging || !grid.currentSelection || e.touches.length !== 1) return;
-
-    const touch = e.touches[0];
-    const cell = findCellAtPoint(touch.clientX, touch.clientY);
-    if (!cell) return;
-
-    const position = getPositionFromElement(cell);
-    if (!position) return;
-
-    grid.updateSelection(position);
-    e.preventDefault();
-  }, [isDragging, grid, findCellAtPoint, getPositionFromElement]);
-
-  const handleTouchEnd = useCallback(() => {
-    if (!isDragging || !grid.currentSelection) return;
-
-    const selectedText = grid.finishSelection();
-    setIsDragging(false);
-
-    if (selectedText) {
-      onSelection(selectedText);
-    }
-  }, [isDragging, grid, onSelection]);
-
-  const getCellClassName = useCallback((row: number, col: number): string => {
-    const position = { row, col };
-    const state = grid.getCellState(position);
-
-    return clsx('letters-grid-cell', {
-      'letters-grid-cell--selecting': state === 'selecting',
-      'letters-grid-cell--correct': state === 'correct',
-      'letters-grid-cell--wrong': state === 'wrong'
+    return clsx('letters-row-cell', {
+      'letters-row-cell--disabled': lettersGrid.interactionsDisabled,
+      'letters-row-cell--dragging': isInSelection && lettersGrid.selectionState,
+      'letters-row-cell--correct': isInSelection && lettersGrid.correctSelection,
+      'letters-row-cell--wrong': isInSelection && lettersGrid.wrongSelection,
+      'letters-row-cell--drag-start': selection && index === selection.start,
+      'letters-row-cell--drag-end': selection && index === selection.end,
+      'letters-row-cell--word-first': (
+        (lettersGrid.selectionState && index === gridPositionToIndex(lettersGrid.selectionState.start)) ||
+        ((lettersGrid.correctSelection || lettersGrid.wrongSelection) &&
+         lettersGrid.selectionState === null &&
+         wordStart !== null &&
+         index === wordStart)
+      )
     });
-  }, [grid]);
+  };
+
+  // Render the grid as a 10x10 table
+  const renderGridRows = () => {
+    const rows = [];
+    const gridSize = lettersGrid.gridSize;
+
+    for (let row = 0; row < gridSize; row++) {
+      const cells = [];
+      for (let col = 0; col < gridSize; col++) {
+        const index = row * gridSize + col;
+        const letter = lettersGrid.lettersArray[index];
+
+        cells.push(
+          <DragSelectableTd
+            key={index}
+            index={index}
+            className={getCellClassName(index)}
+            dragSelection={dragSelection}
+          >
+            {letter}
+          </DragSelectableTd>
+        );
+      }
+
+      rows.push(
+        <tr key={row}>
+          {cells}
+        </tr>
+      );
+    }
+
+    return rows;
+  };
 
   return (
     <Inspectable name="LettersGridView">
-      <div
-        ref={gridRef}
-        className={clsx('letters-grid', 'touch-interactive-area')}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseLeave={handleMouseLeave}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-      >
-        {grid.grid.map((row, rowIndex) => (
-          <div key={rowIndex} className="letters-grid-row">
-            {row.map((letter, colIndex) => (
-              <div
-                key={`${rowIndex}-${colIndex}`}
-                className={getCellClassName(rowIndex, colIndex)}
-                data-row={rowIndex}
-                data-col={colIndex}
-              >
-                {letter}
-              </div>
-            ))}
-          </div>
-        ))}
+      <div className="letters-grid-view" ref={containerRef}>
+        <div className="letters-grid-wrapper">
+          <table
+            className="letters-row-table letters-grid-table"
+            onTouchMove={dragSelection.onTouchMove}
+          >
+            <tbody>
+              {renderGridRows()}
+            </tbody>
+          </table>
+        </div>
       </div>
     </Inspectable>
   );

@@ -15,9 +15,8 @@ export const LettersGridPanel: React.FC<LettersGridPanelProps> = observer(({ fin
     <Inspectable name="LettersGridPanel">
       <div className="letters-grid-panel">
         <LettersGridView
-          grid={finder.lettersGrid}
-          forwardsOnly={finder.forwardsOnly.value}
-          onSelection={(selectedText) => finder.handleGridSelection(selectedText)}
+          selectable={finder}
+          lettersGrid={finder.lettersGrid}
         />
       </div>
     </Inspectable>
