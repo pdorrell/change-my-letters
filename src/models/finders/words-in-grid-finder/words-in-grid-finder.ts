@@ -4,7 +4,7 @@ import { LettersGrid } from './letters-grid';
 import { WordsToFind } from './words-to-find';
 import { WordToFind } from './word-to-find';
 import { selectWordsForGrid, populateGrid } from './populate-grid';
-import { WordSayerInterface } from '../../word-sayer-interface';
+import { WordSayerInterface } from '@/models/word-sayer-interface';
 import { ValueModel } from '@/lib/models/value-models';
 import { ButtonAction } from '@/lib/models/actions';
 import { EmotionalWordSayer } from '@/models/audio/emotional-word-sayer';
@@ -16,7 +16,7 @@ export class WordsInGridFinder {
   difficulty: ValueModel<DifficultyType>;
   forwardsOnly: ValueModel<boolean>;
   auto: ValueModel<boolean>;
-  
+
   wordsToFind: WordsToFind | null = null;
   lettersGrid: LettersGrid | null = null;
   taskStarted: boolean = false;
@@ -84,19 +84,22 @@ export class WordsInGridFinder {
 
   private initializeWithWords(words: string[]): void {
     try {
-      // Select 10 words for the grid
+      // Select words for the grid
       const selectedWords = selectWordsForGrid(words);
-      
+
       // Populate the grid with the selected words
       const populatedGrid = populateGrid(selectedWords, this.difficulty.value, this.forwardsOnly.value);
-      
+
       // Create the models
       this.wordsToFind = new WordsToFind(selectedWords);
       this.lettersGrid = new LettersGrid(populatedGrid.grid, populatedGrid.placedWords);
-      
+
     } catch (error) {
       console.error('Error generating words in grid:', error);
-      throw error;
+      // Don't throw error during initialization - let the app continue
+      // The grid finder will just show as non-functional
+      this.wordsToFind = null;
+      this.lettersGrid = null;
     }
   }
 
@@ -106,22 +109,23 @@ export class WordsInGridFinder {
     }
 
     try {
-      // Get all available words and select 10 for the grid
+      // Get all available words and select words for the grid
       const allWords = this.newWordsCallback();
       const selectedWords = selectWordsForGrid(allWords);
-      
+
       // Populate the grid with the selected words
       const populatedGrid = populateGrid(selectedWords, this.difficulty.value, this.forwardsOnly.value);
-      
+
       // Create the models
       this.wordsToFind = new WordsToFind(selectedWords);
       this.lettersGrid = new LettersGrid(populatedGrid.grid, populatedGrid.placedWords);
-      
+
       // Reset task state
       this.taskStarted = false;
-      
+
     } catch (error) {
       console.error('Error generating words in grid:', error);
+      // For the 'new' action, we can't gracefully degrade, so show error
       throw error;
     }
   }
@@ -152,15 +156,15 @@ export class WordsInGridFinder {
 
     const activeWord = this.wordsToFind.activeWord.word;
     const isCorrect = this.lettersGrid.isWordCorrect(activeWord, selectedText);
-    
+
     if (isCorrect) {
       // Mark as correct
       this.lettersGrid.markSelectionCorrect(activeWord);
       this.wordsToFind.markActiveWordCorrect();
-      
+
       // Play success sound
       this.emotionalWordSayer?.playRandomWord('happy');
-      
+
       // Auto-advance to next word if enabled
       if (this.auto.value && !this.completed) {
         setTimeout(() => {
@@ -171,7 +175,7 @@ export class WordsInGridFinder {
       // Mark as wrong
       this.lettersGrid.markSelectionWrong(activeWord);
       this.wordsToFind.markActiveWordWrong();
-      
+
       // Play error sound
       this.emotionalWordSayer?.playRandomWord('sad');
     }
@@ -179,7 +183,7 @@ export class WordsInGridFinder {
 
   private advanceToNextWord(): void {
     if (!this.wordsToFind) return;
-    
+
     const nextWord = this.wordsToFind.nextUnfoundWord;
     if (nextWord) {
       this.selectWordToFind(nextWord);

@@ -66,6 +66,9 @@ describe('ApplicationLoader', () => {
   });
 
   it('should handle malformed JSON data by falling back to sample graph', async () => {
+    // Mock console.error since the grid finder may log errors with insufficient words
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
     // Create a data fetcher that serves malformed data for both JSON and TXT files
     const badRouteMappings: [string, string][] = [
       ['/data/wordlists/default-words-graph.json', '/tests/data/test-files/test-content.txt'],
@@ -85,6 +88,9 @@ describe('ApplicationLoader', () => {
 
     // Should have created a sample word graph
     expect(loader.appState?.wordGraph.words.size).toBeGreaterThan(0);
+
+    // Restore console.error
+    consoleErrorSpy.mockRestore();
   });
 
   it('should initialize with correct loading state', () => {

@@ -5,8 +5,8 @@ import { WordsInGridFinder } from '@/models/finders/words-in-grid-finder/words-i
 import { WordToFindView } from './word-to-find-view';
 import { Inspectable } from '@/lib/inspector';
 
-interface WordsToFindPanelProps { 
-  finder: WordsInGridFinder; 
+interface WordsToFindPanelProps {
+  finder: WordsInGridFinder;
 }
 
 export const WordsToFindPanel: React.FC<WordsToFindPanelProps> = observer(({ finder }) => {

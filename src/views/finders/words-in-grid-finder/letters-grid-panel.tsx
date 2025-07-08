@@ -4,8 +4,8 @@ import { WordsInGridFinder } from '@/models/finders/words-in-grid-finder/words-i
 import { LettersGridView } from './letters-grid-view';
 import { Inspectable } from '@/lib/inspector';
 
-interface LettersGridPanelProps { 
-  finder: WordsInGridFinder; 
+interface LettersGridPanelProps {
+  finder: WordsInGridFinder;
 }
 
 export const LettersGridPanel: React.FC<LettersGridPanelProps> = observer(({ finder }) => {

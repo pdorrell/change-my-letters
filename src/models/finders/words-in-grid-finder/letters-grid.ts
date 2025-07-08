@@ -9,7 +9,7 @@ export class LettersGrid {
   currentSelection: GridSelectionState | null = null;
   correctSelections: Array<{ positions: GridPosition[]; word: string }> = [];
   wrongSelections: Array<{ positions: GridPosition[]; word: string }> = [];
-  
+
   constructor(grid: string[][], placedWords: PlacedWord[]) {
     this.grid = grid;
     this.placedWords = placedWords;
@@ -80,14 +80,14 @@ export class LettersGrid {
     }
 
     // Check if in a correct selection
-    if (this.correctSelections.some(sel => 
+    if (this.correctSelections.some(sel =>
       sel.positions.some(p => p.row === position.row && p.col === position.col)
     )) {
       return 'correct';
     }
 
     // Check if in a wrong selection
-    if (this.wrongSelections.some(sel => 
+    if (this.wrongSelections.some(sel =>
       sel.positions.some(p => p.row === position.row && p.col === position.col)
     )) {
       return 'wrong';
@@ -100,7 +100,7 @@ export class LettersGrid {
     // Check if the selected text matches the word (case insensitive)
     const normalizedWord = word.toLowerCase();
     const normalizedSelected = selectedText.toLowerCase();
-    
+
     // Direct match
     if (normalizedSelected === normalizedWord) {
       return true;

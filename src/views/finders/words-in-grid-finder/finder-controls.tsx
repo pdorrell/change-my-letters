@@ -6,8 +6,8 @@ import { ActionButton } from '@/lib/views/action-button';
 import { DifficultyType } from '@/models/finders/words-in-grid-finder/types';
 import { Inspectable } from '@/lib/inspector';
 
-interface FinderControlsProps { 
-  finder: WordsInGridFinder; 
+interface FinderControlsProps {
+  finder: WordsInGridFinder;
 }
 
 export const FinderControls: React.FC<FinderControlsProps> = observer(({ finder }) => {
