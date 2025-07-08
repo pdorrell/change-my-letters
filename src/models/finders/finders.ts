@@ -18,7 +18,8 @@ export class Finders implements SubPageModel<FinderPageType> {
     this.subPage = new ValueModel<FinderPageType>('word-choice', 'Finder Type', 'Select the type of finder to use');
     this.configs = {
       'word-choice': { label: FINDER_CONFIGS['word-choice'].label, shortLabel: FINDER_CONFIGS['word-choice'].shortLabel },
-      'words-in-row': { label: FINDER_CONFIGS['words-in-row'].label, shortLabel: FINDER_CONFIGS['words-in-row'].shortLabel }
+      'words-in-row': { label: FINDER_CONFIGS['words-in-row'].label, shortLabel: FINDER_CONFIGS['words-in-row'].shortLabel },
+      'words-in-grid': { label: FINDER_CONFIGS['words-in-grid'].label, shortLabel: FINDER_CONFIGS['words-in-grid'].shortLabel }
     };
     makeAutoObservable(this, {
       allFinderTypes: computed
@@ -30,7 +31,7 @@ export class Finders implements SubPageModel<FinderPageType> {
   }
 
   getAllSubPageTypes(): FinderPageType[] {
-    return ['word-choice', 'words-in-row'];
+    return ['word-choice', 'words-in-row', 'words-in-grid'];
   }
 
   get currentFinderType(): FinderType {
@@ -41,7 +42,7 @@ export class Finders implements SubPageModel<FinderPageType> {
    * Get all finder types with their config and active status
    */
   get allFinderTypes(): Array<{ finderType: FinderType; label: string; shortLabel: string; isActive: boolean }> {
-    const finderTypeOrder: FinderType[] = ['word-choice', 'words-in-row'];
+    const finderTypeOrder: FinderType[] = ['word-choice', 'words-in-row', 'words-in-grid'];
     return finderTypeOrder.map(finderType => ({
       finderType,
       label: FINDER_CONFIGS[finderType].label,

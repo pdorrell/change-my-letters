@@ -9,6 +9,7 @@ import { Pronunciation } from '@/models/pronunciation/pronunciation';
 import { Finders } from '@/models/finders/finders';
 import { WordChoiceFinder } from '@/models/finders/word-choice-finder/word-choice-finder';
 import { WordsInRowFinder } from '@/models/finders/words-in-row-finder/words-in-row-finder';
+import { WordsInGridFinder } from '@/models/finders/words-in-grid-finder/words-in-grid-finder';
 import { Maker } from '@/models/maker/maker';
 import { Word } from '@/models/Word';
 import { ButtonAction } from '@/lib/models/actions';
@@ -72,6 +73,9 @@ export class AppState {
 
   // The words in row finder interaction model
   wordsInRowFinder: WordsInRowFinder;
+
+  // The words in grid finder interaction model
+  wordsInGridFinder: WordsInGridFinder;
 
   // The make interaction model
   maker: Maker;
@@ -154,6 +158,15 @@ export class AppState {
     this.wordsInRowFinder = new WordsInRowFinder(
       this.wordSayer,
       wordsInRowRandomWords,
+      getRandomWords,
+      this.emotionalWordSayer
+    );
+
+    // Initialize words in grid finder with separate random words
+    const wordsInGridRandomWords = getRandomWords();
+    this.wordsInGridFinder = new WordsInGridFinder(
+      this.wordSayer,
+      wordsInGridRandomWords,
       getRandomWords,
       this.emotionalWordSayer
     );

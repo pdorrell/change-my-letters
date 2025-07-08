@@ -1495,3 +1495,99 @@ button {
     }
   }
 }
+
+// Words in Grid Finder Styles
+.words-in-grid-finder-page {
+  .instructions-panel {
+    text-align: center;
+    padding: 1em;
+    margin: 1em auto;
+    max-width: 50em;
+    font-size: 1.1em;
+    color: #666;
+  }
+}
+
+.letters-grid-panel {
+  margin: 1.88em auto;
+  max-width: 50em;
+  padding: 0 1.25em;
+}
+
+.letters-grid {
+  display: inline-block;
+  border: 2px solid #333;
+  border-radius: 4px;
+  overflow: hidden;
+  user-select: none;
+  
+  &--dragging {
+    cursor: grabbing;
+  }
+}
+
+.letters-grid-row {
+  display: flex;
+  
+  &:not(:last-child) .letters-grid-cell {
+    border-bottom: 1px solid #ddd;
+  }
+}
+
+.letters-grid-cell {
+  width: 2.5em;
+  height: 2.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.88em;
+  font-weight: bold;
+  background-color: #f5f5f5;
+  border-right: 1px solid #ddd;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.1s;
+  
+  &:last-child {
+    border-right: none;
+  }
+  
+  &:hover:not(.letters-grid-cell--dragging):not(.letters-grid-cell--disabled) {
+    background-color: #e8e8e8;
+  }
+  
+  &--disabled {
+    cursor: default;
+  }
+  
+  &--selecting {
+    background-color: #fff3cd;
+    border-color: #ffc107;
+    
+    &:first-child {
+      background-color: #ffeaa7;
+    }
+  }
+  
+  &--correct {
+    background-color: #d4edda;
+    border-color: #28a745;
+    
+    &:first-child {
+      background-color: #c3e6cb;
+    }
+  }
+  
+  &--wrong {
+    background-color: #f8d7da;
+    border-color: #dc3545;
+    
+    &:first-child {
+      background-color: #f5c6cb;
+    }
+  }
+  
+  &--dragging {
+    background-color: #fff3cd;
+  }
+}
