@@ -47,13 +47,34 @@ export const LettersGridView: React.FC<LettersGridViewProps> = observer(({
     const isInAnyWrongSelection = lettersGrid.isIndexInAnyWrongSelection(index);
     const wordStart = getWordFirstPosition();
 
+    // Check if this index is the start or end of any completed selection
+    const isSelectionStart = (selection && index === selection.start) ||
+      lettersGrid.correctSelections.some(sel => {
+        const indices = sel.positions.map(pos => pos.row * lettersGrid.gridSize + pos.col);
+        return index === Math.min(...indices);
+      }) ||
+      lettersGrid.wrongSelections.some(sel => {
+        const indices = sel.positions.map(pos => pos.row * lettersGrid.gridSize + pos.col);
+        return index === Math.min(...indices);
+      });
+
+    const isSelectionEnd = (selection && index === selection.end) ||
+      lettersGrid.correctSelections.some(sel => {
+        const indices = sel.positions.map(pos => pos.row * lettersGrid.gridSize + pos.col);
+        return index === Math.max(...indices);
+      }) ||
+      lettersGrid.wrongSelections.some(sel => {
+        const indices = sel.positions.map(pos => pos.row * lettersGrid.gridSize + pos.col);
+        return index === Math.max(...indices);
+      });
+
     return clsx('letters-row-cell', {
       'letters-row-cell--disabled': lettersGrid.interactionsDisabled,
       'letters-row-cell--dragging': isInCurrentSelection && lettersGrid.selectionState,
       'letters-row-cell--correct': isInAnyCorrectSelection,
       'letters-row-cell--wrong': isInAnyWrongSelection && !isInAnyCorrectSelection,
-      'letters-row-cell--drag-start': selection && index === selection.start,
-      'letters-row-cell--drag-end': selection && index === selection.end,
+      'letters-row-cell--drag-start': isSelectionStart,
+      'letters-row-cell--drag-end': isSelectionEnd,
       'letters-row-cell--word-first': (
         (lettersGrid.selectionState && index === gridPositionToIndex(lettersGrid.selectionState.start)) ||
         ((lettersGrid.correctSelection || lettersGrid.wrongSelection) &&
