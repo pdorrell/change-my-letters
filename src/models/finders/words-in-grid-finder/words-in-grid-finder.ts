@@ -84,12 +84,8 @@ export class WordsInGridFinder implements RangeSelectable {
   }
 
   private initializeWithWords(words: string[]): void {
-    console.log('WordsInGridFinder: Initializing with', words.length, 'words');
-    console.log('WordsInGridFinder: First 10 words:', words.slice(0, 10));
-    
     // Select words for the grid
     const selectedWords = selectWordsForGrid(words);
-    console.log('WordsInGridFinder: Selected', selectedWords.length, 'words:', selectedWords);
 
     // Populate the grid with the selected words
     const populatedGrid = populateGrid(selectedWords, this.difficulty.value, this.forwardsOnly.value);
@@ -97,8 +93,6 @@ export class WordsInGridFinder implements RangeSelectable {
     // Create the models
     this.wordsToFind = new WordsToFind(selectedWords);
     this.lettersGrid = new LettersGrid(populatedGrid.grid, populatedGrid.placedWords);
-    
-    console.log('WordsInGridFinder: Successfully initialized');
   }
 
   new(): void {
@@ -128,16 +122,13 @@ export class WordsInGridFinder implements RangeSelectable {
       this.taskStarted = true;
     }
 
-    const wasAlreadyActive = this.wordsToFind?.activeWord === wordToFind;
     this.wordsToFind?.setActiveWord(wordToFind);
 
     // Clear any previous wrong selections
     this.lettersGrid?.clearTemporarySelections();
 
     // Pronounce the word
-    if (!wasAlreadyActive) {
-      await this.wordSayer.say(wordToFind.word);
-    }
+    await this.wordSayer.say(wordToFind.word);
   }
 
   handleGridSelection(selectedText: string): void {

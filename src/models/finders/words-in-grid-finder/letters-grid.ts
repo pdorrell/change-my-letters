@@ -168,7 +168,7 @@ export class LettersGrid {
   }
 
   get correctSelectionStart(): number | null {
-    if (!this.currentSelection || this.correctSelections.length === 0) return null;
+    if (this.correctSelections.length === 0) return null;
 
     const lastCorrect = this.correctSelections[this.correctSelections.length - 1];
     const startPos = lastCorrect.positions[0];
@@ -176,7 +176,7 @@ export class LettersGrid {
   }
 
   get wrongSelectionStart(): number | null {
-    if (!this.currentSelection || this.wrongSelections.length === 0) return null;
+    if (this.wrongSelections.length === 0) return null;
 
     const lastWrong = this.wrongSelections[this.wrongSelections.length - 1];
     const startPos = lastWrong.positions[0];
@@ -189,6 +189,26 @@ export class LettersGrid {
 
   get interactionsDisabled(): boolean {
     return false; // Grid is always interactive when visible
+  }
+
+  // Check if a specific index is part of any correct selection
+  isIndexInAnyCorrectSelection(index: number): boolean {
+    const row = Math.floor(index / this.gridSize);
+    const col = index % this.gridSize;
+
+    return this.correctSelections.some(selection =>
+      selection.positions.some(pos => pos.row === row && pos.col === col)
+    );
+  }
+
+  // Check if a specific index is part of any wrong selection
+  isIndexInAnyWrongSelection(index: number): boolean {
+    const row = Math.floor(index / this.gridSize);
+    const col = index % this.gridSize;
+
+    return this.wrongSelections.some(selection =>
+      selection.positions.some(pos => pos.row === row && pos.col === col)
+    );
   }
 
   // Get letters as flat array for table rendering

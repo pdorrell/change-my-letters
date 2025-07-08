@@ -42,14 +42,16 @@ export const LettersGridView: React.FC<LettersGridViewProps> = observer(({
 
   const getCellClassName = (index: number): string => {
     const selection = lettersGrid.selection;
-    const isInSelection = selection && index >= selection.start && index <= selection.end;
+    const isInCurrentSelection = selection && index >= selection.start && index <= selection.end;
+    const isInAnyCorrectSelection = lettersGrid.isIndexInAnyCorrectSelection(index);
+    const isInAnyWrongSelection = lettersGrid.isIndexInAnyWrongSelection(index);
     const wordStart = getWordFirstPosition();
 
     return clsx('letters-row-cell', {
       'letters-row-cell--disabled': lettersGrid.interactionsDisabled,
-      'letters-row-cell--dragging': isInSelection && lettersGrid.selectionState,
-      'letters-row-cell--correct': isInSelection && lettersGrid.correctSelection,
-      'letters-row-cell--wrong': isInSelection && lettersGrid.wrongSelection,
+      'letters-row-cell--dragging': isInCurrentSelection && lettersGrid.selectionState,
+      'letters-row-cell--correct': isInAnyCorrectSelection,
+      'letters-row-cell--wrong': isInAnyWrongSelection && !isInAnyCorrectSelection,
       'letters-row-cell--drag-start': selection && index === selection.start,
       'letters-row-cell--drag-end': selection && index === selection.end,
       'letters-row-cell--word-first': (
@@ -98,9 +100,9 @@ export const LettersGridView: React.FC<LettersGridViewProps> = observer(({
   return (
     <Inspectable name="LettersGridView">
       <div className="letters-grid-view" ref={containerRef}>
-        <div className="letters-grid-wrapper">
+        <div className="letters-row-wrapper">
           <table
-            className="letters-row-table letters-grid-table"
+            className="letters-row-table"
             onTouchMove={dragSelection.onTouchMove}
           >
             <tbody>

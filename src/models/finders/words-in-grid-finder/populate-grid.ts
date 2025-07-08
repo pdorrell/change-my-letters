@@ -9,18 +9,12 @@ interface WordValidation {
 }
 
 export function selectWordsForGrid(words: string[]): string[] {
-  console.log('selectWordsForGrid: Starting with', words.length, 'total words');
-  
   // Adjust target count based on available words
   const availableWords = words.filter(word => word.length >= 3);
-  console.log('selectWordsForGrid: Found', availableWords.length, 'words with 3+ letters');
-  
   const targetCount = Math.min(WORDS_TO_FIND_COUNT, availableWords.length);
-  console.log('selectWordsForGrid: Target count:', targetCount);
 
   // If we don't have enough words, just return what we can
   if (targetCount < 3) {
-    console.error('selectWordsForGrid: Not enough words - need at least 3, have', targetCount);
     throw new Error('Need at least 3 words of 3+ letters to create a grid');
   }
 
