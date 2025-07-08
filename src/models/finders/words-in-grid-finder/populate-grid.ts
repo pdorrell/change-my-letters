@@ -12,12 +12,12 @@ export function selectWordsForGrid(words: string[]): string[] {
   // Adjust target count based on available words
   const availableWords = words.filter(word => word.length >= 3);
   const targetCount = Math.min(WORDS_TO_FIND_COUNT, availableWords.length);
-  
+
   // If we don't have enough words, just return what we can
   if (targetCount < 3) {
     throw new Error('Need at least 3 words of 3+ letters to create a grid');
   }
-  
+
   const maxAttempts = 10;
 
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {

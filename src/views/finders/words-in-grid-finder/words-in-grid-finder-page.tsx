@@ -17,7 +17,7 @@ export const WordsInGridFinderPage: React.FC<WordsInGridFinderPageProps> = obser
       <Inspectable name="WordsInGridFinderPage">
         <div className="words-in-grid-finder-page">
           <FinderControls finder={finder} />
-          
+
           <div className="instructions-panel">
             <p style={{ color: '#dc3545' }}>
               Unable to create Words in Grid finder: not enough words available.
