@@ -22,5 +22,6 @@
     * [ui/pages/finders.md] Finders pages
       * [ui/pages/word-choice-finder.md] The Word Choice finder page
       * [ui/pages/words-in-row-finder.md] The Words in Row finder page
+      * [ui/pages/words-in-grid-finder.md] The Words in Grid finder page
     * [ui/pages/make.md] Make page
     * [ui/pages/reset.md] Reset page

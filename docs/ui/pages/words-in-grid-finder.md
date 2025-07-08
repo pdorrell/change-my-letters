@@ -46,7 +46,8 @@ Once all the words have been found the "New" button is enabled.
 
 The difference between easy and hard is that in easy mode other letters in the grid are randomly
 chosen, but in hard mode the other letters are more likely to be the same letters of the words to 
-find (but without any of the words to find appearing more than once in the grid).
+find (but without any of the words to find appearing more than once in the grid - see below
+for details of how to avoid this).
 
 ## Forwards only
 
@@ -77,7 +78,8 @@ Firstly, how to choose and place the list of 10 words to find:
   search forward through the list until it can find a next word that can be chosen.
 * Each word in turn is placed randomly within the grid, ie randomly chosen
   from the set of positions that it can fit without overlapping with any
-  other word already placed.
+  other word already placed, and without being next to another word already placed (that is,
+  there is always at least one letter of separation between words in the same row).
 * In forwards-only mode, words can only be placed in the forwards direction.
   In not forwards-only mode, there is a 50% chance that a word will be placed backwards.
   
@@ -93,11 +95,20 @@ Secondly, how to place other letters into the remaining spaces in the grid:
     in the forwards direction that is not its chosen placement.
   * In non forwards-only mode, a false placement of a word is an occurrence of the
     word in either direction that is not its chosen placement. One special case is
-    that a palindromic word will exist both backwards and forwards in its placement.
+    that a palindromic word-to-find will exist both backwards and forwards in its placement.
 * The rule for fixing a false placement is:
   * For the first letter of the false placement that is not part of an actual placement,
     randomly choose one of the letters in the not chosen set to replace that letter.
     (In some cases fixing one false placement might fix another false placement not yet
     fixed, so always check first that the false placement has not already been fixed.)
+
+It is very unlikely that this algorithm could get stuck trying to place words and remaining
+letters, but if it does get stuck, then try again. After a certain number of attempts (eg 10)
+fail with an error message - repeated failure almost certainly implies some bug in either
+the design or implementation of the placement algorithm. And if more than one attempt
+but not more than ten attempts are required, pop up an alert saying how many attempts were required
+(and then allow the user to carry on with the activity after dismissing the alert).
+
+
 
 
