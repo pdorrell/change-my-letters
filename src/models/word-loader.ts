@@ -91,6 +91,23 @@ export class WordLoader {
   }
 
   /**
+   * Check if an error is due to a file not being found (404, network error, etc.)
+   * vs the file existing but containing invalid data
+   */
+  private isFileNotFoundError(error: unknown): boolean {
+    if (error instanceof Error) {
+      const errorMessage = error.message.toLowerCase();
+      // Check for common file not found indicators
+      return errorMessage.includes('not found') ||
+             errorMessage.includes('404') ||
+             errorMessage.includes('failed to fetch') ||
+             errorMessage.includes('network error') ||
+             errorMessage.includes('error loading data file');
+    }
+    return false;
+  }
+
+  /**
    * Load the default word list and graph
    */
   async loadDefaultWordGraph(): Promise<WordGraph> {
@@ -115,14 +132,27 @@ export class WordLoader {
 
           wordGraph.loadFromJson(jsonGraph);
         } catch (wordListError) {
-          // If that also fails, try the sample graph
-          try {
-            return this.createSampleWordGraph();
-          } catch (sampleGraphError) {
-            // If all methods fail, throw a comprehensive error
-            throw new Error('Failed to load or create any word graph', {
+          // Check if both errors are due to missing files (network/404 errors)
+          // vs malformed data (parsing errors). Only fall back for missing files.
+          const isGraphFileMissing = this.isFileNotFoundError(graphError);
+          const isWordListFileMissing = this.isFileNotFoundError(wordListError);
+
+          if (isGraphFileMissing && isWordListFileMissing) {
+            // Both files are missing - fall back to sample graph
+            try {
+              return this.createSampleWordGraph();
+            } catch (sampleGraphError) {
+              throw new Error('Failed to load or create any word graph', {
+                cause: new Error('Multiple errors', {
+                  cause: { graphError, wordListError, sampleGraphError }
+                })
+              });
+            }
+          } else {
+            // At least one file exists but has malformed data - fail without fallback
+            throw new Error('Failed to load word graph - data sources contain invalid data', {
               cause: new Error('Multiple errors', {
-                cause: { graphError, wordListError, sampleGraphError }
+                cause: { graphError, wordListError }
               })
             });
           }

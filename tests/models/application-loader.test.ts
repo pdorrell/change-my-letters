@@ -65,14 +65,14 @@ describe('ApplicationLoader', () => {
     expect(catWord).toBeDefined();
   });
 
-  it('should handle malformed JSON data by falling back to sample graph', async () => {
-    // Mock console.error since the grid finder may log errors with insufficient words
+  it('should fail gracefully when both JSON and TXT data sources are malformed', async () => {
+    // Mock console.error since we expect errors to be logged
     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
     // Create a data fetcher that serves malformed data for both JSON and TXT files
     const badRouteMappings: [string, string][] = [
       ['/data/wordlists/default-words-graph.json', '/tests/data/test-files/test-content.txt'],
-      ['/data/wordlists/default-words.txt', '/tests/data/test-files/test-content.txt'],
+      ['/data/wordlists/default-words.txt', '/tests/data/test-files/invalid-words.txt'],
     ];
 
     const badDataFileFetcher = new DataFileFetcherTestDouble(badRouteMappings);
@@ -81,13 +81,12 @@ describe('ApplicationLoader', () => {
     // Wait for the loading to complete
     await new Promise(resolve => setTimeout(resolve, 200));
 
-    // The WordLoader should fall back to sample graph when JSON parsing fails
-    expect(loader.appState).not.toBeNull();
+    // When both primary data sources are corrupted, the application should fail
+    // rather than silently falling back to sample data
+    expect(loader.appState).toBeNull();
     expect(loader.isLoading).toBe(false);
-    expect(loader.hasError).toBe(false);
-
-    // Should have created a sample word graph
-    expect(loader.appState?.wordGraph.words.size).toBeGreaterThan(0);
+    expect(loader.hasError).toBe(true);
+    expect(loader.errorMessage).toBeTruthy();
 
     // Restore console.error
     consoleErrorSpy.mockRestore();
