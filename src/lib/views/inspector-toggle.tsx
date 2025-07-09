@@ -6,26 +6,30 @@ import { inspectorStore } from '@/lib/inspector-store';
  * Toggle component for enabling/disabling inspector mode
  */
 export const InspectorToggle: React.FC = observer(() => {
+  const isEnabled = inspectorStore.inspectorEnabled;
   return (
-    <label style={{
-      position: 'fixed',
-      top: '10px',
-      right: '10px',
-      zIndex: 10000,
-      background: 'rgba(255, 255, 255, 0.9)',
-      padding: '5px 10px',
-      borderRadius: '4px',
-      border: '1px solid #ccc',
-      fontSize: '0.8em',
-      cursor: 'pointer'
-    }}>
-      <input
-        type="checkbox"
-        checked={inspectorStore.inspectorEnabled}
-        onChange={(e) => inspectorStore.setInspectorEnabled(e.target.checked)}
-        style={{ marginRight: '5px' }}
-      />
-      Inspector Mode
-    </label>
+    <button
+      onClick={() => inspectorStore.setInspectorEnabled(!isEnabled)}
+      title={isEnabled ? 'Turn Off Inspector mode' : 'Turn On Inspector mode'}
+      style={{
+        position: 'fixed',
+        top: '80px',
+        right: '10px',
+        zIndex: 10000,
+        background: isEnabled ? '#dc3545' : 'white',
+        padding: '8px 10px',
+        borderRadius: '4px',
+        border: '1px solid #ccc',
+        fontSize: '1.2em',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        minWidth: '40px',
+        minHeight: '40px'
+      }}
+    >
+      🕵️
+    </button>
   );
 });

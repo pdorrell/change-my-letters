@@ -144,13 +144,15 @@ export class WordsInGridFinder implements RangeSelectable {
       this.lettersGrid.markSelectionCorrect(activeWord);
       this.wordsToFind.markActiveWordCorrect();
 
-      // Play success sound
-      this.emotionalWordSayer?.playRandomWord('happy');
+      // Play success sound only when all words are completed
+      if (this.completed) {
+        this.emotionalWordSayer?.playRandomWord('happy');
+      }
 
       // Auto-advance to next word if enabled
       if (this.auto.value && !this.completed) {
-        setTimeout(() => {
-          this.advanceToNextWord();
+        setTimeout(async () => {
+          await this.advanceToNextWord();
         }, 1000);
       }
     } else {
@@ -163,12 +165,12 @@ export class WordsInGridFinder implements RangeSelectable {
     }
   }
 
-  private advanceToNextWord(): void {
+  private async advanceToNextWord(): Promise<void> {
     if (!this.wordsToFind) return;
 
     const nextWord = this.wordsToFind.nextUnfoundWord;
     if (nextWord) {
-      this.selectWordToFind(nextWord);
+      await this.selectWordToFind(nextWord);
     }
   }
 
