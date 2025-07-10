@@ -14,11 +14,10 @@ const HelpDisplay: React.FC<HelpContentProps> = observer(({ helpText, onClose })
   const helpDisplayRef = useRef<HTMLDivElement>(null);
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (!helpDisplayRef.current) return;
-    const rect = helpDisplayRef.current.getBoundingClientRect();
+    // Calculate offset from mouse position to current element position
     setDragOffset({
-      x: e.clientX - rect.left - position.x,
-      y: e.clientY - rect.top - position.y
+      x: e.clientX - position.x,
+      y: e.clientY - position.y
     });
     setIsDragging(true);
     e.preventDefault();
@@ -72,11 +71,9 @@ const HelpDisplay: React.FC<HelpContentProps> = observer(({ helpText, onClose })
           backgroundColor: 'white',
           border: '2px solid var(--help-mode-color)',
           borderRadius: '8px',
-          margin: '8px',
           zIndex: 20001,
           boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-          minWidth: '300px',
-          maxWidth: '500px',
+          width: '400px',
           cursor: isDragging ? 'grabbing' : 'default'
         }}
         onClick={(e) => e.stopPropagation()}
