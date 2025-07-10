@@ -12,9 +12,6 @@ export const InspectorToggle: React.FC = observer(() => {
       onClick={() => inspectorStore.setInspectorEnabled(!isEnabled)}
       title={isEnabled ? 'Turn Off Inspector mode' : 'Turn On Inspector mode'}
       style={{
-        position: 'fixed',
-        top: '80px',
-        right: '10px',
         zIndex: 10000,
         background: isEnabled ? '#dc3545' : 'white',
         padding: '8px 10px',

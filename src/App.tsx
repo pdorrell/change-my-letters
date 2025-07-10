@@ -79,6 +79,7 @@ const AppHeader: React.FC<AppHeaderProps> = observer(({ appState }) => {
         <PageNavigation appState={appState} />
         <ResetButton appState={appState} />
         <AppVersion version={appState.version} />
+        <InspectorToggle />
       </header>
     </Inspectable>
   );
@@ -112,7 +113,6 @@ const AppBody: React.FC<AppBodyProps> = observer(({ appState }) => {
 const App: React.FC<AppProps> = observer(({ appState }) => {
   return (
     <div className={clsx('app-container', { inspector: inspectorStore.inspectorEnabled })}>
-      <InspectorToggle />
       <AppHeader appState={appState} />
       <AppBody appState={appState} />
     </div>
