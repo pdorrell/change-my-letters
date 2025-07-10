@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { inspectorStore } from './inspector-store';
 
 /**
  * Inspector Tool for React Components
@@ -48,6 +49,12 @@ interface InspectableProps {
 }
 
 export const Inspectable: React.FC<InspectableProps> = observer(({ name, lib = false, children }) => {
+  const { inspectorEnabled } = inspectorStore;
+
+  if (!inspectorEnabled) {
+    return <>{children}</>;
+  }
+
   return (
     <div className={`inspectable ${lib ? 'lib' : ''}`}>
       <div className="label">{name}</div>
