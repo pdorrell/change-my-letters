@@ -1,21 +1,28 @@
-import { makeAutoObservable } from 'mobx';
+import { ToggleModel } from './models/toggle-model';
 
 /**
  * Store for managing inspector mode state
  */
 class InspectorStore {
-  inspectorEnabled = false;
+  inspectorToggle: ToggleModel;
 
   constructor() {
-    makeAutoObservable(this);
+    this.inspectorToggle = new ToggleModel(false, {
+      on: 'Turn On Inspector mode',
+      off: 'Turn Off Inspector mode'
+    });
+  }
+
+  get inspectorEnabled(): boolean {
+    return this.inspectorToggle.value;
   }
 
   setInspectorEnabled(enabled: boolean) {
-    this.inspectorEnabled = enabled;
+    this.inspectorToggle.setValue(enabled);
   }
 
   toggleInspector() {
-    this.inspectorEnabled = !this.inspectorEnabled;
+    this.inspectorToggle.toggle();
   }
 }
 
