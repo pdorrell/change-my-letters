@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { makeAutoObservable } from 'mobx';
 import { Word } from '@/models/Word';
 import { Inspectable } from '@/lib/inspector';
+import { Helpable, Help } from '@/lib/components/help';
 
 /**
  * Represents a change from one word to another
@@ -155,24 +156,29 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = observer(({ history }) 
 
   return (
     <Inspectable name="HistoryPanel">
-      <div className={clsx('history-panel', 'touch-interactive-area')}>
-        <div className="history-panel-list">
-          {history.entries.map((entry, index) => (
-            <span
-              key={index}
-              className={clsx('history-panel-word', {
-                current: index === history.currentIndex,
-                visited: history.hasVisited(entry.word),
-                unvisited: !history.hasVisited(entry.word)
-              })}
-              onClick={() => handleHistoryClick(index)}
-              title={`Go to word '${entry.wordString}'`}
-            >
-              {entry.wordString}
-            </span>
-          ))}
+      <Helpable>
+        <Help>
+          This is your word history showing all the words you've created by making changes. The current word is highlighted. Click on any previous word to jump back to it. Words you've visited before appear in a different color. The history tracks all your changes so you can explore different word paths.
+        </Help>
+        <div className={clsx('history-panel', 'touch-interactive-area')}>
+          <div className="history-panel-list">
+            {history.entries.map((entry, index) => (
+              <span
+                key={index}
+                className={clsx('history-panel-word', {
+                  current: index === history.currentIndex,
+                  visited: history.hasVisited(entry.word),
+                  unvisited: !history.hasVisited(entry.word)
+                })}
+                onClick={() => handleHistoryClick(index)}
+                title={`Go to word '${entry.wordString}'`}
+              >
+                {entry.wordString}
+              </span>
+            ))}
+          </div>
         </div>
-      </div>
+      </Helpable>
     </Inspectable>
   );
 });

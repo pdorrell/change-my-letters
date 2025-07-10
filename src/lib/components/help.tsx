@@ -27,7 +27,7 @@ const HelpDisplay: React.FC<HelpContentProps> = observer(({ helpText, onClose })
       <div
         style={{
           position: 'absolute',
-          top: '100%',
+          top: 0,
           left: 0,
           right: 0,
           backgroundColor: 'white',

@@ -5,6 +5,7 @@ import { MakeWordView } from './make-word-view';
 import { useScrollOnResize } from '@/hooks/useScrollOnResize';
 import { Page } from '@/lib/views/page';
 import { Inspectable } from '@/lib/inspector';
+import { Helpable, Help } from '@/lib/components/help';
 
 interface MakerPageProps {
   maker: Maker;
@@ -16,8 +17,12 @@ export const MakerPage: React.FC<MakerPageProps> = observer(({ maker, maxWordLen
 
   return (
     <Inspectable name="MakerPage">
-      <Page>
-      <div className="make-page" ref={containerRef}>
+      <Helpable>
+        <Help>
+          This is the word maker where you build words from scratch by adding letters one by one. Start by clicking the plus signs to add letters. The current word you're building appears in the middle, your word history is shown above, and the result area below shows completed words. Use the 'New Word' button to start fresh or the delete button to remove completed words.
+        </Help>
+        <Page>
+        <div className="make-page" ref={containerRef}>
         {/* History words */}
         {maker.history.historyWords.length > 0 && (
           <div className="make-history">
@@ -67,6 +72,7 @@ export const MakerPage: React.FC<MakerPageProps> = observer(({ maker, maxWordLen
 
       </div>
       </Page>
+      </Helpable>
     </Inspectable>
   );
 });
