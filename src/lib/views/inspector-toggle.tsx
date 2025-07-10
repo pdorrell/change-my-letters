@@ -14,16 +14,14 @@ export const InspectorToggle: React.FC = observer(() => {
       style={{
         zIndex: 10000,
         background: isEnabled ? '#dc3545' : 'white',
-        padding: '8px 10px',
-        borderRadius: '4px',
+        padding: '0.1em 0.1em',
+        borderRadius: '0.2em',
         border: '1px solid #ccc',
-        fontSize: '1.2em',
+        fontSize: '1.1em',
         cursor: 'pointer',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
-        minWidth: '40px',
-        minHeight: '40px'
+        justifyContent: 'center'
       }}
     >
       🕵️
