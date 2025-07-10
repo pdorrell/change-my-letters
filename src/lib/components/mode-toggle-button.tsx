@@ -33,6 +33,7 @@ export const ModeToggleButton: React.FC<ModeToggleButtonProps> = observer(({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        minWidth: '1em',
         ...style
       }}
     >
