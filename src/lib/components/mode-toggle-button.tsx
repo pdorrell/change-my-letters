@@ -6,7 +6,6 @@ import { ToggleModel } from '@/lib/models/toggle-model';
 interface ModeToggleButtonProps {
   model: ToggleModel;
   label: string;
-  activeColor: string;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -14,7 +13,6 @@ interface ModeToggleButtonProps {
 export const ModeToggleButton: React.FC<ModeToggleButtonProps> = observer(({
   model,
   label,
-  activeColor,
   className,
   style
 }) => {

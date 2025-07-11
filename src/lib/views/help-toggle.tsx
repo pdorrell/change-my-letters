@@ -11,7 +11,6 @@ export const HelpToggle: React.FC = observer(() => {
     <ModeToggleButton
       model={helpStore.helpToggle}
       label="?"
-      activeColor="var(--help-mode-color)"
       className="help"
       style={{ zIndex: 10000 }}
     />

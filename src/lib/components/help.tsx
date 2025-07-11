@@ -40,7 +40,7 @@ const HelpDisplay: React.FC<HelpContentProps> = observer(({ helpText, onClose })
   const handleTouchStart = (e: React.TouchEvent) => {
     const touch = e.touches[0];
     if (!touch) return;
-    
+
     // Calculate offset from touch position to current element position
     setDragOffset({
       x: touch.clientX - position.x,
@@ -52,10 +52,10 @@ const HelpDisplay: React.FC<HelpContentProps> = observer(({ helpText, onClose })
 
   const handleTouchMove = (e: TouchEvent) => {
     if (!isDragging) return;
-    
+
     const touch = e.touches[0];
     if (!touch) return;
-    
+
     setPosition({
       x: touch.clientX - dragOffset.x,
       y: touch.clientY - dragOffset.y

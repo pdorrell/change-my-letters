@@ -11,7 +11,6 @@ export const InspectorToggle: React.FC = observer(() => {
     <ModeToggleButton
       model={inspectorStore.inspectorToggle}
       label="🕵️"
-      activeColor="var(--inspector-mode-color)"
       className="inspector"
       style={{ zIndex: 10000 }}
     />
