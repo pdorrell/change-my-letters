@@ -5,10 +5,11 @@ import { helpStore } from '@/lib/help-store';
 
 interface HelpContentProps {
   helpText: React.ReactNode;
+  title: string;
   onClose: () => void;
 }
 
-const HelpDisplay: React.FC<HelpContentProps> = observer(({ helpText, onClose }) => {
+const HelpDisplay: React.FC<HelpContentProps> = observer(({ helpText, title, onClose }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
@@ -109,7 +110,10 @@ const HelpDisplay: React.FC<HelpContentProps> = observer(({ helpText, onClose })
             'help-drag-handle--dragging': isDragging
           })}
         >
-          <span className="help-title">Help</span>
+          <span className="help-title">
+            <span className="help-title-icon">?</span>
+            <span className="help-title-text">{title}</span>
+          </span>
           <button
             onClick={onClose}
             className="help-close-button"
@@ -130,10 +134,11 @@ const HelpDisplay: React.FC<HelpContentProps> = observer(({ helpText, onClose })
 
 interface HelpableProps {
   children: React.ReactNode;
+  title?: string;
 }
 
 // This component wraps panels that contain Help elements
-export const Helpable: React.FC<HelpableProps> = observer(({ children }) => {
+export const Helpable: React.FC<HelpableProps> = observer(({ children, title = "Help" }) => {
   const [showHelp, setShowHelp] = useState(false);
   if (!helpStore.helpEnabled) {
     return <>{children}</>;
@@ -173,6 +178,7 @@ export const Helpable: React.FC<HelpableProps> = observer(({ children }) => {
       {showHelp && (
         <HelpDisplay
           helpText={helpElements}
+          title={title}
           onClose={() => setShowHelp(false)}
         />
       )}
