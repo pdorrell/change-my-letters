@@ -17,26 +17,16 @@ export const ModeToggleButton: React.FC<ModeToggleButtonProps> = observer(({
   className,
   style
 }) => {
+  const baseClasses = 'mode';
+  const statusClass = model.value ? 'on' : 'off';
+  const allClasses = `${baseClasses} ${className || ''} ${statusClass}`.trim();
+  
   return (
     <button
       onClick={() => model.toggle()}
       title={model.currentTooltip}
-      className={className}
-      style={{
-        background: model.value ? activeColor : 'white',
-        color: 'black',
-        padding: '0.1em 0.1em',
-        borderRadius: '0.2em',
-        border: '1px solid #ccc',
-        fontSize: '1.1em',
-        cursor: 'pointer',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '1.8em',
-        minWidth: '1.3em',
-        ...style
-      }}
+      className={allClasses}
+      style={style}
     >
       {label}
     </button>

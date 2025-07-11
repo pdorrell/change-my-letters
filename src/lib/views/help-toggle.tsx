@@ -12,6 +12,7 @@ export const HelpToggle: React.FC = observer(() => {
       model={helpStore.helpToggle}
       label="?"
       activeColor="var(--help-mode-color)"
+      className="help"
       style={{ zIndex: 10000 }}
     />
   );

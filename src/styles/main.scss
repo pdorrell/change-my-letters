@@ -99,6 +99,42 @@ button {
   }
 }
 
+// Mode toggle button styles
+.mode {
+  background-color: #d0d0d0;
+  color: black;
+  padding: 0.1em 0.1em;
+  border-radius: 0.2em;
+  border: 1px solid #ccc;
+  font-size: 1.1em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 1.8em;
+  min-width: 1.3em;
+  
+  &:hover {
+    background-color: white;
+  }
+  
+  &.inspector {
+    &.on {
+      background-color: var(--inspector-mode-color);
+    }
+  }
+  
+  &.help {
+    &.on {
+      background-color: var(--help-mode-color);
+    }
+  }
+  
+  &.off {
+    background-color: #d0d0d0;
+  }
+}
+
 // Utility classes
 .hidden {
   visibility: hidden;
