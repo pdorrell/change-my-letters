@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
+import clsx from 'clsx';
 import { helpStore } from '@/lib/help-store';
 
 interface HelpContentProps {
@@ -50,61 +51,32 @@ const HelpDisplay: React.FC<HelpContentProps> = observer(({ helpText, onClose })
     <>
       {/* Backdrop */}
       <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.3)',
-          zIndex: 20000
-        }}
+        className="help-backdrop"
         onClick={onClose}
       />
       {/* Help Display */}
       <div
         ref={helpDisplayRef}
+        className={clsx('help-display', {
+          'help-display--dragging': isDragging
+        })}
         style={{
-          position: 'absolute',
           top: position.y,
-          left: position.x,
-          backgroundColor: 'white',
-          border: '2px solid var(--help-mode-color)',
-          borderRadius: '8px',
-          zIndex: 20001,
-          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-          width: '400px',
-          cursor: isDragging ? 'grabbing' : 'default'
+          left: position.x
         }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Drag Handle */}
         <div
           onMouseDown={handleMouseDown}
-          style={{
-            backgroundColor: 'var(--help-mode-color)',
-            color: 'white',
-            padding: '8px 16px',
-            margin: '-2px -2px 0 -2px',
-            borderRadius: '6px 6px 0 0',
-            cursor: isDragging ? 'grabbing' : 'grab',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            userSelect: 'none'
-          }}
+          className={clsx('help-drag-handle', {
+            'help-drag-handle--dragging': isDragging
+          })}
         >
-          <span style={{ fontWeight: 'bold', fontSize: '14px' }}>Help</span>
+          <span className="help-title">Help</span>
           <button
             onClick={onClose}
-            style={{
-              background: 'none',
-              border: 'none',
-              fontSize: '16px',
-              cursor: 'pointer',
-              color: 'white',
-              padding: '0 4px'
-            }}
+            className="help-close-button"
             title="Close help"
           >
             ✕
@@ -112,7 +84,7 @@ const HelpDisplay: React.FC<HelpContentProps> = observer(({ helpText, onClose })
         </div>
 
         {/* Content */}
-        <div style={{ padding: '16px' }}>
+        <div className="help-content">
           {helpText}
         </div>
       </div>
@@ -148,27 +120,11 @@ export const Helpable: React.FC<HelpableProps> = observer(({ children }) => {
   }
 
   return (
-    <div style={{ position: 'relative' }}>
+    <div className="help-trigger-container">
       {/* Help Question Mark */}
       <button
         onClick={() => setShowHelp(true)}
-        style={{
-          position: 'absolute',
-          top: '8px',
-          left: '8px',
-          backgroundColor: 'var(--help-mode-color)',
-          color: 'white',
-          border: 'none',
-          borderRadius: '50%',
-          width: '24px',
-          height: '24px',
-          fontSize: '14px',
-          cursor: 'pointer',
-          zIndex: 10001,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
+        className="help-trigger-button"
         title="Show help"
       >
         ?

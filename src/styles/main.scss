@@ -135,6 +135,89 @@ button {
   }
 }
 
+// Help component styles
+.help-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 20000;
+}
+
+.help-display {
+  position: absolute;
+  background-color: white;
+  border: 2px solid var(--help-mode-color);
+  border-radius: 8px;
+  z-index: 20001;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  width: 400px;
+  cursor: default;
+  
+  &--dragging {
+    cursor: grabbing;
+  }
+}
+
+.help-drag-handle {
+  background-color: var(--help-mode-color);
+  color: white;
+  padding: 8px 16px;
+  margin: -2px -2px 0 -2px;
+  border-radius: 6px 6px 0 0;
+  cursor: grab;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  
+  &--dragging {
+    cursor: grabbing;
+  }
+}
+
+.help-title {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.help-close-button {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: white;
+  padding: 0 4px;
+}
+
+.help-content {
+  padding: 16px;
+}
+
+.help-trigger-container {
+  position: relative;
+}
+
+.help-trigger-button {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background-color: var(--help-mode-color);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 // Utility classes
 .hidden {
   visibility: hidden;
