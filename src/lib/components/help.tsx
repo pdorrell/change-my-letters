@@ -132,41 +132,22 @@ const HelpDisplay: React.FC<HelpContentProps> = observer(({ helpText, title, onC
   );
 });
 
-interface HelpableProps {
+// Help component that renders its own trigger and modal
+interface HelpProps {
   children: React.ReactNode;
+  title: string;
 }
 
-// This component wraps panels that contain Help elements
-export const Helpable: React.FC<HelpableProps> = observer(({ children }) => {
+export const Help: React.FC<HelpProps> = observer(({ children, title }) => {
   const [showHelp, setShowHelp] = useState(false);
-  if (!helpStore.helpEnabled) {
-    return <>{children}</>;
-  }
-
-  // Extract Help elements from children
-  const helpElements: React.ReactNode[] = [];
-  const otherChildren: React.ReactNode[] = [];
-  let helpTitle = "Help"; // Default title
   
-  React.Children.forEach(children, (child) => {
-    if (React.isValidElement(child) && child.type === Help) {
-      helpElements.push(child.props.children);
-      // Use the title from the first Help component found
-      if (helpTitle === "Help" && child.props.title) {
-        helpTitle = child.props.title;
-      }
-    } else {
-      otherChildren.push(child);
-    }
-  });
-
-  // If no help content found, just render children
-  if (helpElements.length === 0) {
-    return <>{children}</>;
+  // Don't render anything if help is disabled
+  if (!helpStore.helpEnabled) {
+    return null;
   }
 
   return (
-    <div className="help-trigger-container">
+    <>
       {/* Help Question Mark */}
       <button
         onClick={() => setShowHelp(true)}
@@ -176,29 +157,14 @@ export const Helpable: React.FC<HelpableProps> = observer(({ children }) => {
         ?
       </button>
 
-      {/* Panel Content */}
-      {otherChildren}
-
       {/* Help Display */}
       {showHelp && (
         <HelpDisplay
-          helpText={helpElements}
-          title={helpTitle}
+          helpText={children}
+          title={title}
           onClose={() => setShowHelp(false)}
         />
       )}
-    </div>
+    </>
   );
-});
-
-// Simple Help component to contain help text
-interface HelpProps {
-  children: React.ReactNode;
-  title: string;
-}
-
-export const Help: React.FC<HelpProps> = observer(({ children: _children, title: _title }) => {
-  // This component doesn't render anything itself
-  // It's just a marker component that Helpable looks for
-  return null;
 });

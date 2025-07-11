@@ -217,12 +217,8 @@ button {
   padding: 16px;
 }
 
-.help-trigger-container {
-  position: relative;
-}
-
 .help-trigger-button {
-  position: absolute;
+  position: fixed;
   top: 8px;
   left: 8px;
   background-color: var(--help-mode-color);

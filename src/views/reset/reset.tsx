@@ -5,7 +5,7 @@ import { ActionButton } from '@/lib/views/action-button';
 import { FilterControls } from '@/lib/views/filter-controls';
 import { Inspectable } from '@/lib/inspector';
 import { Page } from '@/lib/views/page';
-import { Helpable, Help } from '@/lib/components/help';
+import { Help } from '@/lib/components/help';
 
 /**
  * Controls component for Reset page
@@ -15,19 +15,17 @@ interface ResetControlsProps { resetInteraction: Reset; }
 export const ResetControls: React.FC<ResetControlsProps> = observer(({ resetInteraction }) => {
   return (
     <Inspectable name="ResetControls">
-      <Helpable>
-        <Help title="Reset Controls">
-          Use these controls to filter and select your new starting word. The filter options let you narrow down words by length and type. The 'Choose Random' button will randomly select a word from the filtered results, which is helpful when you can't decide or want to be surprised.
-        </Help>
-        <div className="reset-controls">
-          <div className="reset-controls-left">
-            <FilterControls filter={resetInteraction.filter} />
-          </div>
-          <div className="reset-controls-right">
-            <ActionButton action={resetInteraction.randomAction}>Choose Random</ActionButton>
-          </div>
+      <Help title="Reset Controls">
+        Use these controls to filter and select your new starting word. The filter options let you narrow down words by length and type. The 'Choose Random' button will randomly select a word from the filtered results, which is helpful when you can't decide or want to be surprised.
+      </Help>
+      <div className="reset-controls">
+        <div className="reset-controls-left">
+          <FilterControls filter={resetInteraction.filter} />
         </div>
-      </Helpable>
+        <div className="reset-controls-right">
+          <ActionButton action={resetInteraction.randomAction}>Choose Random</ActionButton>
+        </div>
+      </div>
     </Inspectable>
   );
 });
@@ -51,33 +49,31 @@ export const ResetWordChoice: React.FC<ResetWordChoiceProps> = observer(({ reset
 
   return (
     <Inspectable name="ResetWordChoice">
-      <Helpable>
-        <Help title="Word Selection">
-          This is your word selection area. All available words that match your filter criteria are displayed here. Click on any word to choose it as your new starting word. This will reset the current page (Changer or Maker) and take you back to begin working with your selected word.
-        </Help>
-        <div className="reset-word-choice">
-          {filteredWords.length > 0 ? (
-            <p>
-              {filteredWords.map((word, index) => (
-                <React.Fragment key={word}>
-                  <span
-                    className="reset-word-option"
-                    onClick={() => handleWordClick(word)}
-                    title={`Set word changer to '${word}'`}
-                  >
-                    {word}
-                  </span>
-                  {index < filteredWords.length - 1 && ' '}
-                </React.Fragment>
-              ))}
-            </p>
-          ) : (
-            <p className="reset-no-words">
-              No words match the current filter.
-            </p>
-          )}
-        </div>
-      </Helpable>
+      <Help title="Word Selection">
+        This is your word selection area. All available words that match your filter criteria are displayed here. Click on any word to choose it as your new starting word. This will reset the current page (Changer or Maker) and take you back to begin working with your selected word.
+      </Help>
+      <div className="reset-word-choice">
+        {filteredWords.length > 0 ? (
+          <p>
+            {filteredWords.map((word, index) => (
+              <React.Fragment key={word}>
+                <span
+                  className="reset-word-option"
+                  onClick={() => handleWordClick(word)}
+                  title={`Set word changer to '${word}'`}
+                >
+                  {word}
+                </span>
+                {index < filteredWords.length - 1 && ' '}
+              </React.Fragment>
+            ))}
+          </p>
+        ) : (
+          <p className="reset-no-words">
+            No words match the current filter.
+          </p>
+        )}
+      </div>
     </Inspectable>
   );
 });
