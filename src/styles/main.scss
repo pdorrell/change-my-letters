@@ -218,7 +218,7 @@ button {
 }
 
 .help-trigger-button {
-  position: fixed;
+  position: absolute;
   top: 8px;
   left: 8px;
   background-color: var(--help-mode-color);
@@ -333,6 +333,7 @@ button {
   flex-direction: column;
   width: 100%;
   max-width: 850px;
+  position: relative; // For help button positioning
   // No margin, padding, border, or background for clean nesting
 }
 
@@ -437,6 +438,7 @@ button {
   overflow: visible; // Ensure the container expands to fit the content
   box-sizing: border-box; // Include padding in width calculation
   background-color: transparent; // Transparent background
+  position: relative; // For help button positioning
 }
 
 // Word changer styles
@@ -629,6 +631,7 @@ button {
   background-color: #f9f9f9;
   border: 1px solid #eee;
   border-radius: 4px;
+  position: relative; // For help button positioning
   
   
   .history-panel-list {
@@ -1118,6 +1121,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative; // For help button positioning
   
   h3 {
       text-align: center;

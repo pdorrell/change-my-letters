@@ -81,10 +81,10 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordI
 
   return (
     <Inspectable name="WordChangerView">
-      <Help title="Word Changer">
-        This is the interactive word display. Click on letters to replace them with new letters, or click between letters to insert new ones. The word changes as you make modifications. Letters that have been changed appear with a different background. Click on the plus signs to add letters at specific positions.
-      </Help>
       <Panel>
+        <Help title="Word Changer">
+          This is the interactive word display. Click on letters to replace them with new letters, or click between letters to insert new ones. The word changes as you make modifications. Letters that have been changed appear with a different background. Click on the plus signs to add letters at specific positions.
+        </Help>
         <div className={clsx('word-display', 'touch-interactive-area', { 'previously-visited': wordInteraction.word.previouslyVisited })}>
           {/* Render alternating sequence of positions and letters for the word changer */}
           { range(maxLength).map(index => (
@@ -109,10 +109,10 @@ interface WordChangerControlsProps { wordChanger: WordChanger; }
 export const WordChangerControls: React.FC<WordChangerControlsProps> = observer(({ wordChanger }) => {
   return (
     <Inspectable name="WordChangerControls">
-      <Help title="Word Changer Controls">
-        Use these controls to manage your word changes. 'Undo' reverses your last change, 'Redo' brings it back. 'Say' pronounces the current word aloud. The 'Say Immediately' checkbox makes words automatically pronounced whenever they change, which is helpful for pronunciation practice.
-      </Help>
       <div className="word-changer-controls">
+        <Help title="Word Changer Controls">
+          Use these controls to manage your word changes. 'Undo' reverses your last change, 'Redo' brings it back. 'Say' pronounces the current word aloud. The 'Say Immediately' checkbox makes words automatically pronounced whenever they change, which is helpful for pronunciation practice.
+        </Help>
         <ActionButton action={wordChanger.undoAction}>Undo</ActionButton>
         <ActionButton action={wordChanger.redoAction}>Redo</ActionButton>
         <ActionButton action={wordChanger.sayAction}>Say</ActionButton>
