@@ -11,7 +11,7 @@ interface WordToChoosePanelProps { finder: WordChoiceFinder; }
 export const WordToChoosePanel: React.FC<WordToChoosePanelProps> = observer(({ finder }) => {
   return (
     <Inspectable name="WordToChoosePanel">
-      <Helpable>
+      <Helpable title="Word Choice Grid">
         <Help>
           This is your word choice grid. Click on the words that match the target word shown below. Choose all correct answers to score points. Each word can only be selected once, so choose carefully. Your score increases with correct choices and decreases with wrong ones.
         </Help>

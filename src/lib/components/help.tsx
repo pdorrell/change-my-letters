@@ -134,11 +134,11 @@ const HelpDisplay: React.FC<HelpContentProps> = observer(({ helpText, title, onC
 
 interface HelpableProps {
   children: React.ReactNode;
-  title?: string;
+  title: string;
 }
 
 // This component wraps panels that contain Help elements
-export const Helpable: React.FC<HelpableProps> = observer(({ children, title = "Help" }) => {
+export const Helpable: React.FC<HelpableProps> = observer(({ children, title }) => {
   const [showHelp, setShowHelp] = useState(false);
   if (!helpStore.helpEnabled) {
     return <>{children}</>;

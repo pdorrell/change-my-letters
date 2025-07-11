@@ -17,7 +17,7 @@ export const MakerPage: React.FC<MakerPageProps> = observer(({ maker, maxWordLen
 
   return (
     <Inspectable name="MakerPage">
-      <Helpable>
+      <Helpable title="Word Maker">
         <Help>
           This is the word maker where you build words from scratch by adding letters one by one. Start by clicking the plus signs to add letters. The current word you're building appears in the middle, your word history is shown above, and the result area below shows completed words. Use the 'New Word' button to start fresh or the delete button to remove completed words.
         </Help>

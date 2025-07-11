@@ -15,7 +15,7 @@ interface ResetControlsProps { resetInteraction: Reset; }
 export const ResetControls: React.FC<ResetControlsProps> = observer(({ resetInteraction }) => {
   return (
     <Inspectable name="ResetControls">
-      <Helpable>
+      <Helpable title="Reset Controls">
         <Help>
           Use these controls to filter and select your new starting word. The filter options let you narrow down words by length and type. The 'Choose Random' button will randomly select a word from the filtered results, which is helpful when you can't decide or want to be surprised.
         </Help>
@@ -51,7 +51,7 @@ export const ResetWordChoice: React.FC<ResetWordChoiceProps> = observer(({ reset
 
   return (
     <Inspectable name="ResetWordChoice">
-      <Helpable>
+      <Helpable title="Word Selection">
         <Help>
           This is your word selection area. All available words that match your filter criteria are displayed here. Click on any word to choose it as your new starting word. This will reset the current page (Changer or Maker) and take you back to begin working with your selected word.
         </Help>

@@ -15,7 +15,7 @@ export const WordsToFindPanel: React.FC<WordsToFindPanelProps> = observer(({ fin
 
   return (
     <Inspectable name="WordsToFindPanel">
-      <Helpable>
+      <Helpable title="Words to Find">
         <Help>
           These are the words you need to find in the letter grid. Click on a word to select it as your target, then search for it in the grid above. The word will be highlighted in orange when selected. Found words appear with a green checkmark. If a word is pronounced when you click it, listen and then find it in the grid.
         </Help>
