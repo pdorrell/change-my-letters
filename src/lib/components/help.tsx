@@ -36,13 +36,48 @@ const HelpDisplay: React.FC<HelpContentProps> = observer(({ helpText, onClose })
     setIsDragging(false);
   };
 
+  // Touch event handlers for iOS Safari where mouse events don't work for dragging
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    if (!touch) return;
+    
+    // Calculate offset from touch position to current element position
+    setDragOffset({
+      x: touch.clientX - position.x,
+      y: touch.clientY - position.y
+    });
+    setIsDragging(true);
+    e.preventDefault();
+  };
+
+  const handleTouchMove = (e: TouchEvent) => {
+    if (!isDragging) return;
+    
+    const touch = e.touches[0];
+    if (!touch) return;
+    
+    setPosition({
+      x: touch.clientX - dragOffset.x,
+      y: touch.clientY - dragOffset.y
+    });
+    e.preventDefault(); // Prevent scrolling
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
+
   React.useEffect(() => {
     if (isDragging) {
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
+      document.addEventListener('touchmove', handleTouchMove);
+      document.addEventListener('touchend', handleTouchEnd);
       return () => {
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
+        document.removeEventListener('touchmove', handleTouchMove);
+        document.removeEventListener('touchend', handleTouchEnd);
       };
     }
   }, [isDragging, dragOffset]);
@@ -69,6 +104,7 @@ const HelpDisplay: React.FC<HelpContentProps> = observer(({ helpText, onClose })
         {/* Drag Handle */}
         <div
           onMouseDown={handleMouseDown}
+          onTouchStart={handleTouchStart}
           className={clsx('help-drag-handle', {
             'help-drag-handle--dragging': isDragging
           })}
