@@ -17,8 +17,8 @@ export const FinderControls: React.FC<FinderControlsProps> = observer(({ finder 
 
   return (
     <Inspectable name="FinderControls">
-      <Helpable title="Grid Game Controls">
-        <Help>
+      <Helpable>
+        <Help title="Grid Game Controls">
           Use these controls to configure the word grid game. Difficulty affects the letters in the grid: Easy uses random letters while Hard includes letters from the target words. 'Forwards only' determines if words can appear backwards. 'Auto' automatically advances to the next word when one is found correctly. The New button generates a fresh set of words and grid.
         </Help>
         <div className="word-changer-controls">

@@ -156,8 +156,8 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = observer(({ history }) 
 
   return (
     <Inspectable name="HistoryPanel">
-      <Helpable title="Word History">
-        <Help>
+      <Helpable>
+        <Help title="Word History">
           This is your word history showing all the words you've created by making changes. The current word is highlighted. Click on any previous word to jump back to it. Words you've visited before appear in a different color. The history tracks all your changes so you can explore different word paths.
         </Help>
         <div className={clsx('history-panel', 'touch-interactive-area')}>

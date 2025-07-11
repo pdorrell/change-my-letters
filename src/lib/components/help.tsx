@@ -134,11 +134,10 @@ const HelpDisplay: React.FC<HelpContentProps> = observer(({ helpText, title, onC
 
 interface HelpableProps {
   children: React.ReactNode;
-  title: string;
 }
 
 // This component wraps panels that contain Help elements
-export const Helpable: React.FC<HelpableProps> = observer(({ children, title }) => {
+export const Helpable: React.FC<HelpableProps> = observer(({ children }) => {
   const [showHelp, setShowHelp] = useState(false);
   if (!helpStore.helpEnabled) {
     return <>{children}</>;
@@ -147,9 +146,15 @@ export const Helpable: React.FC<HelpableProps> = observer(({ children, title }) 
   // Extract Help elements from children
   const helpElements: React.ReactNode[] = [];
   const otherChildren: React.ReactNode[] = [];
+  let helpTitle = "Help"; // Default title
+  
   React.Children.forEach(children, (child) => {
     if (React.isValidElement(child) && child.type === Help) {
       helpElements.push(child.props.children);
+      // Use the title from the first Help component found
+      if (helpTitle === "Help" && child.props.title) {
+        helpTitle = child.props.title;
+      }
     } else {
       otherChildren.push(child);
     }
@@ -178,7 +183,7 @@ export const Helpable: React.FC<HelpableProps> = observer(({ children, title }) 
       {showHelp && (
         <HelpDisplay
           helpText={helpElements}
-          title={title}
+          title={helpTitle}
           onClose={() => setShowHelp(false)}
         />
       )}
@@ -189,9 +194,10 @@ export const Helpable: React.FC<HelpableProps> = observer(({ children, title }) 
 // Simple Help component to contain help text
 interface HelpProps {
   children: React.ReactNode;
+  title: string;
 }
 
-export const Help: React.FC<HelpProps> = observer(({ children: _children }) => {
+export const Help: React.FC<HelpProps> = observer(({ children: _children, title: _title }) => {
   // This component doesn't render anything itself
   // It's just a marker component that Helpable looks for
   return null;
