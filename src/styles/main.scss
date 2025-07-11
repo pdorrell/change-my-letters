@@ -172,6 +172,7 @@ button {
   justify-content: space-between;
   align-items: center;
   user-select: none;
+  touch-action: none;
   
   &--dragging {
     cursor: grabbing;
@@ -231,6 +232,7 @@ button {
     -webkit-touch-callout: none;
     -webkit-tap-highlight-color: transparent;
     user-select: none;
+    touch-action: none;
   }
 }
 
