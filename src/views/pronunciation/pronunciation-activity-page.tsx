@@ -5,6 +5,7 @@ import { PronunciationActivity } from '@/models/pronunciation/pronunciation-acti
 import { ActionButton } from '@/lib/views/action-button';
 import { FilterControls } from '@/lib/views/filter-controls';
 import { Inspectable } from '@/lib/inspector';
+import { Help } from '@/lib/components/help';
 import { Page } from '@/lib/views/page';
 
 /**
@@ -18,6 +19,16 @@ export const PronunciationActivityControlPanel: React.FC<PronunciationActivityCo
   return (
     <Inspectable name="PronunciationActivityControlPanel">
       <div className="pronunciation-control-panel">
+        <Help title="Filter Controls & Auto">
+          {`
+          * **Filter text** sub-string to match against word
+          * **Match:**
+            * **start** match sub-string to start of word
+            * **end** match sub-string to end of word
+            * **any** match sub-string anywhere in word
+          * **Auto** start auto-playing the words
+`}
+        </Help>
         <div className="filter-panel">
           <FilterControls filter={pronunciation.filter} />
         </div>
@@ -46,6 +57,16 @@ export const PronunciationActivityWordChoice: React.FC<PronunciationActivityWord
   return (
     <Inspectable name="PronunciationActivityWordChoice">
       <div className="pronunciation-word-choice">
+        <Help title="Filtered Word List">{`
+        * Click on a word to pronounce that word
+        * Click on "..." to double maximum number of filtered words displayed
+        * Click on "↻" to reset maximum to 20
+        * Keyboard shortcuts:
+          * ← go to previous word
+          * → go to next word
+          * Alt-→ start autoplay
+`}
+        </Help>
         {/* Filtered Words */}
         <div className="filtered-words">
           <div className="words-header">
