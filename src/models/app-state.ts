@@ -157,18 +157,18 @@ export class AppState {
     const wordsInRowRandomWords = getRandomWords();
     this.wordsInRowFinder = new WordsInRowFinder(
       this.wordSayer,
+      this.emotionalWordSayer,
       wordsInRowRandomWords,
-      getRandomWords,
-      this.emotionalWordSayer
+      getRandomWords
     );
 
     // Initialize words in grid finder with separate random words
     const wordsInGridRandomWords = getRandomWords();
     this.wordsInGridFinder = new WordsInGridFinder(
       this.wordSayer,
+      this.emotionalWordSayer,
       wordsInGridRandomWords,
-      getRandomWords,
-      this.emotionalWordSayer
+      getRandomWords
     );
 
     // Initialize the word changer

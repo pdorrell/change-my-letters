@@ -13,7 +13,7 @@ import { RangeSelectable } from '@/lib/models/range-selectable';
 
 export class WordsInGridFinder implements RangeSelectable {
   wordSayer: WordSayerInterface;
-  emotionalWordSayer?: EmotionalWordSayer<HappyOrSad>;
+  emotionalWordSayer: EmotionalWordSayer<HappyOrSad>;
   difficulty: ValueModel<DifficultyType>;
   forwardsOnly: ValueModel<boolean>;
   auto: ValueModel<boolean>;
@@ -23,7 +23,7 @@ export class WordsInGridFinder implements RangeSelectable {
   taskStarted: boolean = false;
   newWordsCallback?: () => string[];
 
-  constructor(wordSayer: WordSayerInterface, words: string[] = [], newWordsCallback?: () => string[], emotionalWordSayer?: EmotionalWordSayer<HappyOrSad>) {
+  constructor(wordSayer: WordSayerInterface, emotionalWordSayer: EmotionalWordSayer<HappyOrSad>, words: string[] = [], newWordsCallback?: () => string[]) {
     this.wordSayer = wordSayer;
     this.emotionalWordSayer = emotionalWordSayer;
     this.newWordsCallback = newWordsCallback;
@@ -146,7 +146,7 @@ export class WordsInGridFinder implements RangeSelectable {
 
       // Play success sound only when all words are completed
       if (this.completed) {
-        this.emotionalWordSayer?.playRandomWord('happy');
+        this.emotionalWordSayer.playRandomWord('happy');
       }
 
       // Auto-advance to next word if enabled
@@ -161,7 +161,7 @@ export class WordsInGridFinder implements RangeSelectable {
       this.wordsToFind.markActiveWordWrong();
 
       // Play error sound
-      this.emotionalWordSayer?.playRandomWord('sad');
+      this.emotionalWordSayer.playRandomWord('sad');
     }
   }
 

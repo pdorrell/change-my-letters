@@ -12,7 +12,7 @@ import { HappyOrSad } from '@/models/audio/emotion-types';
 
 export class WordsInRowFinder implements RangeSelectable {
   wordSayer: WordSayerInterface;
-  emotionalWordSayer?: EmotionalWordSayer<HappyOrSad>;
+  emotionalWordSayer: EmotionalWordSayer<HappyOrSad>;
   difficulty: ValueModel<DifficultyType>;
   forwardsOnly: ValueModel<boolean>;
   auto: ValueModel<boolean>;
@@ -22,7 +22,7 @@ export class WordsInRowFinder implements RangeSelectable {
   newWordsCallback?: () => string[];
   autoTimeoutId: number | null = null;
 
-  constructor(wordSayer: WordSayerInterface, words: string[] = [], newWordsCallback?: () => string[], emotionalWordSayer?: EmotionalWordSayer<HappyOrSad>) {
+  constructor(wordSayer: WordSayerInterface, emotionalWordSayer: EmotionalWordSayer<HappyOrSad>, words: string[] = [], newWordsCallback?: () => string[]) {
     this.wordSayer = wordSayer;
     this.emotionalWordSayer = emotionalWordSayer;
     this.newWordsCallback = newWordsCallback;
@@ -141,9 +141,7 @@ export class WordsInRowFinder implements RangeSelectable {
       this.wordsToFind.markActiveWordWrong();
       this.lettersRow.markSelectionWrong();
       // Play a random sad word for incorrect selection
-      if (this.emotionalWordSayer) {
-        await this.emotionalWordSayer.playRandomWord('sad');
-      }
+      await this.emotionalWordSayer.playRandomWord('sad');
     }
   }
 
