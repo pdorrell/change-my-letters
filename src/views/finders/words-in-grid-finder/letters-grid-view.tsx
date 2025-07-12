@@ -119,19 +119,17 @@ export const LettersGridView: React.FC<LettersGridViewProps> = observer(({
   };
 
   return (
-    <Inspectable name="LettersGridView">
-      <div className="letters-grid-view" ref={containerRef}>
-        <div className="letters-row-wrapper">
-          <table
-            className="letters-row-table"
-            onTouchMove={dragSelection.onTouchMove}
-          >
-            <tbody>
-              {renderGridRows()}
-            </tbody>
-          </table>
-        </div>
+    <div className="letters-grid-view" ref={containerRef}>
+      <div className="letters-row-wrapper">
+        <table
+          className="letters-row-table"
+          onTouchMove={dragSelection.onTouchMove}
+        >
+          <tbody>
+            {renderGridRows()}
+          </tbody>
+        </table>
       </div>
-    </Inspectable>
+    </div>
   );
 });
