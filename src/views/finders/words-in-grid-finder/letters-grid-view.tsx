@@ -6,7 +6,6 @@ import { useDragSelection } from '@/lib/drag-selection';
 import { DragSelectableTd } from '@/lib/views/drag-selectable';
 import { LettersGrid } from '@/models/finders/words-in-grid-finder/letters-grid';
 import { GridPosition } from '@/models/finders/words-in-grid-finder/types';
-import { Inspectable } from '@/lib/inspector';
 
 interface LettersGridViewProps {
   selectable: RangeSelectable;
