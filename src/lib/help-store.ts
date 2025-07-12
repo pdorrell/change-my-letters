@@ -7,7 +7,7 @@ class HelpStore {
   helpToggle: ToggleModel;
 
   constructor() {
-    this.helpToggle = new ToggleModel(false, {
+    this.helpToggle = new ToggleModel(true, {
       on: 'Turn On Help mode',
       off: 'Turn Off Help mode'
     });

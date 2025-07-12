@@ -12,7 +12,14 @@ export const FilterControls: React.FC<FilterControlsProps> = observer(({ filter 
     <Inspectable name="FilterControls" lib>
       <div className="filter-controls">
         <Help title="Filter Controls">
-          Use these controls to filter the available words. Type in the text box to search for specific letters or patterns. The radio buttons change how the filter works: 'Contains' finds words with your text anywhere inside, 'Starts with' finds words beginning with your text, and 'Length' filters by word length (enter a number).
+          {`
+          * **Filter text** sub-string to match against word
+          * **Match:**
+            * **start** match sub-string to start of word
+            * **end** match sub-string to end of word
+            * **any** match sub-string anywhere in word
+          * **Auto** move on to next word after saying selected word
+`}
         </Help>
         <TextValueInputWithPlaceholder value={filter.value} />
         <ValueRadioButtons value={filter.matchOption} options={FILTER_MATCH_OPTIONS} />

@@ -82,8 +82,11 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordI
   return (
     <Inspectable name="WordChangerView">
       <Panel>
-        <Help title="Word Changer">
-          This is the interactive word display. Click on letters to replace them with new letters, or click between letters to insert new ones. The word changes as you make modifications. Letters that have been changed appear with a different background. Click on the plus signs to add letters at specific positions.
+        <Help title="Current Word">
+          {`
+          * Click on letter to replace or delete
+          * Click on any "+" to insert new letter at that position
+          `}
         </Help>
         <div className={clsx('word-display', 'touch-interactive-area', { 'previously-visited': wordInteraction.word.previouslyVisited })}>
           {/* Render alternating sequence of positions and letters for the word changer */}
@@ -111,7 +114,11 @@ export const WordChangerControls: React.FC<WordChangerControlsProps> = observer(
     <Inspectable name="WordChangerControls">
       <div className="word-changer-controls">
         <Help title="Word Changer Controls">
-          Use these controls to manage your word changes. 'Undo' reverses your last change, 'Redo' brings it back. 'Say' pronounces the current word aloud. The 'Say Immediately' checkbox makes words automatically pronounced whenever they change, which is helpful for pronunciation practice.
+          {`
+          * **Undo** undo last change
+          * **Redo** redo last undo
+          * **Say** pronounce current word
+          * **Say Immediately** pronounce new word when the word is changed`}
         </Help>
         <ActionButton action={wordChanger.undoAction}>Undo</ActionButton>
         <ActionButton action={wordChanger.redoAction}>Redo</ActionButton>

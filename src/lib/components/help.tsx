@@ -1,10 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
+import ReactMarkdown from 'react-markdown';
+import dedent from 'dedent';
 import { helpStore } from '@/lib/help-store';
 
 interface HelpContentProps {
-  helpText: React.ReactNode;
+  helpText: string;
   title: string;
   onClose: () => void;
 }
@@ -125,7 +127,7 @@ const HelpDisplay: React.FC<HelpContentProps> = observer(({ helpText, title, onC
 
         {/* Content */}
         <div className="help-content">
-          {helpText}
+          <ReactMarkdown>{dedent(helpText)}</ReactMarkdown>
         </div>
       </div>
     </>
@@ -134,13 +136,13 @@ const HelpDisplay: React.FC<HelpContentProps> = observer(({ helpText, title, onC
 
 // Help component that renders its own trigger and modal
 interface HelpProps {
-  children: React.ReactNode;
+  children: string;
   title: string;
 }
 
 export const Help: React.FC<HelpProps> = observer(({ children, title }) => {
   const [showHelp, setShowHelp] = useState(false);
-  
+
   // Don't render anything if help is disabled
   if (!helpStore.helpEnabled) {
     return null;
