@@ -13,7 +13,6 @@ The page contains the following panels:
   * "Forwards only" checkbox, defaults to checked
   * "Auto" checkbox, defaults to unchecked
   * (On the right side) "New" button, enabled when the activity is completed
-* Instructions panel, saying "Click/touch any square in the bottom row to hear a word, then find the word in the line of letters."
 * The row of letters that the word to find will appear in (blank when there is no current word to find)
 * Words to Find panel, consisting of a button for each word to find, where each button initially shows a question mark.
 

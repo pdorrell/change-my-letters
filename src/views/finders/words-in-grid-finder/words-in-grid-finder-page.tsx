@@ -33,13 +33,7 @@ export const WordsInGridFinderPage: React.FC<WordsInGridFinderPageProps> = obser
     <Inspectable name="WordsInGridFinderPage">
       <div className="words-in-grid-finder-page">
         <FinderControls finder={finder} />
-
-        <div className="instructions-panel">
-          <p>Click/touch any button below to hear a word, then find the word in the grid.</p>
-        </div>
-
         <LettersGridPanel finder={finder} />
-
         <WordsToFindPanel finder={finder} />
       </div>
     </Inspectable>

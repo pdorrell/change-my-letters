@@ -13,7 +13,6 @@ The page contains the following panels:
   * "Forwards only" checkbox, defaults to checked
   * "Auto" checkbox, defaults to unchecked
   * (On the right side) "New" button, enabled when the activity is completed
-* Instructions panel, saying "Click/touch any square in the bottom row to hear a word, then find the word in the grid."
 * A 10 x 10 grid of letters containing the hidden words.
 * Words to Find panel, consisting of a button for each of ten words to find, where each button initially shows a question mark.
 
