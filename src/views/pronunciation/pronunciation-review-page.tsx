@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { PronunciationReview } from '@/models/pronunciation/pronunciation-review';
 import { ActionButton } from '@/lib/views/action-button';
 import { FilterControls } from '@/lib/views/filter-controls';
+import { Panel } from '@/lib/views/panel';
 import { Inspectable } from '@/lib/inspector';
 import { Page } from '@/lib/views/page';
 
@@ -34,7 +35,12 @@ export const ReviewStateControls: React.FC<ReviewStateControlsProps> = observer(
   };
 
   return (
-    <Inspectable name="ReviewStateControls">
+    <Panel 
+      visible={true} 
+      inspectorTitle="ReviewStateControls"
+      helpTitle="Review State Controls"
+      helpContent="* **Load State** - Drag & drop or click to load saved pronunciation review state\n* **Save State** - Download current pronunciation review state\n* **Download Wrong Words** - Get list of words marked as sounding wrong\n* **Reset** - Reset all words to unreviewed or OK state\n* **Review Wrong Words** - Filter to show only words marked as sounding wrong"
+    >
       <div className="action-buttons-panel">
         <div
           className="load-state-button-container"
@@ -66,7 +72,7 @@ export const ReviewStateControls: React.FC<ReviewStateControlsProps> = observer(
           Review Wrong Words
         </ActionButton>
       </div>
-    </Inspectable>
+    </Panel>
   );
 });
 
@@ -79,7 +85,12 @@ interface PronunciationReviewFiltersProps {
 
 export const PronunciationReviewFilters: React.FC<PronunciationReviewFiltersProps> = observer(({ pronunciation }) => {
   return (
-    <Inspectable name="PronunciationReviewFilters">
+    <Panel 
+      visible={true} 
+      inspectorTitle="PronunciationReviewFilters"
+      helpTitle="Review Filters"
+      helpContent="* **Filter text** - sub-string to match against word\n* **Match** - start/end/any position matching\n* **Review state** - filter by unreviewed, wrong, OK, or all words"
+    >
       <div className="pronunciation-filters">
         <div className="filter-panel">
           <div className="filter-controls">
@@ -105,7 +116,7 @@ export const PronunciationReviewFilters: React.FC<PronunciationReviewFiltersProp
           </div>
         </div>
       </div>
-    </Inspectable>
+    </Panel>
   );
 });
 
@@ -118,7 +129,12 @@ interface PronunciationReviewStateControlsProps {
 
 export const PronunciationReviewStateControls: React.FC<PronunciationReviewStateControlsProps> = observer(({ pronunciation }) => {
   return (
-    <Inspectable name="PronunciationReviewStateControls">
+    <Panel 
+      visible={true} 
+      inspectorTitle="PronunciationReviewStateControls"
+      helpTitle="Review Current Word"
+      helpContent="* **Sounds Wrong** - mark current word as sounding wrong\n* **Sounds OK** - mark current word as sounding correct\n* **Auto** - automatically move through words\n* **Speed** - adjust autoplay interval"
+    >
       <div className="pronunciation-review-panel">
         <div className="current-review-word">
           <span
@@ -163,7 +179,7 @@ export const PronunciationReviewStateControls: React.FC<PronunciationReviewState
           </div>
         </div>
       </div>
-    </Inspectable>
+    </Panel>
   );
 });
 
@@ -178,7 +194,12 @@ export const PronunciationReviewWordChoice: React.FC<PronunciationReviewWordChoi
   const keyboardHint = "Use ← → arrow keys to navigate, Alt+→ to start autoplay, space bar to toggle sounds wrong";
 
   return (
-    <Inspectable name="PronunciationReviewWordChoice">
+    <Panel 
+      visible={false} 
+      inspectorTitle="PronunciationReviewWordChoice"
+      helpTitle="Review Word List"
+      helpContent="* Click on a word to review that word\n* Keyboard shortcuts:\n  * ← go to previous word\n  * → go to next word\n  * Alt-→ start autoplay\n  * Space bar to toggle sounds wrong"
+    >
       <div className="pronunciation-word-choice">
         {/* Filtered Words */}
         <div className="filtered-words">
@@ -214,7 +235,7 @@ export const PronunciationReviewWordChoice: React.FC<PronunciationReviewWordChoi
           </div>
         </div>
       </div>
-    </Inspectable>
+    </Panel>
   );
 });
 

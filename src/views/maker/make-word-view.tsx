@@ -8,7 +8,7 @@ import { PositionView, PositionPlaceholder } from '@/views/Position';
 import { ActionButton } from '@/lib/views/action-button';
 import { ButtonAction } from '@/lib/models/actions';
 import { MakerCurrentWord } from '@/models/maker/maker-current-word';
-import { Inspectable } from '@/lib/inspector';
+import { Panel } from '@/lib/views/panel';
 
 interface MakeWordViewProps {
   word: Word | null;
@@ -107,7 +107,12 @@ export const MakeWordView: React.FC<MakeWordViewProps> = observer(({
   }
 
   return (
-    <Inspectable name="MakeWordView">
+    <Panel 
+      visible={false} 
+      inspectorTitle="MakeWordView"
+      helpTitle="Word Builder"
+      helpContent="* Click on letters to replace or delete them\n* Click on '+' to insert new letters\n* **New Word** - start building a new word\n* **✕** - delete this word from your collection"
+    >
       <div className="make-word-row">
         <div className={clsx('word-display', 'touch-interactive-area', backgroundClass)}>
           {/* Render alternating sequence of positions and letters */}
@@ -139,6 +144,6 @@ export const MakeWordView: React.FC<MakeWordViewProps> = observer(({
           </div>
         )}
       </div>
-    </Inspectable>
+    </Panel>
   );
 });

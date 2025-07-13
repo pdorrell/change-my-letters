@@ -13,7 +13,6 @@ import { ValueCheckbox } from '@/lib/views/value-model-views';
 import { Panel } from '@/lib/views/panel';
 import { Inspectable } from '@/lib/inspector';
 import { Page } from '@/lib/views/page';
-import { Help } from '@/lib/components/help';
 
 /**
  * View component for displaying the word changer
@@ -80,26 +79,23 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordI
   }
 
   return (
-    <Inspectable name="WordChangerView">
-      <Panel>
-        <Help title="Current Word">
-          {`
-          * Click on letter to replace or delete
-          * Click on any "+" to insert new letter at that position
-          `}
-        </Help>
-        <div className={clsx('word-display', 'touch-interactive-area', { 'previously-visited': wordInteraction.word.previouslyVisited })}>
-          {/* Render alternating sequence of positions and letters for the word changer */}
-          { range(maxLength).map(index => (
-            <React.Fragment key={`position--${index}`}>
-              { getPositionView(index) }
-              { getLetterView(index) }
-            </React.Fragment>
-          ))}
-          <PositionPlaceholder/>
-        </div>
-      </Panel>
-    </Inspectable>
+    <Panel 
+      visible={false} 
+      inspectorTitle="WordChangerView"
+      helpTitle="Current Word"
+      helpContent="* Click on letter to replace or delete\n* Click on any '+' to insert new letter at that position"
+    >
+      <div className={clsx('word-display', 'touch-interactive-area', { 'previously-visited': wordInteraction.word.previouslyVisited })}>
+        {/* Render alternating sequence of positions and letters for the word changer */}
+        { range(maxLength).map(index => (
+          <React.Fragment key={`position--${index}`}>
+            { getPositionView(index) }
+            { getLetterView(index) }
+          </React.Fragment>
+        ))}
+        <PositionPlaceholder/>
+      </div>
+    </Panel>
   );
 });
 
@@ -111,21 +107,19 @@ interface WordChangerControlsProps { wordChanger: WordChanger; }
 
 export const WordChangerControls: React.FC<WordChangerControlsProps> = observer(({ wordChanger }) => {
   return (
-    <Inspectable name="WordChangerControls">
+    <Panel 
+      visible={false} 
+      inspectorTitle="WordChangerControls"
+      helpTitle="Word Changer Controls"
+      helpContent="* **Undo** undo last change\n* **Redo** redo last undo\n* **Say** pronounce current word\n* **Say Immediately** pronounce new word when the word is changed"
+    >
       <div className="word-changer-controls">
-        <Help title="Word Changer Controls">
-          {`
-          * **Undo** undo last change
-          * **Redo** redo last undo
-          * **Say** pronounce current word
-          * **Say Immediately** pronounce new word when the word is changed`}
-        </Help>
         <ActionButton action={wordChanger.undoAction}>Undo</ActionButton>
         <ActionButton action={wordChanger.redoAction}>Redo</ActionButton>
         <ActionButton action={wordChanger.sayAction}>Say</ActionButton>
         <ValueCheckbox value={wordChanger.sayImmediately} />
       </div>
-    </Inspectable>
+    </Panel>
   );
 });
 

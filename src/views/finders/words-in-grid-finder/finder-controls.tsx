@@ -4,8 +4,7 @@ import clsx from 'clsx';
 import { WordsInGridFinder } from '@/models/finders/words-in-grid-finder/words-in-grid-finder';
 import { ActionButton } from '@/lib/views/action-button';
 import { DifficultyType } from '@/models/finders/words-in-grid-finder/types';
-import { Inspectable } from '@/lib/inspector';
-import { Help } from '@/lib/components/help';
+import { Panel } from '@/lib/views/panel';
 
 interface FinderControlsProps {
   finder: WordsInGridFinder;
@@ -16,11 +15,13 @@ export const FinderControls: React.FC<FinderControlsProps> = observer(({ finder 
   const settingsDisabled = !finder.canChangeSettings;
 
   return (
-    <Inspectable name="FinderControls">
+    <Panel 
+      visible={false} 
+      inspectorTitle="FinderControls"
+      helpTitle="Grid Game Controls"
+      helpContent="Use these controls to configure the word grid game. Difficulty affects the letters in the grid: Easy uses random letters while Hard includes letters from the target words. 'Forwards only' determines if words can appear backwards. 'Auto' automatically advances to the next word when one is found correctly. The New button generates a fresh set of words and grid."
+    >
       <div className="word-changer-controls">
-        <Help title="Grid Game Controls">
-          Use these controls to configure the word grid game. Difficulty affects the letters in the grid: Easy uses random letters while Hard includes letters from the target words. 'Forwards only' determines if words can appear backwards. 'Auto' automatically advances to the next word when one is found correctly. The New button generates a fresh set of words and grid.
-        </Help>
         <div className={clsx('value-radio-buttons-container', { disabled: settingsDisabled })} title={finder.difficulty.tooltip}>
           <span className="radio-label">{finder.difficulty.label}</span>
           {difficultyOptions.map((option) => (
@@ -58,6 +59,6 @@ export const FinderControls: React.FC<FinderControlsProps> = observer(({ finder 
           <ActionButton action={finder.newAction}>New</ActionButton>
         </div>
       </div>
-    </Inspectable>
+    </Panel>
   );
 });

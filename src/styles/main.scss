@@ -439,6 +439,14 @@ button {
   box-sizing: border-box; // Include padding in width calculation
   background-color: transparent; // Transparent background
   position: relative; // For help button positioning
+  
+  // Visible panel variant with light gray background and border
+  &.panel--visible {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin-bottom: 1.25em;
+  }
 }
 
 // Word changer styles

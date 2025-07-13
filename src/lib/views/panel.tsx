@@ -1,18 +1,43 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import clsx from 'clsx';
+import { Inspectable } from '@/lib/inspector';
+import { Help } from '@/lib/components/help';
 
 interface PanelProps {
   children: React.ReactNode;
+  visible?: boolean;
+  inspectorTitle: string;
+  helpTitle?: string;
+  helpContent?: string;
 }
 
 /**
- * Generic panel component with the same layout as word-outer-container
- * but with transparent background and no border
+ * Standardized panel component that provides consistent layout and styling
+ * across the application. All panels fill the width of their container and
+ * expand vertically to fit their content.
+ * 
+ * Features:
+ * - Transparent or visible (light gray with border) styling
+ * - Integrated Help component support
+ * - Integrated Inspectable component for debugging
+ * - Position relative for proper Help button positioning
  */
-export const Panel: React.FC<PanelProps> = observer(({ children }) => {
+export const Panel: React.FC<PanelProps> = observer(({ 
+  children, 
+  visible = false, 
+  inspectorTitle,
+  helpTitle,
+  helpContent 
+}) => {
   return (
-    <div className="panel">
-      {children}
-    </div>
+    <Inspectable name={inspectorTitle}>
+      <div className={clsx('panel', { 'panel--visible': visible })}>
+        {helpTitle && helpContent && (
+          <Help title={helpTitle}>{helpContent}</Help>
+        )}
+        {children}
+      </div>
+    </Inspectable>
   );
 });

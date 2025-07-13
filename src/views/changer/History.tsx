@@ -3,8 +3,7 @@ import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 import { makeAutoObservable } from 'mobx';
 import { Word } from '@/models/Word';
-import { Inspectable } from '@/lib/inspector';
-import { Help } from '@/lib/components/help';
+import { Panel } from '@/lib/views/panel';
 
 /**
  * Represents a change from one word to another
@@ -155,28 +154,28 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = observer(({ history }) 
   };
 
   return (
-    <Inspectable name="HistoryPanel">
-      <div className={clsx('history-panel', 'touch-interactive-area')}>
-        <Help title="Word History">
-          {`* Click on a word to go back to that word`}
-        </Help>
-        <div className="history-panel-list">
-          {history.entries.map((entry, index) => (
-            <span
-              key={index}
-              className={clsx('history-panel-word', {
-                current: index === history.currentIndex,
-                visited: history.hasVisited(entry.word),
-                unvisited: !history.hasVisited(entry.word)
-              })}
-              onClick={() => handleHistoryClick(index)}
-              title={`Go to word '${entry.wordString}'`}
-            >
-              {entry.wordString}
-            </span>
-          ))}
-        </div>
+    <Panel 
+      visible={true} 
+      inspectorTitle="HistoryPanel"
+      helpTitle="Word History"
+      helpContent="* Click on a word to go back to that word"
+    >
+      <div className={clsx('history-panel-list', 'touch-interactive-area')}>
+        {history.entries.map((entry, index) => (
+          <span
+            key={index}
+            className={clsx('history-panel-word', {
+              current: index === history.currentIndex,
+              visited: history.hasVisited(entry.word),
+              unvisited: !history.hasVisited(entry.word)
+            })}
+            onClick={() => handleHistoryClick(index)}
+            title={`Go to word '${entry.wordString}'`}
+          >
+            {entry.wordString}
+          </span>
+        ))}
       </div>
-    </Inspectable>
+    </Panel>
   );
 });

@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { WordsInRowFinder } from '@/models/finders/words-in-row-finder/words-in-row-finder';
 import { ActionButton } from '@/lib/views/action-button';
 import { DifficultyType } from '@/models/finders/words-in-row-finder/types';
-import { Inspectable } from '@/lib/inspector';
+import { Panel } from '@/lib/views/panel';
 
 interface FinderControlsProps { finder: WordsInRowFinder; }
 
@@ -13,7 +13,12 @@ export const FinderControls: React.FC<FinderControlsProps> = observer(({ finder 
   const settingsDisabled = !finder.canChangeSettings;
 
   return (
-    <Inspectable name="FinderControls">
+    <Panel 
+      visible={false} 
+      inspectorTitle="FinderControls"
+      helpTitle="Row Finder Controls"
+      helpContent="* **Difficulty** - easy (words go left-to-right) or hard (words can go in any direction)\n* **Forwards Only** - restrict to left-to-right words only\n* **Auto** - automatically select next word to find\n* **New** - generate a new letter grid with new words"
+    >
       <div className="word-changer-controls">
       <div className={clsx('value-radio-buttons-container', { disabled: settingsDisabled })} title={finder.difficulty.tooltip}>
         <span className="radio-label">{finder.difficulty.label}</span>
@@ -52,6 +57,6 @@ export const FinderControls: React.FC<FinderControlsProps> = observer(({ finder 
         <ActionButton action={finder.newAction}>New</ActionButton>
       </div>
       </div>
-    </Inspectable>
+    </Panel>
   );
 });

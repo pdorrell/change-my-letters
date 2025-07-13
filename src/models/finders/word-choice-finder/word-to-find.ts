@@ -6,7 +6,6 @@ export type WordToFindState = 'waiting' | 'current' | 'wrong' | 'right';
 interface FinderInterface {
   wordSayer: WordSayerInterface;
   setWordChangerToFind(wordToFind: WordToFind): void;
-  setMessage(message: string): void;
   incrementCorrect(): void;
   incrementTried(): void;
   clearWordChangerToFind(): void;
@@ -40,11 +39,9 @@ export class WordToFind {
 
     if (chosenWord === this.word) {
       this.state = 'right';
-      this.finder.setMessage('Correct 😊');
       this.finder.incrementCorrect();
     } else {
       this.state = 'wrong';
-      this.finder.setMessage('Wrong 😢');
       this.finder.incrementTried();
     }
 

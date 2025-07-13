@@ -4,8 +4,8 @@ import clsx from 'clsx';
 import { PronunciationActivity } from '@/models/pronunciation/pronunciation-activity';
 import { ActionButton } from '@/lib/views/action-button';
 import { FilterControls } from '@/lib/views/filter-controls';
+import { Panel } from '@/lib/views/panel';
 import { Inspectable } from '@/lib/inspector';
-import { Help } from '@/lib/components/help';
 import { Page } from '@/lib/views/page';
 
 /**
@@ -17,18 +17,13 @@ interface PronunciationActivityControlPanelProps {
 
 export const PronunciationActivityControlPanel: React.FC<PronunciationActivityControlPanelProps> = observer(({ pronunciation }) => {
   return (
-    <Inspectable name="PronunciationActivityControlPanel">
+    <Panel 
+      visible={true} 
+      inspectorTitle="PronunciationActivityControlPanel"
+      helpTitle="Filter Controls & Auto"
+      helpContent="* **Filter text** sub-string to match against word\n* **Match:**\n  * **start** match sub-string to start of word\n  * **end** match sub-string to end of word\n  * **any** match sub-string anywhere in word\n* **Auto** start auto-playing the words"
+    >
       <div className="pronunciation-control-panel">
-        <Help title="Filter Controls & Auto">
-          {`
-          * **Filter text** sub-string to match against word
-          * **Match:**
-            * **start** match sub-string to start of word
-            * **end** match sub-string to end of word
-            * **any** match sub-string anywhere in word
-          * **Auto** start auto-playing the words
-`}
-        </Help>
         <div className="filter-panel">
           <FilterControls filter={pronunciation.filter} />
         </div>
@@ -39,7 +34,7 @@ export const PronunciationActivityControlPanel: React.FC<PronunciationActivityCo
           </ActionButton>
         </div>
       </div>
-    </Inspectable>
+    </Panel>
   );
 });
 
@@ -55,18 +50,13 @@ export const PronunciationActivityWordChoice: React.FC<PronunciationActivityWord
   const keyboardHint = "Use ← → arrow keys to navigate, Alt+→ to start autoplay";
 
   return (
-    <Inspectable name="PronunciationActivityWordChoice">
+    <Panel 
+      visible={false} 
+      inspectorTitle="PronunciationActivityWordChoice"
+      helpTitle="Filtered Word List"
+      helpContent="* Click on a word to pronounce that word\n* Click on '...' to double maximum number of filtered words displayed\n* Click on '↻' to reset maximum to 20\n* Keyboard shortcuts:\n  * ← go to previous word\n  * → go to next word\n  * Alt-→ start autoplay"
+    >
       <div className="pronunciation-word-choice">
-        <Help title="Filtered Word List">{`
-        * Click on a word to pronounce that word
-        * Click on "..." to double maximum number of filtered words displayed
-        * Click on "↻" to reset maximum to 20
-        * Keyboard shortcuts:
-          * ← go to previous word
-          * → go to next word
-          * Alt-→ start autoplay
-`}
-        </Help>
         {/* Filtered Words */}
         <div className="filtered-words">
           <div className="words-header">
@@ -110,7 +100,7 @@ export const PronunciationActivityWordChoice: React.FC<PronunciationActivityWord
           </div>
         </div>
       </div>
-    </Inspectable>
+    </Panel>
   );
 });
 
