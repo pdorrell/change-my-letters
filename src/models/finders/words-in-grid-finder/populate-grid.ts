@@ -9,9 +9,9 @@ interface WordValidation {
 }
 
 export function selectWordsForGrid(words: string[]): string[] {
-  // Adjust target count based on available words
-  const availableWords = words.filter(word => word.length >= 3);
-  const targetCount = Math.min(WORDS_TO_FIND_COUNT, availableWords.length);
+  // Filter out words that are too short (< 3 letters)
+  const validWords = words.filter(word => word.length >= 3);
+  const targetCount = Math.min(WORDS_TO_FIND_COUNT, validWords.length);
 
   // If we don't have enough words, just return what we can
   if (targetCount < 3) {
@@ -21,7 +21,7 @@ export function selectWordsForGrid(words: string[]): string[] {
   const maxAttempts = 10;
 
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-    const result = attemptWordSelection(words, targetCount);
+    const result = attemptWordSelection(validWords, targetCount);
 
     if (result.success) {
       return result.words;
@@ -44,15 +44,9 @@ function attemptWordSelection(words: string[], targetCount: number): { success: 
   const usedLetters = new Set<string>();
   const alphabet = 'abcdefghijklmnopqrstuvwxyz';
 
-  // Keep track of which words we've tried
-  const attemptedIndices = new Set<number>();
-
   while (selectedWords.length < targetCount) {
-    // If we've tried all words, we failed
-    if (attemptedIndices.size >= words.length) {
-      return { success: false, words: [] };
-    }
-
+    // Keep track of which words we've tried for this word selection iteration
+    const attemptedIndices = new Set<number>();
     // Pick a random starting index
     const startIndex = Math.floor(Math.random() * words.length);
 
@@ -83,6 +77,12 @@ function attemptWordSelection(words: string[], targetCount: number): { success: 
     }
 
     if (!foundValidWord) {
+      console.log('attemptWordSelection failed:', {
+        selectedWords,
+        selectedWordsCount: selectedWords.length,
+        inputWordsCount: words.length,
+        targetCount
+      });
       return { success: false, words: [] };
     }
   }
@@ -99,12 +99,26 @@ function validateWordForGrid(
 ): WordValidation {
   // Check minimum length
   if (word.length < 3) {
-    return { isValid: false, reason: 'Word too short' };
+    const reason = 'Word too short';
+    console.log('validateWordForGrid failed:', {
+      word,
+      reason,
+      selectedWords: [...selectedWords],
+      usedLetters: [...usedLetters]
+    });
+    return { isValid: false, reason };
   }
 
   // Check if already selected
   if (selectedWords.includes(word)) {
-    return { isValid: false, reason: 'Already selected' };
+    const reason = 'Already selected';
+    console.log('validateWordForGrid failed:', {
+      word,
+      reason,
+      selectedWords: [...selectedWords],
+      usedLetters: [...usedLetters]
+    });
+    return { isValid: false, reason };
   }
 
   // Check for substring/superstring conflicts
@@ -112,7 +126,15 @@ function validateWordForGrid(
   for (const selectedWord of selectedWords) {
     const selectedLower = selectedWord.toLowerCase();
     if (wordLower.includes(selectedLower) || selectedLower.includes(wordLower)) {
-      return { isValid: false, reason: 'Substring conflict' };
+      const reason = 'Substring conflict';
+      console.log('validateWordForGrid failed:', {
+        word,
+        reason,
+        conflictsWith: selectedWord,
+        selectedWords: [...selectedWords],
+        usedLetters: [...usedLetters]
+      });
+      return { isValid: false, reason };
     }
   }
 
@@ -122,7 +144,16 @@ function validateWordForGrid(
     wordLower.split('').forEach(letter => newUsedLetters.add(letter));
 
     if (newUsedLetters.size >= alphabet.length) {
-      return { isValid: false, reason: 'Would use all letters' };
+      const reason = 'Would use all letters';
+      console.log('validateWordForGrid failed:', {
+        word,
+        reason,
+        selectedWords: [...selectedWords],
+        usedLetters: [...usedLetters],
+        newUsedLettersCount: newUsedLetters.size,
+        alphabetLength: alphabet.length
+      });
+      return { isValid: false, reason };
     }
   }
 
