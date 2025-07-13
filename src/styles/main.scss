@@ -354,9 +354,8 @@ button {
       }
     }
     
-    // Fourth item: version display (justified to the right)
+    // Fourth item: version display
     .version-display {
-      margin-left: auto; // Push to the right
       font-size: 0.8em;
       color: #777;
       white-space: nowrap; // Prevent wrapping
@@ -371,6 +370,14 @@ button {
     padding: 0 0.63em;
     overflow: visible; // Allow menus to extend beyond container
   }
+}
+
+// GroupRight layout component
+.group-right {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-left: auto;
 }
 
 // Generic Page component for consistent layout
@@ -1181,7 +1188,6 @@ button {
   }
   
   .finder-auto-checkbox {
-    margin-left: auto;
     display: flex;
     align-items: center;
     

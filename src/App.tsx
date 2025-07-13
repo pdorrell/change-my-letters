@@ -9,6 +9,7 @@ import { FindersPage } from '@/views/finders/finders-page';
 import { MakerPage } from '@/views/maker/maker-page';
 import { InspectorToggle } from '@/lib/views/inspector-toggle';
 import { HelpToggle } from '@/lib/views/help-toggle';
+import { GroupRight } from '@/lib/views/group-right';
 import { inspectorStore } from '@/lib/inspector-store';
 import { Inspectable } from '@/lib/inspector';
 
@@ -79,9 +80,11 @@ const AppHeader: React.FC<AppHeaderProps> = observer(({ appState }) => {
         <h1>Change My Letters</h1>
         <PageNavigation appState={appState} />
         <ResetButton appState={appState} />
-        <AppVersion version={appState.version} />
-        <InspectorToggle />
-        <HelpToggle />
+        <GroupRight>
+          <AppVersion version={appState.version} />
+          <InspectorToggle />
+          <HelpToggle />
+        </GroupRight>
       </header>
     </Inspectable>
   );

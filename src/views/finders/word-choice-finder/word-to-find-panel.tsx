@@ -5,6 +5,7 @@ import { WordChoiceFinder } from '@/models/finders/word-choice-finder/word-choic
 import { WordToFindView } from './word-to-find-view';
 import { ValueCheckbox } from '@/lib/views/value-model-views';
 import { Panel } from '@/lib/views/panel';
+import { GroupRight } from '@/lib/views/group-right';
 
 interface WordToFindPanelProps { finder: WordChoiceFinder; }
 
@@ -22,9 +23,9 @@ export const WordToFindPanel: React.FC<WordToFindPanelProps> = observer(({ finde
           <WordToFindView key={index} wordToFind={wordToFind} />
         ))}
       </div>
-      <div className="finder-auto-checkbox">
+      <GroupRight>
         <ValueCheckbox value={finder.auto} />
-      </div>
+      </GroupRight>
     </Panel>
   );
 });

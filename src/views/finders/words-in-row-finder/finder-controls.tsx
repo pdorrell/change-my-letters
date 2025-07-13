@@ -5,6 +5,7 @@ import { WordsInRowFinder } from '@/models/finders/words-in-row-finder/words-in-
 import { ActionButton } from '@/lib/views/action-button';
 import { DifficultyType } from '@/models/finders/words-in-row-finder/types';
 import { Panel } from '@/lib/views/panel';
+import { GroupRight } from '@/lib/views/group-right';
 
 interface FinderControlsProps { finder: WordsInRowFinder; }
 
@@ -52,9 +53,9 @@ export const FinderControls: React.FC<FinderControlsProps> = observer(({ finder 
         />
         {finder.auto.label}
       </label>
-      <div style={{ marginLeft: 'auto' }}>
+      <GroupRight>
         <ActionButton action={finder.newAction}>New</ActionButton>
-      </div>
+      </GroupRight>
     </Panel>
   );
 });
