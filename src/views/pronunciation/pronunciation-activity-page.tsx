@@ -5,6 +5,7 @@ import { PronunciationActivity } from '@/models/pronunciation/pronunciation-acti
 import { ActionButton } from '@/lib/views/action-button';
 import { FilterControls } from '@/lib/views/filter-controls';
 import { Panel } from '@/lib/views/panel';
+import { GroupRight } from '@/lib/views/group-right';
 import { Inspectable } from '@/lib/inspector';
 import { Page } from '@/lib/views/page';
 
@@ -25,11 +26,11 @@ export const PronunciationActivityControlPanel: React.FC<PronunciationActivityCo
     >
       <FilterControls filter={pronunciation.filter} />
 
-      <div className="auto-controls">
+      <GroupRight>
         <ActionButton action={pronunciation.autoplayAction}>
           {pronunciation.autoplaying ? 'Stop' : 'Auto'}
         </ActionButton>
-      </div>
+      </GroupRight>
     </Panel>
   );
 });

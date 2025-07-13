@@ -156,6 +156,7 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = observer(({ history }) 
   return (
     <Panel 
       visible={true} 
+      left={true}
       inspectorTitle="HistoryPanel"
       helpTitle="Word History"
       helpContent="* Click on a word to go back to that word"

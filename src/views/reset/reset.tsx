@@ -4,6 +4,7 @@ import { Reset } from '@/models/reset/reset';
 import { ActionButton } from '@/lib/views/action-button';
 import { FilterControls } from '@/lib/views/filter-controls';
 import { Panel } from '@/lib/views/panel';
+import { GroupRight } from '@/lib/views/group-right';
 import { Inspectable } from '@/lib/inspector';
 import { Page } from '@/lib/views/page';
 
@@ -20,12 +21,10 @@ export const ResetControls: React.FC<ResetControlsProps> = observer(({ resetInte
       helpTitle="Reset Controls"
       helpContent="Use these controls to filter and select your new starting word. The filter options let you narrow down words by length and type. The 'Choose Random' button will randomly select a word from the filtered results, which is helpful when you can't decide or want to be surprised."
     >
-      <div className="reset-controls-left">
-        <FilterControls filter={resetInteraction.filter} />
-      </div>
-      <div className="reset-controls-right">
+      <FilterControls filter={resetInteraction.filter} />
+      <GroupRight>
         <ActionButton action={resetInteraction.randomAction}>Choose Random</ActionButton>
-      </div>
+      </GroupRight>
     </Panel>
   );
 });

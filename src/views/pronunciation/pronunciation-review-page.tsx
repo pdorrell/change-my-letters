@@ -5,6 +5,7 @@ import { PronunciationReview } from '@/models/pronunciation/pronunciation-review
 import { ActionButton } from '@/lib/views/action-button';
 import { FilterControls } from '@/lib/views/filter-controls';
 import { Panel } from '@/lib/views/panel';
+import { GroupRight } from '@/lib/views/group-right';
 import { Inspectable } from '@/lib/inspector';
 import { Page } from '@/lib/views/page';
 
@@ -151,7 +152,7 @@ export const PronunciationReviewStateControls: React.FC<PronunciationReviewState
         </ActionButton>
       </div>
 
-      <div className="autoplay-controls">
+      <GroupRight>
         <ActionButton action={pronunciation.autoplayAction}>
           {pronunciation.autoplaying ? 'Stop' : 'Auto'}
         </ActionButton>
@@ -170,7 +171,7 @@ export const PronunciationReviewStateControls: React.FC<PronunciationReviewState
           <option value={400}>400ms</option>
           <option value={500}>500ms</option>
         </select>
-      </div>
+      </GroupRight>
     </Panel>
   );
 });

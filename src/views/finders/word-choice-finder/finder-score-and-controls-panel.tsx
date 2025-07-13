@@ -4,6 +4,7 @@ import { WordChoiceFinder } from '@/models/finders/word-choice-finder/word-choic
 import { FinderScoreView } from './finder-score-view';
 import { FinderControls } from './finder-controls';
 import { Panel } from '@/lib/views/panel';
+import { GroupRight } from '@/lib/views/group-right';
 
 interface FinderScoreAndControlsPanelProps { finder: WordChoiceFinder; }
 
@@ -16,7 +17,9 @@ export const FinderScoreAndControlsPanel: React.FC<FinderScoreAndControlsPanelPr
       helpContent="* **Score** - shows your correct/total attempts\n* **Retry** - start over with the same words\n* **New** - get a new set of words to find"
     >
       <FinderScoreView finder={finder} />
-      <FinderControls finder={finder} />
+      <GroupRight>
+        <FinderControls finder={finder} />
+      </GroupRight>
     </Panel>
   );
 });
