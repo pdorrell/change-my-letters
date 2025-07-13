@@ -1,11 +1,12 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Maker } from '@/models/maker/maker';
-import { MakeWordPanel } from './make-word-panel';
+import { MakerWordHistoryPanel } from './maker-word-history-panel';
+import { MakeCurrentWordPanel } from './make-current-word-panel';
+import { MakeNextWordPanel } from './make-next-word-panel';
 import { useScrollOnResize } from '@/hooks/useScrollOnResize';
 import { Page } from '@/lib/views/page';
 import { Inspectable } from '@/lib/inspector';
-import { Help } from '@/lib/components/help';
 
 interface MakerPageProps {
   maker: Maker;
@@ -18,20 +19,16 @@ export const MakerPage: React.FC<MakerPageProps> = observer(({ maker, maxWordLen
   return (
     <Inspectable name="MakerPage">
       <Page>
-        <Help title="Word Maker">{`
-          This is the word maker where you build words from scratch by adding letters one by one. Start by clicking the plus signs to add letters. The current word you're building appears in the middle, your word history is shown above, and the result area below shows completed words. Use the 'New Word' button to start fresh or the delete button to remove completed words.`}
-        </Help>
         <div className="make-page" ref={containerRef}>
         {/* History words */}
         {maker.history.historyWords.length > 0 && (
           <div className="make-history">
             {maker.history.historyWords.map((word, index) => (
-              <MakeWordPanel
+              <MakerWordHistoryPanel
                 key={`history-${index}`}
                 word={word}
                 maxWordLength={maxWordLength}
-                backgroundClass=""
-                showControls={false}
+                showHelp={index === 0}
               />
             ))}
           </div>
@@ -39,34 +36,22 @@ export const MakerPage: React.FC<MakerPageProps> = observer(({ maker, maxWordLen
 
         {/* Current word */}
         <div className="make-current-word">
-          <MakeWordPanel
-            word={maker.currentWord.word}
-            maxWordLength={maxWordLength}
-            backgroundClass={maker.currentWord.backgroundClass}
-            showControls={true}
+          <MakeCurrentWordPanel
             wordInteraction={maker.currentWord}
+            maxWordLength={maxWordLength}
             newWordAction={maker.newWordAction}
           />
         </div>
 
         {/* Result word (always shown) */}
         <div className="make-result-word" ref={bottomElementRef}>
-          {maker.result ? (
-            <MakeWordPanel
-              word={maker.result.word}
-              maxWordLength={maxWordLength}
-              backgroundClass={maker.result.backgroundClass}
-              showControls={maker.result.showDeleteButton}
-              deleteAction={maker.deleteResultAction}
-            />
-          ) : (
-            <MakeWordPanel
-              word={null}
-              maxWordLength={maxWordLength}
-              backgroundClass={maker.resultDisplay.backgroundClass}
-              showControls={false}
-            />
-          )}
+          <MakeNextWordPanel
+            word={maker.result?.word || null}
+            maxWordLength={maxWordLength}
+            backgroundClass={maker.result?.backgroundClass || maker.resultDisplay.backgroundClass}
+            showDeleteButton={maker.result?.showDeleteButton || false}
+            deleteAction={maker.deleteResultAction}
+          />
         </div>
 
       </div>
