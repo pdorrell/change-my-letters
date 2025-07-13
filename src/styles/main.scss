@@ -67,6 +67,7 @@
         position: absolute;
         top: 2px;
         left: 4px;
+        color: #888;
         
         &.copying {
           opacity: 1;
@@ -85,8 +86,12 @@
           background-color: #f0f0f0;
         }
         
-        > .label-text, > .copying-text {
+        > .label-text {
           color: blue;
+        }
+        
+        > .copying-text {
+          color: #888;
         }
       }
     }

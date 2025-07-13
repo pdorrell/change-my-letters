@@ -84,7 +84,7 @@ export const Inspectable: React.FC<InspectableProps> = observer(({ name, lib = f
           {name}
         </span>
         <span className={`copying-text ${isCopying ? 'copying' : ''}`}>
-          Copying
+          Copying...
         </span>
       </button>
       {children}
