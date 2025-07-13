@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
-import { Inspectable } from '@/lib/inspector';
 
 interface GroupRightProps {
   children: React.ReactNode;
@@ -20,10 +19,8 @@ interface GroupRightProps {
  */
 export const GroupRight: React.FC<GroupRightProps> = observer(({ children, className }) => {
   return (
-    <Inspectable name="GroupRight" lib>
-      <div className={clsx('group-right', className)}>
-        {children}
-      </div>
-    </Inspectable>
+    <div className={clsx('group-right', className)}>
+      {children}
+    </div>
   );
 });
