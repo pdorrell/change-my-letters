@@ -15,7 +15,6 @@ export class WordChoiceFinder {
   wordsToFind: WordToFind[];
   wordChangerToFind: WordToFind | null = null;
   wordsToChoose: WordToChoose[];
-  message: string = '';
   correct: number = 0;
   tried: number = 0;
   newWordsCallback?: () => string[];
@@ -121,12 +120,6 @@ export class WordChoiceFinder {
     }
   }
 
-  setMessage(message: string): void {
-    this.message = message;
-    setTimeout(() => {
-      this.message = '';
-    }, 2000);
-  }
 
   incrementCorrect(): void {
     this.correct++;
@@ -142,21 +135,16 @@ export class WordChoiceFinder {
   private async checkFinished(): Promise<void> {
     if (this.finished) {
       if (this.correct === this.wordsToFind.length) {
-        this.setMessage(`Congratulations you got all ${this.wordsToFind.length} words right! 😊😊`);
-
         // Play a random happy word for perfect score
         if (this.emotionalWordSayer) {
           await this.emotionalWordSayer.playRandomWord('happy');
         }
-      } else {
-        this.setMessage(`You got ${this.correct} out of ${this.wordsToFind.length}`);
       }
     }
   }
 
   retry(): void {
     this.wordChangerToFind = null;
-    this.message = '';
     this.correct = 0;
     this.tried = 0;
 
