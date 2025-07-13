@@ -131,47 +131,45 @@ export const PronunciationReviewStateControls: React.FC<PronunciationReviewState
       helpTitle="Review Current Word"
       helpContent="* **Sounds Wrong** - mark current word as sounding wrong\n* **Sounds OK** - mark current word as sounding correct\n* **Auto** - automatically move through words\n* **Speed** - adjust autoplay interval"
     >
-      <div className="current-review-word">
-        <span
-          className={clsx('word-span', {
-            'no-word': !pronunciation.currentWord,
-            'wrong current-review': pronunciation.currentWord?.soundsWrong,
-            'ok current-review': pronunciation.currentWord && !pronunciation.currentWord.soundsWrong
-          })}
+      <span
+        className={clsx('word-span', {
+          'no-word': !pronunciation.currentWord,
+          'wrong current-review': pronunciation.currentWord?.soundsWrong,
+          'ok current-review': pronunciation.currentWord && !pronunciation.currentWord.soundsWrong
+        })}
+      >
+        {pronunciation.currentWord ? pronunciation.currentWord.word : '\u00A0'}
+      </span>
+
+      <div className="review-buttons">
+        <ActionButton action={pronunciation.markSoundsWrongAction}>
+          Sounds Wrong
+        </ActionButton>
+
+        <ActionButton action={pronunciation.markOKAction}>
+          Sounds OK
+        </ActionButton>
+      </div>
+
+      <div className="autoplay-controls">
+        <ActionButton action={pronunciation.autoplayAction}>
+          {pronunciation.autoplaying ? 'Stop' : 'Auto'}
+        </ActionButton>
+
+        <select
+          value={pronunciation.autoPlayWaitMillis}
+          onChange={(e) => {
+            pronunciation.stopAutoplay();
+            pronunciation.setAutoPlayWaitMillis(parseInt(e.target.value));
+          }}
+          className="autoplay-interval-select"
         >
-          {pronunciation.currentWord ? pronunciation.currentWord.word : '\u00A0'}
-        </span>
-
-        <div className="review-buttons">
-          <ActionButton action={pronunciation.markSoundsWrongAction}>
-            Sounds Wrong
-          </ActionButton>
-
-          <ActionButton action={pronunciation.markOKAction}>
-            Sounds OK
-          </ActionButton>
-        </div>
-
-        <div className="autoplay-controls">
-          <ActionButton action={pronunciation.autoplayAction}>
-            {pronunciation.autoplaying ? 'Stop' : 'Auto'}
-          </ActionButton>
-
-          <select
-            value={pronunciation.autoPlayWaitMillis}
-            onChange={(e) => {
-              pronunciation.stopAutoplay();
-              pronunciation.setAutoPlayWaitMillis(parseInt(e.target.value));
-            }}
-            className="autoplay-interval-select"
-          >
-            <option value={100}>100ms</option>
-            <option value={200}>200ms</option>
-            <option value={300}>300ms</option>
-            <option value={400}>400ms</option>
-            <option value={500}>500ms</option>
-          </select>
-        </div>
+          <option value={100}>100ms</option>
+          <option value={200}>200ms</option>
+          <option value={300}>300ms</option>
+          <option value={400}>400ms</option>
+          <option value={500}>500ms</option>
+        </select>
       </div>
     </Panel>
   );

@@ -745,22 +745,15 @@ button {
   }
 }
 
-// Pronunciation review controls
-.pronunciation-review-panel {
-  background-color: #f8f9fa;
-  border: 1px solid #dee2e6;
-  border-radius: 8px;
-  padding: 1.25em;
-  margin-bottom: 1.88em;
-  
-  .current-review-word {
-    display: flex;
-    align-items: center;
-    gap: 1.25em;
-    justify-content: space-between;
-  }
-  
-  .word-span {
+// Pronunciation review controls - now using Panel component
+// Layout for the review controls within the panel
+.panel .word-span + .review-buttons,
+.panel .review-buttons + .autoplay-controls {
+  margin-left: 1.25em;
+}
+
+// Word span styling for pronunciation review controls (not words grid)
+.panel .word-span:not(.words-grid .word-span) {
     font-size: 1.5em;
     font-weight: bold;
     padding: 0.3em 0.4em;
@@ -797,25 +790,26 @@ button {
     &.current-review:not(.ok):not(.wrong) {
       border-color: #000;
     }
-  }
+}
+
+// Review buttons styling for pronunciation
+.review-buttons {
+  display: flex;
+  gap: 0.63em;
+}
+
+// Autoplay controls styling for pronunciation
+.autoplay-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.63em;
   
-  .review-buttons {
-    display: flex;
-    gap: 0.63em;
-  }
-  
-  .autoplay-controls {
-    display: flex;
-    align-items: center;
-    gap: 0.63em;
-    
-    .autoplay-interval-select {
-      padding: 0.25em 0.5em;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 0.88em;
-      min-width: 5em;
-    }
+  .autoplay-interval-select {
+    padding: 0.25em 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.88em;
+    min-width: 5em;
   }
 }
 
