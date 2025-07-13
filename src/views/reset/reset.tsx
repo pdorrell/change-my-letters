@@ -3,9 +3,9 @@ import { observer } from 'mobx-react-lite';
 import { Reset } from '@/models/reset/reset';
 import { ActionButton } from '@/lib/views/action-button';
 import { FilterControls } from '@/lib/views/filter-controls';
+import { Panel } from '@/lib/views/panel';
 import { Inspectable } from '@/lib/inspector';
 import { Page } from '@/lib/views/page';
-import { Help } from '@/lib/components/help';
 
 /**
  * Controls component for Reset page
@@ -14,11 +14,13 @@ interface ResetControlsProps { resetInteraction: Reset; }
 
 export const ResetControls: React.FC<ResetControlsProps> = observer(({ resetInteraction }) => {
   return (
-    <Inspectable name="ResetControls">
+    <Panel 
+      visible={true} 
+      inspectorTitle="ResetControls"
+      helpTitle="Reset Controls"
+      helpContent="Use these controls to filter and select your new starting word. The filter options let you narrow down words by length and type. The 'Choose Random' button will randomly select a word from the filtered results, which is helpful when you can't decide or want to be surprised."
+    >
       <div className="reset-controls">
-        <Help title="Reset Controls">
-          Use these controls to filter and select your new starting word. The filter options let you narrow down words by length and type. The 'Choose Random' button will randomly select a word from the filtered results, which is helpful when you can't decide or want to be surprised.
-        </Help>
         <div className="reset-controls-left">
           <FilterControls filter={resetInteraction.filter} />
         </div>
@@ -26,7 +28,7 @@ export const ResetControls: React.FC<ResetControlsProps> = observer(({ resetInte
           <ActionButton action={resetInteraction.randomAction}>Choose Random</ActionButton>
         </div>
       </div>
-    </Inspectable>
+    </Panel>
   );
 });
 
@@ -48,11 +50,13 @@ export const ResetWordChoice: React.FC<ResetWordChoiceProps> = observer(({ reset
   const filteredWords = resetInteraction.filteredWords;
 
   return (
-    <Inspectable name="ResetWordChoice">
+    <Panel 
+      visible={false} 
+      inspectorTitle="ResetWordChoice"
+      helpTitle="Word Selection"
+      helpContent="This is your word selection area. All available words that match your filter criteria are displayed here. Click on any word to choose it as your new starting word. This will reset the current page (Changer or Maker) and take you back to begin working with your selected word."
+    >
       <div className="reset-word-choice">
-        <Help title="Word Selection">
-          This is your word selection area. All available words that match your filter criteria are displayed here. Click on any word to choose it as your new starting word. This will reset the current page (Changer or Maker) and take you back to begin working with your selected word.
-        </Help>
         {filteredWords.length > 0 ? (
           <p>
             {filteredWords.map((word, index) => (
@@ -74,7 +78,7 @@ export const ResetWordChoice: React.FC<ResetWordChoiceProps> = observer(({ reset
           </p>
         )}
       </div>
-    </Inspectable>
+    </Panel>
   );
 });
 
