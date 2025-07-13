@@ -12,12 +12,12 @@ import { Page } from '@/lib/views/page';
 /**
  * Review mode action controls component for Pronunciation page
  */
-interface ReviewStateControlsProps {
+interface ReviewStateLoadAndSaveControlsProps {
   pronunciation: PronunciationReview;
   reviewStateFileLoader: (file: File) => void;
 }
 
-export const ReviewStateControls: React.FC<ReviewStateControlsProps> = observer(({ pronunciation, reviewStateFileLoader }) => {
+export const ReviewStateLoadAndSaveControls: React.FC<ReviewStateLoadAndSaveControlsProps> = observer(({ pronunciation, reviewStateFileLoader }) => {
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -38,7 +38,7 @@ export const ReviewStateControls: React.FC<ReviewStateControlsProps> = observer(
   return (
     <Panel
       visible={true}
-      inspectorTitle="ReviewStateControls"
+      inspectorTitle="ReviewStateLoadAndSaveControls"
       helpTitle="Review State Controls"
       helpContent="* **Load State** - Drag & drop or click to load saved pronunciation review state\n* **Save State** - Download current pronunciation review state\n* **Download Wrong Words** - Get list of words marked as sounding wrong\n* **Reset** - Reset all words to unreviewed or OK state\n* **Review Wrong Words** - Filter to show only words marked as sounding wrong"
     >
@@ -288,7 +288,7 @@ export const PronunciationReviewPage: React.FC<PronunciationReviewPageProps> = o
     <Inspectable name="PronunciationReviewPage">
       <Page>
         <div className={clsx('pronunciation-container')}>
-          <ReviewStateControls
+          <ReviewStateLoadAndSaveControls
             pronunciation={pronunciation}
             reviewStateFileLoader={(file: File) => pronunciation.loadReviewStateFromFile(file)}
           />

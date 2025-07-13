@@ -5,7 +5,7 @@ import { Page } from '@/lib/views/page';
 import { WordChoiceFinder } from '@/models/finders/word-choice-finder/word-choice-finder';
 import { WordToChoosePanel } from './word-to-choose-panel';
 import { WordToFindPanel } from './word-to-find-panel';
-import { FinderScoreAndControlsPanel } from './finder-score-and-controls-panel';
+import { FinderScoreAndControls } from './finder-score-and-controls';
 import { ConfirmationView } from '@/lib/views/confirmation-view';
 
 interface WordChoiceFinderPageProps { wordChoiceFinder: WordChoiceFinder; }
@@ -17,7 +17,7 @@ export const WordChoiceFinderPage: React.FC<WordChoiceFinderPageProps> = observe
         <>
           <WordToChoosePanel finder={wordChoiceFinder} />
           <WordToFindPanel finder={wordChoiceFinder} />
-          <FinderScoreAndControlsPanel finder={wordChoiceFinder} />
+          <FinderScoreAndControls finder={wordChoiceFinder} />
           <ConfirmationView confirmationModel={wordChoiceFinder.confirmation}
           />
         </>

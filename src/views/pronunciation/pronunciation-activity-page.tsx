@@ -12,15 +12,15 @@ import { Page } from '@/lib/views/page';
 /**
  * Activity mode control panel component with filters on left and Auto button on right
  */
-interface PronunciationActivityControlPanelProps {
+interface PronunciationActivityControlsProps {
   pronunciation: PronunciationActivity;
 }
 
-export const PronunciationActivityControlPanel: React.FC<PronunciationActivityControlPanelProps> = observer(({ pronunciation }) => {
+export const PronunciationActivityControls: React.FC<PronunciationActivityControlsProps> = observer(({ pronunciation }) => {
   return (
     <Panel
       visible={true}
-      inspectorTitle="PronunciationActivityControlPanel"
+      inspectorTitle="PronunciationActivityControls"
       helpTitle="Filter Controls & Auto"
       helpContent="* **Filter text** sub-string to match against word\n* **Match:**\n  * **start** match sub-string to start of word\n  * **end** match sub-string to end of word\n  * **any** match sub-string anywhere in word\n* **Auto** start auto-playing the words"
     >
@@ -149,7 +149,7 @@ export const PronunciationActivityPage: React.FC<PronunciationActivityPageProps>
     <Inspectable name="PronunciationActivityPage">
       <Page>
         <div className={clsx('pronunciation-container', 'activity-mode')}>
-          <PronunciationActivityControlPanel pronunciation={pronunciation} />
+          <PronunciationActivityControls pronunciation={pronunciation} />
           <PronunciationActivityWordChoice pronunciation={pronunciation} />
         </div>
       </Page>

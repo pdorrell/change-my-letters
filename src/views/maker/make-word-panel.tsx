@@ -10,7 +10,7 @@ import { ButtonAction } from '@/lib/models/actions';
 import { MakerCurrentWord } from '@/models/maker/maker-current-word';
 import { Panel } from '@/lib/views/panel';
 
-interface MakeWordViewProps {
+interface MakeWordPanelProps {
   word: Word | null;
   maxWordLength: number;
   backgroundClass: string;
@@ -20,7 +20,7 @@ interface MakeWordViewProps {
   deleteAction?: ButtonAction;
 }
 
-export const MakeWordView: React.FC<MakeWordViewProps> = observer(({
+export const MakeWordPanel: React.FC<MakeWordPanelProps> = observer(({
   word,
   maxWordLength,
   backgroundClass,
@@ -110,7 +110,7 @@ export const MakeWordView: React.FC<MakeWordViewProps> = observer(({
     <Panel
       visible={false}
       left={true}
-      inspectorTitle="MakeWordView"
+      inspectorTitle="MakeWordPanel"
       helpTitle="Word Builder"
       helpContent="* Click on letters to replace or delete them\n* Click on '+' to insert new letters\n* **New Word** - start building a new word\n* **✕** - delete this word from your collection"
     >

@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Maker } from '@/models/maker/maker';
-import { MakeWordView } from './make-word-view';
+import { MakeWordPanel } from './make-word-panel';
 import { useScrollOnResize } from '@/hooks/useScrollOnResize';
 import { Page } from '@/lib/views/page';
 import { Inspectable } from '@/lib/inspector';
@@ -26,7 +26,7 @@ export const MakerPage: React.FC<MakerPageProps> = observer(({ maker, maxWordLen
         {maker.history.historyWords.length > 0 && (
           <div className="make-history">
             {maker.history.historyWords.map((word, index) => (
-              <MakeWordView
+              <MakeWordPanel
                 key={`history-${index}`}
                 word={word}
                 maxWordLength={maxWordLength}
@@ -39,7 +39,7 @@ export const MakerPage: React.FC<MakerPageProps> = observer(({ maker, maxWordLen
 
         {/* Current word */}
         <div className="make-current-word">
-          <MakeWordView
+          <MakeWordPanel
             word={maker.currentWord.word}
             maxWordLength={maxWordLength}
             backgroundClass={maker.currentWord.backgroundClass}
@@ -52,7 +52,7 @@ export const MakerPage: React.FC<MakerPageProps> = observer(({ maker, maxWordLen
         {/* Result word (always shown) */}
         <div className="make-result-word" ref={bottomElementRef}>
           {maker.result ? (
-            <MakeWordView
+            <MakeWordPanel
               word={maker.result.word}
               maxWordLength={maxWordLength}
               backgroundClass={maker.result.backgroundClass}
@@ -60,7 +60,7 @@ export const MakerPage: React.FC<MakerPageProps> = observer(({ maker, maxWordLen
               deleteAction={maker.deleteResultAction}
             />
           ) : (
-            <MakeWordView
+            <MakeWordPanel
               word={null}
               maxWordLength={maxWordLength}
               backgroundClass={maker.resultDisplay.backgroundClass}

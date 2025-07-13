@@ -1,12 +1,12 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { WordChangerView } from '@/views/changer/word-changer';
+import { WordChangerPanel } from '@/views/changer/word-changer';
 import { WordInteraction } from '@/models/interaction/word';
 import { WordChanger } from '@/models/changer/word-changer';
 import { createTestWordChanger } from '@/tests/utils/test-app-builder';
 import { createTestWordGraph, testWordLists } from '@/tests/utils/test-word-graph-builder';
 
-describe('WordChangerView', () => {
+describe('WordChangerPanel', () => {
   let wordChanger: WordChanger;
   let wordInteraction: WordInteraction;
 
@@ -17,7 +17,7 @@ describe('WordChangerView', () => {
   });
 
   it('renders the word changer with letters and positions', () => {
-    const { container } = render(<WordChangerView wordInteraction={wordInteraction} maxWordLength={10} />);
+    const { container } = render(<WordChangerPanel wordInteraction={wordInteraction} maxWordLength={10} />);
 
     // Get all letter containers (LetterView components)
     const letterViews = container.querySelectorAll('.letter-container');
@@ -34,7 +34,7 @@ describe('WordChangerView', () => {
   // previouslyVisited has been removed from WordInteraction
 
   it('alternates positions and letters correctly', () => {
-    const { container } = render(<WordChangerView wordInteraction={wordInteraction} maxWordLength={10} />);
+    const { container } = render(<WordChangerPanel wordInteraction={wordInteraction} maxWordLength={10} />);
 
     // Get all children of the word display container
     const displayContainers = container.querySelectorAll('.word-display > *');
@@ -50,7 +50,7 @@ describe('WordChangerView', () => {
   });
 
   it('renders the word changer properly', () => {
-    const { container } = render(<WordChangerView wordInteraction={wordInteraction} maxWordLength={10} />);
+    const { container } = render(<WordChangerPanel wordInteraction={wordInteraction} maxWordLength={10} />);
 
     // Get all letter containers
     const letterViews = container.querySelectorAll('.letter-container');
@@ -71,7 +71,7 @@ describe('WordChangerView', () => {
     const batWord = wordGraph.getRequiredWord('bat');
     wordChanger.wordInteraction.updateWord(batWord);
 
-    const { container } = render(<WordChangerView wordInteraction={wordChanger.wordInteraction} maxWordLength={10} />);
+    const { container } = render(<WordChangerPanel wordInteraction={wordChanger.wordInteraction} maxWordLength={10} />);
 
     // Check that it renders all 3 letters of 'bat'
     const letterViews = container.querySelectorAll('.letter-container');

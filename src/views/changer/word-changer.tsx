@@ -17,9 +17,9 @@ import { Page } from '@/lib/views/page';
 /**
  * View component for displaying the word changer
  */
-interface WordChangerViewProps { wordInteraction: WordInteraction; maxWordLength?: number; }
+interface WordChangerPanelProps { wordInteraction: WordInteraction; maxWordLength?: number; }
 
-export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordInteraction, maxWordLength }) => {
+export const WordChangerPanel: React.FC<WordChangerPanelProps> = observer(({ wordInteraction, maxWordLength }) => {
 
   // Add a document-wide click handler to close menus when clicking outside
   React.useEffect(() => {
@@ -81,7 +81,7 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordI
   return (
     <Panel
       visible={false}
-      inspectorTitle="WordChangerView"
+      inspectorTitle="WordChangerPanel"
       helpTitle="Current Word"
       helpContent="* Click on letter to replace or delete\n* Click on any '+' to insert new letter at that position"
     >
@@ -133,7 +133,7 @@ export const WordChangerPage: React.FC<WordChangerPageProps> = observer(({ wordC
     <Inspectable name="WordChangerPage">
       <Page>
         <WordChangerControls wordChanger={wordChanger} />
-        <WordChangerView wordInteraction={wordChanger.wordInteraction} maxWordLength={maxWordLength} />
+        <WordChangerPanel wordInteraction={wordChanger.wordInteraction} maxWordLength={maxWordLength} />
         <HistoryPanel history={wordChanger.history} />
       </Page>
     </Inspectable>

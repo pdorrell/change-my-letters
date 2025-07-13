@@ -3,7 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { act } from 'react';
 import { runInAction } from 'mobx';
 import { PronunciationActivityPage } from '@/views/pronunciation/pronunciation-activity-page';
-import { PronunciationReviewPage, ReviewStateControls } from '@/views/pronunciation/pronunciation-review-page';
+import { PronunciationReviewPage, ReviewStateLoadAndSaveControls } from '@/views/pronunciation/pronunciation-review-page';
 import { PronunciationActivity } from '@/models/pronunciation/pronunciation-activity';
 import { PronunciationReview } from '@/models/pronunciation/pronunciation-review';
 import { ReviewStateFilterOption } from '@/models/pronunciation/review-state-filter-option';
@@ -586,7 +586,7 @@ describe.skip('Pronunciation Pages', () => {
   });
 });
 
-describe('ReviewStateControls', () => {
+describe('ReviewStateLoadAndSaveControls', () => {
   let pronunciation: Pronunciation;
   let wordSayer: WordSayer;
   let audioFilePlayer: AudioFilePlayerTestDouble;
@@ -612,7 +612,7 @@ describe('ReviewStateControls', () => {
   describe('Drag and Drop', () => {
     it('handles drag over event', () => {
       render(
-        <ReviewStateControls
+        <ReviewStateLoadAndSaveControls
           pronunciation={pronunciation}
           reviewStateFileLoader={reviewStateFileLoader}
         />
@@ -635,7 +635,7 @@ describe('ReviewStateControls', () => {
 
     it('calls reviewStateFileLoader with correct file on drop', () => {
       render(
-        <ReviewStateControls
+        <ReviewStateLoadAndSaveControls
           pronunciation={pronunciation}
           reviewStateFileLoader={reviewStateFileLoader}
         />
@@ -663,7 +663,7 @@ describe('ReviewStateControls', () => {
       const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
 
       render(
-        <ReviewStateControls
+        <ReviewStateLoadAndSaveControls
           pronunciation={pronunciation}
           reviewStateFileLoader={reviewStateFileLoader}
         />
@@ -693,7 +693,7 @@ describe('ReviewStateControls', () => {
       const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
 
       render(
-        <ReviewStateControls
+        <ReviewStateLoadAndSaveControls
           pronunciation={pronunciation}
           reviewStateFileLoader={reviewStateFileLoader}
         />
@@ -722,7 +722,7 @@ describe('ReviewStateControls', () => {
 
     it('calls reviewStateFileLoader when correct file is found among multiple files', () => {
       render(
-        <ReviewStateControls
+        <ReviewStateLoadAndSaveControls
           pronunciation={pronunciation}
           reviewStateFileLoader={reviewStateFileLoader}
         />
