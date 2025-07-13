@@ -499,6 +499,11 @@ button {
     border-radius: 8px;
     margin-bottom: 1.25em;
   }
+  
+  // Left-justified panel variant
+  &.panel--left {
+    justify-content: flex-start;
+  }
 }
 
 // Word changer styles

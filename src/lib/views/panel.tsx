@@ -7,6 +7,7 @@ import { Help } from '@/lib/components/help';
 interface PanelProps {
   children: React.ReactNode;
   visible?: boolean;
+  left?: boolean;
   inspectorTitle: string;
   helpTitle?: string;
   helpContent?: string;
@@ -26,13 +27,17 @@ interface PanelProps {
 export const Panel: React.FC<PanelProps> = observer(({ 
   children, 
   visible = false, 
+  left = false,
   inspectorTitle,
   helpTitle,
   helpContent 
 }) => {
   return (
     <Inspectable name={inspectorTitle}>
-      <div className={clsx('panel', { 'panel--visible': visible })}>
+      <div className={clsx('panel', { 
+        'panel--visible': visible,
+        'panel--left': left
+      })}>
         {helpTitle && helpContent && (
           <Help title={helpTitle}>{helpContent}</Help>
         )}

@@ -109,6 +109,7 @@ export const MakeWordView: React.FC<MakeWordViewProps> = observer(({
   return (
     <Panel 
       visible={false} 
+      left={true}
       inspectorTitle="MakeWordView"
       helpTitle="Word Builder"
       helpContent="* Click on letters to replace or delete them\n* Click on '+' to insert new letters\n* **New Word** - start building a new word\n* **✕** - delete this word from your collection"
