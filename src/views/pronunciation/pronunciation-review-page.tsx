@@ -43,10 +43,11 @@ export const ReviewStateLoadAndSaveControls: React.FC<ReviewStateLoadAndSaveCont
     >
       <Help title="Review State Controls">{`
         * **Load State** - Drag & drop or click to load saved pronunciation review state
-        * **Save State** - Download current pronunciation review state
-        * **Download Wrong Words** - Get list of words marked as sounding wrong
-        * **Reset** - Reset all words to unreviewed or OK state
-        * **Review Wrong Words** - Filter to show only words marked as sounding wrong`}
+        * **💾 State** - Download current pronunciation review state
+        * **⬇️ Wrong Words** - Get list of words marked as sounding wrong
+        * **🔄 all Unreviewed** - Reset all words to unreviewed or OK state
+        * **🔄 all OK** - Reset all words to OK state
+        * **👀 Wrong Words** - Filter to show only words marked as sounding wrong`}
       </Help>
       <div
         className="load-state-button-container"
@@ -138,10 +139,10 @@ export const PronunciationReviewStateControls: React.FC<PronunciationReviewState
       inspectorTitle="PronunciationReviewStateControls"
     >
       <Help title="Review Current Word">{`
-        * **Sounds Wrong** - mark current word as sounding wrong
-        * **Sounds OK** - mark current word as sounding correct
-        * **Auto** - automatically move through words
-        * **Speed** - adjust autoplay interval`}
+        * **Sounds Wrong** - mark current word as wrong
+        * **Sounds OK** - mark current word as OK
+        * **Auto/Stop** - start/stop auto-play to review words
+          * select milliseconds duration between words`}
       </Help>
       <span
         className={clsx('word-span', {
@@ -195,7 +196,7 @@ interface PronunciationReviewWordChoiceProps {
 }
 
 export const PronunciationReviewWordChoice: React.FC<PronunciationReviewWordChoiceProps> = observer(({ pronunciation }) => {
-  const keyboardHint = "Use ← → arrow keys to navigate, Alt+→ to start autoplay, space bar to toggle sounds wrong";
+  const keyboardHint = "Use ← → keys to navigate, Alt+→ to auto-play, space bar to toggle OK/wrong";
 
   return (
     <Panel
