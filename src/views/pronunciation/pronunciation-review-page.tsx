@@ -62,15 +62,15 @@ export const ReviewStateControls: React.FC<ReviewStateControlsProps> = observer(
         </ActionButton>
 
         <ActionButton action={pronunciation.resetAllToUnreviewedAction}>
-          🔄 All to Unreviewed
+          🔄 all Unreviewed
         </ActionButton>
 
         <ActionButton action={pronunciation.resetAllToOKAction}>
-          🔄 All to OK
+          🔄 all OK
         </ActionButton>
 
         <ActionButton action={pronunciation.reviewWrongWordsAction}>
-          Review Wrong Words
+          👀 Wrong
         </ActionButton>
       </div>
     </Panel>
