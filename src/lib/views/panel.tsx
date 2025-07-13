@@ -17,24 +17,24 @@ interface PanelProps {
  * Standardized panel component that provides consistent layout and styling
  * across the application. All panels fill the width of their container and
  * expand vertically to fit their content.
- * 
+ *
  * Features:
  * - Transparent or visible (light gray with border) styling
  * - Integrated Help component support
  * - Integrated Inspectable component for debugging
  * - Position relative for proper Help button positioning
  */
-export const Panel: React.FC<PanelProps> = observer(({ 
-  children, 
-  visible = false, 
+export const Panel: React.FC<PanelProps> = observer(({
+  children,
+  visible = false,
   left = false,
   inspectorTitle,
   helpTitle,
-  helpContent 
+  helpContent
 }) => {
   return (
     <Inspectable name={inspectorTitle}>
-      <div className={clsx('panel', { 
+      <div className={clsx('panel', {
         'panel--visible': visible,
         'panel--left': left
       })}>

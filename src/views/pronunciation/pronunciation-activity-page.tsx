@@ -18,8 +18,8 @@ interface PronunciationActivityControlPanelProps {
 
 export const PronunciationActivityControlPanel: React.FC<PronunciationActivityControlPanelProps> = observer(({ pronunciation }) => {
   return (
-    <Panel 
-      visible={true} 
+    <Panel
+      visible={true}
       inspectorTitle="PronunciationActivityControlPanel"
       helpTitle="Filter Controls & Auto"
       helpContent="* **Filter text** sub-string to match against word\n* **Match:**\n  * **start** match sub-string to start of word\n  * **end** match sub-string to end of word\n  * **any** match sub-string anywhere in word\n* **Auto** start auto-playing the words"
@@ -47,8 +47,8 @@ export const PronunciationActivityWordChoice: React.FC<PronunciationActivityWord
   const keyboardHint = "Use ← → arrow keys to navigate, Alt+→ to start autoplay";
 
   return (
-    <Panel 
-      visible={false} 
+    <Panel
+      visible={false}
       inspectorTitle="PronunciationActivityWordChoice"
       helpTitle="Filtered Word List"
       helpContent="* Click on a word to pronounce that word\n* Click on '...' to double maximum number of filtered words displayed\n* Click on '↻' to reset maximum to 20\n* Keyboard shortcuts:\n  * ← go to previous word\n  * → go to next word\n  * Alt-→ start autoplay"

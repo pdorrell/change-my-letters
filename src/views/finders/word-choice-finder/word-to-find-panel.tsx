@@ -11,8 +11,8 @@ interface WordToFindPanelProps { finder: WordChoiceFinder; }
 
 export const WordToFindPanel: React.FC<WordToFindPanelProps> = observer(({ finder }) => {
   return (
-    <Panel 
-      visible={true} 
+    <Panel
+      visible={true}
       inspectorTitle="WordToFindPanel"
       helpTitle="Target Words"
       helpContent="* Click on a word button to hear the target word you need to find\n* **Auto** - automatically choose the next word to find after finding one"

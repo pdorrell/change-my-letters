@@ -12,8 +12,8 @@ export const LettersGridPanel: React.FC<LettersGridPanelProps> = observer(({ fin
   if (!finder.lettersGrid) return null;
 
   return (
-    <Panel 
-      visible={false} 
+    <Panel
+      visible={false}
       inspectorTitle="LettersGridPanel"
       helpTitle="Letters Grid"
       helpContent="This is the letter grid where you find words. Click and drag to select letters and form words. First click a word in the words panel to target it, then drag across the letters in the grid to spell that word. Words can be horizontal, vertical, or diagonal. Correct selections are highlighted in green, incorrect ones briefly in red."

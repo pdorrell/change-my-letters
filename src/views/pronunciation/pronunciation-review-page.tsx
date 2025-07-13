@@ -36,8 +36,8 @@ export const ReviewStateControls: React.FC<ReviewStateControlsProps> = observer(
   };
 
   return (
-    <Panel 
-      visible={true} 
+    <Panel
+      visible={true}
       inspectorTitle="ReviewStateControls"
       helpTitle="Review State Controls"
       helpContent="* **Load State** - Drag & drop or click to load saved pronunciation review state\n* **Save State** - Download current pronunciation review state\n* **Download Wrong Words** - Get list of words marked as sounding wrong\n* **Reset** - Reset all words to unreviewed or OK state\n* **Review Wrong Words** - Filter to show only words marked as sounding wrong"
@@ -86,8 +86,8 @@ interface PronunciationReviewFiltersProps {
 
 export const PronunciationReviewFilters: React.FC<PronunciationReviewFiltersProps> = observer(({ pronunciation }) => {
   return (
-    <Panel 
-      visible={true} 
+    <Panel
+      visible={true}
       inspectorTitle="PronunciationReviewFilters"
       helpTitle="Review Filters"
       helpContent="* **Filter text** - sub-string to match against word\n* **Match** - start/end/any position matching\n* **Review state** - filter by unreviewed, wrong, OK, or all words"
@@ -126,8 +126,8 @@ interface PronunciationReviewStateControlsProps {
 
 export const PronunciationReviewStateControls: React.FC<PronunciationReviewStateControlsProps> = observer(({ pronunciation }) => {
   return (
-    <Panel 
-      visible={true} 
+    <Panel
+      visible={true}
       inspectorTitle="PronunciationReviewStateControls"
       helpTitle="Review Current Word"
       helpContent="* **Sounds Wrong** - mark current word as sounding wrong\n* **Sounds OK** - mark current word as sounding correct\n* **Auto** - automatically move through words\n* **Speed** - adjust autoplay interval"
@@ -187,8 +187,8 @@ export const PronunciationReviewWordChoice: React.FC<PronunciationReviewWordChoi
   const keyboardHint = "Use ← → arrow keys to navigate, Alt+→ to start autoplay, space bar to toggle sounds wrong";
 
   return (
-    <Panel 
-      visible={false} 
+    <Panel
+      visible={false}
       inspectorTitle="PronunciationReviewWordChoice"
       helpTitle="Review Word List"
       helpContent="* Click on a word to review that word\n* Keyboard shortcuts:\n  * ← go to previous word\n  * → go to next word\n  * Alt-→ start autoplay\n  * Space bar to toggle sounds wrong"

@@ -10,8 +10,8 @@ interface FinderScoreAndControlsPanelProps { finder: WordChoiceFinder; }
 
 export const FinderScoreAndControlsPanel: React.FC<FinderScoreAndControlsPanelProps> = observer(({ finder }) => {
   return (
-    <Panel 
-      visible={true} 
+    <Panel
+      visible={true}
       inspectorTitle="FinderScoreAndControlsPanel"
       helpTitle="Score & Controls"
       helpContent="* **Score** - shows your correct/total attempts\n* **Retry** - start over with the same words\n* **New** - get a new set of words to find"

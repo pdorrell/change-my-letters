@@ -9,8 +9,8 @@ interface LettersRowPanelProps { finder: WordsInRowFinder; }
 
 export const LettersRowPanel: React.FC<LettersRowPanelProps> = observer(({ finder }) => {
   return (
-    <Panel 
-      visible={false} 
+    <Panel
+      visible={false}
       inspectorTitle="LettersRowPanel"
       helpTitle="Letter Grid"
       helpContent="Click and drag to select letters that spell out the target words. Words can be found horizontally, vertically, or diagonally depending on difficulty setting."

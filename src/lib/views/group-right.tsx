@@ -10,7 +10,7 @@ interface GroupRightProps {
 /**
  * Layout component that groups items and pushes them to the right side
  * of their parent container using margin-left: auto.
- * 
+ *
  * Features:
  * - Flex container with row layout and center justification
  * - Uses margin-left: auto to push content to the right

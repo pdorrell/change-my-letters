@@ -79,8 +79,8 @@ export const WordChangerView: React.FC<WordChangerViewProps> = observer(({ wordI
   }
 
   return (
-    <Panel 
-      visible={false} 
+    <Panel
+      visible={false}
       inspectorTitle="WordChangerView"
       helpTitle="Current Word"
       helpContent="* Click on letter to replace or delete\n* Click on any '+' to insert new letter at that position"
@@ -107,8 +107,8 @@ interface WordChangerControlsProps { wordChanger: WordChanger; }
 
 export const WordChangerControls: React.FC<WordChangerControlsProps> = observer(({ wordChanger }) => {
   return (
-    <Panel 
-      visible={false} 
+    <Panel
+      visible={false}
       inspectorTitle="WordChangerControls"
       helpTitle="Word Changer Controls"
       helpContent="* **Undo** undo last change\n* **Redo** redo last undo\n* **Say** pronounce current word\n* **Say Immediately** pronounce new word when the word is changed"

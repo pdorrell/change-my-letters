@@ -107,8 +107,8 @@ export const MakeWordView: React.FC<MakeWordViewProps> = observer(({
   }
 
   return (
-    <Panel 
-      visible={false} 
+    <Panel
+      visible={false}
       left={true}
       inspectorTitle="MakeWordView"
       helpTitle="Word Builder"
