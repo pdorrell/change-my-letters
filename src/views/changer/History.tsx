@@ -160,8 +160,8 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = observer(({ history }) 
       left={true}
       inspectorTitle="HistoryPanel"
     >
-      <Help title="Word History">
-        * Click on a word to go back to that word
+      <Help title="Word History">{`
+        * Click on a word to go back to that word`}
       </Help>
       <div className={clsx('history-panel-list', 'touch-interactive-area')}>
         {history.entries.map((entry, index) => (

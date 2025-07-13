@@ -16,9 +16,9 @@ export const WordToFindPanel: React.FC<WordToFindPanelProps> = observer(({ finde
       visible={true}
       inspectorTitle="WordToFindPanel"
     >
-      <Help title="Target Words">
+      <Help title="Target Words">{`
         * Click on a word button to hear the target word you need to find
-        * **Auto** - automatically choose the next word to find after finding one
+        * **Auto** - automatically choose the next word to find after finding one`}
       </Help>
       <h3 title="Click to hear a word that you have to find">Find:</h3>
       <div className={clsx('word-to-find-buttons', 'touch-interactive-area')}>

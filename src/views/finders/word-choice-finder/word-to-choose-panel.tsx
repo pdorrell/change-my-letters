@@ -14,8 +14,8 @@ export const WordToChoosePanel: React.FC<WordToChoosePanelProps> = observer(({ f
       visible={true}
       inspectorTitle="WordToChoosePanel"
     >
-      <Help title="Word Choice Grid">
-        This is your word choice grid. Click on the words that match the target word shown below. Choose all correct answers to score points. Each word can only be selected once, so choose carefully. Your score increases with correct choices and decreases with wrong ones.
+      <Help title="Word Choice Grid">{`
+        This is your word choice grid. Click on the words that match the target word shown below. Choose all correct answers to score points. Each word can only be selected once, so choose carefully. Your score increases with correct choices and decreases with wrong ones.`}
       </Help>
       <div className={clsx('words-grid', 'touch-interactive-area')}>
         {finder.wordsToChoose.map((wordToChoose, index) => (

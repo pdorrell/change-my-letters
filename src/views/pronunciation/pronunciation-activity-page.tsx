@@ -58,14 +58,14 @@ export const PronunciationActivityWordChoice: React.FC<PronunciationActivityWord
       visible={false}
       inspectorTitle="PronunciationActivityWordChoice"
     >
-      <Help title="Filtered Word List">
+      <Help title="Filtered Word List">{`
         * Click on a word to pronounce that word
         * Click on '...' to double maximum number of filtered words displayed
         * Click on '↻' to reset maximum to 20
         * Keyboard shortcuts:
           * ← go to previous word
           * → go to next word
-          * Alt-→ start autoplay
+          * Alt-→ start autoplay`}
       </Help>
       <div className="pronunciation-word-choice">
         {/* Filtered Words */}

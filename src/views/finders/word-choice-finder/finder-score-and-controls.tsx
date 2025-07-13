@@ -15,10 +15,10 @@ export const FinderScoreAndControls: React.FC<FinderScoreAndControlsProps> = obs
       visible={true}
       inspectorTitle="FinderScoreAndControls"
     >
-      <Help title="Score & Controls">
+      <Help title="Score & Controls">{`
         * **Score** - shows your correct/total attempts
         * **Retry** - start over with the same words
-        * **New** - get a new set of words to find
+        * **New** - get a new set of words to find`}
       </Help>
       <FinderScoreView finder={finder} />
       <GroupRight>

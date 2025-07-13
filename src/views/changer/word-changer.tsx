@@ -84,9 +84,9 @@ export const WordChangerPanel: React.FC<WordChangerPanelProps> = observer(({ wor
       visible={false}
       inspectorTitle="WordChangerPanel"
     >
-      <Help title="Current Word">
+      <Help title="Current Word">{`
         * Click on letter to replace or delete
-        * Click on any '+' to insert new letter at that position
+        * Click on any '+' to insert new letter at that position`}
       </Help>
       <div className={clsx('word-display', 'touch-interactive-area', { 'previously-visited': wordInteraction.word.previouslyVisited })}>
         {/* Render alternating sequence of positions and letters for the word changer */}
@@ -114,11 +114,11 @@ export const WordChangerControls: React.FC<WordChangerControlsProps> = observer(
       visible={false}
       inspectorTitle="WordChangerControls"
     >
-      <Help title="Word Changer Controls">
+      <Help title="Word Changer Controls">{`
         * **Undo** undo last change
         * **Redo** redo last undo
         * **Say** pronounce current word
-        * **Say Immediately** pronounce new word when the word is changed
+        * **Say Immediately** pronounce new word when the word is changed`}
       </Help>
       <div className="word-changer-controls">
         <ActionButton action={wordChanger.undoAction}>Undo</ActionButton>

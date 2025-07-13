@@ -113,11 +113,11 @@ export const MakeWordPanel: React.FC<MakeWordPanelProps> = observer(({
       left={true}
       inspectorTitle="MakeWordPanel"
     >
-      <Help title="Word Builder">
+      <Help title="Word Builder">{`
         * Click on letters to replace or delete them
         * Click on '+' to insert new letters
         * **New Word** - start building a new word
-        * **✕** - delete this word from your collection
+        * **✕** - delete this word from your collection`}
       </Help>
       <div className="make-word-row">
         <div className={clsx('word-display', 'touch-interactive-area', backgroundClass)}>

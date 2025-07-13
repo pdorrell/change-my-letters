@@ -41,12 +41,12 @@ export const ReviewStateLoadAndSaveControls: React.FC<ReviewStateLoadAndSaveCont
       visible={true}
       inspectorTitle="ReviewStateLoadAndSaveControls"
     >
-      <Help title="Review State Controls">
+      <Help title="Review State Controls">{`
         * **Load State** - Drag & drop or click to load saved pronunciation review state
         * **Save State** - Download current pronunciation review state
         * **Download Wrong Words** - Get list of words marked as sounding wrong
         * **Reset** - Reset all words to unreviewed or OK state
-        * **Review Wrong Words** - Filter to show only words marked as sounding wrong
+        * **Review Wrong Words** - Filter to show only words marked as sounding wrong`}
       </Help>
       <div
         className="load-state-button-container"
@@ -94,10 +94,10 @@ export const PronunciationReviewFilters: React.FC<PronunciationReviewFiltersProp
       visible={true}
       inspectorTitle="PronunciationReviewFilters"
     >
-      <Help title="Review Filters">
+      <Help title="Review Filters">{`
         * **Filter text** - sub-string to match against word
         * **Match** - start/end/any position matching
-        * **Review state** - filter by unreviewed, wrong, OK, or all words
+        * **Review state** - filter by unreviewed, wrong, OK, or all words`}
       </Help>
       <div className="filter-controls">
         <FilterControls filter={pronunciation.filter} />
@@ -137,11 +137,11 @@ export const PronunciationReviewStateControls: React.FC<PronunciationReviewState
       visible={true}
       inspectorTitle="PronunciationReviewStateControls"
     >
-      <Help title="Review Current Word">
+      <Help title="Review Current Word">{`
         * **Sounds Wrong** - mark current word as sounding wrong
         * **Sounds OK** - mark current word as sounding correct
         * **Auto** - automatically move through words
-        * **Speed** - adjust autoplay interval
+        * **Speed** - adjust autoplay interval`}
       </Help>
       <span
         className={clsx('word-span', {
@@ -202,13 +202,13 @@ export const PronunciationReviewWordChoice: React.FC<PronunciationReviewWordChoi
       visible={false}
       inspectorTitle="PronunciationReviewWordChoice"
     >
-      <Help title="Review Word List">
+      <Help title="Review Word List">{`
         * Click on a word to review that word
         * Keyboard shortcuts:
           * ← go to previous word
           * → go to next word
           * Alt-→ start autoplay
-          * Space bar to toggle sounds wrong
+          * Space bar to toggle sounds wrong`}
       </Help>
       <div className="pronunciation-word-choice">
         {/* Filtered Words */}
