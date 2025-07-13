@@ -6,6 +6,7 @@ import { ActionButton } from '@/lib/views/action-button';
 import { DifficultyType } from '@/models/finders/words-in-row-finder/types';
 import { Panel } from '@/lib/views/panel';
 import { GroupRight } from '@/lib/views/group-right';
+import { Help } from '@/lib/components/help';
 
 interface FinderControlsProps { finder: WordsInRowFinder; }
 
@@ -17,9 +18,13 @@ export const FinderControls: React.FC<FinderControlsProps> = observer(({ finder 
     <Panel
       visible={true}
       inspectorTitle="FinderControls"
-      helpTitle="Row Finder Controls"
-      helpContent="* **Difficulty** - easy (words go left-to-right) or hard (words can go in any direction)\n* **Forwards Only** - restrict to left-to-right words only\n* **Auto** - automatically select next word to find\n* **New** - generate a new letter grid with new words"
     >
+      <Help title="Row Finder Controls">
+        * **Difficulty** - easy (words go left-to-right) or hard (words can go in any direction)
+        * **Forwards Only** - restrict to left-to-right words only
+        * **Auto** - automatically select next word to find
+        * **New** - generate a new letter grid with new words
+      </Help>
       <div className={clsx('value-radio-buttons-container', { disabled: settingsDisabled })} title={finder.difficulty.tooltip}>
         <span className="radio-label">{finder.difficulty.label}</span>
         {difficultyOptions.map((option) => (

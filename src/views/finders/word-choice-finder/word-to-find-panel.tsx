@@ -6,6 +6,7 @@ import { WordToFindView } from './word-to-find-view';
 import { ValueCheckbox } from '@/lib/views/value-model-views';
 import { Panel } from '@/lib/views/panel';
 import { GroupRight } from '@/lib/views/group-right';
+import { Help } from '@/lib/components/help';
 
 interface WordToFindPanelProps { finder: WordChoiceFinder; }
 
@@ -14,9 +15,11 @@ export const WordToFindPanel: React.FC<WordToFindPanelProps> = observer(({ finde
     <Panel
       visible={true}
       inspectorTitle="WordToFindPanel"
-      helpTitle="Target Words"
-      helpContent="* Click on a word button to hear the target word you need to find\n* **Auto** - automatically choose the next word to find after finding one"
     >
+      <Help title="Target Words">
+        * Click on a word button to hear the target word you need to find
+        * **Auto** - automatically choose the next word to find after finding one
+      </Help>
       <h3 title="Click to hear a word that you have to find">Find:</h3>
       <div className={clsx('word-to-find-buttons', 'touch-interactive-area')}>
         {finder.wordsToFind.map((wordToFind, index) => (

@@ -8,6 +8,7 @@ import { Panel } from '@/lib/views/panel';
 import { GroupRight } from '@/lib/views/group-right';
 import { Inspectable } from '@/lib/inspector';
 import { Page } from '@/lib/views/page';
+import { Help } from '@/lib/components/help';
 
 /**
  * Activity mode control panel component with filters on left and Auto button on right
@@ -21,9 +22,15 @@ export const PronunciationActivityControls: React.FC<PronunciationActivityContro
     <Panel
       visible={true}
       inspectorTitle="PronunciationActivityControls"
-      helpTitle="Filter Controls & Auto"
-      helpContent="* **Filter text** sub-string to match against word\n* **Match:**\n  * **start** match sub-string to start of word\n  * **end** match sub-string to end of word\n  * **any** match sub-string anywhere in word\n* **Auto** start auto-playing the words"
     >
+      <Help title="Filter Controls & Auto">
+        * **Filter text** sub-string to match against word
+        * **Match:**
+          * **start** match sub-string to start of word
+          * **end** match sub-string to end of word
+          * **any** match sub-string anywhere in word
+        * **Auto** start auto-playing the words
+      </Help>
       <FilterControls filter={pronunciation.filter} />
 
       <GroupRight>
@@ -50,9 +57,16 @@ export const PronunciationActivityWordChoice: React.FC<PronunciationActivityWord
     <Panel
       visible={false}
       inspectorTitle="PronunciationActivityWordChoice"
-      helpTitle="Filtered Word List"
-      helpContent="* Click on a word to pronounce that word\n* Click on '...' to double maximum number of filtered words displayed\n* Click on '↻' to reset maximum to 20\n* Keyboard shortcuts:\n  * ← go to previous word\n  * → go to next word\n  * Alt-→ start autoplay"
     >
+      <Help title="Filtered Word List">
+        * Click on a word to pronounce that word
+        * Click on '...' to double maximum number of filtered words displayed
+        * Click on '↻' to reset maximum to 20
+        * Keyboard shortcuts:
+          * ← go to previous word
+          * → go to next word
+          * Alt-→ start autoplay
+      </Help>
       <div className="pronunciation-word-choice">
         {/* Filtered Words */}
         <div className="filtered-words">

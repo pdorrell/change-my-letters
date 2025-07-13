@@ -5,6 +5,7 @@ import { FinderScoreView } from './finder-score-view';
 import { FinderControls } from './finder-controls';
 import { Panel } from '@/lib/views/panel';
 import { GroupRight } from '@/lib/views/group-right';
+import { Help } from '@/lib/components/help';
 
 interface FinderScoreAndControlsProps { finder: WordChoiceFinder; }
 
@@ -13,9 +14,12 @@ export const FinderScoreAndControls: React.FC<FinderScoreAndControlsProps> = obs
     <Panel
       visible={true}
       inspectorTitle="FinderScoreAndControls"
-      helpTitle="Score & Controls"
-      helpContent="* **Score** - shows your correct/total attempts\n* **Retry** - start over with the same words\n* **New** - get a new set of words to find"
     >
+      <Help title="Score & Controls">
+        * **Score** - shows your correct/total attempts
+        * **Retry** - start over with the same words
+        * **New** - get a new set of words to find
+      </Help>
       <FinderScoreView finder={finder} />
       <GroupRight>
         <FinderControls finder={finder} />

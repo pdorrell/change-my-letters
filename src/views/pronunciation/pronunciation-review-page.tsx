@@ -8,6 +8,7 @@ import { Panel } from '@/lib/views/panel';
 import { GroupRight } from '@/lib/views/group-right';
 import { Inspectable } from '@/lib/inspector';
 import { Page } from '@/lib/views/page';
+import { Help } from '@/lib/components/help';
 
 /**
  * Review mode action controls component for Pronunciation page
@@ -39,9 +40,14 @@ export const ReviewStateLoadAndSaveControls: React.FC<ReviewStateLoadAndSaveCont
     <Panel
       visible={true}
       inspectorTitle="ReviewStateLoadAndSaveControls"
-      helpTitle="Review State Controls"
-      helpContent="* **Load State** - Drag & drop or click to load saved pronunciation review state\n* **Save State** - Download current pronunciation review state\n* **Download Wrong Words** - Get list of words marked as sounding wrong\n* **Reset** - Reset all words to unreviewed or OK state\n* **Review Wrong Words** - Filter to show only words marked as sounding wrong"
     >
+      <Help title="Review State Controls">
+        * **Load State** - Drag & drop or click to load saved pronunciation review state
+        * **Save State** - Download current pronunciation review state
+        * **Download Wrong Words** - Get list of words marked as sounding wrong
+        * **Reset** - Reset all words to unreviewed or OK state
+        * **Review Wrong Words** - Filter to show only words marked as sounding wrong
+      </Help>
       <div
         className="load-state-button-container"
         onDragOver={handleDragOver}
@@ -87,9 +93,12 @@ export const PronunciationReviewFilters: React.FC<PronunciationReviewFiltersProp
     <Panel
       visible={true}
       inspectorTitle="PronunciationReviewFilters"
-      helpTitle="Review Filters"
-      helpContent="* **Filter text** - sub-string to match against word\n* **Match** - start/end/any position matching\n* **Review state** - filter by unreviewed, wrong, OK, or all words"
     >
+      <Help title="Review Filters">
+        * **Filter text** - sub-string to match against word
+        * **Match** - start/end/any position matching
+        * **Review state** - filter by unreviewed, wrong, OK, or all words
+      </Help>
       <div className="filter-controls">
         <FilterControls filter={pronunciation.filter} />
 
@@ -127,9 +136,13 @@ export const PronunciationReviewStateControls: React.FC<PronunciationReviewState
     <Panel
       visible={true}
       inspectorTitle="PronunciationReviewStateControls"
-      helpTitle="Review Current Word"
-      helpContent="* **Sounds Wrong** - mark current word as sounding wrong\n* **Sounds OK** - mark current word as sounding correct\n* **Auto** - automatically move through words\n* **Speed** - adjust autoplay interval"
     >
+      <Help title="Review Current Word">
+        * **Sounds Wrong** - mark current word as sounding wrong
+        * **Sounds OK** - mark current word as sounding correct
+        * **Auto** - automatically move through words
+        * **Speed** - adjust autoplay interval
+      </Help>
       <span
         className={clsx('word-span', {
           'no-word': !pronunciation.currentWord,
@@ -188,9 +201,15 @@ export const PronunciationReviewWordChoice: React.FC<PronunciationReviewWordChoi
     <Panel
       visible={false}
       inspectorTitle="PronunciationReviewWordChoice"
-      helpTitle="Review Word List"
-      helpContent="* Click on a word to review that word\n* Keyboard shortcuts:\n  * ← go to previous word\n  * → go to next word\n  * Alt-→ start autoplay\n  * Space bar to toggle sounds wrong"
     >
+      <Help title="Review Word List">
+        * Click on a word to review that word
+        * Keyboard shortcuts:
+          * ← go to previous word
+          * → go to next word
+          * Alt-→ start autoplay
+          * Space bar to toggle sounds wrong
+      </Help>
       <div className="pronunciation-word-choice">
         {/* Filtered Words */}
         <div className="filtered-words">

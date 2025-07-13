@@ -2,15 +2,12 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 import { Inspectable } from '@/lib/inspector';
-import { Help } from '@/lib/components/help';
 
 interface PanelProps {
   children: React.ReactNode;
   visible?: boolean;
   left?: boolean;
   inspectorTitle: string;
-  helpTitle?: string;
-  helpContent?: string;
 }
 
 /**
@@ -20,17 +17,14 @@ interface PanelProps {
  *
  * Features:
  * - Transparent or visible (light gray with border) styling
- * - Integrated Help component support
  * - Integrated Inspectable component for debugging
- * - Position relative for proper Help button positioning
+ * - Position relative for proper component positioning
  */
 export const Panel: React.FC<PanelProps> = observer(({
   children,
   visible = false,
   left = false,
-  inspectorTitle,
-  helpTitle,
-  helpContent
+  inspectorTitle
 }) => {
   return (
     <Inspectable name={inspectorTitle}>
@@ -38,9 +32,6 @@ export const Panel: React.FC<PanelProps> = observer(({
         'panel--visible': visible,
         'panel--left': left
       })}>
-        {helpTitle && helpContent && (
-          <Help title={helpTitle}>{helpContent}</Help>
-        )}
         {children}
       </div>
     </Inspectable>

@@ -9,6 +9,7 @@ import { ActionButton } from '@/lib/views/action-button';
 import { ButtonAction } from '@/lib/models/actions';
 import { MakerCurrentWord } from '@/models/maker/maker-current-word';
 import { Panel } from '@/lib/views/panel';
+import { Help } from '@/lib/components/help';
 
 interface MakeWordPanelProps {
   word: Word | null;
@@ -111,9 +112,13 @@ export const MakeWordPanel: React.FC<MakeWordPanelProps> = observer(({
       visible={false}
       left={true}
       inspectorTitle="MakeWordPanel"
-      helpTitle="Word Builder"
-      helpContent="* Click on letters to replace or delete them\n* Click on '+' to insert new letters\n* **New Word** - start building a new word\n* **✕** - delete this word from your collection"
     >
+      <Help title="Word Builder">
+        * Click on letters to replace or delete them
+        * Click on '+' to insert new letters
+        * **New Word** - start building a new word
+        * **✕** - delete this word from your collection
+      </Help>
       <div className="make-word-row">
         <div className={clsx('word-display', 'touch-interactive-area', backgroundClass)}>
           {/* Render alternating sequence of positions and letters */}
