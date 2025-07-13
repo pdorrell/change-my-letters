@@ -1497,9 +1497,8 @@ button {
 .page-header {
   display: flex;
   align-items: center;
-  margin: 1.25em auto;
-  max-width: 75em;
-  padding-left: 10em;
+  margin: 1.25em 0;
+  padding: 0;
   
   .page-navigation-tabs {
     margin: 0;
