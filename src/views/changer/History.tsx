@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { makeAutoObservable } from 'mobx';
 import { Word } from '@/models/Word';
 import { Panel } from '@/lib/views/panel';
+import { Help } from '@/lib/components/help';
 
 /**
  * Represents a change from one word to another
@@ -158,9 +159,10 @@ export const HistoryPanel: React.FC<HistoryPanelProps> = observer(({ history }) 
       visible={true}
       left={true}
       inspectorTitle="HistoryPanel"
-      helpTitle="Word History"
-      helpContent="* Click on a word to go back to that word"
     >
+      <Help title="Word History">
+        * Click on a word to go back to that word
+      </Help>
       <div className={clsx('history-panel-list', 'touch-interactive-area')}>
         {history.entries.map((entry, index) => (
           <span
