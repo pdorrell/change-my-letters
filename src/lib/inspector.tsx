@@ -50,6 +50,28 @@ interface InspectableProps {
 
 export const Inspectable: React.FC<InspectableProps> = observer(({ name, lib = false, children }) => {
   const { inspectorEnabled } = inspectorStore;
+  const [isCopying, setIsCopying] = React.useState(false);
+
+  const handleLabelClick = async () => {
+    setIsCopying(true);
+    
+    try {
+      await navigator.clipboard.writeText(name);
+    } catch (err) {
+      // Fallback for older browsers
+      const textArea = document.createElement('textarea');
+      textArea.value = name;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+    }
+    
+    // Hide "Copying" after 300ms
+    setTimeout(() => {
+      setIsCopying(false);
+    }, 300);
+  };
 
   if (!inspectorEnabled) {
     return <>{children}</>;
@@ -57,7 +79,14 @@ export const Inspectable: React.FC<InspectableProps> = observer(({ name, lib = f
 
   return (
     <div className={`inspectable ${lib ? 'lib' : ''}`}>
-      <div className="label">{name}</div>
+      <button className="label" onClick={handleLabelClick} title={`Click to copy "${name}" to clipboard`}>
+        <span className={`label-text ${isCopying ? 'copying' : ''}`}>
+          {name}
+        </span>
+        <span className={`copying-text ${isCopying ? 'copying' : ''}`}>
+          Copying
+        </span>
+      </button>
       {children}
     </div>
   );
