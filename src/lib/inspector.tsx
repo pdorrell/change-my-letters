@@ -54,10 +54,10 @@ export const Inspectable: React.FC<InspectableProps> = observer(({ name, lib = f
 
   const handleLabelClick = async () => {
     setIsCopying(true);
-    
+
     try {
       await navigator.clipboard.writeText(name);
-    } catch (err) {
+    } catch (_err) {
       // Fallback for older browsers
       const textArea = document.createElement('textarea');
       textArea.value = name;
@@ -66,7 +66,7 @@ export const Inspectable: React.FC<InspectableProps> = observer(({ name, lib = f
       document.execCommand('copy');
       document.body.removeChild(textArea);
     }
-    
+
     // Hide "Copying" after 300ms
     setTimeout(() => {
       setIsCopying(false);
