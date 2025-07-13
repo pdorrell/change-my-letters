@@ -21,43 +21,41 @@ export const FinderControls: React.FC<FinderControlsProps> = observer(({ finder 
       helpTitle="Grid Game Controls"
       helpContent="Use these controls to configure the word grid game. Difficulty affects the letters in the grid: Easy uses random letters while Hard includes letters from the target words. 'Forwards only' determines if words can appear backwards. 'Auto' automatically advances to the next word when one is found correctly. The New button generates a fresh set of words and grid."
     >
-      <div className="word-changer-controls">
-        <div className={clsx('value-radio-buttons-container', { disabled: settingsDisabled })} title={finder.difficulty.tooltip}>
-          <span className="radio-label">{finder.difficulty.label}</span>
-          {difficultyOptions.map((option) => (
-            <label key={option} className="radio-option">
-              <input
-                type="radio"
-                name="difficulty"
-                value={option}
-                checked={finder.difficulty.value === option}
-                disabled={settingsDisabled}
-                onChange={() => !settingsDisabled && finder.difficulty.set(option)}
-              />
-              {option}
-            </label>
-          ))}
-        </div>
-        <label className={clsx('value-checkbox-container', { disabled: settingsDisabled })} title={finder.forwardsOnly.tooltip}>
-          <input
-            type="checkbox"
-            checked={finder.forwardsOnly.value}
-            disabled={settingsDisabled}
-            onChange={(e) => !settingsDisabled && finder.forwardsOnly.set(e.target.checked)}
-          />
-          {finder.forwardsOnly.label}
-        </label>
-        <label className="value-checkbox-container" title={finder.auto.tooltip}>
-          <input
-            type="checkbox"
-            checked={finder.auto.value}
-            onChange={(e) => finder.auto.set(e.target.checked)}
-          />
-          {finder.auto.label}
-        </label>
-        <div style={{ marginLeft: 'auto' }}>
-          <ActionButton action={finder.newAction}>New</ActionButton>
-        </div>
+      <div className={clsx('value-radio-buttons-container', { disabled: settingsDisabled })} title={finder.difficulty.tooltip}>
+        <span className="radio-label">{finder.difficulty.label}</span>
+        {difficultyOptions.map((option) => (
+          <label key={option} className="radio-option">
+            <input
+              type="radio"
+              name="difficulty"
+              value={option}
+              checked={finder.difficulty.value === option}
+              disabled={settingsDisabled}
+              onChange={() => !settingsDisabled && finder.difficulty.set(option)}
+            />
+            {option}
+          </label>
+        ))}
+      </div>
+      <label className={clsx('value-checkbox-container', { disabled: settingsDisabled })} title={finder.forwardsOnly.tooltip}>
+        <input
+          type="checkbox"
+          checked={finder.forwardsOnly.value}
+          disabled={settingsDisabled}
+          onChange={(e) => !settingsDisabled && finder.forwardsOnly.set(e.target.checked)}
+        />
+        {finder.forwardsOnly.label}
+      </label>
+      <label className="value-checkbox-container" title={finder.auto.tooltip}>
+        <input
+          type="checkbox"
+          checked={finder.auto.value}
+          onChange={(e) => finder.auto.set(e.target.checked)}
+        />
+        {finder.auto.label}
+      </label>
+      <div style={{ marginLeft: 'auto' }}>
+        <ActionButton action={finder.newAction}>New</ActionButton>
       </div>
     </Panel>
   );
