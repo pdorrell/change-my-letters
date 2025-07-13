@@ -42,37 +42,35 @@ export const ReviewStateControls: React.FC<ReviewStateControlsProps> = observer(
       helpTitle="Review State Controls"
       helpContent="* **Load State** - Drag & drop or click to load saved pronunciation review state\n* **Save State** - Download current pronunciation review state\n* **Download Wrong Words** - Get list of words marked as sounding wrong\n* **Reset** - Reset all words to unreviewed or OK state\n* **Review Wrong Words** - Filter to show only words marked as sounding wrong"
     >
-      <div className="action-buttons-panel">
-        <div
-          className="load-state-button-container"
-          onDragOver={handleDragOver}
-          onDrop={handleDrop}
-        >
-          <ActionButton action={pronunciation.loadStateAction}>
-            + Load State
-          </ActionButton>
-        </div>
-
-        <ActionButton action={pronunciation.saveStateAction}>
-          💾 State
-        </ActionButton>
-
-        <ActionButton action={pronunciation.downloadWrongWordsAction}>
-          ⬇️ Wrong Words
-        </ActionButton>
-
-        <ActionButton action={pronunciation.resetAllToUnreviewedAction}>
-          🔄 all Unreviewed
-        </ActionButton>
-
-        <ActionButton action={pronunciation.resetAllToOKAction}>
-          🔄 all OK
-        </ActionButton>
-
-        <ActionButton action={pronunciation.reviewWrongWordsAction}>
-          👀 Wrong
+      <div
+        className="load-state-button-container"
+        onDragOver={handleDragOver}
+        onDrop={handleDrop}
+      >
+        <ActionButton action={pronunciation.loadStateAction}>
+          + Load State
         </ActionButton>
       </div>
+
+      <ActionButton action={pronunciation.saveStateAction}>
+        💾 State
+      </ActionButton>
+
+      <ActionButton action={pronunciation.downloadWrongWordsAction}>
+        ⬇️ Wrong Words
+      </ActionButton>
+
+      <ActionButton action={pronunciation.resetAllToUnreviewedAction}>
+        🔄 all Unreviewed
+      </ActionButton>
+
+      <ActionButton action={pronunciation.resetAllToOKAction}>
+        🔄 all OK
+      </ActionButton>
+
+      <ActionButton action={pronunciation.reviewWrongWordsAction}>
+        👀 Wrong
+      </ActionButton>
     </Panel>
   );
 });
