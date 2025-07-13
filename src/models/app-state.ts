@@ -162,12 +162,11 @@ export class AppState {
       getRandomWords
     );
 
-    // Initialize words in grid finder with separate random words
-    const wordsInGridRandomWords = getRandomWords();
+    // Initialize words in grid finder with full word list (it does its own selection)
     this.wordsInGridFinder = new WordsInGridFinder(
       this.wordSayer,
       this.emotionalWordSayer,
-      wordsInGridRandomWords,
+      allWords,
       getRandomWords
     );
 

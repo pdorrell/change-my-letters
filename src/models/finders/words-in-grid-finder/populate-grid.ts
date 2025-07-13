@@ -9,6 +9,7 @@ interface WordValidation {
 }
 
 export function selectWordsForGrid(words: string[]): string[] {
+  console.debug("selectWordsForGrid words.length = ", words.length);
   // Filter out words that are too short (< 3 letters)
   const validWords = words.filter(word => word.length >= 3);
   const targetCount = Math.min(WORDS_TO_FIND_COUNT, validWords.length);
