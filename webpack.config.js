@@ -110,18 +110,6 @@ export default (env, argv) => {
             : getFormattedDateTime()
         )
       }),
-      // Plugin to update version.txt during build for production
-      {
-        apply: (compiler) => {
-          compiler.hooks.afterEmit.tap('VersionPlugin', (compilation) => {
-            if (!isDevelopment) {
-              const newVersion = getFormattedDateTime();
-              fs.writeFileSync(path.resolve(__dirname, 'version.txt'), newVersion);
-              console.log(`Updated version.txt to: ${newVersion}`);
-            }
-          });
-        }
-      }
     ],
     devServer: {
       static: [

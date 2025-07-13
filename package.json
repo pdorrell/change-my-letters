@@ -20,9 +20,7 @@
     "build:full": "npm run test:full && npm run generate-word-graphs && npm run build",
     "build:skip-tests": "npm run typecheck && npm run lint && npm run generate-word-graphs && npm run build",
     "build:quick": "npm run generate-word-graphs && npm run build",
-    "deploy": "npm run build:full && node scripts/deploy-to-target.js",
-    "deploy:skip-tests": "npm run build:skip-tests && node scripts/deploy-to-target.js",
-    "deploy:quick": "npm run build:quick && node scripts/deploy-to-target.js",
+    "deploy": "node scripts/update-version.js && npm run build:full && node scripts/deploy-to-target.js",
     "serve": "npx serve -s dist -l 3001"
   },
   "dependencies": {
