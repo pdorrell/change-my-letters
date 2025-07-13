@@ -23,13 +23,13 @@ export const PronunciationActivityControls: React.FC<PronunciationActivityContro
       visible={true}
       inspectorTitle="PronunciationActivityControls"
     >
-      <Help title="Filter Controls & Auto">
+      <Help title="Filter Controls & Auto">{`
         * **Filter text** sub-string to match against word
         * **Match:**
           * **start** match sub-string to start of word
           * **end** match sub-string to end of word
           * **any** match sub-string anywhere in word
-        * **Auto** start auto-playing the words
+        * **Auto** start auto-playing the words`}
       </Help>
       <FilterControls filter={pronunciation.filter} />
 
