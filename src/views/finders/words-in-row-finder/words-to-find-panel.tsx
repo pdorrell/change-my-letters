@@ -10,7 +10,7 @@ interface WordsToFindPanelProps { finder: WordsInRowFinder; }
 export const WordsToFindPanel: React.FC<WordsToFindPanelProps> = observer(({ finder }) => {
   return (
     <Panel 
-      visible={false} 
+      visible={true} 
       inspectorTitle="WordsToFindPanel"
       helpTitle="Words to Find"
       helpContent="These are the words hidden in the letter grid. Click on a word to hear it pronounced and highlight it as your current target."

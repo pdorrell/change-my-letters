@@ -15,10 +15,8 @@ export const FinderScoreAndControlsPanel: React.FC<FinderScoreAndControlsPanelPr
       helpTitle="Score & Controls"
       helpContent="* **Score** - shows your correct/total attempts\n* **Retry** - start over with the same words\n* **New** - get a new set of words to find"
     >
-      <div className="finder-score-and-controls-panel">
-        <FinderScoreView finder={finder} />
-        <FinderControls finder={finder} />
-      </div>
+      <FinderScoreView finder={finder} />
+      <FinderControls finder={finder} />
     </Panel>
   );
 });

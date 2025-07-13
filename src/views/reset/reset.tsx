@@ -20,13 +20,11 @@ export const ResetControls: React.FC<ResetControlsProps> = observer(({ resetInte
       helpTitle="Reset Controls"
       helpContent="Use these controls to filter and select your new starting word. The filter options let you narrow down words by length and type. The 'Choose Random' button will randomly select a word from the filtered results, which is helpful when you can't decide or want to be surprised."
     >
-      <div className="reset-controls">
-        <div className="reset-controls-left">
-          <FilterControls filter={resetInteraction.filter} />
-        </div>
-        <div className="reset-controls-right">
-          <ActionButton action={resetInteraction.randomAction}>Choose Random</ActionButton>
-        </div>
+      <div className="reset-controls-left">
+        <FilterControls filter={resetInteraction.filter} />
+      </div>
+      <div className="reset-controls-right">
+        <ActionButton action={resetInteraction.randomAction}>Choose Random</ActionButton>
       </div>
     </Panel>
   );

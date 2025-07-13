@@ -16,16 +16,14 @@ export const WordToFindPanel: React.FC<WordToFindPanelProps> = observer(({ finde
       helpTitle="Target Words"
       helpContent="* Click on a word button to hear the target word you need to find\n* **Auto** - automatically choose the next word to find after finding one"
     >
-      <div className="finder-panel">
-        <h3 title="Click to hear a word that you have to find">Find:</h3>
-        <div className={clsx('word-to-find-buttons', 'touch-interactive-area')}>
-          {finder.wordsToFind.map((wordToFind, index) => (
-            <WordToFindView key={index} wordToFind={wordToFind} />
-          ))}
-        </div>
-        <div className="finder-auto-checkbox">
-          <ValueCheckbox value={finder.auto} />
-        </div>
+      <h3 title="Click to hear a word that you have to find">Find:</h3>
+      <div className={clsx('word-to-find-buttons', 'touch-interactive-area')}>
+        {finder.wordsToFind.map((wordToFind, index) => (
+          <WordToFindView key={index} wordToFind={wordToFind} />
+        ))}
+      </div>
+      <div className="finder-auto-checkbox">
+        <ValueCheckbox value={finder.auto} />
       </div>
     </Panel>
   );

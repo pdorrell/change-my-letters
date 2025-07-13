@@ -23,16 +23,14 @@ export const PronunciationActivityControlPanel: React.FC<PronunciationActivityCo
       helpTitle="Filter Controls & Auto"
       helpContent="* **Filter text** sub-string to match against word\n* **Match:**\n  * **start** match sub-string to start of word\n  * **end** match sub-string to end of word\n  * **any** match sub-string anywhere in word\n* **Auto** start auto-playing the words"
     >
-      <div className="pronunciation-control-panel">
-        <div className="filter-panel">
-          <FilterControls filter={pronunciation.filter} />
-        </div>
+      <div className="filter-panel">
+        <FilterControls filter={pronunciation.filter} />
+      </div>
 
-        <div className="auto-controls">
-          <ActionButton action={pronunciation.autoplayAction}>
-            {pronunciation.autoplaying ? 'Stop' : 'Auto'}
-          </ActionButton>
-        </div>
+      <div className="auto-controls">
+        <ActionButton action={pronunciation.autoplayAction}>
+          {pronunciation.autoplaying ? 'Stop' : 'Auto'}
+        </ActionButton>
       </div>
     </Panel>
   );

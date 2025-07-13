@@ -14,7 +14,7 @@ export const FinderControls: React.FC<FinderControlsProps> = observer(({ finder 
 
   return (
     <Panel 
-      visible={false} 
+      visible={true} 
       inspectorTitle="FinderControls"
       helpTitle="Row Finder Controls"
       helpContent="* **Difficulty** - easy (words go left-to-right) or hard (words can go in any direction)\n* **Forwards Only** - restrict to left-to-right words only\n* **Auto** - automatically select next word to find\n* **New** - generate a new letter grid with new words"
