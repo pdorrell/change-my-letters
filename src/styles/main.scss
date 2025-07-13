@@ -440,6 +440,12 @@ button {
   background-color: transparent; // Transparent background
   position: relative; // For help button positioning
   
+  // Flexbox layout with row direction and centering
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  
   // Visible panel variant with light gray background and border
   &.panel--visible {
     background-color: #f8f9fa;
