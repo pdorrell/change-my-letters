@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx';
-import { WordToFind } from './word-to-find';
+import { WordToFind } from '@/models/finders/word-to-find';
 
 export class WordsToFind {
   words: WordToFind[] = [];

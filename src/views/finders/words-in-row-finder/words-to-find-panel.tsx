@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 import { WordsInRowFinder } from '@/models/finders/words-in-row-finder/words-in-row-finder';
-import { WordToFindView } from '../word-to-find-view';
+import { WordToFindView } from '@/views/finders/word-to-find-view';
 import { Panel } from '@/lib/views/panel';
 import { Help } from '@/lib/components/help';
 
