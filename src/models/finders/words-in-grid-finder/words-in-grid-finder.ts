@@ -176,9 +176,6 @@ export class WordsInGridFinder implements RangeSelectable {
     this.taskStarted = false;
   }
 
-  destroy(): void {
-  }
-
   // RangeSelectable implementation
   get canSelect(): boolean {
     return this.lettersGrid !== null && this.wordsToFind?.activeWord !== null;

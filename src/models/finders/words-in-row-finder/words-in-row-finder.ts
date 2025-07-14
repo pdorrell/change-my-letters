@@ -205,7 +205,4 @@ export class WordsInRowFinder implements RangeSelectable {
     this.lettersRow.wrongSelectionStart = null;
   }
 
-  destroy(): void {
-    this.clearAutoSelection();
-  }
 }
