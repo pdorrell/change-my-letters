@@ -1,7 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
-import { WordToFind } from '@/models/finders/words-in-row-finder/word-to-find';
+import { WordToFind } from '@/models/finders/word-to-find';
 
 interface WordToFindViewProps {
   wordToFind: WordToFind;

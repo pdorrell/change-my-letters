@@ -1,8 +1,8 @@
 import { makeAutoObservable, computed } from 'mobx';
 import { DifficultyType } from './types';
 import { LettersGrid } from './letters-grid';
-import { WordsToFind } from './words-to-find';
-import { WordToFind } from './word-to-find';
+import { WordsToFind } from '../words-to-find';
+import { WordToFind } from '../word-to-find';
 import { selectWordsForGrid, populateGrid } from './populate-grid';
 import { WordSayerInterface } from '@/models/word-sayer-interface';
 import { ValueModel } from '@/lib/models/value-models';
