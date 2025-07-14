@@ -50,13 +50,10 @@ export const MakeNextWordPanel: React.FC<MakeNextWordPanelProps> = observer(({
       left={true}
       inspectorTitle="MakeNextWordPanel"
     >
-      <Help title={hasWord ? (isCorrectWord ? "Correct Word!" : "Result Word") : "Next Word Area"}>{`
-        ${hasWord
-          ? isCorrectWord
-            ? "🎉 Congratulations! You've built a correct word. This word will be added to your collection. You can delete it using the ✕ button if needed, or start building a new word."
-            : "This is the word you've created. If it's not a recognized word, you can try building a different word. Use the ✕ button to delete this result, or start building a new word."
-          : "This area will show the result when you finish building a word. Keep adding letters to your current word above to see the result appear here."
-        }`}
+      <Help title={"Result Word"}>{`
+      * The word resulting from changing the current word:
+        - if correct: appears in green and then the current word advances to be the result word
+      - if incorrect: appears in pink with a "X" button (press X to delete the incorrect word and try again)`}
       </Help>
       <div className="make-word-row">
         <div className={clsx('word-display', 'touch-interactive-area', backgroundClass)}>

@@ -20,10 +20,14 @@ export const FinderControls: React.FC<FinderControlsProps> = observer(({ finder 
       inspectorTitle="FinderControls"
     >
       <Help title="Row Finder Controls">{`
-        * **Difficulty** - easy (words go left-to-right) or hard (words can go in any direction)
-        * **Forwards Only** - restrict to left-to-right words only
-        * **Auto** - automatically select next word to find
-        * **New** - generate a new letter grid with new words`}
+      * **Difficulty**
+        - **easy** - extra letters are randomly chosen from alphabet
+        - **hard** - extra letters more likely to be from the actual word
+      * **Forwards Only**
+        - ☑ word to find is written left to right
+        - ☐ word to find might be written backwards
+      * **Auto** - automatically select next word to find
+      * **New** - start again with a new set of words`}
       </Help>
       <div className={clsx('value-radio-buttons-container', { disabled: settingsDisabled })} title={finder.difficulty.tooltip}>
         <span className="radio-label">{finder.difficulty.label}</span>

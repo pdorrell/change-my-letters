@@ -15,7 +15,8 @@ export const WordsToFindPanel: React.FC<WordsToFindPanelProps> = observer(({ fin
       inspectorTitle="WordsToFindPanel"
     >
       <Help title="Words to Find">{`
-        These are the words hidden in the letter grid. Click on a word to hear it pronounced and highlight it as your current target.`}
+      * Click on a "?" button to select the next word to find.
+      * You can click the button again to hear the word again.`}
       </Help>
       <div className={clsx('words-to-find-panel', 'touch-interactive-area')}>
         {finder.wordsToFind.words.map((wordToFind, index) => (

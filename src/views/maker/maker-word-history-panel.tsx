@@ -39,7 +39,7 @@ export const MakerWordHistoryPanel: React.FC<MakerWordHistoryPanelProps> = obser
     >
       {showHelp && (
         <Help title="Word History">{`
-          These are words you've completed building. They show your building progress and you can reference them as you continue building new words. The most recent completed word appears at the bottom of the history.`}
+          The words that you have made starting from the initial word.`}
         </Help>
       )}
       <div className="make-word-row">

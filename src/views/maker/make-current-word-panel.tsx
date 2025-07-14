@@ -82,10 +82,11 @@ export const MakeCurrentWordPanel: React.FC<MakeCurrentWordPanelProps> = observe
       left={true}
       inspectorTitle="MakeCurrentWordPanel"
     >
-      <Help title="Current Word Builder">{`
-        * Click on letters to replace or delete them
-        * Click on '+' to insert new letters at any position
-        * **New Word** - start building a fresh word (saves current word to history if it has letters)`}
+      <Help title="Maker Current">{`
+      * Word display:
+        * Click on a letter to replace or delete
+        * Click on '+' to insert a new letter
+      * **New Word** Click to hear the new word that you have to make`}
       </Help>
       <div className="make-word-row">
         <div className={clsx('word-display', 'touch-interactive-area', wordInteraction.backgroundClass)}>

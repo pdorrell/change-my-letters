@@ -14,8 +14,8 @@ export const LettersRowPanel: React.FC<LettersRowPanelProps> = observer(({ finde
       visible={false}
       inspectorTitle="LettersRowPanel"
     >
-      <Help title="Letter Grid">{`
-        Click and drag to select letters that spell out the target words. Words can be found horizontally, vertically, or diagonally depending on difficulty setting.`}
+      <Help title="Letters Row">{`
+        Spell the word to find by clicking on the first letter of the word and dragging until you reach the last letter.`}
       </Help>
       <div className={clsx('letters-row-panel', 'touch-interactive-area')}>
         <LettersRowView

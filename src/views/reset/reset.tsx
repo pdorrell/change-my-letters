@@ -20,8 +20,13 @@ export const ResetControls: React.FC<ResetControlsProps> = observer(({ resetInte
       visible={true}
       inspectorTitle="ResetControls"
     >
-      <Help title="Reset Controls">{`
-        Use these controls to filter and select your new starting word. The filter options let you narrow down words by length and type. The 'Choose Random' button will randomly select a word from the filtered results, which is helpful when you can't decide or want to be surprised.`}
+      <Help title="Filter Controls & Choose Random">{`
+        * **Filter text** sub-string to match against word
+        * **Match:**
+          * **start** match sub-string to start of word
+          * **end** match sub-string to end of word
+          * **any** match sub-string anywhere in word
+        * **Choose Random** choose a random word to reset`}
       </Help>
       <FilterControls filter={resetInteraction.filter} />
       <GroupRight>
@@ -54,7 +59,7 @@ export const ResetWordChoice: React.FC<ResetWordChoiceProps> = observer(({ reset
       inspectorTitle="ResetWordChoice"
     >
       <Help title="Word Selection">{`
-        This is your word selection area. All available words that match your filter criteria are displayed here. Click on any word to choose it as your new starting word. This will reset the current page (Changer or Maker) and take you back to begin working with your selected word.`}
+      Click on a word to reset with that word.`}
       </Help>
       <div className="reset-word-choice">
         {filteredWords.length > 0 ? (
