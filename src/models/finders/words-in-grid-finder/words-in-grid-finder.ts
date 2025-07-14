@@ -64,12 +64,12 @@ export class WordsInGridFinder implements RangeSelectable {
 
   get canChangeSettings(): boolean {
     // Can change settings before task starts or after completion
-    if (!this.taskStarted || this.wordsToFind?.completed) {
+    if (!this.taskStarted || this.wordsToFind.completed) {
       return true;
     }
 
     // During task: can't change settings if user is actively trying to find a word
-    const activeWord = this.wordsToFind?.activeWord;
+    const activeWord = this.wordsToFind.activeWord;
     if (activeWord && activeWord.found !== true) {
       return false;
     }
@@ -84,7 +84,7 @@ export class WordsInGridFinder implements RangeSelectable {
   }
 
   get showNewButton(): boolean {
-    return this.wordsToFind?.completed ?? false;
+    return this.wordsToFind.completed;
   }
 
   new(): void {
@@ -114,17 +114,17 @@ export class WordsInGridFinder implements RangeSelectable {
       this.taskStarted = true;
     }
 
-    this.wordsToFind?.setActiveWord(wordToFind);
+    this.wordsToFind.setActiveWord(wordToFind);
 
     // Clear any previous wrong selections
-    this.lettersGrid?.clearTemporarySelections();
+    this.lettersGrid.clearTemporarySelections();
 
     // Pronounce the word
     await this.wordSayer.say(wordToFind.word);
   }
 
   handleGridSelection(selectedText: string): void {
-    if (!this.wordsToFind || !this.lettersGrid || !this.wordsToFind.activeWord) {
+    if (!this.wordsToFind.activeWord) {
       return;
     }
 
@@ -158,8 +158,6 @@ export class WordsInGridFinder implements RangeSelectable {
   }
 
   private async advanceToNextWord(): Promise<void> {
-    if (!this.wordsToFind) return;
-
     const nextWord = this.wordsToFind.nextUnfoundWord;
     if (nextWord) {
       await this.selectWordToFind(nextWord);
@@ -167,36 +165,36 @@ export class WordsInGridFinder implements RangeSelectable {
   }
 
   get completed(): boolean {
-    return this.wordsToFind?.completed ?? false;
+    return this.wordsToFind.completed;
   }
 
   reset(): void {
-    this.wordsToFind?.reset();
-    this.lettersGrid?.reset();
+    this.wordsToFind.reset();
+    this.lettersGrid.reset();
     this.taskStarted = false;
   }
 
   // RangeSelectable implementation
   get canSelect(): boolean {
-    return this.lettersGrid !== null && this.wordsToFind?.activeWord !== null;
+    return this.wordsToFind.activeWord !== null;
   }
 
   startSelection(index: number): void {
-    if (!this.lettersGrid || !this.canSelect) return;
+    if (!this.canSelect) return;
 
     const position = this.indexToGridPosition(index);
     this.lettersGrid.startSelection(position, this.forwardsOnly.value);
   }
 
   updateSelection(index: number): void {
-    if (!this.lettersGrid || !this.canSelect) return;
+    if (!this.canSelect) return;
 
     const position = this.indexToGridPosition(index);
     this.lettersGrid.updateSelection(position);
   }
 
   finishSelection(): void {
-    if (!this.lettersGrid || !this.canSelect) return;
+    if (!this.canSelect) return;
 
     const selectedText = this.lettersGrid.finishSelection();
     if (selectedText) {
@@ -205,13 +203,12 @@ export class WordsInGridFinder implements RangeSelectable {
   }
 
   clearSelection(): void {
-    if (!this.lettersGrid) return;
     this.lettersGrid.cancelSelection();
   }
 
   // Helper methods for converting between 1D index and 2D grid position
   private indexToGridPosition(index: number): { row: number; col: number } {
-    const gridSize = this.lettersGrid?.gridSize || 10;
+    const gridSize = this.lettersGrid.gridSize;
     return {
       row: Math.floor(index / gridSize),
       col: index % gridSize
@@ -219,7 +216,7 @@ export class WordsInGridFinder implements RangeSelectable {
   }
 
   private gridPositionToIndex(row: number, col: number): number {
-    const gridSize = this.lettersGrid?.gridSize || 10;
+    const gridSize = this.lettersGrid.gridSize;
     return row * gridSize + col;
   }
 }
