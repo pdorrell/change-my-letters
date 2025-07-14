@@ -41,9 +41,6 @@ export const MakeNextWordPanel: React.FC<MakeNextWordPanelProps> = observer(({
     }
   }
 
-  const isCorrectWord = backgroundClass.includes('correct');
-  const hasWord = word !== null;
-
   return (
     <Panel
       visible={false}
