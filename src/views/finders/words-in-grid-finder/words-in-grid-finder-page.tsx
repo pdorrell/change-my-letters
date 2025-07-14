@@ -11,24 +11,6 @@ interface WordsInGridFinderPageProps {
 }
 
 export const WordsInGridFinderPage: React.FC<WordsInGridFinderPageProps> = observer(({ finder }) => {
-  // Show error state if finder failed to initialize
-  if (!finder.wordsToFind || !finder.lettersGrid) {
-    return (
-      <Inspectable name="WordsInGridFinderPage">
-        <div className="words-in-grid-finder-page">
-          <FinderControls finder={finder} />
-
-          <div className="instructions-panel">
-            <p style={{ color: '#dc3545' }}>
-              Unable to create Words in Grid finder: not enough words available.
-              Please try using a larger word list.
-            </p>
-          </div>
-        </div>
-      </Inspectable>
-    );
-  }
-
   return (
     <Inspectable name="WordsInGridFinderPage">
       <div className="words-in-grid-finder-page">

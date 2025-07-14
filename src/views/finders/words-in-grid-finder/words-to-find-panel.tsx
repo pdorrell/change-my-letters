@@ -11,8 +11,6 @@ interface WordsToFindPanelProps {
 }
 
 export const WordsToFindPanel: React.FC<WordsToFindPanelProps> = observer(({ finder }) => {
-  if (!finder.wordsToFind) return null;
-
   return (
     <Panel
       visible={true}

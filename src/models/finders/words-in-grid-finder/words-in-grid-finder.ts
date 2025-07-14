@@ -18,12 +18,12 @@ export class WordsInGridFinder implements RangeSelectable {
   forwardsOnly: ValueModel<boolean>;
   auto: ValueModel<boolean>;
 
-  wordsToFind: WordsToFind | null = null;
-  lettersGrid: LettersGrid | null = null;
+  wordsToFind: WordsToFind;
+  lettersGrid: LettersGrid;
   taskStarted: boolean = false;
   newWordsCallback?: () => string[];
 
-  constructor(wordSayer: WordSayerInterface, emotionalWordSayer: EmotionalWordSayer<HappyOrSad>, words: string[] = [], newWordsCallback?: () => string[]) {
+  constructor(wordSayer: WordSayerInterface, emotionalWordSayer: EmotionalWordSayer<HappyOrSad>, words: string[], newWordsCallback?: () => string[]) {
     this.wordSayer = wordSayer;
     this.emotionalWordSayer = emotionalWordSayer;
     this.newWordsCallback = newWordsCallback;
@@ -52,10 +52,14 @@ export class WordsInGridFinder implements RangeSelectable {
       showNewButton: computed
     });
 
-    // Initialize with words if provided
-    if (words.length > 0) {
-      this.initializeWithWords(words);
-    }
+    const selectedWords = selectWordsForGrid(words);
+
+    // Populate the grid with the selected words
+    const populatedGrid = populateGrid(selectedWords, this.difficulty.value, this.forwardsOnly.value);
+
+    // Create the models
+    this.wordsToFind = new WordsToFind(selectedWords);
+    this.lettersGrid = new LettersGrid(populatedGrid.grid, populatedGrid.placedWords);
   }
 
   get canChangeSettings(): boolean {
@@ -81,18 +85,6 @@ export class WordsInGridFinder implements RangeSelectable {
 
   get showNewButton(): boolean {
     return this.wordsToFind?.completed ?? false;
-  }
-
-  private initializeWithWords(words: string[]): void {
-    // Select words for the grid
-    const selectedWords = selectWordsForGrid(words);
-
-    // Populate the grid with the selected words
-    const populatedGrid = populateGrid(selectedWords, this.difficulty.value, this.forwardsOnly.value);
-
-    // Create the models
-    this.wordsToFind = new WordsToFind(selectedWords);
-    this.lettersGrid = new LettersGrid(populatedGrid.grid, populatedGrid.placedWords);
   }
 
   new(): void {
@@ -185,9 +177,6 @@ export class WordsInGridFinder implements RangeSelectable {
   }
 
   destroy(): void {
-    this.wordsToFind?.destroy();
-    this.wordsToFind = null;
-    this.lettersGrid = null;
   }
 
   // RangeSelectable implementation
