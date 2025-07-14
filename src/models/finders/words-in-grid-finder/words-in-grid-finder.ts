@@ -21,9 +21,9 @@ export class WordsInGridFinder implements RangeSelectable {
   wordsToFind: WordsToFind;
   lettersGrid: LettersGrid;
   taskStarted: boolean = false;
-  newWordsCallback?: () => string[];
+  newWordsCallback: () => string[];
 
-  constructor(wordSayer: WordSayerInterface, emotionalWordSayer: EmotionalWordSayer<HappyOrSad>, words: string[], newWordsCallback?: () => string[]) {
+  constructor(wordSayer: WordSayerInterface, emotionalWordSayer: EmotionalWordSayer<HappyOrSad>, words: string[], newWordsCallback: () => string[]) {
     this.wordSayer = wordSayer;
     this.emotionalWordSayer = emotionalWordSayer;
     this.newWordsCallback = newWordsCallback;
@@ -88,10 +88,6 @@ export class WordsInGridFinder implements RangeSelectable {
   }
 
   new(): void {
-    if (!this.newWordsCallback) {
-      throw new Error('WordsInGridFinder not initialized with newWordsCallback');
-    }
-
     // Get all available words and select words for the grid
     const allWords = this.newWordsCallback();
     const selectedWords = selectWordsForGrid(allWords);

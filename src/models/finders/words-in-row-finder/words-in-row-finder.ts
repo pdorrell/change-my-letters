@@ -19,10 +19,10 @@ export class WordsInRowFinder implements RangeSelectable {
   lettersRow: LettersRow;
   wordsToFind: WordsToFind;
   taskStarted: boolean = false;
-  newWordsCallback?: () => string[];
+  newWordsCallback: () => string[];
   autoTimeoutId: number | null = null;
 
-  constructor(wordSayer: WordSayerInterface, emotionalWordSayer: EmotionalWordSayer<HappyOrSad>, words: string[] = [], newWordsCallback?: () => string[]) {
+  constructor(wordSayer: WordSayerInterface, emotionalWordSayer: EmotionalWordSayer<HappyOrSad>, words: string[] = [], newWordsCallback: () => string[]) {
     this.wordSayer = wordSayer;
     this.emotionalWordSayer = emotionalWordSayer;
     this.newWordsCallback = newWordsCallback;
@@ -179,12 +179,8 @@ export class WordsInRowFinder implements RangeSelectable {
   }
 
   new(): void {
-    if (this.newWordsCallback) {
-      const newWords = this.newWordsCallback();
-      this.setWords(newWords);
-    } else {
-      this.reset();
-    }
+    const newWords = this.newWordsCallback();
+    this.setWords(newWords);
   }
 
   setWords(words: string[]): void {

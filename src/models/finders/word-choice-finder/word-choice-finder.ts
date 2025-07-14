@@ -17,21 +17,17 @@ export class WordChoiceFinder {
   wordsToChoose: WordToChoose[];
   correct: number = 0;
   tried: number = 0;
-  newWordsCallback?: () => string[];
+  newWordsCallback: () => string[];
   auto: ValueModel<boolean>;
-  emotionalWordSayer?: EmotionalWordSayer<HappyOrSad>;
+  emotionalWordSayer: EmotionalWordSayer<HappyOrSad>;
   confirmation: ConfirmationModel;
 
-  constructor(wordSayer: WordSayerInterface, words?: string[], newWordsCallback?: () => string[], emotionalWordSayer?: EmotionalWordSayer<HappyOrSad>) {
+  constructor(wordSayer: WordSayerInterface, words: string[], newWordsCallback: () => string[], emotionalWordSayer: EmotionalWordSayer<HappyOrSad>) {
     this.wordSayer = wordSayer;
     this.newWordsCallback = newWordsCallback;
     this.emotionalWordSayer = emotionalWordSayer;
 
-    if (words) {
-      this.words = words.slice();
-    } else {
-      this.words = [];
-    }
+    this.words = words.slice();
 
     this.wordsToFind = this.words.map(word => new WordToFind(this, word));
     this.wordsToChoose = shuffle(this.words).map(word => new WordToChoose(this, word));
@@ -136,9 +132,7 @@ export class WordChoiceFinder {
     if (this.finished) {
       if (this.correct === this.wordsToFind.length) {
         // Play a random happy word for perfect score
-        if (this.emotionalWordSayer) {
-          await this.emotionalWordSayer.playRandomWord('happy');
-        }
+        await this.emotionalWordSayer.playRandomWord('happy');
       }
     }
   }
@@ -154,12 +148,8 @@ export class WordChoiceFinder {
   }
 
   new(): void {
-    if (this.newWordsCallback) {
-      const newWords = this.newWordsCallback();
-      this.setWords(newWords);
-    } else {
-      this.retry();
-    }
+    const newWords = this.newWordsCallback();
+    this.setWords(newWords);
   }
 
   setWords(words: string[]): void {
