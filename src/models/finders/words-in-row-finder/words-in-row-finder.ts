@@ -188,7 +188,6 @@ export class WordsInRowFinder implements RangeSelectable {
   }
 
   setWords(words: string[]): void {
-    this.wordsToFind.destroy();
     this.wordsToFind = new WordsToFind(words);
     this.reset();
   }
@@ -208,6 +207,5 @@ export class WordsInRowFinder implements RangeSelectable {
 
   destroy(): void {
     this.clearAutoSelection();
-    this.wordsToFind.destroy();
   }
 }

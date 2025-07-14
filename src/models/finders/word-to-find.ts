@@ -29,8 +29,4 @@ export class WordToFind {
     if (this.active) return 'active';
     return 'waiting';
   }
-
-  destroy(): void {
-    // No cleanup needed
-  }
 }

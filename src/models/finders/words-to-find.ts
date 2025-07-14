@@ -62,8 +62,4 @@ export class WordsToFind {
     });
     this.activeWord = null;
   }
-
-  destroy(): void {
-    this.words.forEach(word => word.destroy());
-  }
 }
