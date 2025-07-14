@@ -6,7 +6,7 @@ import { HappyOrSad } from '@/models/audio/emotion-types';
 
 interface FinderInterface {
   wordSayer: WordSayerInterface;
-  emotionalWordSayer?: EmotionalWordSayer<HappyOrSad>;
+  emotionalWordSayer: EmotionalWordSayer<HappyOrSad>;
   wordChangerToFind: WordToFind | null;
 }
 

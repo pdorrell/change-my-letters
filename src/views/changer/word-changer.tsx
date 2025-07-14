@@ -18,7 +18,7 @@ import { Help } from '@/lib/components/help';
 /**
  * View component for displaying the word changer
  */
-interface WordChangerPanelProps { wordInteraction: WordInteraction; maxWordLength?: number; }
+interface WordChangerPanelProps { wordInteraction: WordInteraction; maxWordLength: number; }
 
 export const WordChangerPanel: React.FC<WordChangerPanelProps> = observer(({ wordInteraction, maxWordLength }) => {
 
@@ -61,14 +61,6 @@ export const WordChangerPanel: React.FC<WordChangerPanelProps> = observer(({ wor
     };
   }, [wordInteraction.menuManager]);
 
-  // Get maximum word length
-  const getMaxWordLength = (): number => {
-    return maxWordLength || 5; // Use provided maxWordLength or fallback to 5
-  };
-
-  // Get the maximum word length
-  const maxLength = getMaxWordLength();
-
   function getPositionView(index : number): React.ReactElement {
     const positionInteraction: PositionInteraction | null = wordInteraction.getActivePositionInteraction(index);
     return positionInteraction ? <PositionView positionInteraction={positionInteraction} /> : <PositionPlaceholder/>;
@@ -90,7 +82,7 @@ export const WordChangerPanel: React.FC<WordChangerPanelProps> = observer(({ wor
       </Help>
       <div className={clsx('word-display', 'touch-interactive-area', { 'previously-visited': wordInteraction.word.previouslyVisited })}>
         {/* Render alternating sequence of positions and letters for the word changer */}
-        { range(maxLength).map(index => (
+        { range(maxWordLength).map(index => (
           <React.Fragment key={`position--${index}`}>
             { getPositionView(index) }
             { getLetterView(index) }
