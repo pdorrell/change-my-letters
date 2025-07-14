@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { WordsInGridFinder } from '@/models/finders/words-in-grid-finder/words-in-grid-finder';
 import { FinderControls } from './finder-controls';
 import { LettersGridPanel } from './letters-grid-panel';
-import { WordsToFindPanel } from './words-to-find-panel';
+import { WordsToFindPanel } from '@/views/finders/words-to-find-panel';
 import { Inspectable } from '@/lib/inspector';
 
 interface WordsInGridFinderPageProps {

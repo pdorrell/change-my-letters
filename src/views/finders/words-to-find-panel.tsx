@@ -1,13 +1,19 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
-import { WordsInGridFinder } from '@/models/finders/words-in-grid-finder/words-in-grid-finder';
+import { WordsToFind } from '@/models/finders/words-to-find';
+import { WordToFind } from '@/models/finders/word-to-find';
 import { WordToFindView } from '@/views/finders/word-to-find-view';
 import { Panel } from '@/lib/views/panel';
 import { Help } from '@/lib/components/help';
 
+interface WordsToFindFinderInterface {
+  wordsToFind: WordsToFind;
+  selectWordToFind(wordToFind: WordToFind): void;
+}
+
 interface WordsToFindPanelProps {
-  finder: WordsInGridFinder;
+  finder: WordsToFindFinderInterface;
 }
 
 export const WordsToFindPanel: React.FC<WordsToFindPanelProps> = observer(({ finder }) => {
