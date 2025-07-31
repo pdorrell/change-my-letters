@@ -97,8 +97,10 @@ export class ApplicationLoader {
           // Create the app state with the loaded data and the injected AudioFilePlayer
           this.appState = new AppState(initialWordString, wordGraph, this.version, this.audioFilePlayer);
 
-          // In local dev mode, load the review pronunciation state
-          this.loadLocalDevReviewState();
+          // In local dev mode, load the review pronunciation state (non-blocking)
+          this.loadLocalDevReviewState().catch(error => 
+            console.warn('Failed to load local dev review state:', error)
+          );
 
           this.isLoading = false;
         } else {
