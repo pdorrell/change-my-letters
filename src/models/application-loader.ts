@@ -4,7 +4,7 @@ import { WordLoader } from '@/models/word-loader';
 import { DataFileFetcherInterface } from '@/lib/data-fetching/data-file-fetcher-interface';
 import { WordGraph } from '@/models/word-graph';
 import { AudioFilePlayerInterface } from '@/models/audio/audio-file-player-interface';
-import localDevReviewState from '@/data/local_dev/review-pronunciation-state.json';
+// Using dynamic fetch for JSON to avoid Vite build issues
 
 /**
  * ApplicationLoader handles asynchronous loading of application data
@@ -120,11 +120,19 @@ export class ApplicationLoader {
   /**
    * Load local dev review pronunciation state if available
    */
-  private loadLocalDevReviewState(): void {
+  private async loadLocalDevReviewState(): Promise<void> {
     try {
       // Only load in development environment
-      if (process.env.NODE_ENV === 'development' && this.appState && localDevReviewState) {
-        this.appState.reviewPronunciation.setReviewState(localDevReviewState);
+      if (process.env.NODE_ENV === 'development' && this.appState) {
+        try {
+          const response = await fetch('/src/data/local_dev/review-pronunciation-state.json');
+          if (response.ok) {
+            const localDevReviewState = await response.json();
+            this.appState.reviewPronunciation.setReviewState(localDevReviewState);
+          }
+        } catch (fetchError) {
+          console.warn('Could not fetch local dev review state:', fetchError);
+        }
       }
     } catch (error) {
       console.warn('Could not load local dev review state:', error);

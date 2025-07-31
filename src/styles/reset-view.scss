@@ -49,11 +49,6 @@
   margin: 0 auto;
   padding: 0 20px 20px 20px;
   box-sizing: border-box; // Include padding in width calculation
-  
-  @media (max-width: 480px) {
-    padding: 0 10px 10px 10px; // Reduce padding on small screens
-  }
-  
   background-color: #fff;
   border: 1px solid #eee;
   border-radius: 8px;
@@ -63,6 +58,10 @@
   // Allow horizontal scrolling if needed
   line-height: 2;
   box-sizing: border-box;
+  
+  @media (max-width: 480px) {
+    padding: 0 10px 10px 10px; // Reduce padding on small screens
+  }
   
   @media (max-width: 480px) {
     padding: 10px; // Reduce padding on small screens
