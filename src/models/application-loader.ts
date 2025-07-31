@@ -98,7 +98,7 @@ export class ApplicationLoader {
           this.appState = new AppState(initialWordString, wordGraph, this.version, this.audioFilePlayer);
 
           // In local dev mode, load the review pronunciation state (non-blocking)
-          this.loadLocalDevReviewState().catch(error => 
+          this.loadLocalDevReviewState().catch(error =>
             console.warn('Failed to load local dev review state:', error)
           );
 

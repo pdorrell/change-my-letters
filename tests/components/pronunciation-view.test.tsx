@@ -74,7 +74,7 @@ describe('Pronunciation Pages', () => {
 
     it('calls resetAllToUnreviewed when button is clicked', () => {
       const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-      
+
       renderPronunciationComponent(true);
 
       // Set up some state to reset
@@ -92,13 +92,13 @@ describe('Pronunciation Pages', () => {
 
       expect(testWords[0].reviewed).toBe(false);
       expect(testWords[1].soundsWrong).toBe(false);
-      
+
       consoleSpy.mockRestore();
     });
 
     it('calls resetAllToOK when button is clicked', () => {
       const consoleSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
-      
+
       renderPronunciationComponent(true);
 
       const resetButton = screen.getByText('🔄 all OK');
@@ -110,7 +110,7 @@ describe('Pronunciation Pages', () => {
         expect(word.reviewed).toBe(true);
         expect(word.soundsWrong).toBe(false);
       });
-      
+
       consoleSpy.mockRestore();
     });
   });
@@ -370,7 +370,7 @@ describe('Pronunciation Pages', () => {
 
       expect(reviewWordSpy).toHaveBeenCalledWith(testWords[0]);
       expect(audioFilePlayer.playedFiles).toContain('words/cat');
-      
+
       consoleSpy.mockRestore();
     });
 
