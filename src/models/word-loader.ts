@@ -38,11 +38,11 @@ export class WordLoader {
       const data = JSON.parse(json);
       wordGraph.loadFromJson(data);
     } catch (error) {
-      // Create an Error with a context-specific message and the original error as cause
+      // Create an Error with a context-specific message and the original error
       if (error instanceof ParseWordGraphJsonException) {
-        throw new Error(`[Word Graph Parser] ${error.message}`, { cause: error });
+        throw new Error(`[Word Graph Parser] ${error.message}`);
       } else {
-        throw new Error(`Error loading word graph from JSON`, { cause: error });
+        throw new Error(`Error loading word graph from JSON: ${error}`);
       }
     }
   }
@@ -74,7 +74,7 @@ export class WordLoader {
       return wordGraph;
     } catch (error) {
       // Even the sample graph could theoretically have an error
-      throw new Error('Error creating sample word graph', { cause: error });
+      throw new Error(`Error creating sample word graph: ${error}`);
     }
   }
 
@@ -86,7 +86,7 @@ export class WordLoader {
       // Use the dataFileFetcher to load the file
       return await this.dataFileFetcher.fetch(`/data/wordlists/${filename}`);
     } catch (error) {
-      throw new Error(`Error loading data file ${filename}`, { cause: error });
+      throw new Error(`Error loading data file ${filename}: ${error}`);
     }
   }
 
@@ -142,19 +142,11 @@ export class WordLoader {
             try {
               return this.createSampleWordGraph();
             } catch (sampleGraphError) {
-              throw new Error('Failed to load or create any word graph', {
-                cause: new Error('Multiple errors', {
-                  cause: { graphError, wordListError, sampleGraphError }
-                })
-              });
+              throw new Error(`Failed to load or create any word graph. Graph error: ${graphError}, Word list error: ${wordListError}, Sample graph error: ${sampleGraphError}`);
             }
           } else {
             // At least one file exists but has malformed data - fail without fallback
-            throw new Error('Failed to load word graph - data sources contain invalid data', {
-              cause: new Error('Multiple errors', {
-                cause: { graphError, wordListError }
-              })
-            });
+            throw new Error(`Failed to load word graph - data sources contain invalid data. Graph error: ${graphError}, Word list error: ${wordListError}`);
           }
         }
       }
@@ -164,8 +156,8 @@ export class WordLoader {
 
       return wordGraph;
     } catch (error) {
-      // Wrap any error in a standardized Error with cause
-      throw new Error('Error loading default word graph', { cause: error });
+      // Wrap any error in a standardized Error
+      throw new Error(`Error loading default word graph: ${error}`);
     }
   }
 }

@@ -26,10 +26,6 @@ describe('Pronunciation Pages', () => {
     }
   };
 
-  // Helper function to get the appropriate pronunciation instance based on review mode
-  const getPronunciation = (reviewMode: boolean = false) => {
-    return reviewMode ? reviewPronunciation : activityPronunciation;
-  };
 
   beforeEach(() => {
     audioFilePlayer = new AudioFilePlayerTestDouble('/assets/words/amazon_polly');

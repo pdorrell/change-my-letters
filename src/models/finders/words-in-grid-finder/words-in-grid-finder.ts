@@ -211,8 +211,4 @@ export class WordsInGridFinder implements RangeSelectable {
     };
   }
 
-  private gridPositionToIndex(row: number, col: number): number {
-    const gridSize = this.lettersGrid.gridSize;
-    return row * gridSize + col;
-  }
 }

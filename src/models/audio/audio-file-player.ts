@@ -108,7 +108,7 @@ export class AudioFilePlayer implements AudioFilePlayerInterface {
    * Note: This is a basic implementation for browser environment
    * In a real implementation, this might use fetch() to check file existence
    */
-  async verifyFiles(baseDirectory: string, expectedPaths: string[]): Promise<VerificationResult> {
+  async verifyFiles(_baseDirectory: string, expectedPaths: string[]): Promise<VerificationResult> {
     const missingFiles: string[] = [];
     const errors: string[] = [];
 
