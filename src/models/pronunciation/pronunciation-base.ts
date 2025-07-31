@@ -90,24 +90,20 @@ export abstract class PronunciationBase {
     }
   }
 
-  @action
   setAutoPlayWaitMillis(millis: number): void {
     this.autoPlayWaitMillis = millis;
   }
 
-  @action
   setFilterValue(value: string): void {
     this.filter.value.set(value);
   }
 
-  @action
   setFilterMatchOption(option: 'start' | 'end' | 'any'): void {
     this.filter.matchOption.set(option);
   }
 
 
   // Navigate to next word in filtered list
-  @action
   async gotoNextWord(): Promise<void> {
     const filtered = this.filteredWords;
     if (filtered.length === 0) return;
@@ -128,7 +124,6 @@ export abstract class PronunciationBase {
   }
 
   // Navigate to previous word in filtered list
-  @action
   async gotoPreviousWord(): Promise<void> {
     const filtered = this.filteredWords;
     if (filtered.length === 0) return;
@@ -149,14 +144,12 @@ export abstract class PronunciationBase {
   }
 
   // Start autoplay from next word (or first word if no word changer)
-  @action
   startAutoplay(): void {
     this.autoplaying = true;
     this.autoplayNext();
   }
 
   // Stop autoplay
-  @action
   stopAutoplay(): void {
     this.autoplaying = false;
     if (this.autoplayTimeoutId !== null) {

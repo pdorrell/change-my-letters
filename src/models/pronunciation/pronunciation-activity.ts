@@ -57,23 +57,19 @@ export class PronunciationActivity extends PronunciationBase {
     return new ButtonAction(handler, { tooltip });
   }
 
-  @action
   showMoreWords(): void {
     this.maxNumWordsToShow = this.maxNumWordsToShow * 2;
   }
 
-  @action
   resetMaxWordsToShow(): void {
     this.maxNumWordsToShow = this.defaultMaxNumWordsToShow;
   }
 
-  @action
   setFilterValue(value: string): void {
     super.setFilterValue(value);
     this.maxNumWordsToShow = this.defaultMaxNumWordsToShow;
   }
 
-  @action
   setFilterMatchOption(option: 'start' | 'end' | 'any'): void {
     super.setFilterMatchOption(option);
     this.maxNumWordsToShow = this.defaultMaxNumWordsToShow;

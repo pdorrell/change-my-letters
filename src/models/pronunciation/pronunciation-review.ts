@@ -245,7 +245,6 @@ export class PronunciationReview extends PronunciationBase {
     URL.revokeObjectURL(url);
   }
 
-  @action
   setReviewStateFilter(filter: ReviewStateFilterOption): void {
     this.stopAutoplay();
     this.reviewStateFilter = filter;
