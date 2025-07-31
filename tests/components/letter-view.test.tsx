@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, fireEvent, act } from '@testing-library/react';
 import { LetterView } from '@/views/Letter';
 import { LetterInteraction } from '@/models/interaction/letter';

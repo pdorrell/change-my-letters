@@ -1,4 +1,3 @@
-import React from 'react';
 import { MenuManagerInterface } from '@/lib/views/menu-manager-interface';
 
 /**

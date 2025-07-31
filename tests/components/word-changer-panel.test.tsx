@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from '@testing-library/react';
 import { WordChangerPanel } from '@/views/changer/word-changer';
 import { WordInteraction } from '@/models/interaction/word';

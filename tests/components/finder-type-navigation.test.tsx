@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { FinderTypeNavigation } from '@/views/finders/finder-type-navigation';
 import { Finders } from '@/models/finders/finders';
