@@ -66,8 +66,3 @@ After making a change, commit your change to the local repo (on whatever the cur
 with a commit message starting with "claude: " and describing the change made.
 
 Do not push to any remote repository.
-
-
-## Todo-based workflow
-
-See [todo-based-workflow.md].
