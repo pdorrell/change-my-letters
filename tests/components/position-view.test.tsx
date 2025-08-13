@@ -53,10 +53,10 @@ describe('PositionView', () => {
       positionInteraction.isInsertMenuOpen = true;
     });
 
-    render(<PositionView positionInteraction={positionInteraction} />);
+    const { container } = render(<PositionView positionInteraction={positionInteraction} />);
 
-    // Use the menuRef to access the LetterChoiceMenu
-    const menu = positionInteraction.insertMenuRef.current;
+    // Access the LetterChoiceMenu directly from the container
+    const menu = container.querySelector('.letter-choice-menu');
     expect(menu).toBeInTheDocument();
     expect(menu).toHaveClass('letter-choice-menu');
   });
@@ -67,21 +67,21 @@ describe('PositionView', () => {
       positionInteraction.isInsertMenuOpen = true;
     });
 
-    render(<PositionView positionInteraction={positionInteraction} />);
+    const { container } = render(<PositionView positionInteraction={positionInteraction} />);
 
-    // Use the menuRef to access the LetterChoiceMenu
-    const menu = positionInteraction.insertMenuRef.current;
+    // Access the LetterChoiceMenu directly from the container
+    const menu = container.querySelector('.letter-choice-menu');
     expect(menu).toBeInTheDocument();
 
     // Get the letter choice options
-    const letterOptions = menu?.querySelectorAll('.letter-choice-option');
+    const letterOptions = container.querySelectorAll('.letter-choice-option');
 
     // Should be at least one letter option
-    expect(letterOptions?.length).toBeGreaterThan(0);
+    expect(letterOptions.length).toBeGreaterThan(0);
 
     // Just verify the menu is displayed properly - clicking leads to complex model interactions
     // that are better tested at the integration level
-    expect(letterOptions?.[0]).toBeInTheDocument();
+    expect(letterOptions[0]).toBeInTheDocument();
   });
 
   it('handles positions that cannot insert letters', () => {

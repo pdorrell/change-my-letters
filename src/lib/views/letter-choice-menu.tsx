@@ -11,11 +11,10 @@ import { ButtonAction } from '@/lib/models/actions';
 interface LetterChoiceMenuProps {
   wordSelectionByLetter: WordSelectionByLetter;
   menuManager: MenuManagerInterface;
-  menuRef?: React.RefObject<HTMLDivElement>;
   deleteAction?: ButtonAction;
 }
 
-export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = observer(({ wordSelectionByLetter, menuManager, menuRef, deleteAction }) => {
+export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = observer(({ wordSelectionByLetter, menuManager, deleteAction }) => {
   const { options, onSelect } = wordSelectionByLetter;
   const menuContainerRef = useRef<HTMLDivElement>(null);
 
@@ -50,7 +49,6 @@ export const LetterChoiceMenu: React.FC<LetterChoiceMenuProps> = observer(({ wor
       role="menu"
     >
       <div
-        ref={menuRef}
         className="letter-choice-menu"
         onClick={handleMenuClick}
       >

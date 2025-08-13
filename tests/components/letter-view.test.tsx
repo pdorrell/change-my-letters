@@ -78,10 +78,10 @@ describe('LetterView', () => {
       throw new Error('Test Letter does not have expected replace changes');
     }
 
-    render(<LetterView letterInteraction={letterInteraction} />);
+    const { container } = render(<LetterView letterInteraction={letterInteraction} />);
 
-    // Use the menuRef to access the LetterChoiceMenu
-    const menu = letterInteraction.replaceMenuRef.current;
+    // Access the LetterChoiceMenu directly from the container
+    const menu = container.querySelector('.letter-choice-menu');
     expect(menu).toBeInTheDocument();
     expect(menu).toHaveClass('letter-choice-menu');
   });
@@ -92,21 +92,21 @@ describe('LetterView', () => {
       letterInteraction.isReplaceMenuOpen = true;
     });
 
-    render(<LetterView letterInteraction={letterInteraction} />);
+    const { container } = render(<LetterView letterInteraction={letterInteraction} />);
 
-    // Use the menuRef to access the LetterChoiceMenu
-    const menu = letterInteraction.replaceMenuRef.current;
+    // Access the LetterChoiceMenu directly from the container
+    const menu = container.querySelector('.letter-choice-menu');
     expect(menu).toBeInTheDocument();
 
     // Get the letter choice options
-    const letterOptions = menu?.querySelectorAll('.letter-choice-option');
+    const letterOptions = container.querySelectorAll('.letter-choice-option');
 
     // Should be at least one letter option (like 'b' to change 'cat' to 'bat')
-    expect(letterOptions?.length).toBeGreaterThan(0);
+    expect(letterOptions.length).toBeGreaterThan(0);
 
     // Just verify the menu is displayed properly - clicking it leads to complex model interactions
     // that are better tested at the integration level
-    expect(letterOptions?.[0]).toBeInTheDocument();
+    expect(letterOptions[0]).toBeInTheDocument();
   });
 
   it('opens menu when letter is clicked and has clickable actions', () => {

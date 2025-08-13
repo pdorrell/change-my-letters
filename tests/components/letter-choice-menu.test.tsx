@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen } from '@testing-library/react';
 import { LetterChoiceMenu } from '@/lib/views/letter-choice-menu';
 import { createTestWordChanger } from '@/tests/utils/test-app-builder';
 import { MenuManager } from '@/lib/views/menu-manager';
@@ -15,8 +15,6 @@ describe('LetterChoiceMenu', () => {
   let menuManager: MenuManager;
   let options: ReplaceChange[];
   let choiceHandler: TestChoiceHandler<Word>;
-  let menuRef: React.RefObject<HTMLDivElement>;
-
   beforeEach(() => {
     // Create WordChanger with AudioFilePlayerTestDouble
     wordChanger = createTestWordChanger();
@@ -43,9 +41,6 @@ describe('LetterChoiceMenu', () => {
 
     // Create choice handler
     choiceHandler = new TestChoiceHandler<Word>();
-
-    // Create menu ref for testing
-    menuRef = React.createRef<HTMLDivElement>();
   });
 
 
@@ -56,25 +51,23 @@ describe('LetterChoiceMenu', () => {
 
     const wordSelectionByLetter = new WordSelectionByLetter(options, choiceHandler.chooser);
 
-    render(
+    const { container } = render(
       <LetterChoiceMenu
         wordSelectionByLetter={wordSelectionByLetter}
         menuManager={menuManager}
-        menuRef={menuRef}
       />
     );
 
-    // Should render the letter options - use menuRef to access the DOM
-    const menu = menuRef.current;
+    // Should render the letter options
+    const menu = container.querySelector('.letter-choice-menu');
     expect(menu).not.toBeNull();
 
-    const letterOption1 = menu?.querySelector('.letter-choice-option:nth-child(1)');
-    const letterOption2 = menu?.querySelector('.letter-choice-option:nth-child(2)');
-    const letterOption3 = menu?.querySelector('.letter-choice-option:nth-child(3)');
+    const letterOptions = container.querySelectorAll('.letter-choice-option');
+    expect(letterOptions).toHaveLength(3);
 
-    expect(letterOption1?.textContent).toBe('b');
-    expect(letterOption2?.textContent).toBe('h');
-    expect(letterOption3?.textContent).toBe('r');
+    expect(letterOptions[0]?.textContent).toBe('b');
+    expect(letterOptions[1]?.textContent).toBe('h');
+    expect(letterOptions[2]?.textContent).toBe('r');
   });
 
   it('marks previously visited options correctly', () => {
@@ -84,30 +77,25 @@ describe('LetterChoiceMenu', () => {
 
     const wordSelectionByLetter = new WordSelectionByLetter(options, choiceHandler.chooser);
 
-    render(
+    const { container } = render(
       <LetterChoiceMenu
         wordSelectionByLetter={wordSelectionByLetter}
         menuManager={menuManager}
-        menuRef={menuRef}
       />
     );
 
-    // Should render the letter options - use menuRef to access the DOM
-    const menu = menuRef.current;
-    expect(menu).not.toBeNull();
-
-    const letterOption1 = menu?.querySelector('.letter-choice-option:nth-child(1)');
-    const letterOption2 = menu?.querySelector('.letter-choice-option:nth-child(2)');
-    const letterOption3 = menu?.querySelector('.letter-choice-option:nth-child(3)');
+    // Should render the letter options
+    const letterOptions = container.querySelectorAll('.letter-choice-option');
+    expect(letterOptions).toHaveLength(3);
 
     // First option (b -> bat) should be previously visited
-    expect(letterOption1?.classList.contains('previously-visited')).toBe(true);
+    expect(letterOptions[0]?.classList.contains('previously-visited')).toBe(true);
 
     // Second option (h -> hat) should not be previously visited
-    expect(letterOption2?.classList.contains('previously-visited')).toBe(false);
+    expect(letterOptions[1]?.classList.contains('previously-visited')).toBe(false);
 
     // Third option (r -> rat) should be previously visited
-    expect(letterOption3?.classList.contains('previously-visited')).toBe(true);
+    expect(letterOptions[2]?.classList.contains('previously-visited')).toBe(true);
   });
 
   it('calls onSelect when a letter choice is clicked', () => {
@@ -117,20 +105,18 @@ describe('LetterChoiceMenu', () => {
 
     const wordSelectionByLetter = new WordSelectionByLetter(options, choiceHandler.chooser);
 
-    render(
+    const { container } = render(
       <LetterChoiceMenu
         wordSelectionByLetter={wordSelectionByLetter}
         menuManager={menuManager}
-        menuRef={menuRef}
       />
     );
 
-    // Get the first letter option and click it - use menuRef to access the DOM
-    const menu = menuRef.current;
-    expect(menu).not.toBeNull();
-
-    const letterOption1 = menu?.querySelector('.letter-choice-option:nth-child(1)');
-    if (letterOption1) fireEvent.click(letterOption1);
+    // Get the first letter option and click it
+    const letterOptions = container.querySelectorAll('.letter-choice-option');
+    expect(letterOptions).toHaveLength(3);
+    
+    fireEvent.click(letterOptions[0]);
 
     // choiceHandler should have received the Word object from the first option
     expect(choiceHandler.choice).toBe(options[0].result);
