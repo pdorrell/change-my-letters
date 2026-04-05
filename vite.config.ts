@@ -75,9 +75,9 @@ export default defineConfig(({ mode }) => {
       sourcemap: true,
       rollupOptions: {
         output: {
-          manualChunks: {
-            vendor: ['react', 'react-dom'],
-            mobx: ['mobx', 'mobx-react-lite']
+          manualChunks: (id) => {
+            if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) return 'vendor';
+            if (id.includes('node_modules/mobx')) return 'mobx';
           }
         }
       }
