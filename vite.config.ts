@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import path from 'path';
@@ -26,6 +26,25 @@ const getHostname = () => {
   }
 };
 
+// Serve files from deploy/assets at /assets during development
+function serveDeployAssets(): Plugin {
+  const deployAssetsDir = path.resolve(__dirname, 'deploy/assets');
+  return {
+    name: 'serve-deploy-assets',
+    configureServer(server) {
+      server.middlewares.use('/assets', (req, res, next) => {
+        const filePath = path.join(deployAssetsDir, req.url || '');
+        if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+          res.writeHead(200);
+          fs.createReadStream(filePath).pipe(res);
+        } else {
+          next();
+        }
+      });
+    }
+  };
+}
+
 export default defineConfig(({ mode }) => {
   const isDevelopment = mode === 'development';
   const hostname = getHostname();
@@ -35,15 +54,12 @@ export default defineConfig(({ mode }) => {
     publicDir: false, // No public directory in src
     plugins: [
       react(),
+      ...(isDevelopment ? [serveDeployAssets()] : []),
       viteStaticCopy({
         targets: [
           {
             src: 'data/wordlists/*.{json,txt}',
             dest: 'data/wordlists'
-          },
-          {
-            src: '../deploy/assets',
-            dest: '.'
           }
         ]
       })
@@ -88,7 +104,6 @@ export default defineConfig(({ mode }) => {
       open: isDevelopment ? `http://${hostname}.local:3000` : true,
       allowedHosts: ['localhost', '.local']
     },
-    // Copy assets from deploy directory
     assetsInclude: ['**/*.mp3', '**/*.json', '**/*.txt']
   };
 });
