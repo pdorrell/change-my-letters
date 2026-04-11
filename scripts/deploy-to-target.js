@@ -45,17 +45,26 @@ try {
     const itemPath = path.join(deployPath, item);
     const isDirectory = fs.statSync(itemPath).isDirectory();
 
-    // Skip .git and assets directories
-    if (isDirectory && (item === '.git' || item === 'assets')) {
+    // Skip .git directory
+    if (isDirectory && item === '.git') {
       console.log(`  ⏩ Preserving ${item}/ directory`);
       continue;
     }
 
     // Remove file or directory
     if (isDirectory) {
-      if (item === 'data') {
-        console.log(`  🗑️ Removing ${item}/ directory`);
-        execSync(`rm -rf "${itemPath}"`);
+      if (item === 'data' || item === 'assets') {
+        // For assets, only remove assets/app (preserve assets/words)
+        if (item === 'assets') {
+          const appAssetsPath = path.join(itemPath, 'app');
+          if (fs.existsSync(appAssetsPath)) {
+            console.log(`  🗑️ Removing ${item}/app/ directory`);
+            execSync(`rm -rf "${appAssetsPath}"`);
+          }
+        } else {
+          console.log(`  🗑️ Removing ${item}/ directory`);
+          execSync(`rm -rf "${itemPath}"`);
+        }
       }
     } else {
       console.log(`  🗑️ Removing ${item}`);

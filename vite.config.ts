@@ -88,6 +88,7 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: '../dist',
       emptyOutDir: true,
+      assetsDir: 'assets/app',
       sourcemap: true,
       rollupOptions: {
         output: {
