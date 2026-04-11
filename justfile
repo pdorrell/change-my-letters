@@ -1,6 +1,6 @@
 # Clean all caches and generated files
 clean:
-    rm -rf node_modules .npm-cache dist build deploy
+    rm -rf node_modules .npm-cache dist build
 
 # Initial setup
 setup:
