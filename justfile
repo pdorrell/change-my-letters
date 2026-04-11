@@ -19,8 +19,12 @@ check:
     npm run check-code
 
 # Run tests
-test:
-    npm run test
+test *args:
+    npm run test -- {{args}}
+
+# Run tests without console output
+test-quiet:
+    npm run test -- --silent
 
 # Audit for security vulnerabilities
 audit:
