@@ -30,7 +30,7 @@ function analyzeWordGraph(filePath: string): void {
       // Load and compute from word list
       const wordList = fs.readFileSync(filePath, 'utf-8')
         .split('\n')
-        .filter(word => word.trim().length > 0);
+        .filter((word: string) => word.trim().length > 0);
 
       console.log(`Loaded ${wordList.length} words, computing graph...`);
       wordGraph.computeFromWordList(wordList);
@@ -84,8 +84,8 @@ function main(): void {
 
   // Find all JSON and TXT files in the directory
   const files = fs.readdirSync(DATA_DIR)
-    .filter(file => file.endsWith('.json') || file.endsWith('.txt'))
-    .map(file => path.join(DATA_DIR, file));
+    .filter((file: string) => file.endsWith('.json') || file.endsWith('.txt'))
+    .map((file: string) => path.join(DATA_DIR, file));
 
   if (files.length === 0) {
     console.log('No word list or graph files found.');

@@ -21,8 +21,10 @@
     "noFallthroughCasesInSwitch": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "types": ["node"],
 
     /* Path mapping */
+    "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
       "@/tests/*": ["tests/*"]

@@ -1,5 +1,4 @@
-import React from 'react';
-import { render, fireEvent, screen } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import { LetterChoiceMenu } from '@/lib/views/letter-choice-menu';
 import { createTestWordChanger } from '@/tests/utils/test-app-builder';
 import { MenuManager } from '@/lib/views/menu-manager';
@@ -115,7 +114,7 @@ describe('LetterChoiceMenu', () => {
     // Get the first letter option and click it
     const letterOptions = container.querySelectorAll('.letter-choice-option');
     expect(letterOptions).toHaveLength(3);
-    
+
     fireEvent.click(letterOptions[0]);
 
     // choiceHandler should have received the Word object from the first option

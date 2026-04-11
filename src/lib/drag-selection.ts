@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { RangeSelectable } from '@/lib/models/range-selectable';
 
 // Utility function to find child element under touch coordinates
-export function findChildUnderTouch(parentRef: React.RefObject<HTMLElement>, touchX: number, touchY: number): Element | null {
+export function findChildUnderTouch(parentRef: React.RefObject<HTMLElement | null>, touchX: number, touchY: number): Element | null {
   if (!parentRef.current) return null;
 
   const selectableChildren = Array.from(
@@ -36,7 +36,7 @@ export interface DragSelectionResult {
 // Generic drag selection hook
 export function useDragSelection(
   selectable: RangeSelectable,
-  containerRef: React.RefObject<HTMLElement>
+  containerRef: React.RefObject<HTMLElement | null>
 ): DragSelectionResult {
   const [isDragging, setIsDragging] = useState(false);
 

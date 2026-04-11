@@ -6,6 +6,10 @@ clean:
 setup:
     npm install
 
+# Run local dev server
+run:
+    npm run dev
+
 # Deploy (version update, full build with tests, deploy to target)
 deploy:
     npm run deploy

@@ -26,7 +26,7 @@ export class MenuManager implements MenuManagerInterface {
   toggleMenu(
     currentlyOpen: boolean,
     setMenuOpen: () => void,
-    buttonRef: React.RefObject<HTMLElement>
+    buttonRef: React.RefObject<HTMLElement | null>
   ): void {
     // Close all menus first
     this.closeMenus();

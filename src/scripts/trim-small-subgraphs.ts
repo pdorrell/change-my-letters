@@ -56,7 +56,7 @@ function trimSmallSubgraphs(filePath: string, maxSize: number): void {
     // Read and parse the word list
     const wordList = fs.readFileSync(filePath, 'utf-8')
       .split('\n')
-      .filter(word => word.trim().length > 0);
+      .filter((word: string) => word.trim().length > 0);
 
     console.log(`Loaded ${wordList.length} words from ${filePath}`);
 
@@ -88,7 +88,7 @@ function trimSmallSubgraphs(filePath: string, maxSize: number): void {
     }
 
     // Filter out the words that should be removed
-    const filteredWordList = wordList.filter(word => !wordsToRemove.has(word));
+    const filteredWordList = wordList.filter((word: string) => !wordsToRemove.has(word));
 
     // Check if the file is under git source control
     const isUnderGit = checkIfUnderGitControl(filePath);

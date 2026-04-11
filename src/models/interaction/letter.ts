@@ -15,7 +15,7 @@ export class LetterInteraction {
   isReplaceMenuOpen: boolean = false;
 
   // Reference to the letter element for menu positioning
-  menuRef: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
+  menuRef: React.RefObject<HTMLDivElement | null> = React.createRef<HTMLDivElement>();
 
   constructor(
     // The letter this interaction is for

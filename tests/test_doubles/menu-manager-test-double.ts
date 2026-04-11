@@ -11,7 +11,7 @@ export class MenuManagerTestDouble implements MenuManagerInterface {
   toggleMenu(
     currentlyOpen: boolean,
     setMenuOpen: () => void,
-    buttonRef: React.RefObject<HTMLElement>
+    buttonRef: React.RefObject<HTMLElement | null>
   ): void {
     this.closeMenus();
 

@@ -15,7 +15,7 @@ export class PositionInteraction {
   isInsertMenuOpen: boolean = false;
 
   // Reference to the insert button element
-  insertButtonRef: React.RefObject<HTMLButtonElement> = React.createRef<HTMLButtonElement>();
+  insertButtonRef: React.RefObject<HTMLButtonElement | null> = React.createRef<HTMLButtonElement>();
 
   constructor(
     // The position this interaction is for
