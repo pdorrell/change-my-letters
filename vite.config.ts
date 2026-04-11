@@ -59,7 +59,7 @@ export default defineConfig(({ mode }) => {
         targets: [
           {
             src: 'data/wordlists/*.{json,txt}',
-            dest: 'data/wordlists'
+            dest: '.'
           }
         ]
       })
