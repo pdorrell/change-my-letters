@@ -28,10 +28,11 @@ if (!fs.existsSync(distPath)) {
   process.exit(1);
 }
 
-// Check if deploy directory exists, create if it doesn't
+// Check if deploy directory exists
 if (!fs.existsSync(deployPath)) {
-  console.log('📁 Creating deploy directory...');
-  fs.mkdirSync(deployPath, { recursive: true });
+  console.error('❌ Error: deploy directory does not exist.');
+  console.error('   You need to checkout the corresponding deployment git project into that directory.');
+  process.exit(1);
 }
 
 console.log('🔄 Starting deployment process...');
