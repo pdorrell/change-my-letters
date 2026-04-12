@@ -1,6 +1,13 @@
-# Clean all caches and generated files
+# Clean caches
+clean-caches:
+    rm -rf node_modules .npm-cache
+
+# Clean generated files
 clean:
-    rm -rf node_modules .npm-cache dist build
+    rm -rf dist build
+
+# Clean all caches and generated files
+clean-all: clean-caches clean
 
 # Initial setup
 setup:
