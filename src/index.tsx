@@ -91,7 +91,7 @@ if (!container) {
 }
 const root = createRoot(container);
 // Create singleton instances for ApplicationLoader dependencies
-const audioFilePlayer = new AudioFilePlayer('/assets/words/amazon_polly');
+const audioFilePlayer = new AudioFilePlayer('/assets/words/eleven_labs');
 const dataFileFetcher = new DataFileFetcher();
 const applicationLoader = new ApplicationLoader(audioFilePlayer, dataFileFetcher);
 
