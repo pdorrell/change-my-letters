@@ -1,6 +1,7 @@
 # dependencies
 /node_modules
 /.npm-cache
+src/.npm-cache
 
 # production
 /dist
