@@ -127,7 +127,7 @@ export class ApplicationLoader {
       // Only load in development environment
       if (process.env.NODE_ENV === 'development' && this.appState) {
         try {
-          const response = await fetch('/src/data/local_dev/review-pronunciation-state.json');
+          const response = await fetch('/data/local_dev/review-pronunciation-state.json');
           if (response.ok) {
             const localDevReviewState = await response.json();
             this.appState.reviewPronunciation.setReviewState(localDevReviewState);
